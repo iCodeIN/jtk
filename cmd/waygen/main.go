@@ -235,10 +235,10 @@ func codegenproto(w io.Writer, proto protocol) error {
 			fmt.Fprintf(w, "const (\n")
 			for _, entry := range enum.Entries {
 				entryname := namegen(initialism(proto.Name), intf.Name, enum.Name, entry.Name)
-				docgen(w, entryname, enum.Description, "corresponds to", "\t")
+				docgen(w, entryname, description{Summary: entry.Summary}, "corresponds to", "\t")
 				fmt.Fprintf(w, "\t%s %s = %s\n\n", entryname, enumname, entry.Value)
 			}
-			fmt.Fprintf(w, ")\n\n")
+			fmt.Fprint(w, ")\n\n")
 		}
 
 		// Generate request structs.
@@ -249,9 +249,15 @@ func codegenproto(w io.Writer, proto protocol) error {
 			docgen(w, structname, request.Description, "requests to", "")
 
 			// Make struct declaration.
-			fmt.Fprintf(w, "type %s struct {}\n\n", structname)
-
-			// TODO: args
+			fmt.Fprintf(w, "type %s struct {\n", structname)
+			for _, arg := range request.Args {
+				// Make doc comment.
+				argname := namegen(arg.Name)
+				docgen(w, argname, description{Summary: arg.Summary}, "contains", "\t")
+				// TODO: proper types
+				fmt.Fprintf(w, "\t%s uintptr\n\n", argname)
+			}
+			fmt.Fprint(w, "}\n\n")
 		}
 
 		// Generate event structs.
@@ -259,12 +265,18 @@ func codegenproto(w io.Writer, proto protocol) error {
 			structname := namegen(initialism(proto.Name), intf.Name, event.Name, "event")
 
 			// Make doc comment.
-			docgen(w, structname, event.Description, "requests to", "")
+			docgen(w, structname, event.Description, "signals when", "")
 
 			// Make struct declaration.
-			fmt.Fprintf(w, "type %s struct {}\n\n", structname)
-
-			// TODO: args
+			fmt.Fprintf(w, "type %s struct {\n", structname)
+			for _, arg := range event.Args {
+				// Make doc comment.
+				argname := namegen(arg.Name)
+				docgen(w, argname, description{Summary: arg.Summary}, "contains", "\t")
+				// TODO: proper types
+				fmt.Fprintf(w, "\t%s uintptr\n\n", argname)
+			}
+			fmt.Fprint(w, "}\n\n")
 		}
 	}
 
@@ -308,11 +320,16 @@ func namegen(names ...string) string {
 				continue
 			}
 
-			if part[0] >= 'a' && part[0] <= 'z' {
-				b.WriteByte(part[0] & 0b11011111)
-				b.WriteString(part[1:])
-			} else {
-				b.WriteString(part)
+			switch part {
+			case "id", "fd":
+				b.WriteString(strings.ToUpper(part))
+			default:
+				if part[0] >= 'a' && part[0] <= 'z' {
+					b.WriteByte(part[0] & 0b11011111)
+					b.WriteString(part[1:])
+				} else {
+					b.WriteString(part)
+				}
 			}
 		}
 	}

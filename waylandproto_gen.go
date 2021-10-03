@@ -2,25 +2,34 @@
 // Generated with: waygen ./third_party/wayland/protocol ./third_party/wayland-protocols
 package jtk
 
-type BTWTFdPasserDestroyRequest struct{}
+type BTWTFDPasserDestroyRequest struct {
+}
 
-// BTWTFdPasserConjoinRequest requests to register another fd passer with this one
+// BTWTFDPasserConjoinRequest requests to register another fd passer with this one
 //
 // Tells this fd passer object about another one to send events
 // to for more complicated fd leak tests.
-type BTWTFdPasserConjoinRequest struct{}
+type BTWTFDPasserConjoinRequest struct {
+	Passer uintptr
+}
 
-type BTWTFdPasserPreFdEvent struct{}
+type BTWTFDPasserPreFDEvent struct {
+}
 
-// BTWTFdPasserFdEvent requests to passes a file descriptor
-type BTWTFdPasserFdEvent struct{}
+// BTWTFDPasserFDEvent signals when passes a file descriptor
+type BTWTFDPasserFDEvent struct {
+	// FD contains file descriptor
+	FD uintptr
+}
 
 // DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest requests to create a lease request object
 //
 // Creates a lease request object.
 //
 // See the documentation for wp_drm_lease_request_v1 for details.
-type DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest struct{}
+type DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest struct {
+	ID uintptr
+}
 
 // DLVWpDrmLeaseDeviceV1ReleaseRequest requests to release this object
 //
@@ -30,9 +39,10 @@ type DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest struct{}
 // connector events before the released event. The client must not send any
 // requests after this one, doing so will raise a wl_display error.
 // Existing connectors, lease request and leases will not be affected.
-type DLVWpDrmLeaseDeviceV1ReleaseRequest struct{}
+type DLVWpDrmLeaseDeviceV1ReleaseRequest struct {
+}
 
-// DLVWpDrmLeaseDeviceV1DrmFdEvent requests to open a non-master fd for this DRM node
+// DLVWpDrmLeaseDeviceV1DrmFDEvent signals when open a non-master fd for this DRM node
 //
 // The compositor will send this event when the wp_drm_lease_device_v1
 // global is bound, although there are no guarantees as to how long this
@@ -42,9 +52,12 @@ type DLVWpDrmLeaseDeviceV1ReleaseRequest struct{}
 // The purpose of this event is to give the client the ability to
 // query DRM and discover information which may help them pick the
 // appropriate DRM device or select the appropriate connectors therein.
-type DLVWpDrmLeaseDeviceV1DrmFdEvent struct{}
+type DLVWpDrmLeaseDeviceV1DrmFDEvent struct {
+	// FD contains DRM file descriptor
+	FD uintptr
+}
 
-// DLVWpDrmLeaseDeviceV1ConnectorEvent requests to advertise connectors available for leases
+// DLVWpDrmLeaseDeviceV1ConnectorEvent signals when advertise connectors available for leases
 //
 // The compositor will use this event to advertise connectors available for
 // lease by clients. This object may be passed into a lease request to
@@ -56,9 +69,11 @@ type DLVWpDrmLeaseDeviceV1DrmFdEvent struct{}
 // The compositor must send the drm_fd event before sending connectors.
 // After the drm_fd event it will send all available connectors but may
 // send additional connectors at any time.
-type DLVWpDrmLeaseDeviceV1ConnectorEvent struct{}
+type DLVWpDrmLeaseDeviceV1ConnectorEvent struct {
+	ID uintptr
+}
 
-// DLVWpDrmLeaseDeviceV1DoneEvent requests to signals grouping of connectors
+// DLVWpDrmLeaseDeviceV1DoneEvent signals when signals grouping of connectors
 //
 // The compositor will send this event to indicate that it has sent all
 // currently available connectors after the client binds to the global or
@@ -66,16 +81,18 @@ type DLVWpDrmLeaseDeviceV1ConnectorEvent struct{}
 // change or when a leased connector becomes available again. It will
 // similarly send this event to group wp_drm_lease_connector_v1.withdrawn
 // events of connectors of this device.
-type DLVWpDrmLeaseDeviceV1DoneEvent struct{}
+type DLVWpDrmLeaseDeviceV1DoneEvent struct {
+}
 
-// DLVWpDrmLeaseDeviceV1ReleasedEvent requests to the compositor has finished using the device
+// DLVWpDrmLeaseDeviceV1ReleasedEvent signals when the compositor has finished using the device
 //
 // This event is sent in response to the release request and indicates
 // that the compositor is done sending connector events.
 // The compositor will destroy this object immediately after sending the
 // event and it will become invalid. The client should release any
 // resources associated with this device after receiving this event.
-type DLVWpDrmLeaseDeviceV1ReleasedEvent struct{}
+type DLVWpDrmLeaseDeviceV1ReleasedEvent struct {
+}
 
 // DLVWpDrmLeaseConnectorV1DestroyRequest requests to destroy connector
 //
@@ -84,40 +101,51 @@ type DLVWpDrmLeaseDeviceV1ReleasedEvent struct{}
 // "withdrawn" event so that the server can release the resources
 // associated with this connector offer. Neither existing lease requests
 // nor leases will be affected.
-type DLVWpDrmLeaseConnectorV1DestroyRequest struct{}
+type DLVWpDrmLeaseConnectorV1DestroyRequest struct {
+}
 
-// DLVWpDrmLeaseConnectorV1NameEvent requests to name
+// DLVWpDrmLeaseConnectorV1NameEvent signals when name
 //
 // The compositor sends this event once the connector is created to
 // indicate the name of this connector. This will not change for the
 // duration of the Wayland session, but is not guaranteed to be consistent
 // between sessions.
-type DLVWpDrmLeaseConnectorV1NameEvent struct{}
+type DLVWpDrmLeaseConnectorV1NameEvent struct {
+	// Name contains connector name
+	Name uintptr
+}
 
-// DLVWpDrmLeaseConnectorV1DescriptionEvent requests to description
+// DLVWpDrmLeaseConnectorV1DescriptionEvent signals when description
 //
 // The compositor sends this event once the connector is created to provide
 // a human-readable description for this connector, which may be presented
 // to the user. The compositor may send this event multiple times over the
 // lifetime of this object to reflect changes in the description.
-type DLVWpDrmLeaseConnectorV1DescriptionEvent struct{}
+type DLVWpDrmLeaseConnectorV1DescriptionEvent struct {
+	// Description contains connector description
+	Description uintptr
+}
 
-// DLVWpDrmLeaseConnectorV1ConnectorIdEvent requests to connector_id
+// DLVWpDrmLeaseConnectorV1ConnectorIDEvent signals when connector_id
 //
 // The compositor sends this event once the connector is created to
 // indicate the DRM object ID which represents the underlying connector
 // that is being offered. Note that the final lease may include additional
 // object IDs, such as CRTCs and planes.
-type DLVWpDrmLeaseConnectorV1ConnectorIdEvent struct{}
+type DLVWpDrmLeaseConnectorV1ConnectorIDEvent struct {
+	// ConnectorID contains DRM connector ID
+	ConnectorID uintptr
+}
 
-// DLVWpDrmLeaseConnectorV1DoneEvent requests to all properties have been sent
+// DLVWpDrmLeaseConnectorV1DoneEvent signals when all properties have been sent
 //
 // This event is sent after all properties of a connector have been sent.
 // This allows changes to the properties to be seen as atomic even if they
 // happen via multiple events.
-type DLVWpDrmLeaseConnectorV1DoneEvent struct{}
+type DLVWpDrmLeaseConnectorV1DoneEvent struct {
+}
 
-// DLVWpDrmLeaseConnectorV1WithdrawnEvent requests to lease offer withdrawn
+// DLVWpDrmLeaseConnectorV1WithdrawnEvent signals when lease offer withdrawn
 //
 // Sent to indicate that the compositor will no longer honor requests for
 // DRM leases which include this connector. The client may still issue a
@@ -126,15 +154,19 @@ type DLVWpDrmLeaseConnectorV1DoneEvent struct{}
 // encouraged to send this event when they lose access to connector, for
 // example when the connector is hot-unplugged, when the connector gets
 // leased to a client or when the compositor loses DRM master.
-type DLVWpDrmLeaseConnectorV1WithdrawnEvent struct{}
+type DLVWpDrmLeaseConnectorV1WithdrawnEvent struct {
+}
 
 type DLVWpDrmLeaseRequestV1Error int
 
 const (
+	// DLVWpDrmLeaseRequestV1ErrorWrongDevice corresponds to requested a connector from a different lease device
 	DLVWpDrmLeaseRequestV1ErrorWrongDevice DLVWpDrmLeaseRequestV1Error = 0
 
+	// DLVWpDrmLeaseRequestV1ErrorDuplicateConnector corresponds to requested a connector twice
 	DLVWpDrmLeaseRequestV1ErrorDuplicateConnector DLVWpDrmLeaseRequestV1Error = 1
 
+	// DLVWpDrmLeaseRequestV1ErrorEmptyLease corresponds to requested a lease without requesting a connector
 	DLVWpDrmLeaseRequestV1ErrorEmptyLease DLVWpDrmLeaseRequestV1Error = 2
 )
 
@@ -150,7 +182,9 @@ const (
 // Requesting a connector that was created from a different lease device
 // than this lease request raises the wrong_device error. Requesting a
 // connector twice will raise the duplicate_connector error.
-type DLVWpDrmLeaseRequestV1RequestConnectorRequest struct{}
+type DLVWpDrmLeaseRequestV1RequestConnectorRequest struct {
+	Connector uintptr
+}
 
 // DLVWpDrmLeaseRequestV1SubmitRequest requests to submit the lease request
 //
@@ -161,16 +195,19 @@ type DLVWpDrmLeaseRequestV1RequestConnectorRequest struct{}
 // lease object, clients cannot expect an immediate response.
 // Not requesting any connectors before submitting the lease request
 // will raise the empty_lease error.
-type DLVWpDrmLeaseRequestV1SubmitRequest struct{}
+type DLVWpDrmLeaseRequestV1SubmitRequest struct {
+	ID uintptr
+}
 
 // DLVWpDrmLeaseV1DestroyRequest requests to destroys the lease object
 //
 // The client should send this to indicate that it no longer wishes to use
 // this lease. The compositor should use drmModeRevokeLease on the
 // appropriate file descriptor, if necessary.
-type DLVWpDrmLeaseV1DestroyRequest struct{}
+type DLVWpDrmLeaseV1DestroyRequest struct {
+}
 
-// DLVWpDrmLeaseV1LeaseFdEvent requests to shares the DRM file descriptor
+// DLVWpDrmLeaseV1LeaseFDEvent signals when shares the DRM file descriptor
 //
 // This event returns a file descriptor suitable for use with DRM-related
 // ioctls. The client should use drmModeGetLease to enumerate the DRM
@@ -182,9 +219,12 @@ type DLVWpDrmLeaseV1DestroyRequest struct{}
 //
 // The compositor will send this event at most once during this objects
 // lifetime.
-type DLVWpDrmLeaseV1LeaseFdEvent struct{}
+type DLVWpDrmLeaseV1LeaseFDEvent struct {
+	// LeasedFD contains leased DRM file descriptor
+	LeasedFD uintptr
+}
 
-// DLVWpDrmLeaseV1FinishedEvent requests to sent when the lease has been revoked
+// DLVWpDrmLeaseV1FinishedEvent signals when sent when the lease has been revoked
 //
 // The compositor uses this event to either reject a lease request, or if
 // it previously sent a lease_fd, to notify the client that the lease has
@@ -194,7 +234,8 @@ type DLVWpDrmLeaseV1LeaseFdEvent struct{}
 // Compositors should revoke the lease when any of the leased resources
 // become unavailable, namely when a hot-unplug occurs or when the
 // compositor loses DRM master.
-type DLVWpDrmLeaseV1FinishedEvent struct{}
+type DLVWpDrmLeaseV1FinishedEvent struct {
+}
 
 // FSUVZwpFullscreenShellV1Capability represents capabilities advertised by the compositor
 //
@@ -222,54 +263,10 @@ type DLVWpDrmLeaseV1FinishedEvent struct{}
 type FSUVZwpFullscreenShellV1Capability int
 
 const (
-	// FSUVZwpFullscreenShellV1CapabilityArbitraryModes corresponds to capabilities advertised by the compositor
-	//
-	// Various capabilities that can be advertised by the compositor.  They
-	// are advertised one-at-a-time when the wl_fullscreen_shell interface is
-	// bound.  See the wl_fullscreen_shell.capability event for more details.
-	//
-	// ARBITRARY_MODES:
-	// This is a hint to the client that indicates that the compositor is
-	// capable of setting practically any mode on its outputs.  If this
-	// capability is provided, wl_fullscreen_shell.present_surface_for_mode
-	// will almost never fail and clients should feel free to set whatever
-	// mode they like.  If the compositor does not advertise this, it may
-	// still support some modes that are not advertised through wl_global.mode
-	// but it is less likely.
-	//
-	// CURSOR_PLANE:
-	// This is a hint to the client that indicates that the compositor can
-	// handle a cursor surface from the client without actually compositing.
-	// This may be because of a hardware cursor plane or some other mechanism.
-	// If the compositor does not advertise this capability then setting
-	// wl_pointer.cursor may degrade performance or be ignored entirely.  If
-	// CURSOR_PLANE is not advertised, it is recommended that the client draw
-	// its own cursor and set wl_pointer.cursor(NULL).
+	// FSUVZwpFullscreenShellV1CapabilityArbitraryModes corresponds to compositor is capable of almost any output mode
 	FSUVZwpFullscreenShellV1CapabilityArbitraryModes FSUVZwpFullscreenShellV1Capability = 1
 
-	// FSUVZwpFullscreenShellV1CapabilityCursorPlane corresponds to capabilities advertised by the compositor
-	//
-	// Various capabilities that can be advertised by the compositor.  They
-	// are advertised one-at-a-time when the wl_fullscreen_shell interface is
-	// bound.  See the wl_fullscreen_shell.capability event for more details.
-	//
-	// ARBITRARY_MODES:
-	// This is a hint to the client that indicates that the compositor is
-	// capable of setting practically any mode on its outputs.  If this
-	// capability is provided, wl_fullscreen_shell.present_surface_for_mode
-	// will almost never fail and clients should feel free to set whatever
-	// mode they like.  If the compositor does not advertise this, it may
-	// still support some modes that are not advertised through wl_global.mode
-	// but it is less likely.
-	//
-	// CURSOR_PLANE:
-	// This is a hint to the client that indicates that the compositor can
-	// handle a cursor surface from the client without actually compositing.
-	// This may be because of a hardware cursor plane or some other mechanism.
-	// If the compositor does not advertise this capability then setting
-	// wl_pointer.cursor may degrade performance or be ignored entirely.  If
-	// CURSOR_PLANE is not advertised, it is recommended that the client draw
-	// its own cursor and set wl_pointer.cursor(NULL).
+	// FSUVZwpFullscreenShellV1CapabilityCursorPlane corresponds to compositor has a separate cursor plane
 	FSUVZwpFullscreenShellV1CapabilityCursorPlane FSUVZwpFullscreenShellV1Capability = 2
 )
 
@@ -281,39 +278,19 @@ const (
 type FSUVZwpFullscreenShellV1PresentMethod int
 
 const (
-	// FSUVZwpFullscreenShellV1PresentMethodDefault corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// FSUVZwpFullscreenShellV1PresentMethodDefault corresponds to no preference, apply default policy
 	FSUVZwpFullscreenShellV1PresentMethodDefault FSUVZwpFullscreenShellV1PresentMethod = 0
 
-	// FSUVZwpFullscreenShellV1PresentMethodCenter corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// FSUVZwpFullscreenShellV1PresentMethodCenter corresponds to center the surface on the output
 	FSUVZwpFullscreenShellV1PresentMethodCenter FSUVZwpFullscreenShellV1PresentMethod = 1
 
-	// FSUVZwpFullscreenShellV1PresentMethodZoom corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// FSUVZwpFullscreenShellV1PresentMethodZoom corresponds to scale the surface, preserving aspect ratio, to the largest size that will fit on the output
 	FSUVZwpFullscreenShellV1PresentMethodZoom FSUVZwpFullscreenShellV1PresentMethod = 2
 
-	// FSUVZwpFullscreenShellV1PresentMethodZoomCrop corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// FSUVZwpFullscreenShellV1PresentMethodZoomCrop corresponds to scale the surface, preserving aspect ratio, to fully fill the output cropping if needed
 	FSUVZwpFullscreenShellV1PresentMethodZoomCrop FSUVZwpFullscreenShellV1PresentMethod = 3
 
-	// FSUVZwpFullscreenShellV1PresentMethodStretch corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// FSUVZwpFullscreenShellV1PresentMethodStretch corresponds to scale the surface to the size of the output ignoring aspect ratio
 	FSUVZwpFullscreenShellV1PresentMethodStretch FSUVZwpFullscreenShellV1PresentMethod = 4
 )
 
@@ -323,14 +300,10 @@ const (
 type FSUVZwpFullscreenShellV1Error int
 
 const (
-	// FSUVZwpFullscreenShellV1ErrorInvalidMethod corresponds to wl_fullscreen_shell error values
-	//
-	// These errors can be emitted in response to wl_fullscreen_shell requests.
+	// FSUVZwpFullscreenShellV1ErrorInvalidMethod corresponds to present_method is not known
 	FSUVZwpFullscreenShellV1ErrorInvalidMethod FSUVZwpFullscreenShellV1Error = 0
 
-	// FSUVZwpFullscreenShellV1ErrorRole corresponds to wl_fullscreen_shell error values
-	//
-	// These errors can be emitted in response to wl_fullscreen_shell requests.
+	// FSUVZwpFullscreenShellV1ErrorRole corresponds to given wl_surface has another role
 	FSUVZwpFullscreenShellV1ErrorRole FSUVZwpFullscreenShellV1Error = 1
 )
 
@@ -341,7 +314,8 @@ const (
 // This destroys the server-side object and frees this binding.  If
 // the client binds to wl_fullscreen_shell multiple times, it may wish
 // to free some of those bindings.
-type FSUVZwpFullscreenShellV1ReleaseRequest struct{}
+type FSUVZwpFullscreenShellV1ReleaseRequest struct {
+}
 
 // FSUVZwpFullscreenShellV1PresentSurfaceRequest requests to present surface for display
 //
@@ -366,7 +340,13 @@ type FSUVZwpFullscreenShellV1ReleaseRequest struct{}
 // This request gives the surface the role of a fullscreen shell surface.
 // If the surface already has another role, it raises a role protocol
 // error.
-type FSUVZwpFullscreenShellV1PresentSurfaceRequest struct{}
+type FSUVZwpFullscreenShellV1PresentSurfaceRequest struct {
+	Surface uintptr
+
+	Method uintptr
+
+	Output uintptr
+}
 
 // FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest requests to present surface for display at a particular mode
 //
@@ -411,9 +391,17 @@ type FSUVZwpFullscreenShellV1PresentSurfaceRequest struct{}
 // This request gives the surface the role of a fullscreen shell surface.
 // If the surface already has another role, it raises a role protocol
 // error.
-type FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest struct{}
+type FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest struct {
+	Surface uintptr
 
-// FSUVZwpFullscreenShellV1CapabilityEvent requests to advertises a capability of the compositor
+	Output uintptr
+
+	Framerate uintptr
+
+	Feedback uintptr
+}
+
+// FSUVZwpFullscreenShellV1CapabilityEvent signals when advertises a capability of the compositor
 //
 // Advertises a single capability of the compositor.
 //
@@ -423,9 +411,11 @@ type FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest struct{}
 // advantage of any of these capabilities, they should use a
 // wl_display.sync request immediately after binding to ensure that they
 // receive all the capability events.
-type FSUVZwpFullscreenShellV1CapabilityEvent struct{}
+type FSUVZwpFullscreenShellV1CapabilityEvent struct {
+	Capability uintptr
+}
 
-// FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent requests to mode switch succeeded
+// FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent signals when mode switch succeeded
 //
 // This event indicates that the attempted mode switch operation was
 // successful.  A surface of the size requested in the mode switch
@@ -433,9 +423,10 @@ type FSUVZwpFullscreenShellV1CapabilityEvent struct{}
 //
 // Upon receiving this event, the client should destroy the
 // wl_fullscreen_shell_mode_feedback object.
-type FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent struct{}
+type FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent struct {
+}
 
-// FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent requests to mode switch failed
+// FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent signals when mode switch failed
 //
 // This event indicates that the attempted mode switch operation
 // failed.  This may be because the requested output mode is not
@@ -443,9 +434,10 @@ type FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent struct{}
 //
 // Upon receiving this event, the client should destroy the
 // wl_fullscreen_shell_mode_feedback object.
-type FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent struct{}
+type FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent struct {
+}
 
-// FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent requests to mode switch cancelled
+// FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent signals when mode switch cancelled
 //
 // This event indicates that the attempted mode switch operation was
 // cancelled.  Most likely this is because the client requested a
@@ -453,24 +445,33 @@ type FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent struct{}
 //
 // Upon receiving this event, the client should destroy the
 // wl_fullscreen_shell_mode_feedback object.
-type FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent struct{}
+type FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent struct {
+}
 
 // IIUVZwpIdleInhibitManagerV1DestroyRequest requests to destroy the idle inhibitor object
 //
 // Destroy the inhibit manager.
-type IIUVZwpIdleInhibitManagerV1DestroyRequest struct{}
+type IIUVZwpIdleInhibitManagerV1DestroyRequest struct {
+}
 
 // IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest requests to create a new inhibitor object
 //
 // Create a new inhibitor object associated with the given surface.
-type IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest struct{}
+type IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest struct {
+	ID uintptr
+
+	// Surface contains the surface that inhibits the idle behavior
+	Surface uintptr
+}
 
 // IIUVZwpIdleInhibitorV1DestroyRequest requests to destroy the idle inhibitor object
 //
 // Remove the inhibitor effect from the associated wl_surface.
-type IIUVZwpIdleInhibitorV1DestroyRequest struct{}
+type IIUVZwpIdleInhibitorV1DestroyRequest struct {
+}
 
-type IMUVZwpInputMethodContextV1DestroyRequest struct{}
+type IMUVZwpInputMethodContextV1DestroyRequest struct {
+}
 
 // IMUVZwpInputMethodContextV1CommitStringRequest requests to commit string
 //
@@ -483,7 +484,12 @@ type IMUVZwpInputMethodContextV1DestroyRequest struct{}
 // cursor_position).
 //
 // Any previously set composing text will be removed.
-type IMUVZwpInputMethodContextV1CommitStringRequest struct{}
+type IMUVZwpInputMethodContextV1CommitStringRequest struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
+
+	Text uintptr
+}
 
 // IMUVZwpInputMethodContextV1PreeditStringRequest requests to pre-edit string
 //
@@ -494,7 +500,14 @@ type IMUVZwpInputMethodContextV1CommitStringRequest struct{}
 //
 // Previously sent preedit_style and preedit_cursor requests are also
 // processed by the text_input.
-type IMUVZwpInputMethodContextV1PreeditStringRequest struct{}
+type IMUVZwpInputMethodContextV1PreeditStringRequest struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
+
+	Text uintptr
+
+	Commit uintptr
+}
 
 // IMUVZwpInputMethodContextV1PreeditStylingRequest requests to pre-edit styling
 //
@@ -504,7 +517,13 @@ type IMUVZwpInputMethodContextV1PreeditStringRequest struct{}
 // be applied to a composing text.
 //
 // This request should be sent before sending a preedit_string request.
-type IMUVZwpInputMethodContextV1PreeditStylingRequest struct{}
+type IMUVZwpInputMethodContextV1PreeditStylingRequest struct {
+	Index uintptr
+
+	Length uintptr
+
+	Style uintptr
+}
 
 // IMUVZwpInputMethodContextV1PreeditCursorRequest requests to pre-edit cursor
 //
@@ -514,7 +533,9 @@ type IMUVZwpInputMethodContextV1PreeditStylingRequest struct{}
 // When index is negative no cursor should be displayed.
 //
 // This request should be sent before sending a preedit_string request.
-type IMUVZwpInputMethodContextV1PreeditCursorRequest struct{}
+type IMUVZwpInputMethodContextV1PreeditCursorRequest struct {
+	Index uintptr
+}
 
 // IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest requests to delete text
 //
@@ -522,7 +543,11 @@ type IMUVZwpInputMethodContextV1PreeditCursorRequest struct{}
 //
 // This request will be handled on the text_input side directly following
 // a commit_string request.
-type IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest struct{}
+type IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest struct {
+	Index uintptr
+
+	Length uintptr
+}
 
 // IMUVZwpInputMethodContextV1CursorPositionRequest requests to set cursor to a new position
 //
@@ -536,9 +561,15 @@ type IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest struct{}
 //
 // This request will be handled on the text_input side directly following
 // a commit_string request.
-type IMUVZwpInputMethodContextV1CursorPositionRequest struct{}
+type IMUVZwpInputMethodContextV1CursorPositionRequest struct {
+	Index uintptr
 
-type IMUVZwpInputMethodContextV1ModifiersMapRequest struct{}
+	Anchor uintptr
+}
+
+type IMUVZwpInputMethodContextV1ModifiersMapRequest struct {
+	Map uintptr
+}
 
 // IMUVZwpInputMethodContextV1KeysymRequest requests to keysym
 //
@@ -546,7 +577,18 @@ type IMUVZwpInputMethodContextV1ModifiersMapRequest struct{}
 // normal text input operations, which should be done with commit_string,
 // delete_surrounding_text, etc. The key event follows the wl_keyboard key
 // event convention. Sym is an XKB keysym, state is a wl_keyboard key_state.
-type IMUVZwpInputMethodContextV1KeysymRequest struct{}
+type IMUVZwpInputMethodContextV1KeysymRequest struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
+
+	Time uintptr
+
+	Sym uintptr
+
+	State uintptr
+
+	Modifiers uintptr
+}
 
 // IMUVZwpInputMethodContextV1GrabKeyboardRequest requests to grab hardware keyboard
 //
@@ -554,7 +596,9 @@ type IMUVZwpInputMethodContextV1KeysymRequest struct{}
 // key events to generate text events (with pre-edit) over the wire. This
 // allows input methods which compose multiple key events for inputting
 // text like it is done for CJK languages.
-type IMUVZwpInputMethodContextV1GrabKeyboardRequest struct{}
+type IMUVZwpInputMethodContextV1GrabKeyboardRequest struct {
+	Keyboard uintptr
+}
 
 // IMUVZwpInputMethodContextV1KeyRequest requests to forward key event
 //
@@ -564,7 +608,19 @@ type IMUVZwpInputMethodContextV1GrabKeyboardRequest struct{}
 // wl_keyboard::key event.
 //
 // For generating custom key events use the keysym request instead.
-type IMUVZwpInputMethodContextV1KeyRequest struct{}
+type IMUVZwpInputMethodContextV1KeyRequest struct {
+	// Serial contains serial from wl_keyboard::key
+	Serial uintptr
+
+	// Time contains time from wl_keyboard::key
+	Time uintptr
+
+	// Key contains key from wl_keyboard::key
+	Key uintptr
+
+	// State contains state from wl_keyboard::key
+	State uintptr
+}
 
 // IMUVZwpInputMethodContextV1ModifiersRequest requests to forward modifiers event
 //
@@ -572,45 +628,98 @@ type IMUVZwpInputMethodContextV1KeyRequest struct{}
 // processed by the input method itself.  Should be used when filtering
 // key events with grab_keyboard. The arguments should be the ones
 // from the wl_keyboard::modifiers event.
-type IMUVZwpInputMethodContextV1ModifiersRequest struct{}
+type IMUVZwpInputMethodContextV1ModifiersRequest struct {
+	// Serial contains serial from wl_keyboard::modifiers
+	Serial uintptr
 
-type IMUVZwpInputMethodContextV1LanguageRequest struct{}
+	// ModsDepressed contains mods_depressed from wl_keyboard::modifiers
+	ModsDepressed uintptr
 
-type IMUVZwpInputMethodContextV1TextDirectionRequest struct{}
+	// ModsLatched contains mods_latched from wl_keyboard::modifiers
+	ModsLatched uintptr
 
-// IMUVZwpInputMethodContextV1SurroundingTextEvent requests to surrounding text event
+	// ModsLocked contains mods_locked from wl_keyboard::modifiers
+	ModsLocked uintptr
+
+	// Group contains group from wl_keyboard::modifiers
+	Group uintptr
+}
+
+type IMUVZwpInputMethodContextV1LanguageRequest struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
+
+	Language uintptr
+}
+
+type IMUVZwpInputMethodContextV1TextDirectionRequest struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
+
+	Direction uintptr
+}
+
+// IMUVZwpInputMethodContextV1SurroundingTextEvent signals when surrounding text event
 //
 // The plain surrounding text around the input position. Cursor is the
 // position in bytes within the surrounding text relative to the beginning
 // of the text. Anchor is the position in bytes of the selection anchor
 // within the surrounding text relative to the beginning of the text. If
 // there is no selected text then anchor is the same as cursor.
-type IMUVZwpInputMethodContextV1SurroundingTextEvent struct{}
+type IMUVZwpInputMethodContextV1SurroundingTextEvent struct {
+	Text uintptr
 
-type IMUVZwpInputMethodContextV1ResetEvent struct{}
+	Cursor uintptr
 
-type IMUVZwpInputMethodContextV1ContentTypeEvent struct{}
+	Anchor uintptr
+}
 
-type IMUVZwpInputMethodContextV1InvokeActionEvent struct{}
+type IMUVZwpInputMethodContextV1ResetEvent struct {
+}
 
-type IMUVZwpInputMethodContextV1CommitStateEvent struct{}
+type IMUVZwpInputMethodContextV1ContentTypeEvent struct {
+	Hint uintptr
 
-type IMUVZwpInputMethodContextV1PreferredLanguageEvent struct{}
+	Purpose uintptr
+}
 
-// IMUVZwpInputMethodV1ActivateEvent requests to activate event
+type IMUVZwpInputMethodContextV1InvokeActionEvent struct {
+	Button uintptr
+
+	Index uintptr
+}
+
+type IMUVZwpInputMethodContextV1CommitStateEvent struct {
+	// Serial contains serial of text input state
+	Serial uintptr
+}
+
+type IMUVZwpInputMethodContextV1PreferredLanguageEvent struct {
+	Language uintptr
+}
+
+// IMUVZwpInputMethodV1ActivateEvent signals when activate event
 //
 // A text input was activated. Creates an input method context object
 // which allows communication with the text input.
-type IMUVZwpInputMethodV1ActivateEvent struct{}
+type IMUVZwpInputMethodV1ActivateEvent struct {
+	ID uintptr
+}
 
-// IMUVZwpInputMethodV1DeactivateEvent requests to deactivate event
+// IMUVZwpInputMethodV1DeactivateEvent signals when deactivate event
 //
 // The text input corresponding to the context argument was deactivated.
 // The input method context should be destroyed after deactivation is
 // handled.
-type IMUVZwpInputMethodV1DeactivateEvent struct{}
+type IMUVZwpInputMethodV1DeactivateEvent struct {
+	Context uintptr
+}
 
-type IMUVZwpInputPanelV1GetInputPanelSurfaceRequest struct{}
+type IMUVZwpInputPanelV1GetInputPanelSurfaceRequest struct {
+	ID uintptr
+
+	Surface uintptr
+}
 
 type IMUVZwpInputPanelSurfaceV1Position int
 
@@ -623,7 +732,11 @@ const (
 // Set the input_panel_surface type to keyboard.
 //
 // A keyboard surface is only shown when a text input is active.
-type IMUVZwpInputPanelSurfaceV1SetToplevelRequest struct{}
+type IMUVZwpInputPanelSurfaceV1SetToplevelRequest struct {
+	Output uintptr
+
+	Position uintptr
+}
 
 // IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest requests to set the surface type as an overlay panel
 //
@@ -631,14 +744,16 @@ type IMUVZwpInputPanelSurfaceV1SetToplevelRequest struct{}
 //
 // This is shown near the input cursor above the application window when
 // a text input is active.
-type IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest struct{}
+type IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest struct {
+}
 
 // ITUVZwpInputTimestampsManagerV1DestroyRequest requests to destroy the input timestamps manager object
 //
 // Informs the server that the client will no longer be using this
 // protocol object. Existing objects created by this object are not
 // affected.
-type ITUVZwpInputTimestampsManagerV1DestroyRequest struct{}
+type ITUVZwpInputTimestampsManagerV1DestroyRequest struct {
+}
 
 // ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest requests to subscribe to high-resolution keyboard timestamp events
 //
@@ -650,7 +765,12 @@ type ITUVZwpInputTimestampsManagerV1DestroyRequest struct{}
 // client action (e.g. release) or server-side changes, the input
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
-type ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct{}
+type ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct {
+	ID uintptr
+
+	// Keyboard contains the wl_keyboard object for which to get timestamp events
+	Keyboard uintptr
+}
 
 // ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest requests to subscribe to high-resolution pointer timestamp events
 //
@@ -662,7 +782,12 @@ type ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct{}
 // client action (e.g. release) or server-side changes, the input
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
-type ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct{}
+type ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct {
+	ID uintptr
+
+	// Pointer contains the wl_pointer object for which to get timestamp events
+	Pointer uintptr
+}
 
 // ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest requests to subscribe to high-resolution touch timestamp events
 //
@@ -674,16 +799,22 @@ type ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct{}
 // client action (e.g. release) or server-side changes, the input
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
-type ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest struct{}
+type ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest struct {
+	ID uintptr
+
+	// Touch contains the wl_touch object for which to get timestamp events
+	Touch uintptr
+}
 
 // ITUVZwpInputTimestampsV1DestroyRequest requests to destroy the input timestamps object
 //
 // Informs the server that the client will no longer be using this
 // protocol object. After the server processes the request, no more
 // timestamp events will be emitted.
-type ITUVZwpInputTimestampsV1DestroyRequest struct{}
+type ITUVZwpInputTimestampsV1DestroyRequest struct {
+}
 
-// ITUVZwpInputTimestampsV1TimestampEvent requests to high-resolution timestamp event
+// ITUVZwpInputTimestampsV1TimestampEvent signals when high-resolution timestamp event
 //
 // The timestamp event is associated with the first subsequent input event
 // carrying a timestamp which belongs to the set of input events this
@@ -699,18 +830,29 @@ type ITUVZwpInputTimestampsV1DestroyRequest struct{}
 // tv_sec which is a 64-bit value combined from tv_sec_hi and tv_sec_lo,
 // and the additional fractional part in tv_nsec as nanoseconds. Hence,
 // for valid timestamps tv_nsec must be in [0, 999999999].
-type ITUVZwpInputTimestampsV1TimestampEvent struct{}
+type ITUVZwpInputTimestampsV1TimestampEvent struct {
+	// TvSecHi contains high 32 bits of the seconds part of the timestamp
+	TvSecHi uintptr
+
+	// TvSecLo contains low 32 bits of the seconds part of the timestamp
+	TvSecLo uintptr
+
+	// TvNsec contains nanoseconds part of the timestamp
+	TvNsec uintptr
+}
 
 type KSIUVZwpKeyboardShortcutsInhibitManagerV1Error int
 
 const (
+	// KSIUVZwpKeyboardShortcutsInhibitManagerV1ErrorAlreadyInhibited corresponds to the shortcuts are already inhibited for this surface
 	KSIUVZwpKeyboardShortcutsInhibitManagerV1ErrorAlreadyInhibited KSIUVZwpKeyboardShortcutsInhibitManagerV1Error = 0
 )
 
 // KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest requests to destroy the keyboard shortcuts inhibitor object
 //
 // Destroy the keyboard shortcuts inhibitor manager.
-type KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest struct{}
+type KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest struct {
+}
 
 // KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest requests to create a new keyboard shortcuts inhibitor object
 //
@@ -719,14 +861,23 @@ type KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest struct{}
 //
 // If shortcuts are already inhibited for the specified seat and surface,
 // a protocol error "already_inhibited" is raised by the compositor.
-type KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest struct{}
+type KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest struct {
+	ID uintptr
+
+	// Surface contains the surface that inhibits the keyboard shortcuts behavior
+	Surface uintptr
+
+	// Seat contains the wl_seat for which keyboard shortcuts should be disabled
+	Seat uintptr
+}
 
 // KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest requests to destroy the keyboard shortcuts inhibitor object
 //
 // Remove the keyboard shortcuts inhibitor from the associated wl_surface.
-type KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest struct{}
+type KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest struct {
+}
 
-// KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent requests to shortcuts are inhibited
+// KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent signals when shortcuts are inhibited
 //
 // This event indicates that the shortcut inhibitor is active.
 //
@@ -739,19 +890,22 @@ type KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest struct{}
 // first becomes active or when the user instructs the compositor to
 // re-enable and existing shortcuts inhibitor using any mechanism
 // offered by the compositor.
-type KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent struct{}
+type KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent struct {
+}
 
-// KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent requests to shortcuts are restored
+// KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent signals when shortcuts are restored
 //
 // This event indicates that the shortcuts inhibitor is inactive,
 // normal shortcuts processing is restored by the compositor.
-type KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent struct{}
+type KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent struct {
+}
 
 // LDUVZwpLinuxDmabufV1DestroyRequest requests to unbind the factory
 //
 // Objects created through this interface, especially wl_buffers, will
 // remain valid.
-type LDUVZwpLinuxDmabufV1DestroyRequest struct{}
+type LDUVZwpLinuxDmabufV1DestroyRequest struct {
+}
 
 // LDUVZwpLinuxDmabufV1CreateParamsRequest requests to create a temporary object for buffer parameters
 //
@@ -759,9 +913,12 @@ type LDUVZwpLinuxDmabufV1DestroyRequest struct{}
 // a single batch to create a wl_buffer. It can only be used once and
 // should be destroyed after a 'created' or 'failed' event has been
 // received.
-type LDUVZwpLinuxDmabufV1CreateParamsRequest struct{}
+type LDUVZwpLinuxDmabufV1CreateParamsRequest struct {
+	// ParamsID contains the new temporary
+	ParamsID uintptr
+}
 
-// LDUVZwpLinuxDmabufV1FormatEvent requests to supported buffer format
+// LDUVZwpLinuxDmabufV1FormatEvent signals when supported buffer format
 //
 // This event advertises one buffer format that the server supports.
 // All the supported formats are advertised once when the client
@@ -775,9 +932,12 @@ type LDUVZwpLinuxDmabufV1CreateParamsRequest struct{}
 // with the 'modifier' event introduced in zwp_linux_dmabuf_v1
 // version 3, described below. Please refrain from using the information
 // received from this event.
-type LDUVZwpLinuxDmabufV1FormatEvent struct{}
+type LDUVZwpLinuxDmabufV1FormatEvent struct {
+	// Format contains DRM_FORMAT code
+	Format uintptr
+}
 
-// LDUVZwpLinuxDmabufV1ModifierEvent requests to supported buffer format modifier
+// LDUVZwpLinuxDmabufV1ModifierEvent signals when supported buffer format modifier
 //
 // This event advertises the formats that the server supports, along with
 // the modifiers supported for each format. All the supported modifiers
@@ -798,35 +958,55 @@ type LDUVZwpLinuxDmabufV1FormatEvent struct{}
 // For the definition of the format and modifier codes, see the
 // zwp_linux_buffer_params_v1::create and zwp_linux_buffer_params_v1::add
 // requests.
-type LDUVZwpLinuxDmabufV1ModifierEvent struct{}
+type LDUVZwpLinuxDmabufV1ModifierEvent struct {
+	// Format contains DRM_FORMAT code
+	Format uintptr
+
+	// ModifierHi contains high 32 bits of layout modifier
+	ModifierHi uintptr
+
+	// ModifierLo contains low 32 bits of layout modifier
+	ModifierLo uintptr
+}
 
 type LDUVZwpLinuxBufferParamsV1Error int
 
 const (
+	// LDUVZwpLinuxBufferParamsV1ErrorAlreadyUsed corresponds to the dmabuf_batch object has already been used to create a wl_buffer
 	LDUVZwpLinuxBufferParamsV1ErrorAlreadyUsed LDUVZwpLinuxBufferParamsV1Error = 0
 
+	// LDUVZwpLinuxBufferParamsV1ErrorPlaneIdx corresponds to plane index out of bounds
 	LDUVZwpLinuxBufferParamsV1ErrorPlaneIdx LDUVZwpLinuxBufferParamsV1Error = 1
 
+	// LDUVZwpLinuxBufferParamsV1ErrorPlaneSet corresponds to the plane index was already set
 	LDUVZwpLinuxBufferParamsV1ErrorPlaneSet LDUVZwpLinuxBufferParamsV1Error = 2
 
+	// LDUVZwpLinuxBufferParamsV1ErrorIncomplete corresponds to missing or too many planes to create a buffer
 	LDUVZwpLinuxBufferParamsV1ErrorIncomplete LDUVZwpLinuxBufferParamsV1Error = 3
 
+	// LDUVZwpLinuxBufferParamsV1ErrorInvalidFormat corresponds to format not supported
 	LDUVZwpLinuxBufferParamsV1ErrorInvalidFormat LDUVZwpLinuxBufferParamsV1Error = 4
 
+	// LDUVZwpLinuxBufferParamsV1ErrorInvalidDimensions corresponds to invalid width or height
 	LDUVZwpLinuxBufferParamsV1ErrorInvalidDimensions LDUVZwpLinuxBufferParamsV1Error = 5
 
+	// LDUVZwpLinuxBufferParamsV1ErrorOutOfBounds corresponds to offset + stride * height goes out of dmabuf bounds
 	LDUVZwpLinuxBufferParamsV1ErrorOutOfBounds LDUVZwpLinuxBufferParamsV1Error = 6
 
+	// LDUVZwpLinuxBufferParamsV1ErrorInvalidWlBuffer corresponds to invalid wl_buffer resulted from importing dmabufs via the create_immed request on given buffer_params
 	LDUVZwpLinuxBufferParamsV1ErrorInvalidWlBuffer LDUVZwpLinuxBufferParamsV1Error = 7
 )
 
 type LDUVZwpLinuxBufferParamsV1Flags uint
 
 const (
+	// LDUVZwpLinuxBufferParamsV1FlagsYInvert corresponds to contents are y-inverted
 	LDUVZwpLinuxBufferParamsV1FlagsYInvert LDUVZwpLinuxBufferParamsV1Flags = 1
 
+	// LDUVZwpLinuxBufferParamsV1FlagsInterlaced corresponds to content is interlaced
 	LDUVZwpLinuxBufferParamsV1FlagsInterlaced LDUVZwpLinuxBufferParamsV1Flags = 2
 
+	// LDUVZwpLinuxBufferParamsV1FlagsBottomFirst corresponds to bottom field first
 	LDUVZwpLinuxBufferParamsV1FlagsBottomFirst LDUVZwpLinuxBufferParamsV1Flags = 4
 )
 
@@ -834,7 +1014,8 @@ const (
 //
 // Cleans up the temporary data sent to the server for dmabuf-based
 // wl_buffer creation.
-type LDUVZwpLinuxBufferParamsV1DestroyRequest struct{}
+type LDUVZwpLinuxBufferParamsV1DestroyRequest struct {
+}
 
 // LDUVZwpLinuxBufferParamsV1AddRequest requests to add a dmabuf to the temporary set
 //
@@ -856,7 +1037,25 @@ type LDUVZwpLinuxBufferParamsV1DestroyRequest struct{}
 // This request raises the PLANE_IDX error if plane_idx is too large.
 // The error PLANE_SET is raised if attempting to set a plane that
 // was already set.
-type LDUVZwpLinuxBufferParamsV1AddRequest struct{}
+type LDUVZwpLinuxBufferParamsV1AddRequest struct {
+	// FD contains dmabuf fd
+	FD uintptr
+
+	// PlaneIdx contains plane index
+	PlaneIdx uintptr
+
+	// Offset contains offset in bytes
+	Offset uintptr
+
+	// Stride contains stride in bytes
+	Stride uintptr
+
+	// ModifierHi contains high 32 bits of layout modifier
+	ModifierHi uintptr
+
+	// ModifierLo contains low 32 bits of layout modifier
+	ModifierLo uintptr
+}
 
 // LDUVZwpLinuxBufferParamsV1CreateRequest requests to create a wl_buffer from the given dmabufs
 //
@@ -919,7 +1118,19 @@ type LDUVZwpLinuxBufferParamsV1AddRequest struct{}
 //
 // It is not mandatory to issue 'create'. If a client wants to
 // cancel the buffer creation, it can just destroy this object.
-type LDUVZwpLinuxBufferParamsV1CreateRequest struct{}
+type LDUVZwpLinuxBufferParamsV1CreateRequest struct {
+	// Width contains base plane width in pixels
+	Width uintptr
+
+	// Height contains base plane height in pixels
+	Height uintptr
+
+	// Format contains DRM_FORMAT code
+	Format uintptr
+
+	// Flags contains see enum flags
+	Flags uintptr
+}
 
 // LDUVZwpLinuxBufferParamsV1CreateImmedRequest requests to immediately create a wl_buffer from the given dmabufs
 //
@@ -946,18 +1157,36 @@ type LDUVZwpLinuxBufferParamsV1CreateRequest struct{}
 //
 // This takes the same arguments as a 'create' request, and obeys the
 // same restrictions.
-type LDUVZwpLinuxBufferParamsV1CreateImmedRequest struct{}
+type LDUVZwpLinuxBufferParamsV1CreateImmedRequest struct {
+	// BufferID contains id for the newly created wl_buffer
+	BufferID uintptr
 
-// LDUVZwpLinuxBufferParamsV1CreatedEvent requests to buffer creation succeeded
+	// Width contains base plane width in pixels
+	Width uintptr
+
+	// Height contains base plane height in pixels
+	Height uintptr
+
+	// Format contains DRM_FORMAT code
+	Format uintptr
+
+	// Flags contains see enum flags
+	Flags uintptr
+}
+
+// LDUVZwpLinuxBufferParamsV1CreatedEvent signals when buffer creation succeeded
 //
 // This event indicates that the attempted buffer creation was
 // successful. It provides the new wl_buffer referencing the dmabuf(s).
 //
 // Upon receiving this event, the client should destroy the
 // zlinux_dmabuf_params object.
-type LDUVZwpLinuxBufferParamsV1CreatedEvent struct{}
+type LDUVZwpLinuxBufferParamsV1CreatedEvent struct {
+	// Buffer contains the newly created wl_buffer
+	Buffer uintptr
+}
 
-// LDUVZwpLinuxBufferParamsV1FailedEvent requests to buffer creation failed
+// LDUVZwpLinuxBufferParamsV1FailedEvent signals when buffer creation failed
 //
 // This event indicates that the attempted buffer creation has
 // failed. It usually means that one of the dmabuf constraints
@@ -965,7 +1194,8 @@ type LDUVZwpLinuxBufferParamsV1CreatedEvent struct{}
 //
 // Upon receiving this event, the client should destroy the
 // zlinux_buffer_params object.
-type LDUVZwpLinuxBufferParamsV1FailedEvent struct{}
+type LDUVZwpLinuxBufferParamsV1FailedEvent struct {
+}
 
 // PCUVZwpPointerConstraintsV1Error represents wp_pointer_constraints error values
 //
@@ -974,10 +1204,7 @@ type LDUVZwpLinuxBufferParamsV1FailedEvent struct{}
 type PCUVZwpPointerConstraintsV1Error int
 
 const (
-	// PCUVZwpPointerConstraintsV1ErrorAlreadyConstrained corresponds to wp_pointer_constraints error values
-	//
-	// These errors can be emitted in response to wp_pointer_constraints
-	// requests.
+	// PCUVZwpPointerConstraintsV1ErrorAlreadyConstrained corresponds to pointer constraint already requested on that surface
 	PCUVZwpPointerConstraintsV1ErrorAlreadyConstrained PCUVZwpPointerConstraintsV1Error = 1
 )
 
@@ -989,18 +1216,8 @@ const (
 type PCUVZwpPointerConstraintsV1Lifetime int
 
 const (
-	// PCUVZwpPointerConstraintsV1LifetimeOneshot corresponds to constraint lifetime
-	//
-	// These values represent different lifetime semantics. They are passed
-	// as arguments to the factory requests to specify how the constraint
-	// lifetimes should be managed.
 	PCUVZwpPointerConstraintsV1LifetimeOneshot PCUVZwpPointerConstraintsV1Lifetime = 1
 
-	// PCUVZwpPointerConstraintsV1LifetimePersistent corresponds to constraint lifetime
-	//
-	// These values represent different lifetime semantics. They are passed
-	// as arguments to the factory requests to specify how the constraint
-	// lifetimes should be managed.
 	PCUVZwpPointerConstraintsV1LifetimePersistent PCUVZwpPointerConstraintsV1Lifetime = 2
 )
 
@@ -1008,7 +1225,8 @@ const (
 //
 // Used by the client to notify the server that it will no longer use this
 // pointer constraints object.
-type PCUVZwpPointerConstraintsV1DestroyRequest struct{}
+type PCUVZwpPointerConstraintsV1DestroyRequest struct {
+}
 
 // PCUVZwpPointerConstraintsV1LockPointerRequest requests to lock pointer to a position
 //
@@ -1046,7 +1264,21 @@ type PCUVZwpPointerConstraintsV1DestroyRequest struct{}
 // relative motion events will still be emitted via wp_relative_pointer
 // objects of the same seat. wl_pointer.axis and wl_pointer.button events
 // are unaffected.
-type PCUVZwpPointerConstraintsV1LockPointerRequest struct{}
+type PCUVZwpPointerConstraintsV1LockPointerRequest struct {
+	ID uintptr
+
+	// Surface contains surface to lock pointer to
+	Surface uintptr
+
+	// Pointer contains the pointer that should be locked
+	Pointer uintptr
+
+	// Region contains region of surface
+	Region uintptr
+
+	// Lifetime contains lock lifetime
+	Lifetime uintptr
+}
 
 // PCUVZwpPointerConstraintsV1ConfinePointerRequest requests to confine pointer to a region
 //
@@ -1067,13 +1299,28 @@ type PCUVZwpPointerConstraintsV1LockPointerRequest struct{}
 // to interact with the confinement as well as receive updates about its
 // state. See the the description of wp_confined_pointer for further
 // information.
-type PCUVZwpPointerConstraintsV1ConfinePointerRequest struct{}
+type PCUVZwpPointerConstraintsV1ConfinePointerRequest struct {
+	ID uintptr
+
+	// Surface contains surface to lock pointer to
+	Surface uintptr
+
+	// Pointer contains the pointer that should be confined
+	Pointer uintptr
+
+	// Region contains region of surface
+	Region uintptr
+
+	// Lifetime contains confinement lifetime
+	Lifetime uintptr
+}
 
 // PCUVZwpLockedPointerV1DestroyRequest requests to destroy the locked pointer object
 //
 // Destroy the locked pointer object. If applicable, the compositor will
 // unlock the pointer.
-type PCUVZwpLockedPointerV1DestroyRequest struct{}
+type PCUVZwpLockedPointerV1DestroyRequest struct {
+}
 
 // PCUVZwpLockedPointerV1SetCursorPositionHintRequest requests to set the pointer cursor position hint
 //
@@ -1088,7 +1335,13 @@ type PCUVZwpLockedPointerV1DestroyRequest struct{}
 // The cursor position hint is double buffered. The new hint will only take
 // effect when the associated surface gets it pending state applied. See
 // wl_surface.commit for details.
-type PCUVZwpLockedPointerV1SetCursorPositionHintRequest struct{}
+type PCUVZwpLockedPointerV1SetCursorPositionHintRequest struct {
+	// SurfaceX contains surface-local x coordinate
+	SurfaceX uintptr
+
+	// SurfaceY contains surface-local y coordinate
+	SurfaceY uintptr
+}
 
 // PCUVZwpLockedPointerV1SetRegionRequest requests to set a new lock region
 //
@@ -1099,14 +1352,18 @@ type PCUVZwpLockedPointerV1SetCursorPositionHintRequest struct{}
 // applied. See wl_surface.commit for details.
 //
 // For details about the lock region, see wp_locked_pointer.
-type PCUVZwpLockedPointerV1SetRegionRequest struct{}
+type PCUVZwpLockedPointerV1SetRegionRequest struct {
+	// Region contains region of surface
+	Region uintptr
+}
 
-// PCUVZwpLockedPointerV1LockedEvent requests to lock activation event
+// PCUVZwpLockedPointerV1LockedEvent signals when lock activation event
 //
 // Notification that the pointer lock of the seat's pointer is activated.
-type PCUVZwpLockedPointerV1LockedEvent struct{}
+type PCUVZwpLockedPointerV1LockedEvent struct {
+}
 
-// PCUVZwpLockedPointerV1UnlockedEvent requests to lock deactivation event
+// PCUVZwpLockedPointerV1UnlockedEvent signals when lock deactivation event
 //
 // Notification that the pointer lock of the seat's pointer is no longer
 // active. If this is a oneshot pointer lock (see
@@ -1114,13 +1371,15 @@ type PCUVZwpLockedPointerV1LockedEvent struct{}
 // be destroyed. If this is a persistent pointer lock (see
 // wp_pointer_constraints.lifetime) this pointer lock may again
 // reactivate in the future.
-type PCUVZwpLockedPointerV1UnlockedEvent struct{}
+type PCUVZwpLockedPointerV1UnlockedEvent struct {
+}
 
 // PCUVZwpConfinedPointerV1DestroyRequest requests to destroy the confined pointer object
 //
 // Destroy the confined pointer object. If applicable, the compositor will
 // unconfine the pointer.
-type PCUVZwpConfinedPointerV1DestroyRequest struct{}
+type PCUVZwpConfinedPointerV1DestroyRequest struct {
+}
 
 // PCUVZwpConfinedPointerV1SetRegionRequest requests to set a new confine region
 //
@@ -1140,15 +1399,19 @@ type PCUVZwpConfinedPointerV1DestroyRequest struct{}
 // pointer.
 //
 // For details about the confine region, see wp_confined_pointer.
-type PCUVZwpConfinedPointerV1SetRegionRequest struct{}
+type PCUVZwpConfinedPointerV1SetRegionRequest struct {
+	// Region contains region of surface
+	Region uintptr
+}
 
-// PCUVZwpConfinedPointerV1ConfinedEvent requests to pointer confined
+// PCUVZwpConfinedPointerV1ConfinedEvent signals when pointer confined
 //
 // Notification that the pointer confinement of the seat's pointer is
 // activated.
-type PCUVZwpConfinedPointerV1ConfinedEvent struct{}
+type PCUVZwpConfinedPointerV1ConfinedEvent struct {
+}
 
-// PCUVZwpConfinedPointerV1UnconfinedEvent requests to pointer unconfined
+// PCUVZwpConfinedPointerV1UnconfinedEvent signals when pointer unconfined
 //
 // Notification that the pointer confinement of the seat's pointer is no
 // longer active. If this is a oneshot pointer confinement (see
@@ -1156,51 +1419,85 @@ type PCUVZwpConfinedPointerV1ConfinedEvent struct{}
 // be destroyed. If this is a persistent pointer confinement (see
 // wp_pointer_constraints.lifetime) this pointer confinement may again
 // reactivate in the future.
-type PCUVZwpConfinedPointerV1UnconfinedEvent struct{}
+type PCUVZwpConfinedPointerV1UnconfinedEvent struct {
+}
 
 // PGUVZwpPointerGesturesV1GetSwipeGestureRequest requests to get swipe gesture
 //
 // Create a swipe gesture object. See the
 // wl_pointer_gesture_swipe interface for details.
-type PGUVZwpPointerGesturesV1GetSwipeGestureRequest struct{}
+type PGUVZwpPointerGesturesV1GetSwipeGestureRequest struct {
+	ID uintptr
+
+	Pointer uintptr
+}
 
 // PGUVZwpPointerGesturesV1GetPinchGestureRequest requests to get pinch gesture
 //
 // Create a pinch gesture object. See the
 // wl_pointer_gesture_pinch interface for details.
-type PGUVZwpPointerGesturesV1GetPinchGestureRequest struct{}
+type PGUVZwpPointerGesturesV1GetPinchGestureRequest struct {
+	ID uintptr
+
+	Pointer uintptr
+}
 
 // PGUVZwpPointerGesturesV1ReleaseRequest requests to destroy the pointer gesture object
 //
 // Destroy the pointer gesture object. Swipe, pinch and hold objects
 // created via this gesture object remain valid.
-type PGUVZwpPointerGesturesV1ReleaseRequest struct{}
+type PGUVZwpPointerGesturesV1ReleaseRequest struct {
+}
 
 // PGUVZwpPointerGesturesV1GetHoldGestureRequest requests to get hold gesture
 //
 // Create a hold gesture object. See the
 // wl_pointer_gesture_hold interface for details.
-type PGUVZwpPointerGesturesV1GetHoldGestureRequest struct{}
+type PGUVZwpPointerGesturesV1GetHoldGestureRequest struct {
+	ID uintptr
+
+	Pointer uintptr
+}
 
 // PGUVZwpPointerGestureSwipeV1DestroyRequest requests to destroy the pointer swipe gesture object
-type PGUVZwpPointerGestureSwipeV1DestroyRequest struct{}
+type PGUVZwpPointerGestureSwipeV1DestroyRequest struct {
+}
 
-// PGUVZwpPointerGestureSwipeV1BeginEvent requests to multi-finger swipe begin
+// PGUVZwpPointerGestureSwipeV1BeginEvent signals when multi-finger swipe begin
 //
 // This event is sent when a multi-finger swipe gesture is detected
 // on the device.
-type PGUVZwpPointerGestureSwipeV1BeginEvent struct{}
+type PGUVZwpPointerGestureSwipeV1BeginEvent struct {
+	Serial uintptr
 
-// PGUVZwpPointerGestureSwipeV1UpdateEvent requests to multi-finger swipe motion
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	Surface uintptr
+
+	// Fingers contains number of fingers
+	Fingers uintptr
+}
+
+// PGUVZwpPointerGestureSwipeV1UpdateEvent signals when multi-finger swipe motion
 //
 // This event is sent when a multi-finger swipe gesture changes the
 // position of the logical center.
 //
 // The dx and dy coordinates are relative coordinates of the logical
 // center of the gesture compared to the previous event.
-type PGUVZwpPointerGestureSwipeV1UpdateEvent struct{}
+type PGUVZwpPointerGestureSwipeV1UpdateEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
 
-// PGUVZwpPointerGestureSwipeV1EndEvent requests to multi-finger swipe end
+	// Dx contains delta x coordinate in surface coordinate space
+	Dx uintptr
+
+	// Dy contains delta y coordinate in surface coordinate space
+	Dy uintptr
+}
+
+// PGUVZwpPointerGestureSwipeV1EndEvent signals when multi-finger swipe end
 //
 // This event is sent when a multi-finger swipe gesture ceases to
 // be valid. This may happen when one or more fingers are lifted or
@@ -1209,18 +1506,37 @@ type PGUVZwpPointerGestureSwipeV1UpdateEvent struct{}
 // When a gesture is cancelled, the client should undo state changes
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
-type PGUVZwpPointerGestureSwipeV1EndEvent struct{}
+type PGUVZwpPointerGestureSwipeV1EndEvent struct {
+	Serial uintptr
+
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	// Cancelled contains 1 if the gesture was cancelled, 0 otherwise
+	Cancelled uintptr
+}
 
 // PGUVZwpPointerGesturePinchV1DestroyRequest requests to destroy the pinch gesture object
-type PGUVZwpPointerGesturePinchV1DestroyRequest struct{}
+type PGUVZwpPointerGesturePinchV1DestroyRequest struct {
+}
 
-// PGUVZwpPointerGesturePinchV1BeginEvent requests to multi-finger pinch begin
+// PGUVZwpPointerGesturePinchV1BeginEvent signals when multi-finger pinch begin
 //
 // This event is sent when a multi-finger pinch gesture is detected
 // on the device.
-type PGUVZwpPointerGesturePinchV1BeginEvent struct{}
+type PGUVZwpPointerGesturePinchV1BeginEvent struct {
+	Serial uintptr
 
-// PGUVZwpPointerGesturePinchV1UpdateEvent requests to multi-finger pinch motion
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	Surface uintptr
+
+	// Fingers contains number of fingers
+	Fingers uintptr
+}
+
+// PGUVZwpPointerGesturePinchV1UpdateEvent signals when multi-finger pinch motion
 //
 // This event is sent when a multi-finger pinch gesture changes the
 // position of the logical center, the rotation or the relative scale.
@@ -1234,9 +1550,24 @@ type PGUVZwpPointerGesturePinchV1BeginEvent struct{}
 //
 // The rotation is the relative angle in degrees clockwise compared to the previous
 // pointer_gesture_pinch.begin or pointer_gesture_pinch.update event.
-type PGUVZwpPointerGesturePinchV1UpdateEvent struct{}
+type PGUVZwpPointerGesturePinchV1UpdateEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
 
-// PGUVZwpPointerGesturePinchV1EndEvent requests to multi-finger pinch end
+	// Dx contains delta x coordinate in surface coordinate space
+	Dx uintptr
+
+	// Dy contains delta y coordinate in surface coordinate space
+	Dy uintptr
+
+	// Scale contains scale relative to the initial finger position
+	Scale uintptr
+
+	// Rotation contains angle in degrees cw relative to the previous event
+	Rotation uintptr
+}
+
+// PGUVZwpPointerGesturePinchV1EndEvent signals when multi-finger pinch end
 //
 // This event is sent when a multi-finger pinch gesture ceases to
 // be valid. This may happen when one or more fingers are lifted or
@@ -1245,17 +1576,36 @@ type PGUVZwpPointerGesturePinchV1UpdateEvent struct{}
 // When a gesture is cancelled, the client should undo state changes
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
-type PGUVZwpPointerGesturePinchV1EndEvent struct{}
+type PGUVZwpPointerGesturePinchV1EndEvent struct {
+	Serial uintptr
+
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	// Cancelled contains 1 if the gesture was cancelled, 0 otherwise
+	Cancelled uintptr
+}
 
 // PGUVZwpPointerGestureHoldV1DestroyRequest requests to destroy the hold gesture object
-type PGUVZwpPointerGestureHoldV1DestroyRequest struct{}
+type PGUVZwpPointerGestureHoldV1DestroyRequest struct {
+}
 
-// PGUVZwpPointerGestureHoldV1BeginEvent requests to multi-finger hold begin
+// PGUVZwpPointerGestureHoldV1BeginEvent signals when multi-finger hold begin
 //
 // This event is sent when a hold gesture is detected on the device.
-type PGUVZwpPointerGestureHoldV1BeginEvent struct{}
+type PGUVZwpPointerGestureHoldV1BeginEvent struct {
+	Serial uintptr
 
-// PGUVZwpPointerGestureHoldV1EndEvent requests to multi-finger hold end
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	Surface uintptr
+
+	// Fingers contains number of fingers
+	Fingers uintptr
+}
+
+// PGUVZwpPointerGestureHoldV1EndEvent signals when multi-finger hold end
 //
 // This event is sent when a hold gesture ceases to
 // be valid. This may happen when the holding fingers are lifted or
@@ -1266,7 +1616,15 @@ type PGUVZwpPointerGestureHoldV1BeginEvent struct{}
 // When a gesture is cancelled, the client may need to undo state changes
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
-type PGUVZwpPointerGestureHoldV1EndEvent struct{}
+type PGUVZwpPointerGestureHoldV1EndEvent struct {
+	Serial uintptr
+
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	// Cancelled contains 1 if the gesture was cancelled, 0 otherwise
+	Cancelled uintptr
+}
 
 // PTWpPresentationError represents fatal presentation errors
 //
@@ -1275,16 +1633,10 @@ type PGUVZwpPointerGestureHoldV1EndEvent struct{}
 type PTWpPresentationError int
 
 const (
-	// PTWpPresentationErrorInvalidTimestamp corresponds to fatal presentation errors
-	//
-	// These fatal protocol errors may be emitted in response to
-	// illegal presentation requests.
+	// PTWpPresentationErrorInvalidTimestamp corresponds to invalid value in tv_nsec
 	PTWpPresentationErrorInvalidTimestamp PTWpPresentationError = 0
 
-	// PTWpPresentationErrorInvalidFlag corresponds to fatal presentation errors
-	//
-	// These fatal protocol errors may be emitted in response to
-	// illegal presentation requests.
+	// PTWpPresentationErrorInvalidFlag corresponds to invalid flag
 	PTWpPresentationErrorInvalidFlag PTWpPresentationError = 1
 )
 
@@ -1293,7 +1645,8 @@ const (
 // Informs the server that the client will no longer be using
 // this protocol object. Existing objects created by this object
 // are not affected.
-type PTWpPresentationDestroyRequest struct{}
+type PTWpPresentationDestroyRequest struct {
+}
 
 // PTWpPresentationFeedbackRequest requests to request presentation feedback information
 //
@@ -1305,9 +1658,15 @@ type PTWpPresentationDestroyRequest struct{}
 //
 // For details on what information is returned, see the
 // presentation_feedback interface.
-type PTWpPresentationFeedbackRequest struct{}
+type PTWpPresentationFeedbackRequest struct {
+	// Surface contains target surface
+	Surface uintptr
 
-// PTWpPresentationClockIdEvent requests to clock ID for timestamps
+	// Callback contains new feedback object
+	Callback uintptr
+}
+
+// PTWpPresentationClockIDEvent signals when clock ID for timestamps
 //
 // This event tells the client in which clock domain the
 // compositor interprets the timestamps used by the presentation
@@ -1338,7 +1697,10 @@ type PTWpPresentationFeedbackRequest struct{}
 // irrelevant. Precision of one millisecond or better is
 // recommended. Clients must be able to query the current clock
 // value directly, not by asking the compositor.
-type PTWpPresentationClockIdEvent struct{}
+type PTWpPresentationClockIDEvent struct {
+	// ClkID contains platform clock identifier
+	ClkID uintptr
+}
 
 // PTWpPresentationFeedbackKind represents bitmask of flags in presented event
 //
@@ -1349,40 +1711,16 @@ type PTWpPresentationClockIdEvent struct{}
 type PTWpPresentationFeedbackKind uint
 
 const (
-	// PTWpPresentationFeedbackKindVsync corresponds to bitmask of flags in presented event
-	//
-	// These flags provide information about how the presentation of
-	// the related content update was done. The intent is to help
-	// clients assess the reliability of the feedback and the visual
-	// quality with respect to possible tearing and timings.
 	PTWpPresentationFeedbackKindVsync PTWpPresentationFeedbackKind = 0x1
 
-	// PTWpPresentationFeedbackKindHwClock corresponds to bitmask of flags in presented event
-	//
-	// These flags provide information about how the presentation of
-	// the related content update was done. The intent is to help
-	// clients assess the reliability of the feedback and the visual
-	// quality with respect to possible tearing and timings.
 	PTWpPresentationFeedbackKindHwClock PTWpPresentationFeedbackKind = 0x2
 
-	// PTWpPresentationFeedbackKindHwCompletion corresponds to bitmask of flags in presented event
-	//
-	// These flags provide information about how the presentation of
-	// the related content update was done. The intent is to help
-	// clients assess the reliability of the feedback and the visual
-	// quality with respect to possible tearing and timings.
 	PTWpPresentationFeedbackKindHwCompletion PTWpPresentationFeedbackKind = 0x4
 
-	// PTWpPresentationFeedbackKindZeroCopy corresponds to bitmask of flags in presented event
-	//
-	// These flags provide information about how the presentation of
-	// the related content update was done. The intent is to help
-	// clients assess the reliability of the feedback and the visual
-	// quality with respect to possible tearing and timings.
 	PTWpPresentationFeedbackKindZeroCopy PTWpPresentationFeedbackKind = 0x8
 )
 
-// PTWpPresentationFeedbackSyncOutputEvent requests to presentation synchronized to this output
+// PTWpPresentationFeedbackSyncOutputEvent signals when presentation synchronized to this output
 //
 // As presentation can be synchronized to only one output at a
 // time, this event tells which output it was. This event is only
@@ -1392,9 +1730,12 @@ const (
 // times, this event is sent for each bound instance that matches
 // the synchronized output. If a client has not bound to the
 // right wl_output global at all, this event is not sent.
-type PTWpPresentationFeedbackSyncOutputEvent struct{}
+type PTWpPresentationFeedbackSyncOutputEvent struct {
+	// Output contains presentation output
+	Output uintptr
+}
 
-// PTWpPresentationFeedbackPresentedEvent requests to the content update was displayed
+// PTWpPresentationFeedbackPresentedEvent signals when the content update was displayed
 //
 // The associated content update was displayed to the user at the
 // indicated time (tv_sec_hi/lo, tv_nsec). For the interpretation of
@@ -1437,29 +1778,57 @@ type PTWpPresentationFeedbackSyncOutputEvent struct{}
 // refresh cycle, or the output device is self-refreshing without
 // a way to query the refresh count, then the arguments seq_hi
 // and seq_lo must be zero.
-type PTWpPresentationFeedbackPresentedEvent struct{}
+type PTWpPresentationFeedbackPresentedEvent struct {
+	// TvSecHi contains high 32 bits of the seconds part of the presentation timestamp
+	TvSecHi uintptr
 
-// PTWpPresentationFeedbackDiscardedEvent requests to the content update was not displayed
+	// TvSecLo contains low 32 bits of the seconds part of the presentation timestamp
+	TvSecLo uintptr
+
+	// TvNsec contains nanoseconds part of the presentation timestamp
+	TvNsec uintptr
+
+	// Refresh contains nanoseconds till next refresh
+	Refresh uintptr
+
+	// SeqHi contains high 32 bits of refresh counter
+	SeqHi uintptr
+
+	// SeqLo contains low 32 bits of refresh counter
+	SeqLo uintptr
+
+	// Flags contains combination of 'kind' values
+	Flags uintptr
+}
+
+// PTWpPresentationFeedbackDiscardedEvent signals when the content update was not displayed
 //
 // The content update was never displayed to the user.
-type PTWpPresentationFeedbackDiscardedEvent struct{}
+type PTWpPresentationFeedbackDiscardedEvent struct {
+}
 
 // RPUVZwpRelativePointerManagerV1DestroyRequest requests to destroy the relative pointer manager object
 //
 // Used by the client to notify the server that it will no longer use this
 // relative pointer manager object.
-type RPUVZwpRelativePointerManagerV1DestroyRequest struct{}
+type RPUVZwpRelativePointerManagerV1DestroyRequest struct {
+}
 
 // RPUVZwpRelativePointerManagerV1GetRelativePointerRequest requests to get a relative pointer object
 //
 // Create a relative pointer interface given a wl_pointer object. See the
 // wp_relative_pointer interface for more details.
-type RPUVZwpRelativePointerManagerV1GetRelativePointerRequest struct{}
+type RPUVZwpRelativePointerManagerV1GetRelativePointerRequest struct {
+	ID uintptr
+
+	Pointer uintptr
+}
 
 // RPUVZwpRelativePointerV1DestroyRequest requests to release the relative pointer object
-type RPUVZwpRelativePointerV1DestroyRequest struct{}
+type RPUVZwpRelativePointerV1DestroyRequest struct {
+}
 
-// RPUVZwpRelativePointerV1RelativeMotionEvent requests to relative pointer motion
+// RPUVZwpRelativePointerV1RelativeMotionEvent signals when relative pointer motion
 //
 // Relative x/y pointer motion from the pointer of the seat associated with
 // this object.
@@ -1491,41 +1860,72 @@ type RPUVZwpRelativePointerV1DestroyRequest struct{}
 // If the client needs button events or focus state, it can receive them
 // from a wl_pointer object of the same seat that the wp_relative_pointer
 // object is associated with.
-type RPUVZwpRelativePointerV1RelativeMotionEvent struct{}
+type RPUVZwpRelativePointerV1RelativeMotionEvent struct {
+	// UtimeHi contains high 32 bits of a 64 bit timestamp with microsecond granularity
+	UtimeHi uintptr
+
+	// UtimeLo contains low 32 bits of a 64 bit timestamp with microsecond granularity
+	UtimeLo uintptr
+
+	// Dx contains the x component of the motion vector
+	Dx uintptr
+
+	// Dy contains the y component of the motion vector
+	Dy uintptr
+
+	// DxUnaccel contains the x component of the unaccelerated motion vector
+	DxUnaccel uintptr
+
+	// DyUnaccel contains the y component of the unaccelerated motion vector
+	DyUnaccel uintptr
+}
 
 // TUVZwpTabletManagerV1GetTabletSeatRequest requests to get the tablet seat
 //
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
-type TUVZwpTabletManagerV1GetTabletSeatRequest struct{}
+type TUVZwpTabletManagerV1GetTabletSeatRequest struct {
+	TabletSeat uintptr
+
+	// Seat contains The wl_seat object to retrieve the tablets for
+	Seat uintptr
+}
 
 // TUVZwpTabletManagerV1DestroyRequest requests to release the memory for the tablet manager object
 //
 // Destroy the wp_tablet_manager object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletManagerV1DestroyRequest struct{}
+type TUVZwpTabletManagerV1DestroyRequest struct {
+}
 
 // TUVZwpTabletSeatV1DestroyRequest requests to release the memory for the tablet seat object
 //
 // Destroy the wp_tablet_seat object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletSeatV1DestroyRequest struct{}
+type TUVZwpTabletSeatV1DestroyRequest struct {
+}
 
-// TUVZwpTabletSeatV1TabletAddedEvent requests to new device notification
+// TUVZwpTabletSeatV1TabletAddedEvent signals when new device notification
 //
 // This event is sent whenever a new tablet becomes available on this
 // seat. This event only provides the object id of the tablet, any
 // static information about the tablet (device name, vid/pid, etc.) is
 // sent through the wp_tablet interface.
-type TUVZwpTabletSeatV1TabletAddedEvent struct{}
+type TUVZwpTabletSeatV1TabletAddedEvent struct {
+	// ID contains the newly added graphics tablet
+	ID uintptr
+}
 
-// TUVZwpTabletSeatV1ToolAddedEvent requests to a new tool has been used with a tablet
+// TUVZwpTabletSeatV1ToolAddedEvent signals when a new tool has been used with a tablet
 //
 // This event is sent whenever a tool that has not previously been used
 // with a tablet comes into use. This event only provides the object id
 // of the tool; any static information about the tool (capabilities,
 // type, etc.) is sent through the wp_tablet_tool interface.
-type TUVZwpTabletSeatV1ToolAddedEvent struct{}
+type TUVZwpTabletSeatV1ToolAddedEvent struct {
+	// ID contains the newly added tablet tool
+	ID uintptr
+}
 
 // TUVZwpTabletToolV1Type represents a physical tool type
 //
@@ -1541,108 +1941,28 @@ type TUVZwpTabletSeatV1ToolAddedEvent struct{}
 type TUVZwpTabletToolV1Type int
 
 const (
-	// TUVZwpTabletToolV1TypePen corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypePen corresponds to Pen
 	TUVZwpTabletToolV1TypePen TUVZwpTabletToolV1Type = 0x140
 
-	// TUVZwpTabletToolV1TypeEraser corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypeEraser corresponds to Eraser
 	TUVZwpTabletToolV1TypeEraser TUVZwpTabletToolV1Type = 0x141
 
-	// TUVZwpTabletToolV1TypeBrush corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypeBrush corresponds to Brush
 	TUVZwpTabletToolV1TypeBrush TUVZwpTabletToolV1Type = 0x142
 
-	// TUVZwpTabletToolV1TypePencil corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypePencil corresponds to Pencil
 	TUVZwpTabletToolV1TypePencil TUVZwpTabletToolV1Type = 0x143
 
-	// TUVZwpTabletToolV1TypeAirbrush corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypeAirbrush corresponds to Airbrush
 	TUVZwpTabletToolV1TypeAirbrush TUVZwpTabletToolV1Type = 0x144
 
-	// TUVZwpTabletToolV1TypeFinger corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypeFinger corresponds to Finger
 	TUVZwpTabletToolV1TypeFinger TUVZwpTabletToolV1Type = 0x145
 
-	// TUVZwpTabletToolV1TypeMouse corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypeMouse corresponds to Mouse
 	TUVZwpTabletToolV1TypeMouse TUVZwpTabletToolV1Type = 0x146
 
-	// TUVZwpTabletToolV1TypeLens corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV1TypeLens corresponds to Lens
 	TUVZwpTabletToolV1TypeLens TUVZwpTabletToolV1Type = 0x147
 )
 
@@ -1655,52 +1975,22 @@ const (
 type TUVZwpTabletToolV1Capability int
 
 const (
-	// TUVZwpTabletToolV1CapabilityTilt corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV1CapabilityTilt corresponds to Tilt axes
 	TUVZwpTabletToolV1CapabilityTilt TUVZwpTabletToolV1Capability = 1
 
-	// TUVZwpTabletToolV1CapabilityPressure corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV1CapabilityPressure corresponds to Pressure axis
 	TUVZwpTabletToolV1CapabilityPressure TUVZwpTabletToolV1Capability = 2
 
-	// TUVZwpTabletToolV1CapabilityDistance corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV1CapabilityDistance corresponds to Distance axis
 	TUVZwpTabletToolV1CapabilityDistance TUVZwpTabletToolV1Capability = 3
 
-	// TUVZwpTabletToolV1CapabilityRotation corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV1CapabilityRotation corresponds to Z-rotation axis
 	TUVZwpTabletToolV1CapabilityRotation TUVZwpTabletToolV1Capability = 4
 
-	// TUVZwpTabletToolV1CapabilitySlider corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV1CapabilitySlider corresponds to Slider axis
 	TUVZwpTabletToolV1CapabilitySlider TUVZwpTabletToolV1Capability = 5
 
-	// TUVZwpTabletToolV1CapabilityWheel corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV1CapabilityWheel corresponds to Wheel axis
 	TUVZwpTabletToolV1CapabilityWheel TUVZwpTabletToolV1Capability = 6
 )
 
@@ -1710,20 +2000,17 @@ const (
 type TUVZwpTabletToolV1ButtonState int
 
 const (
-	// TUVZwpTabletToolV1ButtonStateReleased corresponds to physical button state
-	//
-	// Describes the physical state of a button that produced the button event.
+	// TUVZwpTabletToolV1ButtonStateReleased corresponds to button is not pressed
 	TUVZwpTabletToolV1ButtonStateReleased TUVZwpTabletToolV1ButtonState = 0
 
-	// TUVZwpTabletToolV1ButtonStatePressed corresponds to physical button state
-	//
-	// Describes the physical state of a button that produced the button event.
+	// TUVZwpTabletToolV1ButtonStatePressed corresponds to button is pressed
 	TUVZwpTabletToolV1ButtonStatePressed TUVZwpTabletToolV1ButtonState = 1
 )
 
 type TUVZwpTabletToolV1Error int
 
 const (
+	// TUVZwpTabletToolV1ErrorRole corresponds to given wl_surface has another role
 	TUVZwpTabletToolV1ErrorRole TUVZwpTabletToolV1Error = 0
 )
 
@@ -1761,23 +2048,38 @@ const (
 // surface already has another role, it raises a protocol error.
 // The surface may be used on multiple tablets and across multiple
 // seats.
-type TUVZwpTabletToolV1SetCursorRequest struct{}
+type TUVZwpTabletToolV1SetCursorRequest struct {
+	// Serial contains serial of the enter event
+	Serial uintptr
+
+	Surface uintptr
+
+	// HotspotX contains surface-local x coordinate
+	HotspotX uintptr
+
+	// HotspotY contains surface-local y coordinate
+	HotspotY uintptr
+}
 
 // TUVZwpTabletToolV1DestroyRequest requests to destroy the tool object
 //
 // This destroys the client's resource for this tool object.
-type TUVZwpTabletToolV1DestroyRequest struct{}
+type TUVZwpTabletToolV1DestroyRequest struct {
+}
 
-// TUVZwpTabletToolV1TypeEvent requests to tool type
+// TUVZwpTabletToolV1TypeEvent signals when tool type
 //
 // The tool type is the high-level type of the tool and usually decides
 // the interaction expected from this tool.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1TypeEvent struct{}
+type TUVZwpTabletToolV1TypeEvent struct {
+	// ToolType contains the physical tool type
+	ToolType uintptr
+}
 
-// TUVZwpTabletToolV1HardwareSerialEvent requests to unique hardware serial number of the tool
+// TUVZwpTabletToolV1HardwareSerialEvent signals when unique hardware serial number of the tool
 //
 // If the physical tool can be identified by a unique 64-bit serial
 // number, this event notifies the client of this serial number.
@@ -1794,9 +2096,15 @@ type TUVZwpTabletToolV1TypeEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1HardwareSerialEvent struct{}
+type TUVZwpTabletToolV1HardwareSerialEvent struct {
+	// HardwareSerialHi contains the unique serial number of the tool, most significant bits
+	HardwareSerialHi uintptr
 
-// TUVZwpTabletToolV1HardwareIdWacomEvent requests to hardware id notification in Wacom's format
+	// HardwareSerialLo contains the unique serial number of the tool, least significant bits
+	HardwareSerialLo uintptr
+}
+
+// TUVZwpTabletToolV1HardwareIDWacomEvent signals when hardware id notification in Wacom's format
 //
 // This event notifies the client of a hardware id available on this tool.
 //
@@ -1808,9 +2116,15 @@ type TUVZwpTabletToolV1HardwareSerialEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1HardwareIdWacomEvent struct{}
+type TUVZwpTabletToolV1HardwareIDWacomEvent struct {
+	// HardwareIDHi contains the hardware id, most significant bits
+	HardwareIDHi uintptr
 
-// TUVZwpTabletToolV1CapabilityEvent requests to tool capability notification
+	// HardwareIDLo contains the hardware id, least significant bits
+	HardwareIDLo uintptr
+}
+
+// TUVZwpTabletToolV1CapabilityEvent signals when tool capability notification
 //
 // This event notifies the client of any capabilities of this tool,
 // beyond the main set of x/y axes and tip up/down detection.
@@ -1819,16 +2133,20 @@ type TUVZwpTabletToolV1HardwareIdWacomEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1CapabilityEvent struct{}
+type TUVZwpTabletToolV1CapabilityEvent struct {
+	// Capability contains the capability
+	Capability uintptr
+}
 
-// TUVZwpTabletToolV1DoneEvent requests to tool description events sequence complete
+// TUVZwpTabletToolV1DoneEvent signals when tool description events sequence complete
 //
 // This event signals the end of the initial burst of descriptive
 // events. A client may consider the static description of the tool to
 // be complete and finalize initialization of the tool.
-type TUVZwpTabletToolV1DoneEvent struct{}
+type TUVZwpTabletToolV1DoneEvent struct {
+}
 
-// TUVZwpTabletToolV1RemovedEvent requests to tool removed
+// TUVZwpTabletToolV1RemovedEvent signals when tool removed
 //
 // This event is sent when the tool is removed from the system and will
 // send no further events. Should the physical tool come back into
@@ -1844,9 +2162,10 @@ type TUVZwpTabletToolV1DoneEvent struct{}
 //
 // When this event is received, the client must wp_tablet_tool.destroy
 // the object.
-type TUVZwpTabletToolV1RemovedEvent struct{}
+type TUVZwpTabletToolV1RemovedEvent struct {
+}
 
-// TUVZwpTabletToolV1ProximityInEvent requests to proximity in event
+// TUVZwpTabletToolV1ProximityInEvent signals when proximity in event
 //
 // Notification that this tool is focused on a certain surface.
 //
@@ -1857,9 +2176,17 @@ type TUVZwpTabletToolV1RemovedEvent struct{}
 // If any button is logically down when the tool comes into proximity,
 // the respective button event is sent after the proximity_in event but
 // within the same frame as the proximity_in event.
-type TUVZwpTabletToolV1ProximityInEvent struct{}
+type TUVZwpTabletToolV1ProximityInEvent struct {
+	Serial uintptr
 
-// TUVZwpTabletToolV1ProximityOutEvent requests to proximity out event
+	// Tablet contains The tablet the tool is in proximity of
+	Tablet uintptr
+
+	// Surface contains The current surface the tablet tool is over
+	Surface uintptr
+}
+
+// TUVZwpTabletToolV1ProximityOutEvent signals when proximity out event
 //
 // Notification that this tool has either left proximity, or is no
 // longer focused on a certain surface.
@@ -1873,9 +2200,10 @@ type TUVZwpTabletToolV1ProximityInEvent struct{}
 // changes from one surface to another, a button release event may not
 // be sent until the button is actually released or the tool leaves the
 // proximity of the tablet.
-type TUVZwpTabletToolV1ProximityOutEvent struct{}
+type TUVZwpTabletToolV1ProximityOutEvent struct {
+}
 
-// TUVZwpTabletToolV1DownEvent requests to tablet tool is making contact
+// TUVZwpTabletToolV1DownEvent signals when tablet tool is making contact
 //
 // Sent whenever the tablet tool comes in contact with the surface of the
 // tablet.
@@ -1889,9 +2217,11 @@ type TUVZwpTabletToolV1ProximityOutEvent struct{}
 // contact. On some devices, a compositor may not consider a tool in
 // logical contact until a minimum physical pressure threshold is
 // exceeded.
-type TUVZwpTabletToolV1DownEvent struct{}
+type TUVZwpTabletToolV1DownEvent struct {
+	Serial uintptr
+}
 
-// TUVZwpTabletToolV1UpEvent requests to tablet tool is no longer making contact
+// TUVZwpTabletToolV1UpEvent signals when tablet tool is no longer making contact
 //
 // Sent whenever the tablet tool stops making contact with the surface of
 // the tablet, or when the tablet tool moves out of the input region
@@ -1909,56 +2239,81 @@ type TUVZwpTabletToolV1DownEvent struct{}
 // contact. On some devices, a compositor may not consider a tool out
 // of logical contact until physical pressure falls below a specific
 // threshold.
-type TUVZwpTabletToolV1UpEvent struct{}
+type TUVZwpTabletToolV1UpEvent struct {
+}
 
-// TUVZwpTabletToolV1MotionEvent requests to motion event
+// TUVZwpTabletToolV1MotionEvent signals when motion event
 //
 // Sent whenever a tablet tool moves.
-type TUVZwpTabletToolV1MotionEvent struct{}
+type TUVZwpTabletToolV1MotionEvent struct {
+	// X contains surface-local x coordinate
+	X uintptr
 
-// TUVZwpTabletToolV1PressureEvent requests to pressure change event
+	// Y contains surface-local y coordinate
+	Y uintptr
+}
+
+// TUVZwpTabletToolV1PressureEvent signals when pressure change event
 //
 // Sent whenever the pressure axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that pressure may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV1PressureEvent struct{}
+type TUVZwpTabletToolV1PressureEvent struct {
+	// Pressure contains The current pressure value
+	Pressure uintptr
+}
 
-// TUVZwpTabletToolV1DistanceEvent requests to distance change event
+// TUVZwpTabletToolV1DistanceEvent signals when distance change event
 //
 // Sent whenever the distance axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that distance may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV1DistanceEvent struct{}
+type TUVZwpTabletToolV1DistanceEvent struct {
+	// Distance contains The current distance value
+	Distance uintptr
+}
 
-// TUVZwpTabletToolV1TiltEvent requests to tilt change event
+// TUVZwpTabletToolV1TiltEvent signals when tilt change event
 //
 // Sent whenever one or both of the tilt axes on a tool change. Each tilt
 // value is in 0.01 of a degree, relative to the z-axis of the tablet.
 // The angle is positive when the top of a tool tilts along the
 // positive x or y axis.
-type TUVZwpTabletToolV1TiltEvent struct{}
+type TUVZwpTabletToolV1TiltEvent struct {
+	// TiltX contains The current value of the X tilt axis
+	TiltX uintptr
 
-// TUVZwpTabletToolV1RotationEvent requests to z-rotation change event
+	// TiltY contains The current value of the Y tilt axis
+	TiltY uintptr
+}
+
+// TUVZwpTabletToolV1RotationEvent signals when z-rotation change event
 //
 // Sent whenever the z-rotation axis on the tool changes. The
 // rotation value is in 0.01 of a degree clockwise from the tool's
 // logical neutral position.
-type TUVZwpTabletToolV1RotationEvent struct{}
+type TUVZwpTabletToolV1RotationEvent struct {
+	// Degrees contains The current rotation of the Z axis
+	Degrees uintptr
+}
 
-// TUVZwpTabletToolV1SliderEvent requests to Slider position change event
+// TUVZwpTabletToolV1SliderEvent signals when Slider position change event
 //
 // Sent whenever the slider position on the tool changes. The
 // value is normalized between -65535 and 65535, with 0 as the logical
 // neutral position of the slider.
 //
 // The slider is available on e.g. the Wacom Airbrush tool.
-type TUVZwpTabletToolV1SliderEvent struct{}
+type TUVZwpTabletToolV1SliderEvent struct {
+	// Position contains The current position of slider
+	Position uintptr
+}
 
-// TUVZwpTabletToolV1WheelEvent requests to Wheel delta event
+// TUVZwpTabletToolV1WheelEvent signals when Wheel delta event
 //
 // Sent whenever the wheel on the tool emits an event. This event
 // contains two values for the same axis change. The degrees value is
@@ -1972,9 +2327,15 @@ type TUVZwpTabletToolV1SliderEvent struct{}
 // click and emulate click events when a certain threshold is met.
 // Thus, wl_tablet_tool.wheel events with non-zero clicks values may
 // have different degrees values.
-type TUVZwpTabletToolV1WheelEvent struct{}
+type TUVZwpTabletToolV1WheelEvent struct {
+	// Degrees contains The wheel delta in 0.01 of a degree
+	Degrees uintptr
 
-// TUVZwpTabletToolV1ButtonEvent requests to button event
+	// Clicks contains The wheel delta in discrete clicks
+	Clicks uintptr
+}
+
+// TUVZwpTabletToolV1ButtonEvent signals when button event
 //
 // Sent whenever a button on the tool is pressed or released.
 //
@@ -1982,34 +2343,55 @@ type TUVZwpTabletToolV1WheelEvent struct{}
 // button events are generated by the compositor. See
 // wp_tablet_tool.proximity_in and wp_tablet_tool.proximity_out for
 // details.
-type TUVZwpTabletToolV1ButtonEvent struct{}
+type TUVZwpTabletToolV1ButtonEvent struct {
+	Serial uintptr
 
-// TUVZwpTabletToolV1FrameEvent requests to frame event
+	// Button contains The button whose state has changed
+	Button uintptr
+
+	// State contains Whether the button was pressed or released
+	State uintptr
+}
+
+// TUVZwpTabletToolV1FrameEvent signals when frame event
 //
 // Marks the end of a series of axis and/or button updates from the
 // tablet. The Wayland protocol requires axis updates to be sent
 // sequentially, however all events within a frame should be considered
 // one hardware event.
-type TUVZwpTabletToolV1FrameEvent struct{}
+type TUVZwpTabletToolV1FrameEvent struct {
+	// Time contains The time of the event with millisecond granularity
+	Time uintptr
+}
 
 // TUVZwpTabletV1DestroyRequest requests to destroy the tablet object
 //
 // This destroys the client's resource for this tablet object.
-type TUVZwpTabletV1DestroyRequest struct{}
+type TUVZwpTabletV1DestroyRequest struct {
+}
 
-// TUVZwpTabletV1NameEvent requests to tablet device name
+// TUVZwpTabletV1NameEvent signals when tablet device name
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV1NameEvent struct{}
+type TUVZwpTabletV1NameEvent struct {
+	// Name contains the device name
+	Name uintptr
+}
 
-// TUVZwpTabletV1IdEvent requests to tablet device USB vendor/product id
+// TUVZwpTabletV1IDEvent signals when tablet device USB vendor/product id
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV1IdEvent struct{}
+type TUVZwpTabletV1IDEvent struct {
+	// Vid contains USB vendor id
+	Vid uintptr
 
-// TUVZwpTabletV1PathEvent requests to path to the device
+	// Pid contains USB product id
+	Pid uintptr
+}
+
+// TUVZwpTabletV1PathEvent signals when path to the device
 //
 // A system-specific device path that indicates which device is behind
 // this wp_tablet. This information may be used to gather additional
@@ -2025,60 +2407,78 @@ type TUVZwpTabletV1IdEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV1PathEvent struct{}
+type TUVZwpTabletV1PathEvent struct {
+	// Path contains path to local device
+	Path uintptr
+}
 
-// TUVZwpTabletV1DoneEvent requests to tablet description events sequence complete
+// TUVZwpTabletV1DoneEvent signals when tablet description events sequence complete
 //
 // This event is sent immediately to signal the end of the initial
 // burst of descriptive events. A client may consider the static
 // description of the tablet to be complete and finalize initialization
 // of the tablet.
-type TUVZwpTabletV1DoneEvent struct{}
+type TUVZwpTabletV1DoneEvent struct {
+}
 
-// TUVZwpTabletV1RemovedEvent requests to tablet removed event
+// TUVZwpTabletV1RemovedEvent signals when tablet removed event
 //
 // Sent when the tablet has been removed from the system. When a tablet
 // is removed, some tools may be removed.
 //
 // When this event is received, the client must wp_tablet.destroy
 // the object.
-type TUVZwpTabletV1RemovedEvent struct{}
+type TUVZwpTabletV1RemovedEvent struct {
+}
 
 // TUVZwpTabletManagerV2GetTabletSeatRequest requests to get the tablet seat
 //
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
-type TUVZwpTabletManagerV2GetTabletSeatRequest struct{}
+type TUVZwpTabletManagerV2GetTabletSeatRequest struct {
+	TabletSeat uintptr
+
+	// Seat contains The wl_seat object to retrieve the tablets for
+	Seat uintptr
+}
 
 // TUVZwpTabletManagerV2DestroyRequest requests to release the memory for the tablet manager object
 //
 // Destroy the wp_tablet_manager object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletManagerV2DestroyRequest struct{}
+type TUVZwpTabletManagerV2DestroyRequest struct {
+}
 
 // TUVZwpTabletSeatV2DestroyRequest requests to release the memory for the tablet seat object
 //
 // Destroy the wp_tablet_seat object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletSeatV2DestroyRequest struct{}
+type TUVZwpTabletSeatV2DestroyRequest struct {
+}
 
-// TUVZwpTabletSeatV2TabletAddedEvent requests to new device notification
+// TUVZwpTabletSeatV2TabletAddedEvent signals when new device notification
 //
 // This event is sent whenever a new tablet becomes available on this
 // seat. This event only provides the object id of the tablet, any
 // static information about the tablet (device name, vid/pid, etc.) is
 // sent through the wp_tablet interface.
-type TUVZwpTabletSeatV2TabletAddedEvent struct{}
+type TUVZwpTabletSeatV2TabletAddedEvent struct {
+	// ID contains the newly added graphics tablet
+	ID uintptr
+}
 
-// TUVZwpTabletSeatV2ToolAddedEvent requests to a new tool has been used with a tablet
+// TUVZwpTabletSeatV2ToolAddedEvent signals when a new tool has been used with a tablet
 //
 // This event is sent whenever a tool that has not previously been used
 // with a tablet comes into use. This event only provides the object id
 // of the tool; any static information about the tool (capabilities,
 // type, etc.) is sent through the wp_tablet_tool interface.
-type TUVZwpTabletSeatV2ToolAddedEvent struct{}
+type TUVZwpTabletSeatV2ToolAddedEvent struct {
+	// ID contains the newly added tablet tool
+	ID uintptr
+}
 
-// TUVZwpTabletSeatV2PadAddedEvent requests to new pad notification
+// TUVZwpTabletSeatV2PadAddedEvent signals when new pad notification
 //
 // This event is sent whenever a new pad is known to the system. Typically,
 // pads are physically attached to tablets and a pad_added event is
@@ -2090,7 +2490,10 @@ type TUVZwpTabletSeatV2ToolAddedEvent struct{}
 // This event only provides the object id of the pad. All further
 // features (buttons, strips, rings) are sent through the wp_tablet_pad
 // interface.
-type TUVZwpTabletSeatV2PadAddedEvent struct{}
+type TUVZwpTabletSeatV2PadAddedEvent struct {
+	// ID contains the newly added pad
+	ID uintptr
+}
 
 // TUVZwpTabletToolV2Type represents a physical tool type
 //
@@ -2106,108 +2509,28 @@ type TUVZwpTabletSeatV2PadAddedEvent struct{}
 type TUVZwpTabletToolV2Type int
 
 const (
-	// TUVZwpTabletToolV2TypePen corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypePen corresponds to Pen
 	TUVZwpTabletToolV2TypePen TUVZwpTabletToolV2Type = 0x140
 
-	// TUVZwpTabletToolV2TypeEraser corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypeEraser corresponds to Eraser
 	TUVZwpTabletToolV2TypeEraser TUVZwpTabletToolV2Type = 0x141
 
-	// TUVZwpTabletToolV2TypeBrush corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypeBrush corresponds to Brush
 	TUVZwpTabletToolV2TypeBrush TUVZwpTabletToolV2Type = 0x142
 
-	// TUVZwpTabletToolV2TypePencil corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypePencil corresponds to Pencil
 	TUVZwpTabletToolV2TypePencil TUVZwpTabletToolV2Type = 0x143
 
-	// TUVZwpTabletToolV2TypeAirbrush corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypeAirbrush corresponds to Airbrush
 	TUVZwpTabletToolV2TypeAirbrush TUVZwpTabletToolV2Type = 0x144
 
-	// TUVZwpTabletToolV2TypeFinger corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypeFinger corresponds to Finger
 	TUVZwpTabletToolV2TypeFinger TUVZwpTabletToolV2Type = 0x145
 
-	// TUVZwpTabletToolV2TypeMouse corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypeMouse corresponds to Mouse
 	TUVZwpTabletToolV2TypeMouse TUVZwpTabletToolV2Type = 0x146
 
-	// TUVZwpTabletToolV2TypeLens corresponds to a physical tool type
-	//
-	// Describes the physical type of a tool. The physical type of a tool
-	// generally defines its base usage.
-	//
-	// The mouse tool represents a mouse-shaped tool that is not a relative
-	// device but bound to the tablet's surface, providing absolute
-	// coordinates.
-	//
-	// The lens tool is a mouse-shaped tool with an attached lens to
-	// provide precision focus.
+	// TUVZwpTabletToolV2TypeLens corresponds to Lens
 	TUVZwpTabletToolV2TypeLens TUVZwpTabletToolV2Type = 0x147
 )
 
@@ -2220,52 +2543,22 @@ const (
 type TUVZwpTabletToolV2Capability int
 
 const (
-	// TUVZwpTabletToolV2CapabilityTilt corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV2CapabilityTilt corresponds to Tilt axes
 	TUVZwpTabletToolV2CapabilityTilt TUVZwpTabletToolV2Capability = 1
 
-	// TUVZwpTabletToolV2CapabilityPressure corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV2CapabilityPressure corresponds to Pressure axis
 	TUVZwpTabletToolV2CapabilityPressure TUVZwpTabletToolV2Capability = 2
 
-	// TUVZwpTabletToolV2CapabilityDistance corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV2CapabilityDistance corresponds to Distance axis
 	TUVZwpTabletToolV2CapabilityDistance TUVZwpTabletToolV2Capability = 3
 
-	// TUVZwpTabletToolV2CapabilityRotation corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV2CapabilityRotation corresponds to Z-rotation axis
 	TUVZwpTabletToolV2CapabilityRotation TUVZwpTabletToolV2Capability = 4
 
-	// TUVZwpTabletToolV2CapabilitySlider corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV2CapabilitySlider corresponds to Slider axis
 	TUVZwpTabletToolV2CapabilitySlider TUVZwpTabletToolV2Capability = 5
 
-	// TUVZwpTabletToolV2CapabilityWheel corresponds to capability flags for a tool
-	//
-	// Describes extra capabilities on a tablet.
-	//
-	// Any tool must provide x and y values, extra axes are
-	// device-specific.
+	// TUVZwpTabletToolV2CapabilityWheel corresponds to Wheel axis
 	TUVZwpTabletToolV2CapabilityWheel TUVZwpTabletToolV2Capability = 6
 )
 
@@ -2275,20 +2568,17 @@ const (
 type TUVZwpTabletToolV2ButtonState int
 
 const (
-	// TUVZwpTabletToolV2ButtonStateReleased corresponds to physical button state
-	//
-	// Describes the physical state of a button that produced the button event.
+	// TUVZwpTabletToolV2ButtonStateReleased corresponds to button is not pressed
 	TUVZwpTabletToolV2ButtonStateReleased TUVZwpTabletToolV2ButtonState = 0
 
-	// TUVZwpTabletToolV2ButtonStatePressed corresponds to physical button state
-	//
-	// Describes the physical state of a button that produced the button event.
+	// TUVZwpTabletToolV2ButtonStatePressed corresponds to button is pressed
 	TUVZwpTabletToolV2ButtonStatePressed TUVZwpTabletToolV2ButtonState = 1
 )
 
 type TUVZwpTabletToolV2Error int
 
 const (
+	// TUVZwpTabletToolV2ErrorRole corresponds to given wl_surface has another role
 	TUVZwpTabletToolV2ErrorRole TUVZwpTabletToolV2Error = 0
 )
 
@@ -2324,23 +2614,38 @@ const (
 // wp_tablet_tool. If the surface already has another role or has
 // previously been used as cursor surface for a different tool, a
 // protocol error is raised.
-type TUVZwpTabletToolV2SetCursorRequest struct{}
+type TUVZwpTabletToolV2SetCursorRequest struct {
+	// Serial contains serial of the enter event
+	Serial uintptr
+
+	Surface uintptr
+
+	// HotspotX contains surface-local x coordinate
+	HotspotX uintptr
+
+	// HotspotY contains surface-local y coordinate
+	HotspotY uintptr
+}
 
 // TUVZwpTabletToolV2DestroyRequest requests to destroy the tool object
 //
 // This destroys the client's resource for this tool object.
-type TUVZwpTabletToolV2DestroyRequest struct{}
+type TUVZwpTabletToolV2DestroyRequest struct {
+}
 
-// TUVZwpTabletToolV2TypeEvent requests to tool type
+// TUVZwpTabletToolV2TypeEvent signals when tool type
 //
 // The tool type is the high-level type of the tool and usually decides
 // the interaction expected from this tool.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2TypeEvent struct{}
+type TUVZwpTabletToolV2TypeEvent struct {
+	// ToolType contains the physical tool type
+	ToolType uintptr
+}
 
-// TUVZwpTabletToolV2HardwareSerialEvent requests to unique hardware serial number of the tool
+// TUVZwpTabletToolV2HardwareSerialEvent signals when unique hardware serial number of the tool
 //
 // If the physical tool can be identified by a unique 64-bit serial
 // number, this event notifies the client of this serial number.
@@ -2357,9 +2662,15 @@ type TUVZwpTabletToolV2TypeEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2HardwareSerialEvent struct{}
+type TUVZwpTabletToolV2HardwareSerialEvent struct {
+	// HardwareSerialHi contains the unique serial number of the tool, most significant bits
+	HardwareSerialHi uintptr
 
-// TUVZwpTabletToolV2HardwareIdWacomEvent requests to hardware id notification in Wacom's format
+	// HardwareSerialLo contains the unique serial number of the tool, least significant bits
+	HardwareSerialLo uintptr
+}
+
+// TUVZwpTabletToolV2HardwareIDWacomEvent signals when hardware id notification in Wacom's format
 //
 // This event notifies the client of a hardware id available on this tool.
 //
@@ -2371,9 +2682,15 @@ type TUVZwpTabletToolV2HardwareSerialEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2HardwareIdWacomEvent struct{}
+type TUVZwpTabletToolV2HardwareIDWacomEvent struct {
+	// HardwareIDHi contains the hardware id, most significant bits
+	HardwareIDHi uintptr
 
-// TUVZwpTabletToolV2CapabilityEvent requests to tool capability notification
+	// HardwareIDLo contains the hardware id, least significant bits
+	HardwareIDLo uintptr
+}
+
+// TUVZwpTabletToolV2CapabilityEvent signals when tool capability notification
 //
 // This event notifies the client of any capabilities of this tool,
 // beyond the main set of x/y axes and tip up/down detection.
@@ -2382,16 +2699,20 @@ type TUVZwpTabletToolV2HardwareIdWacomEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2CapabilityEvent struct{}
+type TUVZwpTabletToolV2CapabilityEvent struct {
+	// Capability contains the capability
+	Capability uintptr
+}
 
-// TUVZwpTabletToolV2DoneEvent requests to tool description events sequence complete
+// TUVZwpTabletToolV2DoneEvent signals when tool description events sequence complete
 //
 // This event signals the end of the initial burst of descriptive
 // events. A client may consider the static description of the tool to
 // be complete and finalize initialization of the tool.
-type TUVZwpTabletToolV2DoneEvent struct{}
+type TUVZwpTabletToolV2DoneEvent struct {
+}
 
-// TUVZwpTabletToolV2RemovedEvent requests to tool removed
+// TUVZwpTabletToolV2RemovedEvent signals when tool removed
 //
 // This event is sent when the tool is removed from the system and will
 // send no further events. Should the physical tool come back into
@@ -2407,9 +2728,10 @@ type TUVZwpTabletToolV2DoneEvent struct{}
 //
 // When this event is received, the client must wp_tablet_tool.destroy
 // the object.
-type TUVZwpTabletToolV2RemovedEvent struct{}
+type TUVZwpTabletToolV2RemovedEvent struct {
+}
 
-// TUVZwpTabletToolV2ProximityInEvent requests to proximity in event
+// TUVZwpTabletToolV2ProximityInEvent signals when proximity in event
 //
 // Notification that this tool is focused on a certain surface.
 //
@@ -2420,9 +2742,17 @@ type TUVZwpTabletToolV2RemovedEvent struct{}
 // If any button is logically down when the tool comes into proximity,
 // the respective button event is sent after the proximity_in event but
 // within the same frame as the proximity_in event.
-type TUVZwpTabletToolV2ProximityInEvent struct{}
+type TUVZwpTabletToolV2ProximityInEvent struct {
+	Serial uintptr
 
-// TUVZwpTabletToolV2ProximityOutEvent requests to proximity out event
+	// Tablet contains The tablet the tool is in proximity of
+	Tablet uintptr
+
+	// Surface contains The current surface the tablet tool is over
+	Surface uintptr
+}
+
+// TUVZwpTabletToolV2ProximityOutEvent signals when proximity out event
 //
 // Notification that this tool has either left proximity, or is no
 // longer focused on a certain surface.
@@ -2436,9 +2766,10 @@ type TUVZwpTabletToolV2ProximityInEvent struct{}
 // changes from one surface to another, a button release event may not
 // be sent until the button is actually released or the tool leaves the
 // proximity of the tablet.
-type TUVZwpTabletToolV2ProximityOutEvent struct{}
+type TUVZwpTabletToolV2ProximityOutEvent struct {
+}
 
-// TUVZwpTabletToolV2DownEvent requests to tablet tool is making contact
+// TUVZwpTabletToolV2DownEvent signals when tablet tool is making contact
 //
 // Sent whenever the tablet tool comes in contact with the surface of the
 // tablet.
@@ -2452,9 +2783,11 @@ type TUVZwpTabletToolV2ProximityOutEvent struct{}
 // contact. On some devices, a compositor may not consider a tool in
 // logical contact until a minimum physical pressure threshold is
 // exceeded.
-type TUVZwpTabletToolV2DownEvent struct{}
+type TUVZwpTabletToolV2DownEvent struct {
+	Serial uintptr
+}
 
-// TUVZwpTabletToolV2UpEvent requests to tablet tool is no longer making contact
+// TUVZwpTabletToolV2UpEvent signals when tablet tool is no longer making contact
 //
 // Sent whenever the tablet tool stops making contact with the surface of
 // the tablet, or when the tablet tool moves out of the input region
@@ -2472,56 +2805,81 @@ type TUVZwpTabletToolV2DownEvent struct{}
 // contact. On some devices, a compositor may not consider a tool out
 // of logical contact until physical pressure falls below a specific
 // threshold.
-type TUVZwpTabletToolV2UpEvent struct{}
+type TUVZwpTabletToolV2UpEvent struct {
+}
 
-// TUVZwpTabletToolV2MotionEvent requests to motion event
+// TUVZwpTabletToolV2MotionEvent signals when motion event
 //
 // Sent whenever a tablet tool moves.
-type TUVZwpTabletToolV2MotionEvent struct{}
+type TUVZwpTabletToolV2MotionEvent struct {
+	// X contains surface-local x coordinate
+	X uintptr
 
-// TUVZwpTabletToolV2PressureEvent requests to pressure change event
+	// Y contains surface-local y coordinate
+	Y uintptr
+}
+
+// TUVZwpTabletToolV2PressureEvent signals when pressure change event
 //
 // Sent whenever the pressure axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that pressure may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV2PressureEvent struct{}
+type TUVZwpTabletToolV2PressureEvent struct {
+	// Pressure contains The current pressure value
+	Pressure uintptr
+}
 
-// TUVZwpTabletToolV2DistanceEvent requests to distance change event
+// TUVZwpTabletToolV2DistanceEvent signals when distance change event
 //
 // Sent whenever the distance axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that distance may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV2DistanceEvent struct{}
+type TUVZwpTabletToolV2DistanceEvent struct {
+	// Distance contains The current distance value
+	Distance uintptr
+}
 
-// TUVZwpTabletToolV2TiltEvent requests to tilt change event
+// TUVZwpTabletToolV2TiltEvent signals when tilt change event
 //
 // Sent whenever one or both of the tilt axes on a tool change. Each tilt
 // value is in degrees, relative to the z-axis of the tablet.
 // The angle is positive when the top of a tool tilts along the
 // positive x or y axis.
-type TUVZwpTabletToolV2TiltEvent struct{}
+type TUVZwpTabletToolV2TiltEvent struct {
+	// TiltX contains The current value of the X tilt axis
+	TiltX uintptr
 
-// TUVZwpTabletToolV2RotationEvent requests to z-rotation change event
+	// TiltY contains The current value of the Y tilt axis
+	TiltY uintptr
+}
+
+// TUVZwpTabletToolV2RotationEvent signals when z-rotation change event
 //
 // Sent whenever the z-rotation axis on the tool changes. The
 // rotation value is in degrees clockwise from the tool's
 // logical neutral position.
-type TUVZwpTabletToolV2RotationEvent struct{}
+type TUVZwpTabletToolV2RotationEvent struct {
+	// Degrees contains The current rotation of the Z axis
+	Degrees uintptr
+}
 
-// TUVZwpTabletToolV2SliderEvent requests to Slider position change event
+// TUVZwpTabletToolV2SliderEvent signals when Slider position change event
 //
 // Sent whenever the slider position on the tool changes. The
 // value is normalized between -65535 and 65535, with 0 as the logical
 // neutral position of the slider.
 //
 // The slider is available on e.g. the Wacom Airbrush tool.
-type TUVZwpTabletToolV2SliderEvent struct{}
+type TUVZwpTabletToolV2SliderEvent struct {
+	// Position contains The current position of slider
+	Position uintptr
+}
 
-// TUVZwpTabletToolV2WheelEvent requests to Wheel delta event
+// TUVZwpTabletToolV2WheelEvent signals when Wheel delta event
 //
 // Sent whenever the wheel on the tool emits an event. This event
 // contains two values for the same axis change. The degrees value is
@@ -2535,9 +2893,15 @@ type TUVZwpTabletToolV2SliderEvent struct{}
 // click and emulate click events when a certain threshold is met.
 // Thus, wl_tablet_tool.wheel events with non-zero clicks values may
 // have different degrees values.
-type TUVZwpTabletToolV2WheelEvent struct{}
+type TUVZwpTabletToolV2WheelEvent struct {
+	// Degrees contains The wheel delta in degrees
+	Degrees uintptr
 
-// TUVZwpTabletToolV2ButtonEvent requests to button event
+	// Clicks contains The wheel delta in discrete clicks
+	Clicks uintptr
+}
+
+// TUVZwpTabletToolV2ButtonEvent signals when button event
 //
 // Sent whenever a button on the tool is pressed or released.
 //
@@ -2545,34 +2909,55 @@ type TUVZwpTabletToolV2WheelEvent struct{}
 // button events are generated by the compositor. See
 // wp_tablet_tool.proximity_in and wp_tablet_tool.proximity_out for
 // details.
-type TUVZwpTabletToolV2ButtonEvent struct{}
+type TUVZwpTabletToolV2ButtonEvent struct {
+	Serial uintptr
 
-// TUVZwpTabletToolV2FrameEvent requests to frame event
+	// Button contains The button whose state has changed
+	Button uintptr
+
+	// State contains Whether the button was pressed or released
+	State uintptr
+}
+
+// TUVZwpTabletToolV2FrameEvent signals when frame event
 //
 // Marks the end of a series of axis and/or button updates from the
 // tablet. The Wayland protocol requires axis updates to be sent
 // sequentially, however all events within a frame should be considered
 // one hardware event.
-type TUVZwpTabletToolV2FrameEvent struct{}
+type TUVZwpTabletToolV2FrameEvent struct {
+	// Time contains The time of the event with millisecond granularity
+	Time uintptr
+}
 
 // TUVZwpTabletV2DestroyRequest requests to destroy the tablet object
 //
 // This destroys the client's resource for this tablet object.
-type TUVZwpTabletV2DestroyRequest struct{}
+type TUVZwpTabletV2DestroyRequest struct {
+}
 
-// TUVZwpTabletV2NameEvent requests to tablet device name
+// TUVZwpTabletV2NameEvent signals when tablet device name
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV2NameEvent struct{}
+type TUVZwpTabletV2NameEvent struct {
+	// Name contains the device name
+	Name uintptr
+}
 
-// TUVZwpTabletV2IdEvent requests to tablet device USB vendor/product id
+// TUVZwpTabletV2IDEvent signals when tablet device USB vendor/product id
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV2IdEvent struct{}
+type TUVZwpTabletV2IDEvent struct {
+	// Vid contains USB vendor id
+	Vid uintptr
 
-// TUVZwpTabletV2PathEvent requests to path to the device
+	// Pid contains USB product id
+	Pid uintptr
+}
+
+// TUVZwpTabletV2PathEvent signals when path to the device
 //
 // A system-specific device path that indicates which device is behind
 // this wp_tablet. This information may be used to gather additional
@@ -2588,24 +2973,29 @@ type TUVZwpTabletV2IdEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV2PathEvent struct{}
+type TUVZwpTabletV2PathEvent struct {
+	// Path contains path to local device
+	Path uintptr
+}
 
-// TUVZwpTabletV2DoneEvent requests to tablet description events sequence complete
+// TUVZwpTabletV2DoneEvent signals when tablet description events sequence complete
 //
 // This event is sent immediately to signal the end of the initial
 // burst of descriptive events. A client may consider the static
 // description of the tablet to be complete and finalize initialization
 // of the tablet.
-type TUVZwpTabletV2DoneEvent struct{}
+type TUVZwpTabletV2DoneEvent struct {
+}
 
-// TUVZwpTabletV2RemovedEvent requests to tablet removed event
+// TUVZwpTabletV2RemovedEvent signals when tablet removed event
 //
 // Sent when the tablet has been removed from the system. When a tablet
 // is removed, some tools may be removed.
 //
 // When this event is received, the client must wp_tablet.destroy
 // the object.
-type TUVZwpTabletV2RemovedEvent struct{}
+type TUVZwpTabletV2RemovedEvent struct {
+}
 
 // TUVZwpTabletPadRingV2Source represents ring axis source
 //
@@ -2616,12 +3006,7 @@ type TUVZwpTabletV2RemovedEvent struct{}
 type TUVZwpTabletPadRingV2Source int
 
 const (
-	// TUVZwpTabletPadRingV2SourceFinger corresponds to ring axis source
-	//
-	// Describes the source types for ring events. This indicates to the
-	// client how a ring event was physically generated; a client may
-	// adjust the user interface accordingly. For example, events
-	// from a "finger" source may trigger kinetic scrolling.
+	// TUVZwpTabletPadRingV2SourceFinger corresponds to finger
 	TUVZwpTabletPadRingV2SourceFinger TUVZwpTabletPadRingV2Source = 1
 )
 
@@ -2646,14 +3031,21 @@ const (
 // wp_tablet_pad_group.mode_switch event received for the group of this
 // ring. Requests providing other serials than the most recent one will be
 // ignored.
-type TUVZwpTabletPadRingV2SetFeedbackRequest struct{}
+type TUVZwpTabletPadRingV2SetFeedbackRequest struct {
+	// Description contains ring description
+	Description uintptr
+
+	// Serial contains serial of the mode switch event
+	Serial uintptr
+}
 
 // TUVZwpTabletPadRingV2DestroyRequest requests to destroy the ring object
 //
 // This destroys the client's resource for this ring object.
-type TUVZwpTabletPadRingV2DestroyRequest struct{}
+type TUVZwpTabletPadRingV2DestroyRequest struct {
+}
 
-// TUVZwpTabletPadRingV2SourceEvent requests to ring event source
+// TUVZwpTabletPadRingV2SourceEvent signals when ring event source
 //
 // Source information for ring events.
 //
@@ -2667,17 +3059,23 @@ type TUVZwpTabletPadRingV2DestroyRequest struct{}
 //
 // This event is optional. If the source is unknown for an interaction,
 // no event is sent.
-type TUVZwpTabletPadRingV2SourceEvent struct{}
+type TUVZwpTabletPadRingV2SourceEvent struct {
+	// Source contains the event source
+	Source uintptr
+}
 
-// TUVZwpTabletPadRingV2AngleEvent requests to angle changed
+// TUVZwpTabletPadRingV2AngleEvent signals when angle changed
 //
 // Sent whenever the angle on a ring changes.
 //
 // The angle is provided in degrees clockwise from the logical
 // north of the ring in the pad's current rotation.
-type TUVZwpTabletPadRingV2AngleEvent struct{}
+type TUVZwpTabletPadRingV2AngleEvent struct {
+	// Degrees contains the current angle in degrees
+	Degrees uintptr
+}
 
-// TUVZwpTabletPadRingV2StopEvent requests to interaction stopped
+// TUVZwpTabletPadRingV2StopEvent signals when interaction stopped
 //
 // Stop notification for ring events.
 //
@@ -2689,9 +3087,10 @@ type TUVZwpTabletPadRingV2AngleEvent struct{}
 //
 // Any wp_tablet_pad_ring.angle events with the same source after this
 // event should be considered as the start of a new interaction.
-type TUVZwpTabletPadRingV2StopEvent struct{}
+type TUVZwpTabletPadRingV2StopEvent struct {
+}
 
-// TUVZwpTabletPadRingV2FrameEvent requests to end of a ring event sequence
+// TUVZwpTabletPadRingV2FrameEvent signals when end of a ring event sequence
 //
 // Indicates the end of a set of ring events that logically belong
 // together. A client is expected to accumulate the data in all events
@@ -2706,7 +3105,10 @@ type TUVZwpTabletPadRingV2StopEvent struct{}
 // group, even if the group only contains a single wp_tablet_pad_ring
 // event. Specifically, a client may get a sequence: angle, frame,
 // angle, frame, etc.
-type TUVZwpTabletPadRingV2FrameEvent struct{}
+type TUVZwpTabletPadRingV2FrameEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+}
 
 // TUVZwpTabletPadStripV2Source represents strip axis source
 //
@@ -2717,12 +3119,7 @@ type TUVZwpTabletPadRingV2FrameEvent struct{}
 type TUVZwpTabletPadStripV2Source int
 
 const (
-	// TUVZwpTabletPadStripV2SourceFinger corresponds to strip axis source
-	//
-	// Describes the source types for strip events. This indicates to the
-	// client how a strip event was physically generated; a client may
-	// adjust the user interface accordingly. For example, events
-	// from a "finger" source may trigger kinetic scrolling.
+	// TUVZwpTabletPadStripV2SourceFinger corresponds to finger
 	TUVZwpTabletPadStripV2SourceFinger TUVZwpTabletPadStripV2Source = 1
 )
 
@@ -2747,14 +3144,21 @@ const (
 // wp_tablet_pad_group.mode_switch event received for the group of this
 // strip. Requests providing other serials than the most recent one will be
 // ignored.
-type TUVZwpTabletPadStripV2SetFeedbackRequest struct{}
+type TUVZwpTabletPadStripV2SetFeedbackRequest struct {
+	// Description contains strip description
+	Description uintptr
+
+	// Serial contains serial of the mode switch event
+	Serial uintptr
+}
 
 // TUVZwpTabletPadStripV2DestroyRequest requests to destroy the strip object
 //
 // This destroys the client's resource for this strip object.
-type TUVZwpTabletPadStripV2DestroyRequest struct{}
+type TUVZwpTabletPadStripV2DestroyRequest struct {
+}
 
-// TUVZwpTabletPadStripV2SourceEvent requests to strip event source
+// TUVZwpTabletPadStripV2SourceEvent signals when strip event source
 //
 // Source information for strip events.
 //
@@ -2768,18 +3172,24 @@ type TUVZwpTabletPadStripV2DestroyRequest struct{}
 //
 // This event is optional. If the source is unknown for an interaction,
 // no event is sent.
-type TUVZwpTabletPadStripV2SourceEvent struct{}
+type TUVZwpTabletPadStripV2SourceEvent struct {
+	// Source contains the event source
+	Source uintptr
+}
 
-// TUVZwpTabletPadStripV2PositionEvent requests to position changed
+// TUVZwpTabletPadStripV2PositionEvent signals when position changed
 //
 // Sent whenever the position on a strip changes.
 //
 // The position is normalized to a range of [0, 65535], the 0-value
 // represents the top-most and/or left-most position of the strip in
 // the pad's current rotation.
-type TUVZwpTabletPadStripV2PositionEvent struct{}
+type TUVZwpTabletPadStripV2PositionEvent struct {
+	// Position contains the current position
+	Position uintptr
+}
 
-// TUVZwpTabletPadStripV2StopEvent requests to interaction stopped
+// TUVZwpTabletPadStripV2StopEvent signals when interaction stopped
 //
 // Stop notification for strip events.
 //
@@ -2791,9 +3201,10 @@ type TUVZwpTabletPadStripV2PositionEvent struct{}
 //
 // Any wp_tablet_pad_strip.position events with the same source after this
 // event should be considered as the start of a new interaction.
-type TUVZwpTabletPadStripV2StopEvent struct{}
+type TUVZwpTabletPadStripV2StopEvent struct {
+}
 
-// TUVZwpTabletPadStripV2FrameEvent requests to end of a strip event sequence
+// TUVZwpTabletPadStripV2FrameEvent signals when end of a strip event sequence
 //
 // Indicates the end of a set of events that represent one logical
 // hardware strip event. A client is expected to accumulate the data
@@ -2809,15 +3220,19 @@ type TUVZwpTabletPadStripV2StopEvent struct{}
 // group, even if the group only contains a single wp_tablet_pad_strip
 // event. Specifically, a client may get a sequence: position, frame,
 // position, frame, etc.
-type TUVZwpTabletPadStripV2FrameEvent struct{}
+type TUVZwpTabletPadStripV2FrameEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+}
 
 // TUVZwpTabletPadGroupV2DestroyRequest requests to destroy the pad object
 //
 // Destroy the wp_tablet_pad_group object. Objects created from this object
 // are unaffected and should be destroyed separately.
-type TUVZwpTabletPadGroupV2DestroyRequest struct{}
+type TUVZwpTabletPadGroupV2DestroyRequest struct {
+}
 
-// TUVZwpTabletPadGroupV2ButtonsEvent requests to buttons announced
+// TUVZwpTabletPadGroupV2ButtonsEvent signals when buttons announced
 //
 // Sent on wp_tablet_pad_group initialization to announce the available
 // buttons in the group. Button indices start at 0, a button may only be
@@ -2831,27 +3246,34 @@ type TUVZwpTabletPadGroupV2DestroyRequest struct{}
 // event in the case of changes to the mapping of these reserved buttons.
 // If the compositor happens to reserve all buttons in a group, this event
 // will be sent with an empty array.
-type TUVZwpTabletPadGroupV2ButtonsEvent struct{}
+type TUVZwpTabletPadGroupV2ButtonsEvent struct {
+	// Buttons contains buttons in this group
+	Buttons uintptr
+}
 
-// TUVZwpTabletPadGroupV2RingEvent requests to ring announced
+// TUVZwpTabletPadGroupV2RingEvent signals when ring announced
 //
 // Sent on wp_tablet_pad_group initialization to announce available rings.
 // One event is sent for each ring available on this pad group.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event.
-type TUVZwpTabletPadGroupV2RingEvent struct{}
+type TUVZwpTabletPadGroupV2RingEvent struct {
+	Ring uintptr
+}
 
-// TUVZwpTabletPadGroupV2StripEvent requests to strip announced
+// TUVZwpTabletPadGroupV2StripEvent signals when strip announced
 //
 // Sent on wp_tablet_pad initialization to announce available strips.
 // One event is sent for each strip available on this pad group.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event.
-type TUVZwpTabletPadGroupV2StripEvent struct{}
+type TUVZwpTabletPadGroupV2StripEvent struct {
+	Strip uintptr
+}
 
-// TUVZwpTabletPadGroupV2ModesEvent requests to mode-switch ability announced
+// TUVZwpTabletPadGroupV2ModesEvent signals when mode-switch ability announced
 //
 // Sent on wp_tablet_pad_group initialization to announce that the pad
 // group may switch between modes. A client may use a mode to store a
@@ -2865,17 +3287,21 @@ type TUVZwpTabletPadGroupV2StripEvent struct{}
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event. This event is only sent when more than
 // more than one mode is available.
-type TUVZwpTabletPadGroupV2ModesEvent struct{}
+type TUVZwpTabletPadGroupV2ModesEvent struct {
+	// Modes contains the number of modes
+	Modes uintptr
+}
 
-// TUVZwpTabletPadGroupV2DoneEvent requests to tablet group description events sequence complete
+// TUVZwpTabletPadGroupV2DoneEvent signals when tablet group description events sequence complete
 //
 // This event is sent immediately to signal the end of the initial
 // burst of descriptive events. A client may consider the static
 // description of the tablet to be complete and finalize initialization
 // of the tablet group.
-type TUVZwpTabletPadGroupV2DoneEvent struct{}
+type TUVZwpTabletPadGroupV2DoneEvent struct {
+}
 
-// TUVZwpTabletPadGroupV2ModeSwitchEvent requests to mode switch event
+// TUVZwpTabletPadGroupV2ModeSwitchEvent signals when mode switch event
 //
 // Notification that the mode was switched.
 //
@@ -2904,7 +3330,15 @@ type TUVZwpTabletPadGroupV2DoneEvent struct{}
 // in the previous mode, the client should immediately issue a
 // wp_tablet_ring.set_feedback or wp_tablet_strip.set_feedback request
 // for each changed ring or strip.
-type TUVZwpTabletPadGroupV2ModeSwitchEvent struct{}
+type TUVZwpTabletPadGroupV2ModeSwitchEvent struct {
+	// Time contains the time of the event with millisecond granularity
+	Time uintptr
+
+	Serial uintptr
+
+	// Mode contains the new mode of the pad
+	Mode uintptr
+}
 
 // TUVZwpTabletPadV2ButtonState represents physical button state
 //
@@ -2913,16 +3347,10 @@ type TUVZwpTabletPadGroupV2ModeSwitchEvent struct{}
 type TUVZwpTabletPadV2ButtonState int
 
 const (
-	// TUVZwpTabletPadV2ButtonStateReleased corresponds to physical button state
-	//
-	// Describes the physical state of a button that caused the button
-	// event.
+	// TUVZwpTabletPadV2ButtonStateReleased corresponds to the button is not pressed
 	TUVZwpTabletPadV2ButtonStateReleased TUVZwpTabletPadV2ButtonState = 0
 
-	// TUVZwpTabletPadV2ButtonStatePressed corresponds to physical button state
-	//
-	// Describes the physical state of a button that caused the button
-	// event.
+	// TUVZwpTabletPadV2ButtonStatePressed corresponds to the button is pressed
 	TUVZwpTabletPadV2ButtonStatePressed TUVZwpTabletPadV2ButtonState = 1
 )
 
@@ -2952,24 +3380,36 @@ const (
 // wp_tablet_pad_group.mode_switch event received for the group of this
 // button. Requests providing other serials than the most recent one will
 // be ignored.
-type TUVZwpTabletPadV2SetFeedbackRequest struct{}
+type TUVZwpTabletPadV2SetFeedbackRequest struct {
+	// Button contains button index
+	Button uintptr
+
+	// Description contains button description
+	Description uintptr
+
+	// Serial contains serial of the mode switch event
+	Serial uintptr
+}
 
 // TUVZwpTabletPadV2DestroyRequest requests to destroy the pad object
 //
 // Destroy the wp_tablet_pad object. Objects created from this object
 // are unaffected and should be destroyed separately.
-type TUVZwpTabletPadV2DestroyRequest struct{}
+type TUVZwpTabletPadV2DestroyRequest struct {
+}
 
-// TUVZwpTabletPadV2GroupEvent requests to group announced
+// TUVZwpTabletPadV2GroupEvent signals when group announced
 //
 // Sent on wp_tablet_pad initialization to announce available groups.
 // One event is sent for each pad group available.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad.done event. At least one group will be announced.
-type TUVZwpTabletPadV2GroupEvent struct{}
+type TUVZwpTabletPadV2GroupEvent struct {
+	PadGroup uintptr
+}
 
-// TUVZwpTabletPadV2PathEvent requests to path to the device
+// TUVZwpTabletPadV2PathEvent signals when path to the device
 //
 // A system-specific device path that indicates which device is behind
 // this wp_tablet_pad. This information may be used to gather additional
@@ -2981,9 +3421,12 @@ type TUVZwpTabletPadV2GroupEvent struct{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad.done event.
-type TUVZwpTabletPadV2PathEvent struct{}
+type TUVZwpTabletPadV2PathEvent struct {
+	// Path contains path to local device
+	Path uintptr
+}
 
-// TUVZwpTabletPadV2ButtonsEvent requests to buttons announced
+// TUVZwpTabletPadV2ButtonsEvent signals when buttons announced
 //
 // Sent on wp_tablet_pad initialization to announce the available
 // buttons.
@@ -2991,32 +3434,59 @@ type TUVZwpTabletPadV2PathEvent struct{}
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad.done event. This event is only sent when at least one
 // button is available.
-type TUVZwpTabletPadV2ButtonsEvent struct{}
+type TUVZwpTabletPadV2ButtonsEvent struct {
+	// Buttons contains the number of buttons
+	Buttons uintptr
+}
 
-// TUVZwpTabletPadV2DoneEvent requests to pad description event sequence complete
+// TUVZwpTabletPadV2DoneEvent signals when pad description event sequence complete
 //
 // This event signals the end of the initial burst of descriptive
 // events. A client may consider the static description of the pad to
 // be complete and finalize initialization of the pad.
-type TUVZwpTabletPadV2DoneEvent struct{}
+type TUVZwpTabletPadV2DoneEvent struct {
+}
 
-// TUVZwpTabletPadV2ButtonEvent requests to physical button state
+// TUVZwpTabletPadV2ButtonEvent signals when physical button state
 //
 // Sent whenever the physical state of a button changes.
-type TUVZwpTabletPadV2ButtonEvent struct{}
+type TUVZwpTabletPadV2ButtonEvent struct {
+	// Time contains the time of the event with millisecond granularity
+	Time uintptr
 
-// TUVZwpTabletPadV2EnterEvent requests to enter event
+	// Button contains the index of the button that changed state
+	Button uintptr
+
+	State uintptr
+}
+
+// TUVZwpTabletPadV2EnterEvent signals when enter event
 //
 // Notification that this pad is focused on the specified surface.
-type TUVZwpTabletPadV2EnterEvent struct{}
+type TUVZwpTabletPadV2EnterEvent struct {
+	// Serial contains serial number of the enter event
+	Serial uintptr
 
-// TUVZwpTabletPadV2LeaveEvent requests to enter event
+	// Tablet contains the tablet the pad is attached to
+	Tablet uintptr
+
+	// Surface contains surface the pad is focused on
+	Surface uintptr
+}
+
+// TUVZwpTabletPadV2LeaveEvent signals when enter event
 //
 // Notification that this pad is no longer focused on the specified
 // surface.
-type TUVZwpTabletPadV2LeaveEvent struct{}
+type TUVZwpTabletPadV2LeaveEvent struct {
+	// Serial contains serial number of the leave event
+	Serial uintptr
 
-// TUVZwpTabletPadV2RemovedEvent requests to pad removed event
+	// Surface contains surface the pad is no longer focused on
+	Surface uintptr
+}
+
+// TUVZwpTabletPadV2RemovedEvent signals when pad removed event
 //
 // Sent when the pad has been removed from the system. When a tablet
 // is removed its pad(s) will be removed too.
@@ -3024,7 +3494,8 @@ type TUVZwpTabletPadV2LeaveEvent struct{}
 // When this event is received, the client must destroy all rings, strips
 // and groups that were offered by this pad, and issue wp_tablet_pad.destroy
 // the pad itself.
-type TUVZwpTabletPadV2RemovedEvent struct{}
+type TUVZwpTabletPadV2RemovedEvent struct {
+}
 
 // TIUVZwpTextInputV1ContentHint represents content hint
 //
@@ -3033,82 +3504,43 @@ type TUVZwpTabletPadV2RemovedEvent struct{}
 type TIUVZwpTextInputV1ContentHint uint
 
 const (
-	// TIUVZwpTextInputV1ContentHintNone corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintNone corresponds to no special behaviour
 	TIUVZwpTextInputV1ContentHintNone TIUVZwpTextInputV1ContentHint = 0x0
 
-	// TIUVZwpTextInputV1ContentHintDefault corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintDefault corresponds to auto completion, correction and capitalization
 	TIUVZwpTextInputV1ContentHintDefault TIUVZwpTextInputV1ContentHint = 0x7
 
-	// TIUVZwpTextInputV1ContentHintPassword corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintPassword corresponds to hidden and sensitive text
 	TIUVZwpTextInputV1ContentHintPassword TIUVZwpTextInputV1ContentHint = 0xc0
 
-	// TIUVZwpTextInputV1ContentHintAutoCompletion corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintAutoCompletion corresponds to suggest word completions
 	TIUVZwpTextInputV1ContentHintAutoCompletion TIUVZwpTextInputV1ContentHint = 0x1
 
-	// TIUVZwpTextInputV1ContentHintAutoCorrection corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintAutoCorrection corresponds to suggest word corrections
 	TIUVZwpTextInputV1ContentHintAutoCorrection TIUVZwpTextInputV1ContentHint = 0x2
 
-	// TIUVZwpTextInputV1ContentHintAutoCapitalization corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintAutoCapitalization corresponds to switch to uppercase letters at the start of a sentence
 	TIUVZwpTextInputV1ContentHintAutoCapitalization TIUVZwpTextInputV1ContentHint = 0x4
 
-	// TIUVZwpTextInputV1ContentHintLowercase corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintLowercase corresponds to prefer lowercase letters
 	TIUVZwpTextInputV1ContentHintLowercase TIUVZwpTextInputV1ContentHint = 0x8
 
-	// TIUVZwpTextInputV1ContentHintUppercase corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintUppercase corresponds to prefer uppercase letters
 	TIUVZwpTextInputV1ContentHintUppercase TIUVZwpTextInputV1ContentHint = 0x10
 
-	// TIUVZwpTextInputV1ContentHintTitlecase corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintTitlecase corresponds to prefer casing for titles and headings (can be language dependent)
 	TIUVZwpTextInputV1ContentHintTitlecase TIUVZwpTextInputV1ContentHint = 0x20
 
-	// TIUVZwpTextInputV1ContentHintHiddenText corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintHiddenText corresponds to characters should be hidden
 	TIUVZwpTextInputV1ContentHintHiddenText TIUVZwpTextInputV1ContentHint = 0x40
 
-	// TIUVZwpTextInputV1ContentHintSensitiveData corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintSensitiveData corresponds to typed text should not be stored
 	TIUVZwpTextInputV1ContentHintSensitiveData TIUVZwpTextInputV1ContentHint = 0x80
 
-	// TIUVZwpTextInputV1ContentHintLatin corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintLatin corresponds to just latin characters should be entered
 	TIUVZwpTextInputV1ContentHintLatin TIUVZwpTextInputV1ContentHint = 0x100
 
-	// TIUVZwpTextInputV1ContentHintMultiline corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV1ContentHintMultiline corresponds to the text input is multiline
 	TIUVZwpTextInputV1ContentHintMultiline TIUVZwpTextInputV1ContentHint = 0x200
 )
 
@@ -3122,129 +3554,53 @@ const (
 type TIUVZwpTextInputV1ContentPurpose int
 
 const (
-	// TIUVZwpTextInputV1ContentPurposeNormal corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeNormal corresponds to default input, allowing all characters
 	TIUVZwpTextInputV1ContentPurposeNormal TIUVZwpTextInputV1ContentPurpose = 0
 
-	// TIUVZwpTextInputV1ContentPurposeAlpha corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeAlpha corresponds to allow only alphabetic characters
 	TIUVZwpTextInputV1ContentPurposeAlpha TIUVZwpTextInputV1ContentPurpose = 1
 
-	// TIUVZwpTextInputV1ContentPurposeDigits corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeDigits corresponds to allow only digits
 	TIUVZwpTextInputV1ContentPurposeDigits TIUVZwpTextInputV1ContentPurpose = 2
 
-	// TIUVZwpTextInputV1ContentPurposeNumber corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeNumber corresponds to input a number (including decimal separator and sign)
 	TIUVZwpTextInputV1ContentPurposeNumber TIUVZwpTextInputV1ContentPurpose = 3
 
-	// TIUVZwpTextInputV1ContentPurposePhone corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposePhone corresponds to input a phone number
 	TIUVZwpTextInputV1ContentPurposePhone TIUVZwpTextInputV1ContentPurpose = 4
 
-	// TIUVZwpTextInputV1ContentPurposeUrl corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeUrl corresponds to input an URL
 	TIUVZwpTextInputV1ContentPurposeUrl TIUVZwpTextInputV1ContentPurpose = 5
 
-	// TIUVZwpTextInputV1ContentPurposeEmail corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeEmail corresponds to input an email address
 	TIUVZwpTextInputV1ContentPurposeEmail TIUVZwpTextInputV1ContentPurpose = 6
 
-	// TIUVZwpTextInputV1ContentPurposeName corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeName corresponds to input a name of a person
 	TIUVZwpTextInputV1ContentPurposeName TIUVZwpTextInputV1ContentPurpose = 7
 
-	// TIUVZwpTextInputV1ContentPurposePassword corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposePassword corresponds to input a password (combine with password or sensitive_data hint)
 	TIUVZwpTextInputV1ContentPurposePassword TIUVZwpTextInputV1ContentPurpose = 8
 
-	// TIUVZwpTextInputV1ContentPurposeDate corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeDate corresponds to input a date
 	TIUVZwpTextInputV1ContentPurposeDate TIUVZwpTextInputV1ContentPurpose = 9
 
-	// TIUVZwpTextInputV1ContentPurposeTime corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeTime corresponds to input a time
 	TIUVZwpTextInputV1ContentPurposeTime TIUVZwpTextInputV1ContentPurpose = 10
 
-	// TIUVZwpTextInputV1ContentPurposeDatetime corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeDatetime corresponds to input a date and time
 	TIUVZwpTextInputV1ContentPurposeDatetime TIUVZwpTextInputV1ContentPurpose = 11
 
-	// TIUVZwpTextInputV1ContentPurposeTerminal corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV1ContentPurposeTerminal corresponds to input for a terminal
 	TIUVZwpTextInputV1ContentPurposeTerminal TIUVZwpTextInputV1ContentPurpose = 12
 )
 
 type TIUVZwpTextInputV1PreeditStyle int
 
 const (
+	// TIUVZwpTextInputV1PreeditStyleDefault corresponds to default style for composing text
 	TIUVZwpTextInputV1PreeditStyleDefault TIUVZwpTextInputV1PreeditStyle = 0
 
+	// TIUVZwpTextInputV1PreeditStyleNone corresponds to style should be the same as in non-composing text
 	TIUVZwpTextInputV1PreeditStyleNone TIUVZwpTextInputV1PreeditStyle = 1
 
 	TIUVZwpTextInputV1PreeditStyleActive TIUVZwpTextInputV1PreeditStyle = 2
@@ -3263,10 +3619,13 @@ const (
 type TIUVZwpTextInputV1TextDirection int
 
 const (
+	// TIUVZwpTextInputV1TextDirectionAuto corresponds to automatic text direction based on text and language
 	TIUVZwpTextInputV1TextDirectionAuto TIUVZwpTextInputV1TextDirection = 0
 
+	// TIUVZwpTextInputV1TextDirectionLtr corresponds to left-to-right
 	TIUVZwpTextInputV1TextDirectionLtr TIUVZwpTextInputV1TextDirection = 1
 
+	// TIUVZwpTextInputV1TextDirectionRtl corresponds to right-to-left
 	TIUVZwpTextInputV1TextDirectionRtl TIUVZwpTextInputV1TextDirection = 2
 )
 
@@ -3279,31 +3638,40 @@ const (
 // activation. The surface argument is a wl_surface assigned to the
 // text_input object and tracked for focus lost. The enter event
 // is emitted on successful activation.
-type TIUVZwpTextInputV1ActivateRequest struct{}
+type TIUVZwpTextInputV1ActivateRequest struct {
+	Seat uintptr
+
+	Surface uintptr
+}
 
 // TIUVZwpTextInputV1DeactivateRequest requests to request deactivation
 //
 // Requests the text_input object to be deactivated (typically when the
 // text entry lost focus). The seat argument is a wl_seat which was used
 // for activation.
-type TIUVZwpTextInputV1DeactivateRequest struct{}
+type TIUVZwpTextInputV1DeactivateRequest struct {
+	Seat uintptr
+}
 
 // TIUVZwpTextInputV1ShowInputPanelRequest requests to show input panels
 //
 // Requests input panels (virtual keyboard) to show.
-type TIUVZwpTextInputV1ShowInputPanelRequest struct{}
+type TIUVZwpTextInputV1ShowInputPanelRequest struct {
+}
 
 // TIUVZwpTextInputV1HideInputPanelRequest requests to hide input panels
 //
 // Requests input panels (virtual keyboard) to hide.
-type TIUVZwpTextInputV1HideInputPanelRequest struct{}
+type TIUVZwpTextInputV1HideInputPanelRequest struct {
+}
 
 // TIUVZwpTextInputV1ResetRequest requests to reset
 //
 // Should be called by an editor widget when the input state should be
 // reset, for example after the text was changed outside of the normal
 // input method flow.
-type TIUVZwpTextInputV1ResetRequest struct{}
+type TIUVZwpTextInputV1ResetRequest struct {
+}
 
 // TIUVZwpTextInputV1SetSurroundingTextRequest requests to sets the surrounding text
 //
@@ -3312,7 +3680,13 @@ type TIUVZwpTextInputV1ResetRequest struct{}
 // surrounding text. Anchor is the byte offset of the
 // selection anchor within the surrounding text. If there is no selected
 // text anchor, then it is the same as cursor.
-type TIUVZwpTextInputV1SetSurroundingTextRequest struct{}
+type TIUVZwpTextInputV1SetSurroundingTextRequest struct {
+	Text uintptr
+
+	Cursor uintptr
+
+	Anchor uintptr
+}
 
 // TIUVZwpTextInputV1SetContentTypeRequest requests to set content purpose and hint
 //
@@ -3323,9 +3697,21 @@ type TIUVZwpTextInputV1SetSurroundingTextRequest struct{}
 // When no content type is explicitly set, a normal content purpose with
 // default hints (auto completion, auto correction, auto capitalization)
 // should be assumed.
-type TIUVZwpTextInputV1SetContentTypeRequest struct{}
+type TIUVZwpTextInputV1SetContentTypeRequest struct {
+	Hint uintptr
 
-type TIUVZwpTextInputV1SetCursorRectangleRequest struct{}
+	Purpose uintptr
+}
+
+type TIUVZwpTextInputV1SetCursorRectangleRequest struct {
+	X uintptr
+
+	Y uintptr
+
+	Width uintptr
+
+	Height uintptr
+}
 
 // TIUVZwpTextInputV1SetPreferredLanguageRequest requests to sets preferred language
 //
@@ -3336,38 +3722,54 @@ type TIUVZwpTextInputV1SetCursorRectangleRequest struct{}
 // It could be used for example in a word processor to indicate the
 // language of the currently edited document or in an instant message
 // application which tracks languages of contacts.
-type TIUVZwpTextInputV1SetPreferredLanguageRequest struct{}
+type TIUVZwpTextInputV1SetPreferredLanguageRequest struct {
+	Language uintptr
+}
 
-type TIUVZwpTextInputV1CommitStateRequest struct{}
+type TIUVZwpTextInputV1CommitStateRequest struct {
+	// Serial contains used to identify the known state
+	Serial uintptr
+}
 
-type TIUVZwpTextInputV1InvokeActionRequest struct{}
+type TIUVZwpTextInputV1InvokeActionRequest struct {
+	Button uintptr
 
-// TIUVZwpTextInputV1EnterEvent requests to enter event
+	Index uintptr
+}
+
+// TIUVZwpTextInputV1EnterEvent signals when enter event
 //
 // Notify the text_input object when it received focus. Typically in
 // response to an activate request.
-type TIUVZwpTextInputV1EnterEvent struct{}
+type TIUVZwpTextInputV1EnterEvent struct {
+	Surface uintptr
+}
 
-// TIUVZwpTextInputV1LeaveEvent requests to leave event
+// TIUVZwpTextInputV1LeaveEvent signals when leave event
 //
 // Notify the text_input object when it lost focus. Either in response
 // to a deactivate request or when the assigned surface lost focus or was
 // destroyed.
-type TIUVZwpTextInputV1LeaveEvent struct{}
+type TIUVZwpTextInputV1LeaveEvent struct {
+}
 
-// TIUVZwpTextInputV1ModifiersMapEvent requests to modifiers map
+// TIUVZwpTextInputV1ModifiersMapEvent signals when modifiers map
 //
 // Transfer an array of 0-terminated modifier names. The position in
 // the array is the index of the modifier as used in the modifiers
 // bitmask in the keysym event.
-type TIUVZwpTextInputV1ModifiersMapEvent struct{}
+type TIUVZwpTextInputV1ModifiersMapEvent struct {
+	Map uintptr
+}
 
-// TIUVZwpTextInputV1InputPanelStateEvent requests to state of the input panel
+// TIUVZwpTextInputV1InputPanelStateEvent signals when state of the input panel
 //
 // Notify when the visibility state of the input panel changed.
-type TIUVZwpTextInputV1InputPanelStateEvent struct{}
+type TIUVZwpTextInputV1InputPanelStateEvent struct {
+	State uintptr
+}
 
-// TIUVZwpTextInputV1PreeditStringEvent requests to pre-edit
+// TIUVZwpTextInputV1PreeditStringEvent signals when pre-edit
 //
 // Notify when a new composing text (pre-edit) should be set around the
 // current cursor position. Any previously set composing text should
@@ -3378,9 +3780,16 @@ type TIUVZwpTextInputV1InputPanelStateEvent struct{}
 //
 // The text input should also handle all preedit_style and preedit_cursor
 // events occurring directly before preedit_string.
-type TIUVZwpTextInputV1PreeditStringEvent struct{}
+type TIUVZwpTextInputV1PreeditStringEvent struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
 
-// TIUVZwpTextInputV1PreeditStylingEvent requests to pre-edit styling
+	Text uintptr
+
+	Commit uintptr
+}
+
+// TIUVZwpTextInputV1PreeditStylingEvent signals when pre-edit styling
 //
 // Sets styling information on composing text. The style is applied for
 // length bytes from index relative to the beginning of the composing
@@ -3389,18 +3798,26 @@ type TIUVZwpTextInputV1PreeditStringEvent struct{}
 // events.
 //
 // This event is handled as part of a following preedit_string event.
-type TIUVZwpTextInputV1PreeditStylingEvent struct{}
+type TIUVZwpTextInputV1PreeditStylingEvent struct {
+	Index uintptr
 
-// TIUVZwpTextInputV1PreeditCursorEvent requests to pre-edit cursor
+	Length uintptr
+
+	Style uintptr
+}
+
+// TIUVZwpTextInputV1PreeditCursorEvent signals when pre-edit cursor
 //
 // Sets the cursor position inside the composing text (as byte
 // offset) relative to the start of the composing text. When index is a
 // negative number no cursor is shown.
 //
 // This event is handled as part of a following preedit_string event.
-type TIUVZwpTextInputV1PreeditCursorEvent struct{}
+type TIUVZwpTextInputV1PreeditCursorEvent struct {
+	Index uintptr
+}
 
-// TIUVZwpTextInputV1CommitStringEvent requests to commit
+// TIUVZwpTextInputV1CommitStringEvent signals when commit
 //
 // Notify when text should be inserted into the editor widget. The text to
 // commit could be either just a single character after a key press or the
@@ -3409,17 +3826,26 @@ type TIUVZwpTextInputV1PreeditCursorEvent struct{}
 // the input cursor should be moved (see cursor_position).
 //
 // Any previously set composing text should be removed.
-type TIUVZwpTextInputV1CommitStringEvent struct{}
+type TIUVZwpTextInputV1CommitStringEvent struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
 
-// TIUVZwpTextInputV1CursorPositionEvent requests to set cursor to new position
+	Text uintptr
+}
+
+// TIUVZwpTextInputV1CursorPositionEvent signals when set cursor to new position
 //
 // Notify when the cursor or anchor position should be modified.
 //
 // This event should be handled as part of a following commit_string
 // event.
-type TIUVZwpTextInputV1CursorPositionEvent struct{}
+type TIUVZwpTextInputV1CursorPositionEvent struct {
+	Index uintptr
 
-// TIUVZwpTextInputV1DeleteSurroundingTextEvent requests to delete surrounding text
+	Anchor uintptr
+}
+
+// TIUVZwpTextInputV1DeleteSurroundingTextEvent signals when delete surrounding text
 //
 // Notify when the text around the current cursor position should be
 // deleted.
@@ -3429,9 +3855,13 @@ type TIUVZwpTextInputV1CursorPositionEvent struct{}
 //
 // This event should be handled as part of a following commit_string
 // event.
-type TIUVZwpTextInputV1DeleteSurroundingTextEvent struct{}
+type TIUVZwpTextInputV1DeleteSurroundingTextEvent struct {
+	Index uintptr
 
-// TIUVZwpTextInputV1KeysymEvent requests to keysym
+	Length uintptr
+}
+
+// TIUVZwpTextInputV1KeysymEvent signals when keysym
 //
 // Notify when a key event was sent. Key events should not be used
 // for normal text input operations, which should be done with
@@ -3439,27 +3869,50 @@ type TIUVZwpTextInputV1DeleteSurroundingTextEvent struct{}
 // the wl_keyboard key event convention. Sym is an XKB keysym, state a
 // wl_keyboard key_state. Modifiers are a mask for effective modifiers
 // (where the modifier indices are set by the modifiers_map event)
-type TIUVZwpTextInputV1KeysymEvent struct{}
+type TIUVZwpTextInputV1KeysymEvent struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
 
-// TIUVZwpTextInputV1LanguageEvent requests to language
+	Time uintptr
+
+	Sym uintptr
+
+	State uintptr
+
+	Modifiers uintptr
+}
+
+// TIUVZwpTextInputV1LanguageEvent signals when language
 //
 // Sets the language of the input text. The "language" argument is an
 // RFC-3066 format language tag.
-type TIUVZwpTextInputV1LanguageEvent struct{}
+type TIUVZwpTextInputV1LanguageEvent struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
 
-// TIUVZwpTextInputV1TextDirectionEvent requests to text direction
+	Language uintptr
+}
+
+// TIUVZwpTextInputV1TextDirectionEvent signals when text direction
 //
 // Sets the text direction of input text.
 //
 // It is mainly needed for showing an input cursor on the correct side of
 // the editor when there is no input done yet and making sure neutral
 // direction text is laid out properly.
-type TIUVZwpTextInputV1TextDirectionEvent struct{}
+type TIUVZwpTextInputV1TextDirectionEvent struct {
+	// Serial contains serial of the latest known text input state
+	Serial uintptr
+
+	Direction uintptr
+}
 
 // TIUVZwpTextInputManagerV1CreateTextInputRequest requests to create text input
 //
 // Creates a new text_input object.
-type TIUVZwpTextInputManagerV1CreateTextInputRequest struct{}
+type TIUVZwpTextInputManagerV1CreateTextInputRequest struct {
+	ID uintptr
+}
 
 // TIUVZwpTextInputV3ChangeCause represents text change reason
 //
@@ -3467,14 +3920,10 @@ type TIUVZwpTextInputManagerV1CreateTextInputRequest struct{}
 type TIUVZwpTextInputV3ChangeCause int
 
 const (
-	// TIUVZwpTextInputV3ChangeCauseInputMethod corresponds to text change reason
-	//
-	// Reason for the change of surrounding text or cursor posision.
+	// TIUVZwpTextInputV3ChangeCauseInputMethod corresponds to input method caused the change
 	TIUVZwpTextInputV3ChangeCauseInputMethod TIUVZwpTextInputV3ChangeCause = 0
 
-	// TIUVZwpTextInputV3ChangeCauseOther corresponds to text change reason
-	//
-	// Reason for the change of surrounding text or cursor posision.
+	// TIUVZwpTextInputV3ChangeCauseOther corresponds to something else than the input method caused the change
 	TIUVZwpTextInputV3ChangeCauseOther TIUVZwpTextInputV3ChangeCause = 1
 )
 
@@ -3485,70 +3934,37 @@ const (
 type TIUVZwpTextInputV3ContentHint uint
 
 const (
-	// TIUVZwpTextInputV3ContentHintNone corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintNone corresponds to no special behavior
 	TIUVZwpTextInputV3ContentHintNone TIUVZwpTextInputV3ContentHint = 0x0
 
-	// TIUVZwpTextInputV3ContentHintCompletion corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintCompletion corresponds to suggest word completions
 	TIUVZwpTextInputV3ContentHintCompletion TIUVZwpTextInputV3ContentHint = 0x1
 
-	// TIUVZwpTextInputV3ContentHintSpellcheck corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintSpellcheck corresponds to suggest word corrections
 	TIUVZwpTextInputV3ContentHintSpellcheck TIUVZwpTextInputV3ContentHint = 0x2
 
-	// TIUVZwpTextInputV3ContentHintAutoCapitalization corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintAutoCapitalization corresponds to switch to uppercase letters at the start of a sentence
 	TIUVZwpTextInputV3ContentHintAutoCapitalization TIUVZwpTextInputV3ContentHint = 0x4
 
-	// TIUVZwpTextInputV3ContentHintLowercase corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintLowercase corresponds to prefer lowercase letters
 	TIUVZwpTextInputV3ContentHintLowercase TIUVZwpTextInputV3ContentHint = 0x8
 
-	// TIUVZwpTextInputV3ContentHintUppercase corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintUppercase corresponds to prefer uppercase letters
 	TIUVZwpTextInputV3ContentHintUppercase TIUVZwpTextInputV3ContentHint = 0x10
 
-	// TIUVZwpTextInputV3ContentHintTitlecase corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintTitlecase corresponds to prefer casing for titles and headings (can be language dependent)
 	TIUVZwpTextInputV3ContentHintTitlecase TIUVZwpTextInputV3ContentHint = 0x20
 
-	// TIUVZwpTextInputV3ContentHintHiddenText corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintHiddenText corresponds to characters should be hidden
 	TIUVZwpTextInputV3ContentHintHiddenText TIUVZwpTextInputV3ContentHint = 0x40
 
-	// TIUVZwpTextInputV3ContentHintSensitiveData corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintSensitiveData corresponds to typed text should not be stored
 	TIUVZwpTextInputV3ContentHintSensitiveData TIUVZwpTextInputV3ContentHint = 0x80
 
-	// TIUVZwpTextInputV3ContentHintLatin corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintLatin corresponds to just Latin characters should be entered
 	TIUVZwpTextInputV3ContentHintLatin TIUVZwpTextInputV3ContentHint = 0x100
 
-	// TIUVZwpTextInputV3ContentHintMultiline corresponds to content hint
-	//
-	// Content hint is a bitmask to allow to modify the behavior of the text
-	// input.
+	// TIUVZwpTextInputV3ContentHintMultiline corresponds to the text input is multiline
 	TIUVZwpTextInputV3ContentHintMultiline TIUVZwpTextInputV3ContentHint = 0x200
 )
 
@@ -3562,130 +3978,46 @@ const (
 type TIUVZwpTextInputV3ContentPurpose int
 
 const (
-	// TIUVZwpTextInputV3ContentPurposeNormal corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeNormal corresponds to default input, allowing all characters
 	TIUVZwpTextInputV3ContentPurposeNormal TIUVZwpTextInputV3ContentPurpose = 0
 
-	// TIUVZwpTextInputV3ContentPurposeAlpha corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeAlpha corresponds to allow only alphabetic characters
 	TIUVZwpTextInputV3ContentPurposeAlpha TIUVZwpTextInputV3ContentPurpose = 1
 
-	// TIUVZwpTextInputV3ContentPurposeDigits corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeDigits corresponds to allow only digits
 	TIUVZwpTextInputV3ContentPurposeDigits TIUVZwpTextInputV3ContentPurpose = 2
 
-	// TIUVZwpTextInputV3ContentPurposeNumber corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeNumber corresponds to input a number (including decimal separator and sign)
 	TIUVZwpTextInputV3ContentPurposeNumber TIUVZwpTextInputV3ContentPurpose = 3
 
-	// TIUVZwpTextInputV3ContentPurposePhone corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposePhone corresponds to input a phone number
 	TIUVZwpTextInputV3ContentPurposePhone TIUVZwpTextInputV3ContentPurpose = 4
 
-	// TIUVZwpTextInputV3ContentPurposeUrl corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeUrl corresponds to input an URL
 	TIUVZwpTextInputV3ContentPurposeUrl TIUVZwpTextInputV3ContentPurpose = 5
 
-	// TIUVZwpTextInputV3ContentPurposeEmail corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeEmail corresponds to input an email address
 	TIUVZwpTextInputV3ContentPurposeEmail TIUVZwpTextInputV3ContentPurpose = 6
 
-	// TIUVZwpTextInputV3ContentPurposeName corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeName corresponds to input a name of a person
 	TIUVZwpTextInputV3ContentPurposeName TIUVZwpTextInputV3ContentPurpose = 7
 
-	// TIUVZwpTextInputV3ContentPurposePassword corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposePassword corresponds to input a password (combine with sensitive_data hint)
 	TIUVZwpTextInputV3ContentPurposePassword TIUVZwpTextInputV3ContentPurpose = 8
 
-	// TIUVZwpTextInputV3ContentPurposePin corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposePin corresponds to input is a numeric password (combine with sensitive_data hint)
 	TIUVZwpTextInputV3ContentPurposePin TIUVZwpTextInputV3ContentPurpose = 9
 
-	// TIUVZwpTextInputV3ContentPurposeDate corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeDate corresponds to input a date
 	TIUVZwpTextInputV3ContentPurposeDate TIUVZwpTextInputV3ContentPurpose = 10
 
-	// TIUVZwpTextInputV3ContentPurposeTime corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeTime corresponds to input a time
 	TIUVZwpTextInputV3ContentPurposeTime TIUVZwpTextInputV3ContentPurpose = 11
 
-	// TIUVZwpTextInputV3ContentPurposeDatetime corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeDatetime corresponds to input a date and time
 	TIUVZwpTextInputV3ContentPurposeDatetime TIUVZwpTextInputV3ContentPurpose = 12
 
-	// TIUVZwpTextInputV3ContentPurposeTerminal corresponds to content purpose
-	//
-	// The content purpose allows to specify the primary purpose of a text
-	// input.
-	//
-	// This allows an input method to show special purpose input panels with
-	// extra characters or to disallow some characters.
+	// TIUVZwpTextInputV3ContentPurposeTerminal corresponds to input for a terminal
 	TIUVZwpTextInputV3ContentPurposeTerminal TIUVZwpTextInputV3ContentPurpose = 13
 )
 
@@ -3693,7 +4025,8 @@ const (
 //
 // Destroy the wp_text_input object. Also disables all surfaces enabled
 // through this wp_text_input object.
-type TIUVZwpTextInputV3DestroyRequest struct{}
+type TIUVZwpTextInputV3DestroyRequest struct {
+}
 
 // TIUVZwpTextInputV3EnableRequest requests to Request text input to be enabled
 //
@@ -3726,7 +4059,8 @@ type TIUVZwpTextInputV3DestroyRequest struct{}
 //
 // The changes must be applied by the compositor after issuing a
 // zwp_text_input_v3.commit request.
-type TIUVZwpTextInputV3EnableRequest struct{}
+type TIUVZwpTextInputV3EnableRequest struct {
+}
 
 // TIUVZwpTextInputV3DisableRequest requests to Disable text input on a surface
 //
@@ -3735,7 +4069,8 @@ type TIUVZwpTextInputV3EnableRequest struct{}
 //
 // State set with this request is double-buffered. It will get applied on
 // the next zwp_text_input_v3.commit request.
-type TIUVZwpTextInputV3DisableRequest struct{}
+type TIUVZwpTextInputV3DisableRequest struct {
+}
 
 // TIUVZwpTextInputV3SetSurroundingTextRequest requests to sets the surrounding text
 //
@@ -3770,7 +4105,13 @@ type TIUVZwpTextInputV3DisableRequest struct{}
 // The initial state for affected fields is empty, meaning that the text
 // input does not support sending surrounding text. If the empty values
 // get applied, subsequent attempts to change them may have no effect.
-type TIUVZwpTextInputV3SetSurroundingTextRequest struct{}
+type TIUVZwpTextInputV3SetSurroundingTextRequest struct {
+	Text uintptr
+
+	Cursor uintptr
+
+	Anchor uintptr
+}
 
 // TIUVZwpTextInputV3SetTextChangeCauseRequest requests to indicates the cause of surrounding text change
 //
@@ -3788,7 +4129,9 @@ type TIUVZwpTextInputV3SetSurroundingTextRequest struct{}
 // and reset to initial at the next zwp_text_input_v3.commit request.
 //
 // The initial value of cause is input_method.
-type TIUVZwpTextInputV3SetTextChangeCauseRequest struct{}
+type TIUVZwpTextInputV3SetTextChangeCauseRequest struct {
+	Cause uintptr
+}
 
 // TIUVZwpTextInputV3SetContentTypeRequest requests to set content purpose and hint
 //
@@ -3803,7 +4146,11 @@ type TIUVZwpTextInputV3SetTextChangeCauseRequest struct{}
 //
 // The initial value for hint is none, and the initial value for purpose
 // is normal.
-type TIUVZwpTextInputV3SetContentTypeRequest struct{}
+type TIUVZwpTextInputV3SetContentTypeRequest struct {
+	Hint uintptr
+
+	Purpose uintptr
+}
 
 // TIUVZwpTextInputV3SetCursorRectangleRequest requests to set cursor position
 //
@@ -3824,7 +4171,15 @@ type TIUVZwpTextInputV3SetContentTypeRequest struct{}
 // the text input does not support describing the cursor area. If the
 // empty values get applied, subsequent attempts to change them may have
 // no effect.
-type TIUVZwpTextInputV3SetCursorRectangleRequest struct{}
+type TIUVZwpTextInputV3SetCursorRectangleRequest struct {
+	X uintptr
+
+	Y uintptr
+
+	Width uintptr
+
+	Height uintptr
+}
 
 // TIUVZwpTextInputV3CommitRequest requests to commit state
 //
@@ -3851,9 +4206,10 @@ type TIUVZwpTextInputV3SetCursorRectangleRequest struct{}
 // The compositor must count the number of commit requests coming from
 // each zwp_text_input_v3 object and use the count as the serial in done
 // events.
-type TIUVZwpTextInputV3CommitRequest struct{}
+type TIUVZwpTextInputV3CommitRequest struct {
+}
 
-// TIUVZwpTextInputV3EnterEvent requests to enter event
+// TIUVZwpTextInputV3EnterEvent signals when enter event
 //
 // Notification that this seat's text-input focus is on a certain surface.
 //
@@ -3863,9 +4219,11 @@ type TIUVZwpTextInputV3CommitRequest struct{}
 // When the seat has the keyboard capability the text-input focus follows
 // the keyboard focus. This event sets the current surface for the
 // text-input object.
-type TIUVZwpTextInputV3EnterEvent struct{}
+type TIUVZwpTextInputV3EnterEvent struct {
+	Surface uintptr
+}
 
-// TIUVZwpTextInputV3LeaveEvent requests to leave event
+// TIUVZwpTextInputV3LeaveEvent signals when leave event
 //
 // Notification that this seat's text-input focus is no longer on a
 // certain surface. The client should reset any preedit string previously
@@ -3878,9 +4236,11 @@ type TIUVZwpTextInputV3EnterEvent struct{}
 //
 // When the seat has the keyboard capability the text-input focus follows
 // the keyboard focus.
-type TIUVZwpTextInputV3LeaveEvent struct{}
+type TIUVZwpTextInputV3LeaveEvent struct {
+	Surface uintptr
+}
 
-// TIUVZwpTextInputV3PreeditStringEvent requests to pre-edit
+// TIUVZwpTextInputV3PreeditStringEvent signals when pre-edit
 //
 // Notify when a new composing text (pre-edit) should be set at the
 // current cursor position. Any previously set composing text must be
@@ -3900,9 +4260,15 @@ type TIUVZwpTextInputV3LeaveEvent struct{}
 //
 // The initial value of text is an empty string, and cursor_begin,
 // cursor_end and cursor_hidden are all 0.
-type TIUVZwpTextInputV3PreeditStringEvent struct{}
+type TIUVZwpTextInputV3PreeditStringEvent struct {
+	Text uintptr
 
-// TIUVZwpTextInputV3CommitStringEvent requests to text commit
+	CursorBegin uintptr
+
+	CursorEnd uintptr
+}
+
+// TIUVZwpTextInputV3CommitStringEvent signals when text commit
 //
 // Notify when text should be inserted into the editor widget. The text to
 // commit could be either just a single character after a key press or the
@@ -3912,9 +4278,11 @@ type TIUVZwpTextInputV3PreeditStringEvent struct{}
 // and reset to initial on the next zwp_text_input_v3.done event.
 //
 // The initial value of text is an empty string.
-type TIUVZwpTextInputV3CommitStringEvent struct{}
+type TIUVZwpTextInputV3CommitStringEvent struct {
+	Text uintptr
+}
 
-// TIUVZwpTextInputV3DeleteSurroundingTextEvent requests to delete surrounding text
+// TIUVZwpTextInputV3DeleteSurroundingTextEvent signals when delete surrounding text
 //
 // Notify when the text around the current cursor position should be
 // deleted.
@@ -3930,9 +4298,15 @@ type TIUVZwpTextInputV3CommitStringEvent struct{}
 // and reset to initial on the next zwp_text_input_v3.done event.
 //
 // The initial values of both before_length and after_length are 0.
-type TIUVZwpTextInputV3DeleteSurroundingTextEvent struct{}
+type TIUVZwpTextInputV3DeleteSurroundingTextEvent struct {
+	// BeforeLength contains length of text before current cursor position
+	BeforeLength uintptr
 
-// TIUVZwpTextInputV3DoneEvent requests to apply changes
+	// AfterLength contains length of text after current cursor position
+	AfterLength uintptr
+}
+
+// TIUVZwpTextInputV3DoneEvent signals when apply changes
 //
 // Instruct the application to apply changes to state requested by the
 // preedit_string, commit_string and delete_surrounding_text events. The
@@ -3956,21 +4330,29 @@ type TIUVZwpTextInputV3DeleteSurroundingTextEvent struct{}
 // When the client receives a done event with a serial different than the
 // number of past commit requests, it must proceed as normal, except it
 // should not change the current state of the zwp_text_input_v3 object.
-type TIUVZwpTextInputV3DoneEvent struct{}
+type TIUVZwpTextInputV3DoneEvent struct {
+	Serial uintptr
+}
 
 // TIUVZwpTextInputManagerV3DestroyRequest requests to Destroy the wp_text_input_manager
 //
 // Destroy the wp_text_input_manager object.
-type TIUVZwpTextInputManagerV3DestroyRequest struct{}
+type TIUVZwpTextInputManagerV3DestroyRequest struct {
+}
 
 // TIUVZwpTextInputManagerV3GetTextInputRequest requests to create a new text input object
 //
 // Creates a new text-input object for a given seat.
-type TIUVZwpTextInputManagerV3GetTextInputRequest struct{}
+type TIUVZwpTextInputManagerV3GetTextInputRequest struct {
+	ID uintptr
+
+	Seat uintptr
+}
 
 type VWpViewporterError int
 
 const (
+	// VWpViewporterErrorViewportExists corresponds to the surface already has a viewport object associated
 	VWpViewporterErrorViewportExists VWpViewporterError = 0
 )
 
@@ -3979,7 +4361,8 @@ const (
 // Informs the server that the client will not be using this
 // protocol object anymore. This does not affect any other objects,
 // wp_viewport objects included.
-type VWpViewporterDestroyRequest struct{}
+type VWpViewporterDestroyRequest struct {
+}
 
 // VWpViewporterGetViewportRequest requests to extend surface interface for crop and scale
 //
@@ -3987,17 +4370,27 @@ type VWpViewporterDestroyRequest struct{}
 // crop and scale its content. If the given wl_surface already has
 // a wp_viewport object associated, the viewport_exists
 // protocol error is raised.
-type VWpViewporterGetViewportRequest struct{}
+type VWpViewporterGetViewportRequest struct {
+	// ID contains the new viewport interface id
+	ID uintptr
+
+	// Surface contains the surface
+	Surface uintptr
+}
 
 type VWpViewportError int
 
 const (
+	// VWpViewportErrorBadValue corresponds to negative or zero values in width or height
 	VWpViewportErrorBadValue VWpViewportError = 0
 
+	// VWpViewportErrorBadSize corresponds to destination size is not integer
 	VWpViewportErrorBadSize VWpViewportError = 1
 
+	// VWpViewportErrorOutOfBuffer corresponds to source rectangle extends outside of the content area
 	VWpViewportErrorOutOfBuffer VWpViewportError = 2
 
+	// VWpViewportErrorNoSurface corresponds to the wl_surface was destroyed
 	VWpViewportErrorNoSurface VWpViewportError = 3
 )
 
@@ -4005,7 +4398,8 @@ const (
 //
 // The associated wl_surface's crop and scale state is removed.
 // The change is applied on the next wl_surface.commit.
-type VWpViewportDestroyRequest struct{}
+type VWpViewportDestroyRequest struct {
+}
 
 // VWpViewportSetSourceRequest requests to set the source rectangle for cropping
 //
@@ -4020,7 +4414,19 @@ type VWpViewportDestroyRequest struct{}
 //
 // The crop and scale state is double-buffered state, and will be
 // applied on the next wl_surface.commit.
-type VWpViewportSetSourceRequest struct{}
+type VWpViewportSetSourceRequest struct {
+	// X contains source rectangle x
+	X uintptr
+
+	// Y contains source rectangle y
+	Y uintptr
+
+	// Width contains source rectangle width
+	Width uintptr
+
+	// Height contains source rectangle height
+	Height uintptr
+}
 
 // VWpViewportSetDestinationRequest requests to set the surface size for scaling
 //
@@ -4035,7 +4441,13 @@ type VWpViewportSetSourceRequest struct{}
 //
 // The crop and scale state is double-buffered state, and will be
 // applied on the next wl_surface.commit.
-type VWpViewportSetDestinationRequest struct{}
+type VWpViewportSetDestinationRequest struct {
+	// Width contains surface width
+	Width uintptr
+
+	// Height contains surface height
+	Height uintptr
+}
 
 // WWlDisplayError represents global error values
 //
@@ -4044,28 +4456,16 @@ type VWpViewportSetDestinationRequest struct{}
 type WWlDisplayError int
 
 const (
-	// WWlDisplayErrorInvalidObject corresponds to global error values
-	//
-	// These errors are global and can be emitted in response to any
-	// server request.
+	// WWlDisplayErrorInvalidObject corresponds to server couldn't find object
 	WWlDisplayErrorInvalidObject WWlDisplayError = 0
 
-	// WWlDisplayErrorInvalidMethod corresponds to global error values
-	//
-	// These errors are global and can be emitted in response to any
-	// server request.
+	// WWlDisplayErrorInvalidMethod corresponds to method doesn't exist on the specified interface or malformed request
 	WWlDisplayErrorInvalidMethod WWlDisplayError = 1
 
-	// WWlDisplayErrorNoMemory corresponds to global error values
-	//
-	// These errors are global and can be emitted in response to any
-	// server request.
+	// WWlDisplayErrorNoMemory corresponds to server is out of memory
 	WWlDisplayErrorNoMemory WWlDisplayError = 2
 
-	// WWlDisplayErrorImplementation corresponds to global error values
-	//
-	// These errors are global and can be emitted in response to any
-	// server request.
+	// WWlDisplayErrorImplementation corresponds to implementation error in compositor
 	WWlDisplayErrorImplementation WWlDisplayError = 3
 )
 
@@ -4082,7 +4482,10 @@ const (
 // attempt to use it after that point.
 //
 // The callback_data passed in the callback is the event serial.
-type WWlDisplaySyncRequest struct{}
+type WWlDisplaySyncRequest struct {
+	// Callback contains callback object for the sync request
+	Callback uintptr
+}
 
 // WWlDisplayGetRegistryRequest requests to get global registry object
 //
@@ -4095,9 +4498,12 @@ type WWlDisplaySyncRequest struct{}
 // client disconnects, not when the client side proxy is destroyed.
 // Therefore, clients should invoke get_registry as infrequently as
 // possible to avoid wasting memory.
-type WWlDisplayGetRegistryRequest struct{}
+type WWlDisplayGetRegistryRequest struct {
+	// Registry contains global registry object
+	Registry uintptr
+}
 
-// WWlDisplayErrorEvent requests to fatal error event
+// WWlDisplayErrorEvent signals when fatal error event
 //
 // The error event is sent out when a fatal (non-recoverable)
 // error has occurred.  The object_id argument is the object
@@ -4106,33 +4512,60 @@ type WWlDisplayGetRegistryRequest struct{}
 // by the object interface.  As such, each interface defines its
 // own set of error codes.  The message is a brief description
 // of the error, for (debugging) convenience.
-type WWlDisplayErrorEvent struct{}
+type WWlDisplayErrorEvent struct {
+	// ObjectID contains object where the error occurred
+	ObjectID uintptr
 
-// WWlDisplayDeleteIdEvent requests to acknowledge object ID deletion
+	// Code contains error code
+	Code uintptr
+
+	// Message contains error description
+	Message uintptr
+}
+
+// WWlDisplayDeleteIDEvent signals when acknowledge object ID deletion
 //
 // This event is used internally by the object ID management
 // logic. When a client deletes an object that it had created,
 // the server will send this event to acknowledge that it has
 // seen the delete request. When the client receives this event,
 // it will know that it can safely reuse the object ID.
-type WWlDisplayDeleteIdEvent struct{}
+type WWlDisplayDeleteIDEvent struct {
+	// ID contains deleted object ID
+	ID uintptr
+}
 
 // WWlRegistryBindRequest requests to bind an object to the display
 //
 // Binds a new, client-created object to the server using the
 // specified name as the identifier.
-type WWlRegistryBindRequest struct{}
+type WWlRegistryBindRequest struct {
+	// Name contains unique numeric name of the object
+	Name uintptr
 
-// WWlRegistryGlobalEvent requests to announce global object
+	// ID contains bounded object
+	ID uintptr
+}
+
+// WWlRegistryGlobalEvent signals when announce global object
 //
 // Notify the client of global objects.
 //
 // The event notifies the client that a global object with
 // the given name is now available, and it implements the
 // given version of the given interface.
-type WWlRegistryGlobalEvent struct{}
+type WWlRegistryGlobalEvent struct {
+	// Name contains numeric name of the global object
+	Name uintptr
 
-// WWlRegistryGlobalRemoveEvent requests to announce removal of global object
+	// Interface contains interface implemented by the object
+	Interface uintptr
+
+	// Version contains interface version
+	Version uintptr
+}
+
+// WWlRegistryGlobalRemoveEvent signals when announce removal of global object
 //
 // Notify the client of removed global objects.
 //
@@ -4144,22 +4577,34 @@ type WWlRegistryGlobalEvent struct{}
 // The object remains valid and requests to the object will be
 // ignored until the client destroys it, to avoid races between
 // the global going away and a client sending a request to it.
-type WWlRegistryGlobalRemoveEvent struct{}
+type WWlRegistryGlobalRemoveEvent struct {
+	// Name contains numeric name of the global object
+	Name uintptr
+}
 
-// WWlCallbackDoneEvent requests to done event
+// WWlCallbackDoneEvent signals when done event
 //
 // Notify the client when the related request is done.
-type WWlCallbackDoneEvent struct{}
+type WWlCallbackDoneEvent struct {
+	// CallbackData contains request-specific data for the callback
+	CallbackData uintptr
+}
 
 // WWlCompositorCreateSurfaceRequest requests to create new surface
 //
 // Ask the compositor to create a new surface.
-type WWlCompositorCreateSurfaceRequest struct{}
+type WWlCompositorCreateSurfaceRequest struct {
+	// ID contains the new surface
+	ID uintptr
+}
 
 // WWlCompositorCreateRegionRequest requests to create new region
 //
 // Ask the compositor to create a new region.
-type WWlCompositorCreateRegionRequest struct{}
+type WWlCompositorCreateRegionRequest struct {
+	// ID contains the new region
+	ID uintptr
+}
 
 // WWlShmPoolCreateBufferRequest requests to create a buffer from the pool
 //
@@ -4174,7 +4619,25 @@ type WWlCompositorCreateRegionRequest struct{}
 // A buffer will keep a reference to the pool it was created from
 // so it is valid to destroy the pool immediately after creating
 // a buffer from it.
-type WWlShmPoolCreateBufferRequest struct{}
+type WWlShmPoolCreateBufferRequest struct {
+	// ID contains buffer to create
+	ID uintptr
+
+	// Offset contains buffer byte offset within the pool
+	Offset uintptr
+
+	// Width contains buffer width, in pixels
+	Width uintptr
+
+	// Height contains buffer height, in pixels
+	Height uintptr
+
+	// Stride contains number of bytes from the beginning of one row to the beginning of the next row
+	Stride uintptr
+
+	// Format contains buffer pixel format
+	Format uintptr
+}
 
 // WWlShmPoolDestroyRequest requests to destroy the pool
 //
@@ -4183,7 +4646,8 @@ type WWlShmPoolCreateBufferRequest struct{}
 // The mmapped memory will be released when all
 // buffers that have been created from this pool
 // are gone.
-type WWlShmPoolDestroyRequest struct{}
+type WWlShmPoolDestroyRequest struct {
+}
 
 // WWlShmPoolResizeRequest requests to change the size of the pool mapping
 //
@@ -4191,7 +4655,10 @@ type WWlShmPoolDestroyRequest struct{}
 // for the pool from the file descriptor passed when the pool was
 // created, but using the new size.  This request can only be
 // used to make the pool bigger.
-type WWlShmPoolResizeRequest struct{}
+type WWlShmPoolResizeRequest struct {
+	// Size contains new size of the pool, in bytes
+	Size uintptr
+}
 
 // WWlShmError represents wl_shm error values
 //
@@ -4199,20 +4666,14 @@ type WWlShmPoolResizeRequest struct{}
 type WWlShmError int
 
 const (
-	// WWlShmErrorInvalidFormat corresponds to wl_shm error values
-	//
-	// These errors can be emitted in response to wl_shm requests.
+	// WWlShmErrorInvalidFormat corresponds to buffer format is not known
 	WWlShmErrorInvalidFormat WWlShmError = 0
 
-	// WWlShmErrorInvalidStride corresponds to wl_shm error values
-	//
-	// These errors can be emitted in response to wl_shm requests.
+	// WWlShmErrorInvalidStride corresponds to invalid size or stride during pool or buffer creation
 	WWlShmErrorInvalidStride WWlShmError = 1
 
-	// WWlShmErrorInvalidFd corresponds to wl_shm error values
-	//
-	// These errors can be emitted in response to wl_shm requests.
-	WWlShmErrorInvalidFd WWlShmError = 2
+	// WWlShmErrorInvalidFD corresponds to mmapping the file descriptor failed
+	WWlShmErrorInvalidFD WWlShmError = 2
 )
 
 // WWlShmFormat represents pixel formats
@@ -4229,1356 +4690,304 @@ const (
 type WWlShmFormat int
 
 const (
-	// WWlShmFormatArgb8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatArgb8888 corresponds to 32-bit ARGB format, [31:0] A:R:G:B 8:8:8:8 little endian
 	WWlShmFormatArgb8888 WWlShmFormat = 0
 
-	// WWlShmFormatXrgb8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXrgb8888 corresponds to 32-bit RGB format, [31:0] x:R:G:B 8:8:8:8 little endian
 	WWlShmFormatXrgb8888 WWlShmFormat = 1
 
-	// WWlShmFormatC8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatC8 corresponds to 8-bit color index format, [7:0] C
 	WWlShmFormatC8 WWlShmFormat = 0x20203843
 
-	// WWlShmFormatRgb332 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgb332 corresponds to 8-bit RGB format, [7:0] R:G:B 3:3:2
 	WWlShmFormatRgb332 WWlShmFormat = 0x38424752
 
-	// WWlShmFormatBgr233 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgr233 corresponds to 8-bit BGR format, [7:0] B:G:R 2:3:3
 	WWlShmFormatBgr233 WWlShmFormat = 0x38524742
 
-	// WWlShmFormatXrgb4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXrgb4444 corresponds to 16-bit xRGB format, [15:0] x:R:G:B 4:4:4:4 little endian
 	WWlShmFormatXrgb4444 WWlShmFormat = 0x32315258
 
-	// WWlShmFormatXbgr4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXbgr4444 corresponds to 16-bit xBGR format, [15:0] x:B:G:R 4:4:4:4 little endian
 	WWlShmFormatXbgr4444 WWlShmFormat = 0x32314258
 
-	// WWlShmFormatRgbx4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgbx4444 corresponds to 16-bit RGBx format, [15:0] R:G:B:x 4:4:4:4 little endian
 	WWlShmFormatRgbx4444 WWlShmFormat = 0x32315852
 
-	// WWlShmFormatBgrx4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgrx4444 corresponds to 16-bit BGRx format, [15:0] B:G:R:x 4:4:4:4 little endian
 	WWlShmFormatBgrx4444 WWlShmFormat = 0x32315842
 
-	// WWlShmFormatArgb4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatArgb4444 corresponds to 16-bit ARGB format, [15:0] A:R:G:B 4:4:4:4 little endian
 	WWlShmFormatArgb4444 WWlShmFormat = 0x32315241
 
-	// WWlShmFormatAbgr4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatAbgr4444 corresponds to 16-bit ABGR format, [15:0] A:B:G:R 4:4:4:4 little endian
 	WWlShmFormatAbgr4444 WWlShmFormat = 0x32314241
 
-	// WWlShmFormatRgba4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgba4444 corresponds to 16-bit RBGA format, [15:0] R:G:B:A 4:4:4:4 little endian
 	WWlShmFormatRgba4444 WWlShmFormat = 0x32314152
 
-	// WWlShmFormatBgra4444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgra4444 corresponds to 16-bit BGRA format, [15:0] B:G:R:A 4:4:4:4 little endian
 	WWlShmFormatBgra4444 WWlShmFormat = 0x32314142
 
-	// WWlShmFormatXrgb1555 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXrgb1555 corresponds to 16-bit xRGB format, [15:0] x:R:G:B 1:5:5:5 little endian
 	WWlShmFormatXrgb1555 WWlShmFormat = 0x35315258
 
-	// WWlShmFormatXbgr1555 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXbgr1555 corresponds to 16-bit xBGR 1555 format, [15:0] x:B:G:R 1:5:5:5 little endian
 	WWlShmFormatXbgr1555 WWlShmFormat = 0x35314258
 
-	// WWlShmFormatRgbx5551 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgbx5551 corresponds to 16-bit RGBx 5551 format, [15:0] R:G:B:x 5:5:5:1 little endian
 	WWlShmFormatRgbx5551 WWlShmFormat = 0x35315852
 
-	// WWlShmFormatBgrx5551 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgrx5551 corresponds to 16-bit BGRx 5551 format, [15:0] B:G:R:x 5:5:5:1 little endian
 	WWlShmFormatBgrx5551 WWlShmFormat = 0x35315842
 
-	// WWlShmFormatArgb1555 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatArgb1555 corresponds to 16-bit ARGB 1555 format, [15:0] A:R:G:B 1:5:5:5 little endian
 	WWlShmFormatArgb1555 WWlShmFormat = 0x35315241
 
-	// WWlShmFormatAbgr1555 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatAbgr1555 corresponds to 16-bit ABGR 1555 format, [15:0] A:B:G:R 1:5:5:5 little endian
 	WWlShmFormatAbgr1555 WWlShmFormat = 0x35314241
 
-	// WWlShmFormatRgba5551 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgba5551 corresponds to 16-bit RGBA 5551 format, [15:0] R:G:B:A 5:5:5:1 little endian
 	WWlShmFormatRgba5551 WWlShmFormat = 0x35314152
 
-	// WWlShmFormatBgra5551 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgra5551 corresponds to 16-bit BGRA 5551 format, [15:0] B:G:R:A 5:5:5:1 little endian
 	WWlShmFormatBgra5551 WWlShmFormat = 0x35314142
 
-	// WWlShmFormatRgb565 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgb565 corresponds to 16-bit RGB 565 format, [15:0] R:G:B 5:6:5 little endian
 	WWlShmFormatRgb565 WWlShmFormat = 0x36314752
 
-	// WWlShmFormatBgr565 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgr565 corresponds to 16-bit BGR 565 format, [15:0] B:G:R 5:6:5 little endian
 	WWlShmFormatBgr565 WWlShmFormat = 0x36314742
 
-	// WWlShmFormatRgb888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgb888 corresponds to 24-bit RGB format, [23:0] R:G:B little endian
 	WWlShmFormatRgb888 WWlShmFormat = 0x34324752
 
-	// WWlShmFormatBgr888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgr888 corresponds to 24-bit BGR format, [23:0] B:G:R little endian
 	WWlShmFormatBgr888 WWlShmFormat = 0x34324742
 
-	// WWlShmFormatXbgr8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXbgr8888 corresponds to 32-bit xBGR format, [31:0] x:B:G:R 8:8:8:8 little endian
 	WWlShmFormatXbgr8888 WWlShmFormat = 0x34324258
 
-	// WWlShmFormatRgbx8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgbx8888 corresponds to 32-bit RGBx format, [31:0] R:G:B:x 8:8:8:8 little endian
 	WWlShmFormatRgbx8888 WWlShmFormat = 0x34325852
 
-	// WWlShmFormatBgrx8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgrx8888 corresponds to 32-bit BGRx format, [31:0] B:G:R:x 8:8:8:8 little endian
 	WWlShmFormatBgrx8888 WWlShmFormat = 0x34325842
 
-	// WWlShmFormatAbgr8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatAbgr8888 corresponds to 32-bit ABGR format, [31:0] A:B:G:R 8:8:8:8 little endian
 	WWlShmFormatAbgr8888 WWlShmFormat = 0x34324241
 
-	// WWlShmFormatRgba8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgba8888 corresponds to 32-bit RGBA format, [31:0] R:G:B:A 8:8:8:8 little endian
 	WWlShmFormatRgba8888 WWlShmFormat = 0x34324152
 
-	// WWlShmFormatBgra8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgra8888 corresponds to 32-bit BGRA format, [31:0] B:G:R:A 8:8:8:8 little endian
 	WWlShmFormatBgra8888 WWlShmFormat = 0x34324142
 
-	// WWlShmFormatXrgb2101010 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXrgb2101010 corresponds to 32-bit xRGB format, [31:0] x:R:G:B 2:10:10:10 little endian
 	WWlShmFormatXrgb2101010 WWlShmFormat = 0x30335258
 
-	// WWlShmFormatXbgr2101010 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXbgr2101010 corresponds to 32-bit xBGR format, [31:0] x:B:G:R 2:10:10:10 little endian
 	WWlShmFormatXbgr2101010 WWlShmFormat = 0x30334258
 
-	// WWlShmFormatRgbx1010102 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgbx1010102 corresponds to 32-bit RGBx format, [31:0] R:G:B:x 10:10:10:2 little endian
 	WWlShmFormatRgbx1010102 WWlShmFormat = 0x30335852
 
-	// WWlShmFormatBgrx1010102 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgrx1010102 corresponds to 32-bit BGRx format, [31:0] B:G:R:x 10:10:10:2 little endian
 	WWlShmFormatBgrx1010102 WWlShmFormat = 0x30335842
 
-	// WWlShmFormatArgb2101010 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatArgb2101010 corresponds to 32-bit ARGB format, [31:0] A:R:G:B 2:10:10:10 little endian
 	WWlShmFormatArgb2101010 WWlShmFormat = 0x30335241
 
-	// WWlShmFormatAbgr2101010 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatAbgr2101010 corresponds to 32-bit ABGR format, [31:0] A:B:G:R 2:10:10:10 little endian
 	WWlShmFormatAbgr2101010 WWlShmFormat = 0x30334241
 
-	// WWlShmFormatRgba1010102 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRgba1010102 corresponds to 32-bit RGBA format, [31:0] R:G:B:A 10:10:10:2 little endian
 	WWlShmFormatRgba1010102 WWlShmFormat = 0x30334152
 
-	// WWlShmFormatBgra1010102 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatBgra1010102 corresponds to 32-bit BGRA format, [31:0] B:G:R:A 10:10:10:2 little endian
 	WWlShmFormatBgra1010102 WWlShmFormat = 0x30334142
 
-	// WWlShmFormatYuyv corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYuyv corresponds to packed YCbCr format, [31:0] Cr0:Y1:Cb0:Y0 8:8:8:8 little endian
 	WWlShmFormatYuyv WWlShmFormat = 0x56595559
 
-	// WWlShmFormatYvyu corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYvyu corresponds to packed YCbCr format, [31:0] Cb0:Y1:Cr0:Y0 8:8:8:8 little endian
 	WWlShmFormatYvyu WWlShmFormat = 0x55595659
 
-	// WWlShmFormatUyvy corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatUyvy corresponds to packed YCbCr format, [31:0] Y1:Cr0:Y0:Cb0 8:8:8:8 little endian
 	WWlShmFormatUyvy WWlShmFormat = 0x59565955
 
-	// WWlShmFormatVyuy corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatVyuy corresponds to packed YCbCr format, [31:0] Y1:Cb0:Y0:Cr0 8:8:8:8 little endian
 	WWlShmFormatVyuy WWlShmFormat = 0x59555956
 
-	// WWlShmFormatAyuv corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatAyuv corresponds to packed AYCbCr format, [31:0] A:Y:Cb:Cr 8:8:8:8 little endian
 	WWlShmFormatAyuv WWlShmFormat = 0x56555941
 
-	// WWlShmFormatNv12 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatNv12 corresponds to 2 plane YCbCr Cr:Cb format, 2x2 subsampled Cr:Cb plane
 	WWlShmFormatNv12 WWlShmFormat = 0x3231564e
 
-	// WWlShmFormatNv21 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatNv21 corresponds to 2 plane YCbCr Cb:Cr format, 2x2 subsampled Cb:Cr plane
 	WWlShmFormatNv21 WWlShmFormat = 0x3132564e
 
-	// WWlShmFormatNv16 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatNv16 corresponds to 2 plane YCbCr Cr:Cb format, 2x1 subsampled Cr:Cb plane
 	WWlShmFormatNv16 WWlShmFormat = 0x3631564e
 
-	// WWlShmFormatNv61 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatNv61 corresponds to 2 plane YCbCr Cb:Cr format, 2x1 subsampled Cb:Cr plane
 	WWlShmFormatNv61 WWlShmFormat = 0x3136564e
 
-	// WWlShmFormatYuv410 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYuv410 corresponds to 3 plane YCbCr format, 4x4 subsampled Cb (1) and Cr (2) planes
 	WWlShmFormatYuv410 WWlShmFormat = 0x39565559
 
-	// WWlShmFormatYvu410 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYvu410 corresponds to 3 plane YCbCr format, 4x4 subsampled Cr (1) and Cb (2) planes
 	WWlShmFormatYvu410 WWlShmFormat = 0x39555659
 
-	// WWlShmFormatYuv411 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYuv411 corresponds to 3 plane YCbCr format, 4x1 subsampled Cb (1) and Cr (2) planes
 	WWlShmFormatYuv411 WWlShmFormat = 0x31315559
 
-	// WWlShmFormatYvu411 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYvu411 corresponds to 3 plane YCbCr format, 4x1 subsampled Cr (1) and Cb (2) planes
 	WWlShmFormatYvu411 WWlShmFormat = 0x31315659
 
-	// WWlShmFormatYuv420 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYuv420 corresponds to 3 plane YCbCr format, 2x2 subsampled Cb (1) and Cr (2) planes
 	WWlShmFormatYuv420 WWlShmFormat = 0x32315559
 
-	// WWlShmFormatYvu420 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYvu420 corresponds to 3 plane YCbCr format, 2x2 subsampled Cr (1) and Cb (2) planes
 	WWlShmFormatYvu420 WWlShmFormat = 0x32315659
 
-	// WWlShmFormatYuv422 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYuv422 corresponds to 3 plane YCbCr format, 2x1 subsampled Cb (1) and Cr (2) planes
 	WWlShmFormatYuv422 WWlShmFormat = 0x36315559
 
-	// WWlShmFormatYvu422 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYvu422 corresponds to 3 plane YCbCr format, 2x1 subsampled Cr (1) and Cb (2) planes
 	WWlShmFormatYvu422 WWlShmFormat = 0x36315659
 
-	// WWlShmFormatYuv444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYuv444 corresponds to 3 plane YCbCr format, non-subsampled Cb (1) and Cr (2) planes
 	WWlShmFormatYuv444 WWlShmFormat = 0x34325559
 
-	// WWlShmFormatYvu444 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatYvu444 corresponds to 3 plane YCbCr format, non-subsampled Cr (1) and Cb (2) planes
 	WWlShmFormatYvu444 WWlShmFormat = 0x34325659
 
-	// WWlShmFormatR8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatR8 corresponds to [7:0] R
 	WWlShmFormatR8 WWlShmFormat = 0x20203852
 
-	// WWlShmFormatR16 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatR16 corresponds to [15:0] R little endian
 	WWlShmFormatR16 WWlShmFormat = 0x20363152
 
-	// WWlShmFormatRg88 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRg88 corresponds to [15:0] R:G 8:8 little endian
 	WWlShmFormatRg88 WWlShmFormat = 0x38384752
 
-	// WWlShmFormatGr88 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatGr88 corresponds to [15:0] G:R 8:8 little endian
 	WWlShmFormatGr88 WWlShmFormat = 0x38385247
 
-	// WWlShmFormatRg1616 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatRg1616 corresponds to [31:0] R:G 16:16 little endian
 	WWlShmFormatRg1616 WWlShmFormat = 0x32334752
 
-	// WWlShmFormatGr1616 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatGr1616 corresponds to [31:0] G:R 16:16 little endian
 	WWlShmFormatGr1616 WWlShmFormat = 0x32335247
 
-	// WWlShmFormatXrgb16161616f corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXrgb16161616f corresponds to [63:0] x:R:G:B 16:16:16:16 little endian
 	WWlShmFormatXrgb16161616f WWlShmFormat = 0x48345258
 
-	// WWlShmFormatXbgr16161616f corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXbgr16161616f corresponds to [63:0] x:B:G:R 16:16:16:16 little endian
 	WWlShmFormatXbgr16161616f WWlShmFormat = 0x48344258
 
-	// WWlShmFormatArgb16161616f corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatArgb16161616f corresponds to [63:0] A:R:G:B 16:16:16:16 little endian
 	WWlShmFormatArgb16161616f WWlShmFormat = 0x48345241
 
-	// WWlShmFormatAbgr16161616f corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatAbgr16161616f corresponds to [63:0] A:B:G:R 16:16:16:16 little endian
 	WWlShmFormatAbgr16161616f WWlShmFormat = 0x48344241
 
-	// WWlShmFormatXyuv8888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXyuv8888 corresponds to [31:0] X:Y:Cb:Cr 8:8:8:8 little endian
 	WWlShmFormatXyuv8888 WWlShmFormat = 0x56555958
 
-	// WWlShmFormatVuy888 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatVuy888 corresponds to [23:0] Cr:Cb:Y 8:8:8 little endian
 	WWlShmFormatVuy888 WWlShmFormat = 0x34325556
 
-	// WWlShmFormatVuy101010 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatVuy101010 corresponds to Y followed by U then V, 10:10:10. Non-linear modifier only
 	WWlShmFormatVuy101010 WWlShmFormat = 0x30335556
 
-	// WWlShmFormatY210 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY210 corresponds to [63:0] Cr0:0:Y1:0:Cb0:0:Y0:0 10:6:10:6:10:6:10:6 little endian per 2 Y pixels
 	WWlShmFormatY210 WWlShmFormat = 0x30313259
 
-	// WWlShmFormatY212 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY212 corresponds to [63:0] Cr0:0:Y1:0:Cb0:0:Y0:0 12:4:12:4:12:4:12:4 little endian per 2 Y pixels
 	WWlShmFormatY212 WWlShmFormat = 0x32313259
 
-	// WWlShmFormatY216 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY216 corresponds to [63:0] Cr0:Y1:Cb0:Y0 16:16:16:16 little endian per 2 Y pixels
 	WWlShmFormatY216 WWlShmFormat = 0x36313259
 
-	// WWlShmFormatY410 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY410 corresponds to [31:0] A:Cr:Y:Cb 2:10:10:10 little endian
 	WWlShmFormatY410 WWlShmFormat = 0x30313459
 
-	// WWlShmFormatY412 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY412 corresponds to [63:0] A:0:Cr:0:Y:0:Cb:0 12:4:12:4:12:4:12:4 little endian
 	WWlShmFormatY412 WWlShmFormat = 0x32313459
 
-	// WWlShmFormatY416 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY416 corresponds to [63:0] A:Cr:Y:Cb 16:16:16:16 little endian
 	WWlShmFormatY416 WWlShmFormat = 0x36313459
 
-	// WWlShmFormatXvyu2101010 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXvyu2101010 corresponds to [31:0] X:Cr:Y:Cb 2:10:10:10 little endian
 	WWlShmFormatXvyu2101010 WWlShmFormat = 0x30335658
 
-	// WWlShmFormatXvyu1216161616 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXvyu1216161616 corresponds to [63:0] X:0:Cr:0:Y:0:Cb:0 12:4:12:4:12:4:12:4 little endian
 	WWlShmFormatXvyu1216161616 WWlShmFormat = 0x36335658
 
-	// WWlShmFormatXvyu16161616 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatXvyu16161616 corresponds to [63:0] X:Cr:Y:Cb 16:16:16:16 little endian
 	WWlShmFormatXvyu16161616 WWlShmFormat = 0x38345658
 
-	// WWlShmFormatY0l0 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY0l0 corresponds to [63:0] A3:A2:Y3:0:Cr0:0:Y2:0:A1:A0:Y1:0:Cb0:0:Y0:0 1:1:8:2:8:2:8:2:1:1:8:2:8:2:8:2 little endian
 	WWlShmFormatY0l0 WWlShmFormat = 0x304c3059
 
-	// WWlShmFormatX0l0 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatX0l0 corresponds to [63:0] X3:X2:Y3:0:Cr0:0:Y2:0:X1:X0:Y1:0:Cb0:0:Y0:0 1:1:8:2:8:2:8:2:1:1:8:2:8:2:8:2 little endian
 	WWlShmFormatX0l0 WWlShmFormat = 0x304c3058
 
-	// WWlShmFormatY0l2 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatY0l2 corresponds to [63:0] A3:A2:Y3:Cr0:Y2:A1:A0:Y1:Cb0:Y0 1:1:10:10:10:1:1:10:10:10 little endian
 	WWlShmFormatY0l2 WWlShmFormat = 0x324c3059
 
-	// WWlShmFormatX0l2 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatX0l2 corresponds to [63:0] X3:X2:Y3:Cr0:Y2:X1:X0:Y1:Cb0:Y0 1:1:10:10:10:1:1:10:10:10 little endian
 	WWlShmFormatX0l2 WWlShmFormat = 0x324c3058
 
-	// WWlShmFormatYuv4208bit corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatYuv4208bit WWlShmFormat = 0x38305559
 
-	// WWlShmFormatYuv42010bit corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatYuv42010bit WWlShmFormat = 0x30315559
 
-	// WWlShmFormatXrgb8888A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatXrgb8888A8 WWlShmFormat = 0x38415258
 
-	// WWlShmFormatXbgr8888A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatXbgr8888A8 WWlShmFormat = 0x38414258
 
-	// WWlShmFormatRgbx8888A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatRgbx8888A8 WWlShmFormat = 0x38415852
 
-	// WWlShmFormatBgrx8888A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatBgrx8888A8 WWlShmFormat = 0x38415842
 
-	// WWlShmFormatRgb888A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatRgb888A8 WWlShmFormat = 0x38413852
 
-	// WWlShmFormatBgr888A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatBgr888A8 WWlShmFormat = 0x38413842
 
-	// WWlShmFormatRgb565A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatRgb565A8 WWlShmFormat = 0x38413552
 
-	// WWlShmFormatBgr565A8 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatBgr565A8 WWlShmFormat = 0x38413542
 
-	// WWlShmFormatNv24 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatNv24 corresponds to non-subsampled Cr:Cb plane
 	WWlShmFormatNv24 WWlShmFormat = 0x3432564e
 
-	// WWlShmFormatNv42 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatNv42 corresponds to non-subsampled Cb:Cr plane
 	WWlShmFormatNv42 WWlShmFormat = 0x3234564e
 
-	// WWlShmFormatP210 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatP210 corresponds to 2x1 subsampled Cr:Cb plane, 10 bit per channel
 	WWlShmFormatP210 WWlShmFormat = 0x30313250
 
-	// WWlShmFormatP010 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatP010 corresponds to 2x2 subsampled Cr:Cb plane 10 bits per channel
 	WWlShmFormatP010 WWlShmFormat = 0x30313050
 
-	// WWlShmFormatP012 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatP012 corresponds to 2x2 subsampled Cr:Cb plane 12 bits per channel
 	WWlShmFormatP012 WWlShmFormat = 0x32313050
 
-	// WWlShmFormatP016 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatP016 corresponds to 2x2 subsampled Cr:Cb plane 16 bits per channel
 	WWlShmFormatP016 WWlShmFormat = 0x36313050
 
-	// WWlShmFormatAxbxgxrx106106106106 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatAxbxgxrx106106106106 corresponds to [63:0] A:x:B:x:G:x:R:x 10:6:10:6:10:6:10:6 little endian
 	WWlShmFormatAxbxgxrx106106106106 WWlShmFormat = 0x30314241
 
-	// WWlShmFormatNv15 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
+	// WWlShmFormatNv15 corresponds to 2x2 subsampled Cr:Cb plane
 	WWlShmFormatNv15 WWlShmFormat = 0x3531564e
 
-	// WWlShmFormatQ410 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatQ410 WWlShmFormat = 0x30313451
 
-	// WWlShmFormatQ401 corresponds to pixel formats
-	//
-	// This describes the memory layout of an individual pixel.
-	//
-	// All renderers should support argb8888 and xrgb8888 but any other
-	// formats are optional and may not be supported by the particular
-	// renderer in use.
-	//
-	// The drm format codes match the macros defined in drm_fourcc.h, except
-	// argb8888 and xrgb8888. The formats actually supported by the compositor
-	// will be reported by the format event.
 	WWlShmFormatQ401 WWlShmFormat = 0x31303451
 )
 
@@ -5589,14 +4998,26 @@ const (
 // The pool can be used to create shared memory based buffer
 // objects.  The server will mmap size bytes of the passed file
 // descriptor, to use as backing memory for the pool.
-type WWlShmCreatePoolRequest struct{}
+type WWlShmCreatePoolRequest struct {
+	// ID contains pool to create
+	ID uintptr
 
-// WWlShmFormatEvent requests to pixel format description
+	// FD contains file descriptor for the pool
+	FD uintptr
+
+	// Size contains pool size, in bytes
+	Size uintptr
+}
+
+// WWlShmFormatEvent signals when pixel format description
 //
 // Informs the client about a valid pixel format that
 // can be used for buffers. Known formats include
 // argb8888 and xrgb8888.
-type WWlShmFormatEvent struct{}
+type WWlShmFormatEvent struct {
+	// Format contains buffer pixel format
+	Format uintptr
+}
 
 // WWlBufferDestroyRequest requests to destroy a buffer
 //
@@ -5604,9 +5025,10 @@ type WWlShmFormatEvent struct{}
 // storage is defined by the buffer factory interface.
 //
 // For possible side-effects to a surface, see wl_surface.attach.
-type WWlBufferDestroyRequest struct{}
+type WWlBufferDestroyRequest struct {
+}
 
-// WWlBufferReleaseEvent requests to compositor releases buffer
+// WWlBufferReleaseEvent signals when compositor releases buffer
 //
 // Sent when this wl_buffer is no longer used by the compositor.
 // The client is now free to reuse or destroy this buffer and its
@@ -5620,17 +5042,22 @@ type WWlBufferDestroyRequest struct{}
 // this is possible, when the compositor maintains a copy of the
 // wl_surface contents, e.g. as a GL texture. This is an important
 // optimization for GL(ES) compositors with wl_shm clients.
-type WWlBufferReleaseEvent struct{}
+type WWlBufferReleaseEvent struct {
+}
 
 type WWlDataOfferError int
 
 const (
+	// WWlDataOfferErrorInvalidFinish corresponds to finish request was called untimely
 	WWlDataOfferErrorInvalidFinish WWlDataOfferError = 0
 
+	// WWlDataOfferErrorInvalidActionMask corresponds to action mask contains invalid values
 	WWlDataOfferErrorInvalidActionMask WWlDataOfferError = 1
 
+	// WWlDataOfferErrorInvalidAction corresponds to action argument has an invalid value
 	WWlDataOfferErrorInvalidAction WWlDataOfferError = 2
 
+	// WWlDataOfferErrorInvalidOffer corresponds to offer doesn't accept this request
 	WWlDataOfferErrorInvalidOffer WWlDataOfferError = 3
 )
 
@@ -5650,7 +5077,13 @@ const (
 // will be cancelled and the corresponding drag source will receive
 // wl_data_source.cancelled. Clients may still use this event in
 // conjunction with wl_data_source.action for feedback.
-type WWlDataOfferAcceptRequest struct{}
+type WWlDataOfferAcceptRequest struct {
+	// Serial contains serial number of the accept request
+	Serial uintptr
+
+	// MimeType contains mime type accepted by the client
+	MimeType uintptr
+}
 
 // WWlDataOfferReceiveRequest requests to request that the data is transferred
 //
@@ -5669,12 +5102,19 @@ type WWlDataOfferAcceptRequest struct{}
 // both before and after wl_data_device.drop. Drag-and-drop destination
 // clients may preemptively fetch data or examine it more closely to
 // determine acceptance.
-type WWlDataOfferReceiveRequest struct{}
+type WWlDataOfferReceiveRequest struct {
+	// MimeType contains mime type desired by receiver
+	MimeType uintptr
+
+	// FD contains file descriptor for data transfer
+	FD uintptr
+}
 
 // WWlDataOfferDestroyRequest requests to destroy data offer
 //
 // Destroy the data offer.
-type WWlDataOfferDestroyRequest struct{}
+type WWlDataOfferDestroyRequest struct {
+}
 
 // WWlDataOfferFinishRequest requests to the offer will no longer be used
 //
@@ -5692,7 +5132,8 @@ type WWlDataOfferDestroyRequest struct{}
 //
 // If wl_data_offer.finish request is received for a non drag and drop
 // operation, the invalid_finish protocol error is raised.
-type WWlDataOfferFinishRequest struct{}
+type WWlDataOfferFinishRequest struct {
+}
 
 // WWlDataOfferSetActionsRequest requests to set the available/preferred drag-and-drop actions
 //
@@ -5727,22 +5168,34 @@ type WWlDataOfferFinishRequest struct{}
 //
 // This request can only be made on drag-and-drop offers, a protocol error
 // will be raised otherwise.
-type WWlDataOfferSetActionsRequest struct{}
+type WWlDataOfferSetActionsRequest struct {
+	// DndActions contains actions supported by the destination client
+	DndActions uintptr
 
-// WWlDataOfferOfferEvent requests to advertise offered mime type
+	// PreferredAction contains action preferred by the destination client
+	PreferredAction uintptr
+}
+
+// WWlDataOfferOfferEvent signals when advertise offered mime type
 //
 // Sent immediately after creating the wl_data_offer object.  One
 // event per offered mime type.
-type WWlDataOfferOfferEvent struct{}
+type WWlDataOfferOfferEvent struct {
+	// MimeType contains offered mime type
+	MimeType uintptr
+}
 
-// WWlDataOfferSourceActionsEvent requests to notify the source-side available actions
+// WWlDataOfferSourceActionsEvent signals when notify the source-side available actions
 //
 // This event indicates the actions offered by the data source. It
 // will be sent right after wl_data_device.enter, or anytime the source
 // side changes its offered actions through wl_data_source.set_actions.
-type WWlDataOfferSourceActionsEvent struct{}
+type WWlDataOfferSourceActionsEvent struct {
+	// SourceActions contains actions offered by the data source
+	SourceActions uintptr
+}
 
-// WWlDataOfferActionEvent requests to notify the selected action
+// WWlDataOfferActionEvent signals when notify the selected action
 //
 // This event indicates the action selected by the compositor after
 // matching the source/destination side actions. Only one action (or
@@ -5779,13 +5232,18 @@ type WWlDataOfferSourceActionsEvent struct{}
 // user (e.g. popping up a menu with the available options). The
 // final wl_data_offer.set_actions and wl_data_offer.accept requests
 // must happen before the call to wl_data_offer.finish.
-type WWlDataOfferActionEvent struct{}
+type WWlDataOfferActionEvent struct {
+	// DndAction contains action selected by the compositor
+	DndAction uintptr
+}
 
 type WWlDataSourceError int
 
 const (
+	// WWlDataSourceErrorInvalidActionMask corresponds to action mask contains invalid values
 	WWlDataSourceErrorInvalidActionMask WWlDataSourceError = 0
 
+	// WWlDataSourceErrorInvalidSource corresponds to source doesn't accept this request
 	WWlDataSourceErrorInvalidSource WWlDataSourceError = 1
 )
 
@@ -5794,12 +5252,16 @@ const (
 // This request adds a mime type to the set of mime types
 // advertised to targets.  Can be called several times to offer
 // multiple types.
-type WWlDataSourceOfferRequest struct{}
+type WWlDataSourceOfferRequest struct {
+	// MimeType contains mime type offered by the data source
+	MimeType uintptr
+}
 
 // WWlDataSourceDestroyRequest requests to destroy the data source
 //
 // Destroy the data source.
-type WWlDataSourceDestroyRequest struct{}
+type WWlDataSourceDestroyRequest struct {
+}
 
 // WWlDataSourceSetActionsRequest requests to set the available drag-and-drop actions
 //
@@ -5816,24 +5278,36 @@ type WWlDataSourceDestroyRequest struct{}
 // used in drag-and-drop, so it must be performed before
 // wl_data_device.start_drag. Attempting to use the source other than
 // for drag-and-drop will raise a protocol error.
-type WWlDataSourceSetActionsRequest struct{}
+type WWlDataSourceSetActionsRequest struct {
+	// DndActions contains actions supported by the data source
+	DndActions uintptr
+}
 
-// WWlDataSourceTargetEvent requests to a target accepts an offered mime type
+// WWlDataSourceTargetEvent signals when a target accepts an offered mime type
 //
 // Sent when a target accepts pointer_focus or motion events.  If
 // a target does not accept any of the offered types, type is NULL.
 //
 // Used for feedback during drag-and-drop.
-type WWlDataSourceTargetEvent struct{}
+type WWlDataSourceTargetEvent struct {
+	// MimeType contains mime type accepted by the target
+	MimeType uintptr
+}
 
-// WWlDataSourceSendEvent requests to send the data
+// WWlDataSourceSendEvent signals when send the data
 //
 // Request for data from the client.  Send the data as the
 // specified mime type over the passed file descriptor, then
 // close it.
-type WWlDataSourceSendEvent struct{}
+type WWlDataSourceSendEvent struct {
+	// MimeType contains mime type for the data
+	MimeType uintptr
 
-// WWlDataSourceCancelledEvent requests to selection was cancelled
+	// FD contains file descriptor for the data
+	FD uintptr
+}
+
+// WWlDataSourceCancelledEvent signals when selection was cancelled
 //
 // This data source is no longer valid. There are several reasons why
 // this could happen:
@@ -5855,9 +5329,10 @@ type WWlDataSourceSendEvent struct{}
 // For objects of version 2 or older, wl_data_source.cancelled will
 // only be emitted if the data source was replaced by another data
 // source.
-type WWlDataSourceCancelledEvent struct{}
+type WWlDataSourceCancelledEvent struct {
+}
 
-// WWlDataSourceDndDropPerformedEvent requests to the drag-and-drop operation physically finished
+// WWlDataSourceDndDropPerformedEvent signals when the drag-and-drop operation physically finished
 //
 // The user performed the drop action. This event does not indicate
 // acceptance, wl_data_source.cancelled may still be emitted afterwards
@@ -5868,9 +5343,10 @@ type WWlDataSourceCancelledEvent struct{}
 //
 // Note that the data_source may still be used in the future and should
 // not be destroyed here.
-type WWlDataSourceDndDropPerformedEvent struct{}
+type WWlDataSourceDndDropPerformedEvent struct {
+}
 
-// WWlDataSourceDndFinishedEvent requests to the drag-and-drop operation concluded
+// WWlDataSourceDndFinishedEvent signals when the drag-and-drop operation concluded
 //
 // The drop destination finished interoperating with this data
 // source, so the client is now free to destroy this data source and
@@ -5878,9 +5354,10 @@ type WWlDataSourceDndDropPerformedEvent struct{}
 //
 // If the action used to perform the operation was "move", the
 // source can now delete the transferred data.
-type WWlDataSourceDndFinishedEvent struct{}
+type WWlDataSourceDndFinishedEvent struct {
+}
 
-// WWlDataSourceActionEvent requests to notify the selected action
+// WWlDataSourceActionEvent signals when notify the selected action
 //
 // This event indicates the action selected by the compositor after
 // matching the source/destination side actions. Only one action (or
@@ -5907,11 +5384,15 @@ type WWlDataSourceDndFinishedEvent struct{}
 //
 // Clients can trigger cursor surface changes from this point, so
 // they reflect the current action.
-type WWlDataSourceActionEvent struct{}
+type WWlDataSourceActionEvent struct {
+	// DndAction contains action selected by the compositor
+	DndAction uintptr
+}
 
 type WWlDataDeviceError int
 
 const (
+	// WWlDataDeviceErrorRole corresponds to given wl_surface has another role
 	WWlDataDeviceErrorRole WWlDataDeviceError = 0
 )
 
@@ -5945,7 +5426,19 @@ const (
 // wl_surface is no longer used as the icon surface. When the use
 // as an icon ends, the current and pending input regions become
 // undefined, and the wl_surface is unmapped.
-type WWlDataDeviceStartDragRequest struct{}
+type WWlDataDeviceStartDragRequest struct {
+	// Source contains data source for the eventual transfer
+	Source uintptr
+
+	// Origin contains surface where the drag originates
+	Origin uintptr
+
+	// Icon contains drag-and-drop icon surface
+	Icon uintptr
+
+	// Serial contains serial number of the implicit grab on the origin
+	Serial uintptr
+}
 
 // WWlDataDeviceSetSelectionRequest requests to copy data to the selection
 //
@@ -5953,14 +5446,21 @@ type WWlDataDeviceStartDragRequest struct{}
 // to the data from the source on behalf of the client.
 //
 // To unset the selection, set the source to NULL.
-type WWlDataDeviceSetSelectionRequest struct{}
+type WWlDataDeviceSetSelectionRequest struct {
+	// Source contains data source for the selection
+	Source uintptr
+
+	// Serial contains serial number of the event that triggered this request
+	Serial uintptr
+}
 
 // WWlDataDeviceReleaseRequest requests to destroy data device
 //
 // This request destroys the data device.
-type WWlDataDeviceReleaseRequest struct{}
+type WWlDataDeviceReleaseRequest struct {
+}
 
-// WWlDataDeviceDataOfferEvent requests to introduce a new wl_data_offer
+// WWlDataDeviceDataOfferEvent signals when introduce a new wl_data_offer
 //
 // The data_offer event introduces a new wl_data_offer object,
 // which will subsequently be used in either the
@@ -5969,32 +5469,60 @@ type WWlDataDeviceReleaseRequest struct{}
 // following the data_device_data_offer event, the new data_offer
 // object will send out data_offer.offer events to describe the
 // mime types it offers.
-type WWlDataDeviceDataOfferEvent struct{}
+type WWlDataDeviceDataOfferEvent struct {
+	// ID contains the new data_offer object
+	ID uintptr
+}
 
-// WWlDataDeviceEnterEvent requests to initiate drag-and-drop session
+// WWlDataDeviceEnterEvent signals when initiate drag-and-drop session
 //
 // This event is sent when an active drag-and-drop pointer enters
 // a surface owned by the client.  The position of the pointer at
 // enter time is provided by the x and y arguments, in surface-local
 // coordinates.
-type WWlDataDeviceEnterEvent struct{}
+type WWlDataDeviceEnterEvent struct {
+	// Serial contains serial number of the enter event
+	Serial uintptr
 
-// WWlDataDeviceLeaveEvent requests to end drag-and-drop session
+	// Surface contains client surface entered
+	Surface uintptr
+
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+
+	// ID contains source data_offer object
+	ID uintptr
+}
+
+// WWlDataDeviceLeaveEvent signals when end drag-and-drop session
 //
 // This event is sent when the drag-and-drop pointer leaves the
 // surface and the session ends.  The client must destroy the
 // wl_data_offer introduced at enter time at this point.
-type WWlDataDeviceLeaveEvent struct{}
+type WWlDataDeviceLeaveEvent struct {
+}
 
-// WWlDataDeviceMotionEvent requests to drag-and-drop session motion
+// WWlDataDeviceMotionEvent signals when drag-and-drop session motion
 //
 // This event is sent when the drag-and-drop pointer moves within
 // the currently focused surface. The new position of the pointer
 // is provided by the x and y arguments, in surface-local
 // coordinates.
-type WWlDataDeviceMotionEvent struct{}
+type WWlDataDeviceMotionEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
 
-// WWlDataDeviceDropEvent requests to end drag-and-drop session successfully
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+}
+
+// WWlDataDeviceDropEvent signals when end drag-and-drop session successfully
 //
 // The event is sent when a drag-and-drop operation is ended
 // because the implicit grab is removed.
@@ -6009,9 +5537,10 @@ type WWlDataDeviceMotionEvent struct{}
 // final. The drag-and-drop destination is expected to perform one last
 // wl_data_offer.set_actions request, or wl_data_offer.destroy in order
 // to cancel the operation.
-type WWlDataDeviceDropEvent struct{}
+type WWlDataDeviceDropEvent struct {
+}
 
-// WWlDataDeviceSelectionEvent requests to advertise new selection
+// WWlDataDeviceSelectionEvent signals when advertise new selection
 //
 // The selection event is sent out to notify the client of a new
 // wl_data_offer for the selection for this device.  The
@@ -6024,7 +5553,10 @@ type WWlDataDeviceDropEvent struct{}
 // or until the client loses keyboard focus.  The client must
 // destroy the previous selection data_offer, if any, upon receiving
 // this event.
-type WWlDataDeviceSelectionEvent struct{}
+type WWlDataDeviceSelectionEvent struct {
+	// ID contains selection data_offer object
+	ID uintptr
+}
 
 // WWlDataDeviceManagerDndAction represents drag and drop actions
 //
@@ -6054,128 +5586,42 @@ type WWlDataDeviceSelectionEvent struct{}
 type WWlDataDeviceManagerDndAction uint
 
 const (
-	// WWlDataDeviceManagerDndActionNone corresponds to drag and drop actions
-	//
-	// This is a bitmask of the available/preferred actions in a
-	// drag-and-drop operation.
-	//
-	// In the compositor, the selected action is a result of matching the
-	// actions offered by the source and destination sides.  "action" events
-	// with a "none" action will be sent to both source and destination if
-	// there is no match. All further checks will effectively happen on
-	// (source actions ∩ destination actions).
-	//
-	// In addition, compositors may also pick different actions in
-	// reaction to key modifiers being pressed. One common design that
-	// is used in major toolkits (and the behavior recommended for
-	// compositors) is:
-	//
-	// - If no modifiers are pressed, the first match (in bit order)
-	// will be used.
-	// - Pressing Shift selects "move", if enabled in the mask.
-	// - Pressing Control selects "copy", if enabled in the mask.
-	//
-	// Behavior beyond that is considered implementation-dependent.
-	// Compositors may for example bind other modifiers (like Alt/Meta)
-	// or drags initiated with other buttons than BTN_LEFT to specific
-	// actions (e.g. "ask").
+	// WWlDataDeviceManagerDndActionNone corresponds to no action
 	WWlDataDeviceManagerDndActionNone WWlDataDeviceManagerDndAction = 0
 
-	// WWlDataDeviceManagerDndActionCopy corresponds to drag and drop actions
-	//
-	// This is a bitmask of the available/preferred actions in a
-	// drag-and-drop operation.
-	//
-	// In the compositor, the selected action is a result of matching the
-	// actions offered by the source and destination sides.  "action" events
-	// with a "none" action will be sent to both source and destination if
-	// there is no match. All further checks will effectively happen on
-	// (source actions ∩ destination actions).
-	//
-	// In addition, compositors may also pick different actions in
-	// reaction to key modifiers being pressed. One common design that
-	// is used in major toolkits (and the behavior recommended for
-	// compositors) is:
-	//
-	// - If no modifiers are pressed, the first match (in bit order)
-	// will be used.
-	// - Pressing Shift selects "move", if enabled in the mask.
-	// - Pressing Control selects "copy", if enabled in the mask.
-	//
-	// Behavior beyond that is considered implementation-dependent.
-	// Compositors may for example bind other modifiers (like Alt/Meta)
-	// or drags initiated with other buttons than BTN_LEFT to specific
-	// actions (e.g. "ask").
+	// WWlDataDeviceManagerDndActionCopy corresponds to copy action
 	WWlDataDeviceManagerDndActionCopy WWlDataDeviceManagerDndAction = 1
 
-	// WWlDataDeviceManagerDndActionMove corresponds to drag and drop actions
-	//
-	// This is a bitmask of the available/preferred actions in a
-	// drag-and-drop operation.
-	//
-	// In the compositor, the selected action is a result of matching the
-	// actions offered by the source and destination sides.  "action" events
-	// with a "none" action will be sent to both source and destination if
-	// there is no match. All further checks will effectively happen on
-	// (source actions ∩ destination actions).
-	//
-	// In addition, compositors may also pick different actions in
-	// reaction to key modifiers being pressed. One common design that
-	// is used in major toolkits (and the behavior recommended for
-	// compositors) is:
-	//
-	// - If no modifiers are pressed, the first match (in bit order)
-	// will be used.
-	// - Pressing Shift selects "move", if enabled in the mask.
-	// - Pressing Control selects "copy", if enabled in the mask.
-	//
-	// Behavior beyond that is considered implementation-dependent.
-	// Compositors may for example bind other modifiers (like Alt/Meta)
-	// or drags initiated with other buttons than BTN_LEFT to specific
-	// actions (e.g. "ask").
+	// WWlDataDeviceManagerDndActionMove corresponds to move action
 	WWlDataDeviceManagerDndActionMove WWlDataDeviceManagerDndAction = 2
 
-	// WWlDataDeviceManagerDndActionAsk corresponds to drag and drop actions
-	//
-	// This is a bitmask of the available/preferred actions in a
-	// drag-and-drop operation.
-	//
-	// In the compositor, the selected action is a result of matching the
-	// actions offered by the source and destination sides.  "action" events
-	// with a "none" action will be sent to both source and destination if
-	// there is no match. All further checks will effectively happen on
-	// (source actions ∩ destination actions).
-	//
-	// In addition, compositors may also pick different actions in
-	// reaction to key modifiers being pressed. One common design that
-	// is used in major toolkits (and the behavior recommended for
-	// compositors) is:
-	//
-	// - If no modifiers are pressed, the first match (in bit order)
-	// will be used.
-	// - Pressing Shift selects "move", if enabled in the mask.
-	// - Pressing Control selects "copy", if enabled in the mask.
-	//
-	// Behavior beyond that is considered implementation-dependent.
-	// Compositors may for example bind other modifiers (like Alt/Meta)
-	// or drags initiated with other buttons than BTN_LEFT to specific
-	// actions (e.g. "ask").
+	// WWlDataDeviceManagerDndActionAsk corresponds to ask action
 	WWlDataDeviceManagerDndActionAsk WWlDataDeviceManagerDndAction = 4
 )
 
 // WWlDataDeviceManagerCreateDataSourceRequest requests to create a new data source
 //
 // Create a new data source.
-type WWlDataDeviceManagerCreateDataSourceRequest struct{}
+type WWlDataDeviceManagerCreateDataSourceRequest struct {
+	// ID contains data source to create
+	ID uintptr
+}
 
 // WWlDataDeviceManagerGetDataDeviceRequest requests to create a new data device
 //
 // Create a new data device for a given seat.
-type WWlDataDeviceManagerGetDataDeviceRequest struct{}
+type WWlDataDeviceManagerGetDataDeviceRequest struct {
+	// ID contains data device to create
+	ID uintptr
+
+	// Seat contains seat associated with the data device
+	Seat uintptr
+}
 
 type WWlShellError int
 
 const (
+	// WWlShellErrorRole corresponds to given wl_surface has another role
 	WWlShellErrorRole WWlShellError = 0
 )
 
@@ -6186,7 +5632,13 @@ const (
 // already has another role, it raises a protocol error.
 //
 // Only one shell surface can be associated with a given surface.
-type WWlShellGetShellSurfaceRequest struct{}
+type WWlShellGetShellSurfaceRequest struct {
+	// ID contains shell surface to create
+	ID uintptr
+
+	// Surface contains surface to be given the shell surface role
+	Surface uintptr
+}
 
 // WWlShellSurfaceResize represents edge values for resizing
 //
@@ -6197,76 +5649,31 @@ type WWlShellGetShellSurfaceRequest struct{}
 type WWlShellSurfaceResize uint
 
 const (
-	// WWlShellSurfaceResizeNone corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeNone corresponds to no edge
 	WWlShellSurfaceResizeNone WWlShellSurfaceResize = 0
 
-	// WWlShellSurfaceResizeTop corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeTop corresponds to top edge
 	WWlShellSurfaceResizeTop WWlShellSurfaceResize = 1
 
-	// WWlShellSurfaceResizeBottom corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeBottom corresponds to bottom edge
 	WWlShellSurfaceResizeBottom WWlShellSurfaceResize = 2
 
-	// WWlShellSurfaceResizeLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeLeft corresponds to left edge
 	WWlShellSurfaceResizeLeft WWlShellSurfaceResize = 4
 
-	// WWlShellSurfaceResizeTopLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeTopLeft corresponds to top and left edges
 	WWlShellSurfaceResizeTopLeft WWlShellSurfaceResize = 5
 
-	// WWlShellSurfaceResizeBottomLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeBottomLeft corresponds to bottom and left edges
 	WWlShellSurfaceResizeBottomLeft WWlShellSurfaceResize = 6
 
-	// WWlShellSurfaceResizeRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeRight corresponds to right edge
 	WWlShellSurfaceResizeRight WWlShellSurfaceResize = 8
 
-	// WWlShellSurfaceResizeTopRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeTopRight corresponds to top and right edges
 	WWlShellSurfaceResizeTopRight WWlShellSurfaceResize = 9
 
-	// WWlShellSurfaceResizeBottomRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation. The server may
-	// use this information to adapt its behavior, e.g. choose
-	// an appropriate cursor image.
+	// WWlShellSurfaceResizeBottomRight corresponds to bottom and right edges
 	WWlShellSurfaceResizeBottomRight WWlShellSurfaceResize = 10
 )
 
@@ -6277,10 +5684,7 @@ const (
 type WWlShellSurfaceTransient uint
 
 const (
-	// WWlShellSurfaceTransientInactive corresponds to details of transient behaviour
-	//
-	// These flags specify details of the expected behaviour
-	// of transient surfaces. Used in the set_transient request.
+	// WWlShellSurfaceTransientInactive corresponds to do not set keyboard focus
 	WWlShellSurfaceTransientInactive WWlShellSurfaceTransient = 0x1
 )
 
@@ -6292,32 +5696,16 @@ const (
 type WWlShellSurfaceFullscreenMethod int
 
 const (
-	// WWlShellSurfaceFullscreenMethodDefault corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// WWlShellSurfaceFullscreenMethodDefault corresponds to no preference, apply default policy
 	WWlShellSurfaceFullscreenMethodDefault WWlShellSurfaceFullscreenMethod = 0
 
-	// WWlShellSurfaceFullscreenMethodScale corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// WWlShellSurfaceFullscreenMethodScale corresponds to scale, preserve the surface's aspect ratio and center on output
 	WWlShellSurfaceFullscreenMethodScale WWlShellSurfaceFullscreenMethod = 1
 
-	// WWlShellSurfaceFullscreenMethodDriver corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// WWlShellSurfaceFullscreenMethodDriver corresponds to switch output mode to the smallest mode that can fit the surface, add black borders to compensate size mismatch
 	WWlShellSurfaceFullscreenMethodDriver WWlShellSurfaceFullscreenMethod = 2
 
-	// WWlShellSurfaceFullscreenMethodFill corresponds to different method to set the surface fullscreen
-	//
-	// Hints to indicate to the compositor how to deal with a conflict
-	// between the dimensions of the surface and the dimensions of the
-	// output. The compositor is free to ignore this parameter.
+	// WWlShellSurfaceFullscreenMethodFill corresponds to no upscaling, center on output and add black borders to compensate size mismatch
 	WWlShellSurfaceFullscreenMethodFill WWlShellSurfaceFullscreenMethod = 3
 )
 
@@ -6325,7 +5713,10 @@ const (
 //
 // A client must respond to a ping event with a pong request or
 // the client may be deemed unresponsive.
-type WWlShellSurfacePongRequest struct{}
+type WWlShellSurfacePongRequest struct {
+	// Serial contains serial number of the ping event
+	Serial uintptr
+}
 
 // WWlShellSurfaceMoveRequest requests to start an interactive move
 //
@@ -6334,7 +5725,13 @@ type WWlShellSurfacePongRequest struct{}
 // This request must be used in response to a button press event.
 // The server may ignore move requests depending on the state of
 // the surface (e.g. fullscreen or maximized).
-type WWlShellSurfaceMoveRequest struct{}
+type WWlShellSurfaceMoveRequest struct {
+	// Seat contains seat whose pointer is used
+	Seat uintptr
+
+	// Serial contains serial number of the implicit grab on the pointer
+	Serial uintptr
+}
 
 // WWlShellSurfaceResizeRequest requests to start an interactive resize
 //
@@ -6343,14 +5740,24 @@ type WWlShellSurfaceMoveRequest struct{}
 // This request must be used in response to a button press event.
 // The server may ignore resize requests depending on the state of
 // the surface (e.g. fullscreen or maximized).
-type WWlShellSurfaceResizeRequest struct{}
+type WWlShellSurfaceResizeRequest struct {
+	// Seat contains seat whose pointer is used
+	Seat uintptr
+
+	// Serial contains serial number of the implicit grab on the pointer
+	Serial uintptr
+
+	// Edges contains which edge or corner is being dragged
+	Edges uintptr
+}
 
 // WWlShellSurfaceSetToplevelRequest requests to make the surface a toplevel surface
 //
 // Map the surface as a toplevel surface.
 //
 // A toplevel surface is not fullscreen, maximized or transient.
-type WWlShellSurfaceSetToplevelRequest struct{}
+type WWlShellSurfaceSetToplevelRequest struct {
+}
 
 // WWlShellSurfaceSetTransientRequest requests to make the surface a transient surface
 //
@@ -6361,7 +5768,19 @@ type WWlShellSurfaceSetToplevelRequest struct{}
 // parent surface, in surface-local coordinates.
 //
 // The flags argument controls details of the transient behaviour.
-type WWlShellSurfaceSetTransientRequest struct{}
+type WWlShellSurfaceSetTransientRequest struct {
+	// Parent contains parent surface
+	Parent uintptr
+
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+
+	// Flags contains transient surface behavior
+	Flags uintptr
+}
 
 // WWlShellSurfaceSetFullscreenRequest requests to make the surface a fullscreen surface
 //
@@ -6398,7 +5817,16 @@ type WWlShellSurfaceSetTransientRequest struct{}
 // The compositor must reply to this request with a configure event
 // with the dimensions for the output on which the surface will
 // be made fullscreen.
-type WWlShellSurfaceSetFullscreenRequest struct{}
+type WWlShellSurfaceSetFullscreenRequest struct {
+	// Method contains method for resolving size conflict
+	Method uintptr
+
+	// Framerate contains framerate in mHz
+	Framerate uintptr
+
+	// Output contains output on which the surface is to be fullscreen
+	Output uintptr
+}
 
 // WWlShellSurfaceSetPopupRequest requests to make the surface a popup surface
 //
@@ -6421,7 +5849,25 @@ type WWlShellSurfaceSetFullscreenRequest struct{}
 // The x and y arguments specify the location of the upper left
 // corner of the surface relative to the upper left corner of the
 // parent surface, in surface-local coordinates.
-type WWlShellSurfaceSetPopupRequest struct{}
+type WWlShellSurfaceSetPopupRequest struct {
+	// Seat contains seat whose pointer is used
+	Seat uintptr
+
+	// Serial contains serial number of the implicit grab on the pointer
+	Serial uintptr
+
+	// Parent contains parent surface
+	Parent uintptr
+
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+
+	// Flags contains transient surface behavior
+	Flags uintptr
+}
 
 // WWlShellSurfaceSetMaximizedRequest requests to make the surface a maximized surface
 //
@@ -6443,7 +5889,10 @@ type WWlShellSurfaceSetPopupRequest struct{}
 // fullscreen shell surface.
 //
 // The details depend on the compositor implementation.
-type WWlShellSurfaceSetMaximizedRequest struct{}
+type WWlShellSurfaceSetMaximizedRequest struct {
+	// Output contains output on which the surface is to be maximized
+	Output uintptr
+}
 
 // WWlShellSurfaceSetTitleRequest requests to set surface title
 //
@@ -6454,7 +5903,10 @@ type WWlShellSurfaceSetMaximizedRequest struct{}
 // compositor.
 //
 // The string must be encoded in UTF-8.
-type WWlShellSurfaceSetTitleRequest struct{}
+type WWlShellSurfaceSetTitleRequest struct {
+	// Title contains surface title
+	Title uintptr
+}
 
 // WWlShellSurfaceSetClassRequest requests to set surface class
 //
@@ -6464,15 +5916,21 @@ type WWlShellSurfaceSetTitleRequest struct{}
 // to which the surface belongs. A common convention is to use the
 // file name (or the full path if it is a non-standard location) of
 // the application's .desktop file as the class.
-type WWlShellSurfaceSetClassRequest struct{}
+type WWlShellSurfaceSetClassRequest struct {
+	// Class contains surface class
+	Class uintptr
+}
 
-// WWlShellSurfacePingEvent requests to ping client
+// WWlShellSurfacePingEvent signals when ping client
 //
 // Ping a client to check if it is receiving events and sending
 // requests. A client is expected to reply with a pong request.
-type WWlShellSurfacePingEvent struct{}
+type WWlShellSurfacePingEvent struct {
+	// Serial contains serial number of the ping
+	Serial uintptr
+}
 
-// WWlShellSurfaceConfigureEvent requests to suggest resize
+// WWlShellSurfaceConfigureEvent signals when suggest resize
 //
 // The configure event asks the client to resize its surface.
 //
@@ -6491,14 +5949,24 @@ type WWlShellSurfacePingEvent struct{}
 //
 // The width and height arguments specify the size of the window
 // in surface-local coordinates.
-type WWlShellSurfaceConfigureEvent struct{}
+type WWlShellSurfaceConfigureEvent struct {
+	// Edges contains how the surface was resized
+	Edges uintptr
 
-// WWlShellSurfacePopupDoneEvent requests to popup interaction is done
+	// Width contains new width of the surface
+	Width uintptr
+
+	// Height contains new height of the surface
+	Height uintptr
+}
+
+// WWlShellSurfacePopupDoneEvent signals when popup interaction is done
 //
 // The popup_done event is sent out when a popup grab is broken,
 // that is, when the user clicks a surface that doesn't belong
 // to the client owning the popup surface.
-type WWlShellSurfacePopupDoneEvent struct{}
+type WWlShellSurfacePopupDoneEvent struct {
+}
 
 // WWlSurfaceError represents wl_surface error values
 //
@@ -6506,26 +5974,21 @@ type WWlShellSurfacePopupDoneEvent struct{}
 type WWlSurfaceError int
 
 const (
-	// WWlSurfaceErrorInvalidScale corresponds to wl_surface error values
-	//
-	// These errors can be emitted in response to wl_surface requests.
+	// WWlSurfaceErrorInvalidScale corresponds to buffer scale value is invalid
 	WWlSurfaceErrorInvalidScale WWlSurfaceError = 0
 
-	// WWlSurfaceErrorInvalidTransform corresponds to wl_surface error values
-	//
-	// These errors can be emitted in response to wl_surface requests.
+	// WWlSurfaceErrorInvalidTransform corresponds to buffer transform value is invalid
 	WWlSurfaceErrorInvalidTransform WWlSurfaceError = 1
 
-	// WWlSurfaceErrorInvalidSize corresponds to wl_surface error values
-	//
-	// These errors can be emitted in response to wl_surface requests.
+	// WWlSurfaceErrorInvalidSize corresponds to buffer size is invalid
 	WWlSurfaceErrorInvalidSize WWlSurfaceError = 2
 )
 
 // WWlSurfaceDestroyRequest requests to delete surface
 //
 // Deletes the surface and invalidates its object ID.
-type WWlSurfaceDestroyRequest struct{}
+type WWlSurfaceDestroyRequest struct {
+}
 
 // WWlSurfaceAttachRequest requests to set the surface contents
 //
@@ -6578,7 +6041,16 @@ type WWlSurfaceDestroyRequest struct{}
 //
 // If wl_surface.attach is sent with a NULL wl_buffer, the
 // following wl_surface.commit will remove the surface content.
-type WWlSurfaceAttachRequest struct{}
+type WWlSurfaceAttachRequest struct {
+	// Buffer contains buffer of surface contents
+	Buffer uintptr
+
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+}
 
 // WWlSurfaceDamageRequest requests to mark part of the surface damaged
 //
@@ -6603,7 +6075,19 @@ type WWlSurfaceAttachRequest struct{}
 // Note! New clients should not use this request. Instead damage can be
 // posted with wl_surface.damage_buffer which uses buffer coordinates
 // instead of surface coordinates.
-type WWlSurfaceDamageRequest struct{}
+type WWlSurfaceDamageRequest struct {
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+
+	// Width contains width of damage rectangle
+	Width uintptr
+
+	// Height contains height of damage rectangle
+	Height uintptr
+}
 
 // WWlSurfaceFrameRequest requests to request a frame throttling hint
 //
@@ -6639,7 +6123,10 @@ type WWlSurfaceDamageRequest struct{}
 //
 // The callback_data passed in the callback is the current time, in
 // milliseconds, with an undefined base.
-type WWlSurfaceFrameRequest struct{}
+type WWlSurfaceFrameRequest struct {
+	// Callback contains callback object for the frame request
+	Callback uintptr
+}
 
 // WWlSurfaceSetOpaqueRegionRequest requests to set opaque region
 //
@@ -6667,7 +6154,10 @@ type WWlSurfaceFrameRequest struct{}
 // opaque region has copy semantics, and the wl_region object can be
 // destroyed immediately. A NULL wl_region causes the pending opaque
 // region to be set to empty.
-type WWlSurfaceSetOpaqueRegionRequest struct{}
+type WWlSurfaceSetOpaqueRegionRequest struct {
+	// Region contains opaque region of the surface
+	Region uintptr
+}
 
 // WWlSurfaceSetInputRegionRequest requests to set input region
 //
@@ -6693,7 +6183,10 @@ type WWlSurfaceSetOpaqueRegionRequest struct{}
 // has copy semantics, and the wl_region object can be destroyed
 // immediately. A NULL wl_region causes the input region to be set
 // to infinite.
-type WWlSurfaceSetInputRegionRequest struct{}
+type WWlSurfaceSetInputRegionRequest struct {
+	// Region contains input region of the surface
+	Region uintptr
+}
 
 // WWlSurfaceCommitRequest requests to commit pending surface state
 //
@@ -6714,7 +6207,8 @@ type WWlSurfaceSetInputRegionRequest struct{}
 // to affect double-buffered state.
 //
 // Other interfaces may add further double-buffered surface state.
-type WWlSurfaceCommitRequest struct{}
+type WWlSurfaceCommitRequest struct {
+}
 
 // WWlSurfaceSetBufferTransformRequest requests to sets the buffer transformation
 //
@@ -6747,7 +6241,10 @@ type WWlSurfaceCommitRequest struct{}
 // If transform is not one of the values from the
 // wl_output.transform enum the invalid_transform protocol error
 // is raised.
-type WWlSurfaceSetBufferTransformRequest struct{}
+type WWlSurfaceSetBufferTransformRequest struct {
+	// Transform contains transform for interpreting buffer contents
+	Transform uintptr
+}
 
 // WWlSurfaceSetBufferScaleRequest requests to sets the buffer scaling factor
 //
@@ -6774,7 +6271,10 @@ type WWlSurfaceSetBufferTransformRequest struct{}
 //
 // If scale is not positive the invalid_scale protocol error is
 // raised.
-type WWlSurfaceSetBufferScaleRequest struct{}
+type WWlSurfaceSetBufferScaleRequest struct {
+	// Scale contains positive scale for interpreting buffer contents
+	Scale uintptr
+}
 
 // WWlSurfaceDamageBufferRequest requests to mark part of the surface damaged using buffer coordinates
 //
@@ -6810,18 +6310,33 @@ type WWlSurfaceSetBufferScaleRequest struct{}
 // kinds of damage into account will have to accumulate damage from the
 // two requests separately and only transform from one to the other
 // after receiving the wl_surface.commit.
-type WWlSurfaceDamageBufferRequest struct{}
+type WWlSurfaceDamageBufferRequest struct {
+	// X contains buffer-local x coordinate
+	X uintptr
 
-// WWlSurfaceEnterEvent requests to surface enters an output
+	// Y contains buffer-local y coordinate
+	Y uintptr
+
+	// Width contains width of damage rectangle
+	Width uintptr
+
+	// Height contains height of damage rectangle
+	Height uintptr
+}
+
+// WWlSurfaceEnterEvent signals when surface enters an output
 //
 // This is emitted whenever a surface's creation, movement, or resizing
 // results in some part of it being within the scanout region of an
 // output.
 //
 // Note that a surface may be overlapping with zero or more outputs.
-type WWlSurfaceEnterEvent struct{}
+type WWlSurfaceEnterEvent struct {
+	// Output contains output entered by the surface
+	Output uintptr
+}
 
-// WWlSurfaceLeaveEvent requests to surface leaves an output
+// WWlSurfaceLeaveEvent signals when surface leaves an output
 //
 // This is emitted whenever a surface's creation, movement, or resizing
 // results in it no longer having any part of it within the scanout region
@@ -6832,7 +6347,10 @@ type WWlSurfaceEnterEvent struct{}
 // has been sent, and the compositor might expect new surface content
 // updates even if no enter event has been sent. The frame event should be
 // used instead.
-type WWlSurfaceLeaveEvent struct{}
+type WWlSurfaceLeaveEvent struct {
+	// Output contains output left by the surface
+	Output uintptr
+}
 
 // WWlSeatCapability represents seat capability bitmask
 //
@@ -6841,22 +6359,13 @@ type WWlSurfaceLeaveEvent struct{}
 type WWlSeatCapability uint
 
 const (
-	// WWlSeatCapabilityPointer corresponds to seat capability bitmask
-	//
-	// This is a bitmask of capabilities this seat has; if a member is
-	// set, then it is present on the seat.
+	// WWlSeatCapabilityPointer corresponds to the seat has pointer devices
 	WWlSeatCapabilityPointer WWlSeatCapability = 1
 
-	// WWlSeatCapabilityKeyboard corresponds to seat capability bitmask
-	//
-	// This is a bitmask of capabilities this seat has; if a member is
-	// set, then it is present on the seat.
+	// WWlSeatCapabilityKeyboard corresponds to the seat has one or more keyboards
 	WWlSeatCapabilityKeyboard WWlSeatCapability = 2
 
-	// WWlSeatCapabilityTouch corresponds to seat capability bitmask
-	//
-	// This is a bitmask of capabilities this seat has; if a member is
-	// set, then it is present on the seat.
+	// WWlSeatCapabilityTouch corresponds to the seat has touch devices
 	WWlSeatCapabilityTouch WWlSeatCapability = 4
 )
 
@@ -6866,9 +6375,7 @@ const (
 type WWlSeatError int
 
 const (
-	// WWlSeatErrorMissingCapability corresponds to wl_seat error values
-	//
-	// These errors can be emitted in response to wl_seat requests.
+	// WWlSeatErrorMissingCapability corresponds to get_pointer, get_keyboard or get_touch called on seat without the matching capability
 	WWlSeatErrorMissingCapability WWlSeatError = 0
 )
 
@@ -6882,7 +6389,10 @@ const (
 // It is a protocol violation to issue this request on a seat that has
 // never had the pointer capability. The missing_capability error will
 // be sent in this case.
-type WWlSeatGetPointerRequest struct{}
+type WWlSeatGetPointerRequest struct {
+	// ID contains seat pointer
+	ID uintptr
+}
 
 // WWlSeatGetKeyboardRequest requests to return keyboard object
 //
@@ -6894,7 +6404,10 @@ type WWlSeatGetPointerRequest struct{}
 // It is a protocol violation to issue this request on a seat that has
 // never had the keyboard capability. The missing_capability error will
 // be sent in this case.
-type WWlSeatGetKeyboardRequest struct{}
+type WWlSeatGetKeyboardRequest struct {
+	// ID contains seat keyboard
+	ID uintptr
+}
 
 // WWlSeatGetTouchRequest requests to return touch object
 //
@@ -6906,15 +6419,19 @@ type WWlSeatGetKeyboardRequest struct{}
 // It is a protocol violation to issue this request on a seat that has
 // never had the touch capability. The missing_capability error will
 // be sent in this case.
-type WWlSeatGetTouchRequest struct{}
+type WWlSeatGetTouchRequest struct {
+	// ID contains seat touch interface
+	ID uintptr
+}
 
 // WWlSeatReleaseRequest requests to release the seat object
 //
 // Using this request a client can tell the server that it is not going to
 // use the seat object anymore.
-type WWlSeatReleaseRequest struct{}
+type WWlSeatReleaseRequest struct {
+}
 
-// WWlSeatCapabilitiesEvent requests to seat capabilities changed
+// WWlSeatCapabilitiesEvent signals when seat capabilities changed
 //
 // This is emitted whenever a seat gains or loses the pointer,
 // keyboard or touch capabilities.  The argument is a capability
@@ -6940,9 +6457,12 @@ type WWlSeatReleaseRequest struct{}
 //
 // The above behavior also applies to wl_keyboard and wl_touch with the
 // keyboard and touch capabilities, respectively.
-type WWlSeatCapabilitiesEvent struct{}
+type WWlSeatCapabilitiesEvent struct {
+	// Capabilities contains capabilities of the seat
+	Capabilities uintptr
+}
 
-// WWlSeatNameEvent requests to unique identifier for this seat
+// WWlSeatNameEvent signals when unique identifier for this seat
 //
 // In a multi-seat configuration the seat name can be used by clients to
 // help identify which physical devices the seat represents.
@@ -6960,11 +6480,15 @@ type WWlSeatCapabilitiesEvent struct{}
 //
 // Compositors may re-use the same seat name if the wl_seat global is
 // destroyed and re-created later.
-type WWlSeatNameEvent struct{}
+type WWlSeatNameEvent struct {
+	// Name contains seat identifier
+	Name uintptr
+}
 
 type WWlPointerError int
 
 const (
+	// WWlPointerErrorRole corresponds to given wl_surface has another role
 	WWlPointerErrorRole WWlPointerError = 0
 )
 
@@ -6975,16 +6499,10 @@ const (
 type WWlPointerButtonState int
 
 const (
-	// WWlPointerButtonStateReleased corresponds to physical button state
-	//
-	// Describes the physical state of a button that produced the button
-	// event.
+	// WWlPointerButtonStateReleased corresponds to the button is not pressed
 	WWlPointerButtonStateReleased WWlPointerButtonState = 0
 
-	// WWlPointerButtonStatePressed corresponds to physical button state
-	//
-	// Describes the physical state of a button that produced the button
-	// event.
+	// WWlPointerButtonStatePressed corresponds to the button is pressed
 	WWlPointerButtonStatePressed WWlPointerButtonState = 1
 )
 
@@ -6994,14 +6512,10 @@ const (
 type WWlPointerAxis int
 
 const (
-	// WWlPointerAxisVerticalScroll corresponds to axis types
-	//
-	// Describes the axis types of scroll events.
+	// WWlPointerAxisVerticalScroll corresponds to vertical axis
 	WWlPointerAxisVerticalScroll WWlPointerAxis = 0
 
-	// WWlPointerAxisHorizontalScroll corresponds to axis types
-	//
-	// Describes the axis types of scroll events.
+	// WWlPointerAxisHorizontalScroll corresponds to horizontal axis
 	WWlPointerAxisHorizontalScroll WWlPointerAxis = 1
 )
 
@@ -7026,84 +6540,16 @@ const (
 type WWlPointerAxisSource int
 
 const (
-	// WWlPointerAxisSourceWheel corresponds to axis source types
-	//
-	// Describes the source types for axis events. This indicates to the
-	// client how an axis event was physically generated; a client may
-	// adjust the user interface accordingly. For example, scroll events
-	// from a "finger" source may be in a smooth coordinate space with
-	// kinetic scrolling whereas a "wheel" source may be in discrete steps
-	// of a number of lines.
-	//
-	// The "continuous" axis source is a device generating events in a
-	// continuous coordinate space, but using something other than a
-	// finger. One example for this source is button-based scrolling where
-	// the vertical motion of a device is converted to scroll events while
-	// a button is held down.
-	//
-	// The "wheel tilt" axis source indicates that the actual device is a
-	// wheel but the scroll event is not caused by a rotation but a
-	// (usually sideways) tilt of the wheel.
+	// WWlPointerAxisSourceWheel corresponds to a physical wheel rotation
 	WWlPointerAxisSourceWheel WWlPointerAxisSource = 0
 
-	// WWlPointerAxisSourceFinger corresponds to axis source types
-	//
-	// Describes the source types for axis events. This indicates to the
-	// client how an axis event was physically generated; a client may
-	// adjust the user interface accordingly. For example, scroll events
-	// from a "finger" source may be in a smooth coordinate space with
-	// kinetic scrolling whereas a "wheel" source may be in discrete steps
-	// of a number of lines.
-	//
-	// The "continuous" axis source is a device generating events in a
-	// continuous coordinate space, but using something other than a
-	// finger. One example for this source is button-based scrolling where
-	// the vertical motion of a device is converted to scroll events while
-	// a button is held down.
-	//
-	// The "wheel tilt" axis source indicates that the actual device is a
-	// wheel but the scroll event is not caused by a rotation but a
-	// (usually sideways) tilt of the wheel.
+	// WWlPointerAxisSourceFinger corresponds to finger on a touch surface
 	WWlPointerAxisSourceFinger WWlPointerAxisSource = 1
 
-	// WWlPointerAxisSourceContinuous corresponds to axis source types
-	//
-	// Describes the source types for axis events. This indicates to the
-	// client how an axis event was physically generated; a client may
-	// adjust the user interface accordingly. For example, scroll events
-	// from a "finger" source may be in a smooth coordinate space with
-	// kinetic scrolling whereas a "wheel" source may be in discrete steps
-	// of a number of lines.
-	//
-	// The "continuous" axis source is a device generating events in a
-	// continuous coordinate space, but using something other than a
-	// finger. One example for this source is button-based scrolling where
-	// the vertical motion of a device is converted to scroll events while
-	// a button is held down.
-	//
-	// The "wheel tilt" axis source indicates that the actual device is a
-	// wheel but the scroll event is not caused by a rotation but a
-	// (usually sideways) tilt of the wheel.
+	// WWlPointerAxisSourceContinuous corresponds to continuous coordinate space
 	WWlPointerAxisSourceContinuous WWlPointerAxisSource = 2
 
-	// WWlPointerAxisSourceWheelTilt corresponds to axis source types
-	//
-	// Describes the source types for axis events. This indicates to the
-	// client how an axis event was physically generated; a client may
-	// adjust the user interface accordingly. For example, scroll events
-	// from a "finger" source may be in a smooth coordinate space with
-	// kinetic scrolling whereas a "wheel" source may be in discrete steps
-	// of a number of lines.
-	//
-	// The "continuous" axis source is a device generating events in a
-	// continuous coordinate space, but using something other than a
-	// finger. One example for this source is button-based scrolling where
-	// the vertical motion of a device is converted to scroll events while
-	// a button is held down.
-	//
-	// The "wheel tilt" axis source indicates that the actual device is a
-	// wheel but the scroll event is not caused by a rotation but a
-	// (usually sideways) tilt of the wheel.
+	// WWlPointerAxisSourceWheelTilt corresponds to a physical wheel tilt
 	WWlPointerAxisSourceWheelTilt WWlPointerAxisSource = 3
 )
 
@@ -7144,7 +6590,19 @@ const (
 // The serial parameter must match the latest wl_pointer.enter
 // serial number sent to the client. Otherwise the request will be
 // ignored.
-type WWlPointerSetCursorRequest struct{}
+type WWlPointerSetCursorRequest struct {
+	// Serial contains serial number of the enter event
+	Serial uintptr
+
+	// Surface contains pointer surface
+	Surface uintptr
+
+	// HotspotX contains surface-local x coordinate
+	HotspotX uintptr
+
+	// HotspotY contains surface-local y coordinate
+	HotspotY uintptr
+}
 
 // WWlPointerReleaseRequest requests to release the pointer object
 //
@@ -7153,9 +6611,10 @@ type WWlPointerSetCursorRequest struct{}
 //
 // This request destroys the pointer proxy object, so clients must not call
 // wl_pointer_destroy() after using this request.
-type WWlPointerReleaseRequest struct{}
+type WWlPointerReleaseRequest struct {
+}
 
-// WWlPointerEnterEvent requests to enter event
+// WWlPointerEnterEvent signals when enter event
 //
 // Notification that this seat's pointer is focused on a certain
 // surface.
@@ -7163,25 +6622,52 @@ type WWlPointerReleaseRequest struct{}
 // When a seat's focus enters a surface, the pointer image
 // is undefined and a client should respond to this event by setting
 // an appropriate pointer image with the set_cursor request.
-type WWlPointerEnterEvent struct{}
+type WWlPointerEnterEvent struct {
+	// Serial contains serial number of the enter event
+	Serial uintptr
 
-// WWlPointerLeaveEvent requests to leave event
+	// Surface contains surface entered by the pointer
+	Surface uintptr
+
+	// SurfaceX contains surface-local x coordinate
+	SurfaceX uintptr
+
+	// SurfaceY contains surface-local y coordinate
+	SurfaceY uintptr
+}
+
+// WWlPointerLeaveEvent signals when leave event
 //
 // Notification that this seat's pointer is no longer focused on
 // a certain surface.
 //
 // The leave notification is sent before the enter notification
 // for the new focus.
-type WWlPointerLeaveEvent struct{}
+type WWlPointerLeaveEvent struct {
+	// Serial contains serial number of the leave event
+	Serial uintptr
 
-// WWlPointerMotionEvent requests to pointer motion event
+	// Surface contains surface left by the pointer
+	Surface uintptr
+}
+
+// WWlPointerMotionEvent signals when pointer motion event
 //
 // Notification of pointer location change. The arguments
 // surface_x and surface_y are the location relative to the
 // focused surface.
-type WWlPointerMotionEvent struct{}
+type WWlPointerMotionEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
 
-// WWlPointerButtonEvent requests to pointer button event
+	// SurfaceX contains surface-local x coordinate
+	SurfaceX uintptr
+
+	// SurfaceY contains surface-local y coordinate
+	SurfaceY uintptr
+}
+
+// WWlPointerButtonEvent signals when pointer button event
 //
 // Mouse button click and release notifications.
 //
@@ -7197,9 +6683,21 @@ type WWlPointerMotionEvent struct{}
 // kernel's event code list. All other button codes above 0xFFFF are
 // currently undefined but may be used in future versions of this
 // protocol.
-type WWlPointerButtonEvent struct{}
+type WWlPointerButtonEvent struct {
+	// Serial contains serial number of the button event
+	Serial uintptr
 
-// WWlPointerAxisEvent requests to axis event
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	// Button contains button that produced the event
+	Button uintptr
+
+	// State contains physical state of the button
+	State uintptr
+}
+
+// WWlPointerAxisEvent signals when axis event
 //
 // Scroll and other axis notifications.
 //
@@ -7217,9 +6715,18 @@ type WWlPointerButtonEvent struct{}
 //
 // When applicable, a client can transform its content relative to the
 // scroll distance.
-type WWlPointerAxisEvent struct{}
+type WWlPointerAxisEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
 
-// WWlPointerFrameEvent requests to end of a pointer event sequence
+	// Axis contains axis type
+	Axis uintptr
+
+	// Value contains length of vector in surface-local coordinate space
+	Value uintptr
+}
+
+// WWlPointerFrameEvent signals when end of a pointer event sequence
 //
 // Indicates the end of a set of events that logically belong together.
 // A client is expected to accumulate the data in all events within the
@@ -7255,9 +6762,10 @@ type WWlPointerAxisEvent struct{}
 // Compositor-specific policies may require the wl_pointer.leave and
 // wl_pointer.enter event being split across multiple wl_pointer.frame
 // groups.
-type WWlPointerFrameEvent struct{}
+type WWlPointerFrameEvent struct {
+}
 
-// WWlPointerAxisSourceEvent requests to axis source event
+// WWlPointerAxisSourceEvent signals when axis source event
 //
 // Source information for scroll and other axes.
 //
@@ -7284,9 +6792,12 @@ type WWlPointerFrameEvent struct{}
 //
 // The order of wl_pointer.axis_discrete and wl_pointer.axis_source is
 // not guaranteed.
-type WWlPointerAxisSourceEvent struct{}
+type WWlPointerAxisSourceEvent struct {
+	// AxisSource contains source of the axis event
+	AxisSource uintptr
+}
 
-// WWlPointerAxisStopEvent requests to axis stop event
+// WWlPointerAxisStopEvent signals when axis stop event
 //
 // Stop notification for scroll and other axes.
 //
@@ -7302,9 +6813,15 @@ type WWlPointerAxisSourceEvent struct{}
 // The timestamp is to be interpreted identical to the timestamp in the
 // wl_pointer.axis event. The timestamp value may be the same as a
 // preceding wl_pointer.axis event.
-type WWlPointerAxisStopEvent struct{}
+type WWlPointerAxisStopEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
 
-// WWlPointerAxisDiscreteEvent requests to axis click event
+	// Axis contains the axis stopped with this event
+	Axis uintptr
+}
+
+// WWlPointerAxisDiscreteEvent signals when axis click event
 //
 // Discrete step information for scroll and other axes.
 //
@@ -7332,7 +6849,13 @@ type WWlPointerAxisStopEvent struct{}
 //
 // The order of wl_pointer.axis_discrete and wl_pointer.axis_source is
 // not guaranteed.
-type WWlPointerAxisDiscreteEvent struct{}
+type WWlPointerAxisDiscreteEvent struct {
+	// Axis contains axis type
+	Axis uintptr
+
+	// Discrete contains number of steps
+	Discrete uintptr
+}
 
 // WWlKeyboardKeymapFormat represents keyboard mapping format
 //
@@ -7341,16 +6864,10 @@ type WWlPointerAxisDiscreteEvent struct{}
 type WWlKeyboardKeymapFormat int
 
 const (
-	// WWlKeyboardKeymapFormatNoKeymap corresponds to keyboard mapping format
-	//
-	// This specifies the format of the keymap provided to the
-	// client with the wl_keyboard.keymap event.
+	// WWlKeyboardKeymapFormatNoKeymap corresponds to no keymap; client must understand how to interpret the raw keycode
 	WWlKeyboardKeymapFormatNoKeymap WWlKeyboardKeymapFormat = 0
 
-	// WWlKeyboardKeymapFormatXkbV1 corresponds to keyboard mapping format
-	//
-	// This specifies the format of the keymap provided to the
-	// client with the wl_keyboard.keymap event.
+	// WWlKeyboardKeymapFormatXkbV1 corresponds to libxkbcommon compatible; to determine the xkb keycode, clients must add 8 to the key event keycode
 	WWlKeyboardKeymapFormatXkbV1 WWlKeyboardKeymapFormat = 1
 )
 
@@ -7360,21 +6877,18 @@ const (
 type WWlKeyboardKeyState int
 
 const (
-	// WWlKeyboardKeyStateReleased corresponds to physical key state
-	//
-	// Describes the physical state of a key that produced the key event.
+	// WWlKeyboardKeyStateReleased corresponds to key is not pressed
 	WWlKeyboardKeyStateReleased WWlKeyboardKeyState = 0
 
-	// WWlKeyboardKeyStatePressed corresponds to physical key state
-	//
-	// Describes the physical state of a key that produced the key event.
+	// WWlKeyboardKeyStatePressed corresponds to key is pressed
 	WWlKeyboardKeyStatePressed WWlKeyboardKeyState = 1
 )
 
 // WWlKeyboardReleaseRequest requests to release the keyboard object
-type WWlKeyboardReleaseRequest struct{}
+type WWlKeyboardReleaseRequest struct {
+}
 
-// WWlKeyboardKeymapEvent requests to keyboard mapping
+// WWlKeyboardKeymapEvent signals when keyboard mapping
 //
 // This event provides a file descriptor to the client which can be
 // memory-mapped in read-only mode to provide a keyboard mapping
@@ -7382,18 +6896,36 @@ type WWlKeyboardReleaseRequest struct{}
 //
 // From version 7 onwards, the fd must be mapped with MAP_PRIVATE by
 // the recipient, as MAP_SHARED may fail.
-type WWlKeyboardKeymapEvent struct{}
+type WWlKeyboardKeymapEvent struct {
+	// Format contains keymap format
+	Format uintptr
 
-// WWlKeyboardEnterEvent requests to enter event
+	// FD contains keymap file descriptor
+	FD uintptr
+
+	// Size contains keymap size, in bytes
+	Size uintptr
+}
+
+// WWlKeyboardEnterEvent signals when enter event
 //
 // Notification that this seat's keyboard focus is on a certain
 // surface.
 //
 // The compositor must send the wl_keyboard.modifiers event after this
 // event.
-type WWlKeyboardEnterEvent struct{}
+type WWlKeyboardEnterEvent struct {
+	// Serial contains serial number of the enter event
+	Serial uintptr
 
-// WWlKeyboardLeaveEvent requests to leave event
+	// Surface contains surface gaining keyboard focus
+	Surface uintptr
+
+	// Keys contains the currently pressed keys
+	Keys uintptr
+}
+
+// WWlKeyboardLeaveEvent signals when leave event
 //
 // Notification that this seat's keyboard focus is no longer on
 // a certain surface.
@@ -7403,9 +6935,15 @@ type WWlKeyboardEnterEvent struct{}
 //
 // After this event client must assume that all keys, including modifiers,
 // are lifted and also it must stop key repeating if there's some going on.
-type WWlKeyboardLeaveEvent struct{}
+type WWlKeyboardLeaveEvent struct {
+	// Serial contains serial number of the leave event
+	Serial uintptr
 
-// WWlKeyboardKeyEvent requests to key event
+	// Surface contains surface that lost keyboard focus
+	Surface uintptr
+}
+
+// WWlKeyboardKeyEvent signals when key event
 //
 // A key was pressed or released.
 // The time argument is a timestamp with millisecond
@@ -7416,15 +6954,42 @@ type WWlKeyboardLeaveEvent struct{}
 //
 // If this event produces a change in modifiers, then the resulting
 // wl_keyboard.modifiers event must be sent after this event.
-type WWlKeyboardKeyEvent struct{}
+type WWlKeyboardKeyEvent struct {
+	// Serial contains serial number of the key event
+	Serial uintptr
 
-// WWlKeyboardModifiersEvent requests to modifier and group state
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	// Key contains key that produced the event
+	Key uintptr
+
+	// State contains physical state of the key
+	State uintptr
+}
+
+// WWlKeyboardModifiersEvent signals when modifier and group state
 //
 // Notifies clients that the modifier and/or group state has
 // changed, and it should update its local state.
-type WWlKeyboardModifiersEvent struct{}
+type WWlKeyboardModifiersEvent struct {
+	// Serial contains serial number of the modifiers event
+	Serial uintptr
 
-// WWlKeyboardRepeatInfoEvent requests to repeat rate and delay
+	// ModsDepressed contains depressed modifiers
+	ModsDepressed uintptr
+
+	// ModsLatched contains latched modifiers
+	ModsLatched uintptr
+
+	// ModsLocked contains locked modifiers
+	ModsLocked uintptr
+
+	// Group contains keyboard layout
+	Group uintptr
+}
+
+// WWlKeyboardRepeatInfoEvent signals when repeat rate and delay
 //
 // Informs the client about the keyboard's repeat rate and delay.
 //
@@ -7438,32 +7003,78 @@ type WWlKeyboardModifiersEvent struct{}
 // This event can be sent later on as well with a new value if necessary,
 // so clients should continue listening for the event past the creation
 // of wl_keyboard.
-type WWlKeyboardRepeatInfoEvent struct{}
+type WWlKeyboardRepeatInfoEvent struct {
+	// Rate contains the rate of repeating keys in characters per second
+	Rate uintptr
+
+	// Delay contains delay in milliseconds since key down until repeating starts
+	Delay uintptr
+}
 
 // WWlTouchReleaseRequest requests to release the touch object
-type WWlTouchReleaseRequest struct{}
+type WWlTouchReleaseRequest struct {
+}
 
-// WWlTouchDownEvent requests to touch down event and beginning of a touch sequence
+// WWlTouchDownEvent signals when touch down event and beginning of a touch sequence
 //
 // A new touch point has appeared on the surface. This touch point is
 // assigned a unique ID. Future events from this touch point reference
 // this ID. The ID ceases to be valid after a touch up event and may be
 // reused in the future.
-type WWlTouchDownEvent struct{}
+type WWlTouchDownEvent struct {
+	// Serial contains serial number of the touch down event
+	Serial uintptr
 
-// WWlTouchUpEvent requests to end of a touch event sequence
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	// Surface contains surface touched
+	Surface uintptr
+
+	// ID contains the unique ID of this touch point
+	ID uintptr
+
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+}
+
+// WWlTouchUpEvent signals when end of a touch event sequence
 //
 // The touch point has disappeared. No further events will be sent for
 // this touch point and the touch point's ID is released and may be
 // reused in a future touch down event.
-type WWlTouchUpEvent struct{}
+type WWlTouchUpEvent struct {
+	// Serial contains serial number of the touch up event
+	Serial uintptr
 
-// WWlTouchMotionEvent requests to update of touch point coordinates
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
+
+	// ID contains the unique ID of this touch point
+	ID uintptr
+}
+
+// WWlTouchMotionEvent signals when update of touch point coordinates
 //
 // A touch point has changed coordinates.
-type WWlTouchMotionEvent struct{}
+type WWlTouchMotionEvent struct {
+	// Time contains timestamp with millisecond granularity
+	Time uintptr
 
-// WWlTouchFrameEvent requests to end of touch frame event
+	// ID contains the unique ID of this touch point
+	ID uintptr
+
+	// X contains surface-local x coordinate
+	X uintptr
+
+	// Y contains surface-local y coordinate
+	Y uintptr
+}
+
+// WWlTouchFrameEvent signals when end of touch frame event
 //
 // Indicates the end of a set of events that logically belong together.
 // A client is expected to accumulate the data in all events within the
@@ -7473,9 +7084,10 @@ type WWlTouchMotionEvent struct{}
 // guarantee is provided about the set of events within a frame. A client
 // must assume that any state not updated in a frame is unchanged from the
 // previously known state.
-type WWlTouchFrameEvent struct{}
+type WWlTouchFrameEvent struct {
+}
 
-// WWlTouchCancelEvent requests to touch session cancelled
+// WWlTouchCancelEvent signals when touch session cancelled
 //
 // Sent if the compositor decides the touch stream is a global
 // gesture. No further events are sent to the clients from that
@@ -7483,9 +7095,10 @@ type WWlTouchFrameEvent struct{}
 // currently active on this client's surface. The client is
 // responsible for finalizing the touch points, future touch points on
 // this surface may reuse the touch point ID.
-type WWlTouchCancelEvent struct{}
+type WWlTouchCancelEvent struct {
+}
 
-// WWlTouchShapeEvent requests to update shape of touch point
+// WWlTouchShapeEvent signals when update shape of touch point
 //
 // Sent when a touchpoint has changed its shape.
 //
@@ -7512,9 +7125,18 @@ type WWlTouchCancelEvent struct{}
 // This event is only sent by the compositor if the touch device supports
 // shape reports. The client has to make reasonable assumptions about the
 // shape if it did not receive this event.
-type WWlTouchShapeEvent struct{}
+type WWlTouchShapeEvent struct {
+	// ID contains the unique ID of this touch point
+	ID uintptr
 
-// WWlTouchOrientationEvent requests to update orientation of touch point
+	// Major contains length of the major axis in surface-local coordinates
+	Major uintptr
+
+	// Minor contains length of the minor axis in surface-local coordinates
+	Minor uintptr
+}
+
+// WWlTouchOrientationEvent signals when update orientation of touch point
 //
 // Sent when a touchpoint has changed its orientation.
 //
@@ -7539,7 +7161,13 @@ type WWlTouchShapeEvent struct{}
 //
 // This event is only sent by the compositor if the touch device supports
 // orientation reports.
-type WWlTouchOrientationEvent struct{}
+type WWlTouchOrientationEvent struct {
+	// ID contains the unique ID of this touch point
+	ID uintptr
+
+	// Orientation contains angle between major axis and positive surface y-axis in degrees
+	Orientation uintptr
+}
 
 // WWlOutputSubpixel represents subpixel geometry information
 //
@@ -7548,40 +7176,22 @@ type WWlTouchOrientationEvent struct{}
 type WWlOutputSubpixel int
 
 const (
-	// WWlOutputSubpixelUnknown corresponds to subpixel geometry information
-	//
-	// This enumeration describes how the physical
-	// pixels on an output are laid out.
+	// WWlOutputSubpixelUnknown corresponds to unknown geometry
 	WWlOutputSubpixelUnknown WWlOutputSubpixel = 0
 
-	// WWlOutputSubpixelNone corresponds to subpixel geometry information
-	//
-	// This enumeration describes how the physical
-	// pixels on an output are laid out.
+	// WWlOutputSubpixelNone corresponds to no geometry
 	WWlOutputSubpixelNone WWlOutputSubpixel = 1
 
-	// WWlOutputSubpixelHorizontalRgb corresponds to subpixel geometry information
-	//
-	// This enumeration describes how the physical
-	// pixels on an output are laid out.
+	// WWlOutputSubpixelHorizontalRgb corresponds to horizontal RGB
 	WWlOutputSubpixelHorizontalRgb WWlOutputSubpixel = 2
 
-	// WWlOutputSubpixelHorizontalBgr corresponds to subpixel geometry information
-	//
-	// This enumeration describes how the physical
-	// pixels on an output are laid out.
+	// WWlOutputSubpixelHorizontalBgr corresponds to horizontal BGR
 	WWlOutputSubpixelHorizontalBgr WWlOutputSubpixel = 3
 
-	// WWlOutputSubpixelVerticalRgb corresponds to subpixel geometry information
-	//
-	// This enumeration describes how the physical
-	// pixels on an output are laid out.
+	// WWlOutputSubpixelVerticalRgb corresponds to vertical RGB
 	WWlOutputSubpixelVerticalRgb WWlOutputSubpixel = 4
 
-	// WWlOutputSubpixelVerticalBgr corresponds to subpixel geometry information
-	//
-	// This enumeration describes how the physical
-	// pixels on an output are laid out.
+	// WWlOutputSubpixelVerticalBgr corresponds to vertical BGR
 	WWlOutputSubpixelVerticalBgr WWlOutputSubpixel = 5
 )
 
@@ -7601,124 +7211,28 @@ const (
 type WWlOutputTransform int
 
 const (
-	// WWlOutputTransformNormal corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransformNormal corresponds to no transform
 	WWlOutputTransformNormal WWlOutputTransform = 0
 
-	// WWlOutputTransform90 corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransform90 corresponds to 90 degrees counter-clockwise
 	WWlOutputTransform90 WWlOutputTransform = 1
 
-	// WWlOutputTransform180 corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransform180 corresponds to 180 degrees counter-clockwise
 	WWlOutputTransform180 WWlOutputTransform = 2
 
-	// WWlOutputTransform270 corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransform270 corresponds to 270 degrees counter-clockwise
 	WWlOutputTransform270 WWlOutputTransform = 3
 
-	// WWlOutputTransformFlipped corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransformFlipped corresponds to 180 degree flip around a vertical axis
 	WWlOutputTransformFlipped WWlOutputTransform = 4
 
-	// WWlOutputTransformFlipped90 corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransformFlipped90 corresponds to flip and rotate 90 degrees counter-clockwise
 	WWlOutputTransformFlipped90 WWlOutputTransform = 5
 
-	// WWlOutputTransformFlipped180 corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransformFlipped180 corresponds to flip and rotate 180 degrees counter-clockwise
 	WWlOutputTransformFlipped180 WWlOutputTransform = 6
 
-	// WWlOutputTransformFlipped270 corresponds to transform from framebuffer to output
-	//
-	// This describes the transform that a compositor will apply to a
-	// surface to compensate for the rotation or mirroring of an
-	// output device.
-	//
-	// The flipped values correspond to an initial flip around a
-	// vertical axis followed by rotation.
-	//
-	// The purpose is mainly to allow clients to render accordingly and
-	// tell the compositor, so that for fullscreen surfaces, the
-	// compositor will still be able to scan out directly from client
-	// surfaces.
+	// WWlOutputTransformFlipped270 corresponds to flip and rotate 270 degrees counter-clockwise
 	WWlOutputTransformFlipped270 WWlOutputTransform = 7
 )
 
@@ -7729,16 +7243,10 @@ const (
 type WWlOutputMode uint
 
 const (
-	// WWlOutputModeCurrent corresponds to mode information
-	//
-	// These flags describe properties of an output mode.
-	// They are used in the flags bitfield of the mode event.
+	// WWlOutputModeCurrent corresponds to indicates this is the current mode
 	WWlOutputModeCurrent WWlOutputMode = 0x1
 
-	// WWlOutputModePreferred corresponds to mode information
-	//
-	// These flags describe properties of an output mode.
-	// They are used in the flags bitfield of the mode event.
+	// WWlOutputModePreferred corresponds to indicates this is the preferred mode
 	WWlOutputModePreferred WWlOutputMode = 0x2
 )
 
@@ -7746,9 +7254,10 @@ const (
 //
 // Using this request a client can tell the server that it is not going to
 // use the output object anymore.
-type WWlOutputReleaseRequest struct{}
+type WWlOutputReleaseRequest struct {
+}
 
-// WWlOutputGeometryEvent requests to properties of the output
+// WWlOutputGeometryEvent signals when properties of the output
 //
 // The geometry event describes geometric properties of the output.
 // The event is sent when binding to the output object and whenever
@@ -7763,9 +7272,33 @@ type WWlOutputReleaseRequest struct{}
 // outputs, might fake this information. Instead of using x and y, clients
 // should use xdg_output.logical_position. Instead of using make and model,
 // clients should use xdg_output.name and xdg_output.description.
-type WWlOutputGeometryEvent struct{}
+type WWlOutputGeometryEvent struct {
+	// X contains x position within the global compositor space
+	X uintptr
 
-// WWlOutputModeEvent requests to advertise available modes for the output
+	// Y contains y position within the global compositor space
+	Y uintptr
+
+	// PhysicalWidth contains width in millimeters of the output
+	PhysicalWidth uintptr
+
+	// PhysicalHeight contains height in millimeters of the output
+	PhysicalHeight uintptr
+
+	// Subpixel contains subpixel orientation of the output
+	Subpixel uintptr
+
+	// Make contains textual description of the manufacturer
+	Make uintptr
+
+	// Model contains textual description of the model
+	Model uintptr
+
+	// Transform contains transform that maps framebuffer to output
+	Transform uintptr
+}
+
+// WWlOutputModeEvent signals when advertise available modes for the output
 //
 // The mode event describes an available mode for the output.
 //
@@ -7797,18 +7330,31 @@ type WWlOutputGeometryEvent struct{}
 // Note: this information is not always meaningful for all outputs. Some
 // compositors, such as those exposing virtual outputs, might fake the
 // refresh rate or the size.
-type WWlOutputModeEvent struct{}
+type WWlOutputModeEvent struct {
+	// Flags contains bitfield of mode flags
+	Flags uintptr
 
-// WWlOutputDoneEvent requests to sent all information about output
+	// Width contains width of the mode in hardware units
+	Width uintptr
+
+	// Height contains height of the mode in hardware units
+	Height uintptr
+
+	// Refresh contains vertical refresh rate in mHz
+	Refresh uintptr
+}
+
+// WWlOutputDoneEvent signals when sent all information about output
 //
 // This event is sent after all other properties have been
 // sent after binding to the output object and after any
 // other property changes done after that. This allows
 // changes to the output properties to be seen as
 // atomic, even if they happen via multiple events.
-type WWlOutputDoneEvent struct{}
+type WWlOutputDoneEvent struct {
+}
 
-// WWlOutputScaleEvent requests to output scaling properties
+// WWlOutputScaleEvent signals when output scaling properties
 //
 // This event contains scaling geometry information
 // that is not in the geometry event. It may be sent after
@@ -7828,26 +7374,55 @@ type WWlOutputDoneEvent struct{}
 // the scale of the output. That way the compositor can
 // avoid scaling the surface, and the client can supply
 // a higher detail image.
-type WWlOutputScaleEvent struct{}
+type WWlOutputScaleEvent struct {
+	// Factor contains scaling factor of output
+	Factor uintptr
+}
 
 // WWlRegionDestroyRequest requests to destroy region
 //
 // Destroy the region.  This will invalidate the object ID.
-type WWlRegionDestroyRequest struct{}
+type WWlRegionDestroyRequest struct {
+}
 
 // WWlRegionAddRequest requests to add rectangle to region
 //
 // Add the specified rectangle to the region.
-type WWlRegionAddRequest struct{}
+type WWlRegionAddRequest struct {
+	// X contains region-local x coordinate
+	X uintptr
+
+	// Y contains region-local y coordinate
+	Y uintptr
+
+	// Width contains rectangle width
+	Width uintptr
+
+	// Height contains rectangle height
+	Height uintptr
+}
 
 // WWlRegionSubtractRequest requests to subtract rectangle from region
 //
 // Subtract the specified rectangle from the region.
-type WWlRegionSubtractRequest struct{}
+type WWlRegionSubtractRequest struct {
+	// X contains region-local x coordinate
+	X uintptr
+
+	// Y contains region-local y coordinate
+	Y uintptr
+
+	// Width contains rectangle width
+	Width uintptr
+
+	// Height contains rectangle height
+	Height uintptr
+}
 
 type WWlSubcompositorError int
 
 const (
+	// WWlSubcompositorErrorBadSurface corresponds to the to-be sub-surface is invalid
 	WWlSubcompositorErrorBadSurface WWlSubcompositorError = 0
 )
 
@@ -7856,7 +7431,8 @@ const (
 // Informs the server that the client will not be using this
 // protocol object anymore. This does not affect any other
 // objects, wl_subsurface objects included.
-type WWlSubcompositorDestroyRequest struct{}
+type WWlSubcompositorDestroyRequest struct {
+}
 
 // WWlSubcompositorGetSubsurfaceRequest requests to give a surface the role sub-surface
 //
@@ -7875,11 +7451,21 @@ type WWlSubcompositorDestroyRequest struct{}
 //
 // This request modifies the behaviour of wl_surface.commit request on
 // the sub-surface, see the documentation on wl_subsurface interface.
-type WWlSubcompositorGetSubsurfaceRequest struct{}
+type WWlSubcompositorGetSubsurfaceRequest struct {
+	// ID contains the new sub-surface object ID
+	ID uintptr
+
+	// Surface contains the surface to be turned into a sub-surface
+	Surface uintptr
+
+	// Parent contains the parent surface
+	Parent uintptr
+}
 
 type WWlSubsurfaceError int
 
 const (
+	// WWlSubsurfaceErrorBadSurface corresponds to wl_surface is not a sibling or the parent
 	WWlSubsurfaceErrorBadSurface WWlSubsurfaceError = 0
 )
 
@@ -7890,7 +7476,8 @@ const (
 // wl_subcompositor.get_subsurface request. The wl_surface's association
 // to the parent is deleted, and the wl_surface loses its role as
 // a sub-surface. The wl_surface is unmapped immediately.
-type WWlSubsurfaceDestroyRequest struct{}
+type WWlSubsurfaceDestroyRequest struct {
+}
 
 // WWlSubsurfaceSetPositionRequest requests to reposition the sub-surface
 //
@@ -7910,7 +7497,13 @@ type WWlSubsurfaceDestroyRequest struct{}
 // replaces the scheduled position from any previous request.
 //
 // The initial position is 0, 0.
-type WWlSubsurfaceSetPositionRequest struct{}
+type WWlSubsurfaceSetPositionRequest struct {
+	// X contains x coordinate in the parent surface
+	X uintptr
+
+	// Y contains y coordinate in the parent surface
+	Y uintptr
+}
 
 // WWlSubsurfacePlaceAboveRequest requests to restack the sub-surface
 //
@@ -7929,13 +7522,19 @@ type WWlSubsurfaceSetPositionRequest struct{}
 //
 // A new sub-surface is initially added as the top-most in the stack
 // of its siblings and parent.
-type WWlSubsurfacePlaceAboveRequest struct{}
+type WWlSubsurfacePlaceAboveRequest struct {
+	// Sibling contains the reference surface
+	Sibling uintptr
+}
 
 // WWlSubsurfacePlaceBelowRequest requests to restack the sub-surface
 //
 // The sub-surface is placed just below the reference surface.
 // See wl_subsurface.place_above.
-type WWlSubsurfacePlaceBelowRequest struct{}
+type WWlSubsurfacePlaceBelowRequest struct {
+	// Sibling contains the reference surface
+	Sibling uintptr
+}
 
 // WWlSubsurfaceSetSyncRequest requests to set sub-surface to synchronized mode
 //
@@ -7952,7 +7551,8 @@ type WWlSubsurfacePlaceBelowRequest struct{}
 // parent surface commits do not (re-)apply old state.
 //
 // See wl_subsurface for the recursive effect of this mode.
-type WWlSubsurfaceSetSyncRequest struct{}
+type WWlSubsurfaceSetSyncRequest struct {
+}
 
 // WWlSubsurfaceSetDesyncRequest requests to set sub-surface to desynchronized mode
 //
@@ -7975,22 +7575,30 @@ type WWlSubsurfaceSetSyncRequest struct{}
 //
 // If a surface's parent surface behaves as desynchronized, then
 // the cached state is applied on set_desync.
-type WWlSubsurfaceSetDesyncRequest struct{}
+type WWlSubsurfaceSetDesyncRequest struct {
+}
 
 // WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest requests to create a new primary selection source
 //
 // Create a new primary selection source.
-type WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest struct{}
+type WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest struct {
+	ID uintptr
+}
 
 // WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest requests to create a new primary selection device
 //
 // Create a new data device for a given seat.
-type WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest struct{}
+type WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest struct {
+	ID uintptr
+
+	Seat uintptr
+}
 
 // WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest requests to destroy the primary selection device manager
 //
 // Destroy the primary selection device manager.
-type WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest struct{}
+type WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest struct {
+}
 
 // WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest requests to set the primary selection
 //
@@ -7998,23 +7606,31 @@ type WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest struct{}
 // selection will receive a wp_primary_selection_source.cancelled event.
 //
 // To unset the selection, set the source to NULL.
-type WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest struct{}
+type WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest struct {
+	Source uintptr
+
+	// Serial contains serial of the event that triggered this request
+	Serial uintptr
+}
 
 // WPSUVZwpPrimarySelectionDeviceV1DestroyRequest requests to destroy the primary selection device
 //
 // Destroy the primary selection device.
-type WPSUVZwpPrimarySelectionDeviceV1DestroyRequest struct{}
+type WPSUVZwpPrimarySelectionDeviceV1DestroyRequest struct {
+}
 
-// WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent requests to introduce a new wp_primary_selection_offer
+// WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent signals when introduce a new wp_primary_selection_offer
 //
 // Introduces a new wp_primary_selection_offer object that may be used
 // to receive the current primary selection. Immediately following this
 // event, the new wp_primary_selection_offer object will send
 // wp_primary_selection_offer.offer events to describe the offered mime
 // types.
-type WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent struct{}
+type WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent struct {
+	Offer uintptr
+}
 
-// WPSUVZwpPrimarySelectionDeviceV1SelectionEvent requests to advertise a new primary selection
+// WPSUVZwpPrimarySelectionDeviceV1SelectionEvent signals when advertise a new primary selection
 //
 // The wp_primary_selection_device.selection event is sent to notify the
 // client of a new primary selection. This event is sent after the
@@ -8025,7 +7641,9 @@ type WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent struct{}
 // The data_offer is valid until a new offer or NULL is received
 // or until the client loses keyboard focus. The client must destroy the
 // previous selection data_offer, if any, upon receiving this event.
-type WPSUVZwpPrimarySelectionDeviceV1SelectionEvent struct{}
+type WPSUVZwpPrimarySelectionDeviceV1SelectionEvent struct {
+	ID uintptr
+}
 
 // WPSUVZwpPrimarySelectionOfferV1ReceiveRequest requests to request that the data is transferred
 //
@@ -8038,44 +7656,59 @@ type WPSUVZwpPrimarySelectionDeviceV1SelectionEvent struct{}
 //
 // The receiving client reads from the read end of the pipe until EOF and
 // closes its end, at which point the transfer is complete.
-type WPSUVZwpPrimarySelectionOfferV1ReceiveRequest struct{}
+type WPSUVZwpPrimarySelectionOfferV1ReceiveRequest struct {
+	MimeType uintptr
+
+	FD uintptr
+}
 
 // WPSUVZwpPrimarySelectionOfferV1DestroyRequest requests to destroy the primary selection offer
 //
 // Destroy the primary selection offer.
-type WPSUVZwpPrimarySelectionOfferV1DestroyRequest struct{}
+type WPSUVZwpPrimarySelectionOfferV1DestroyRequest struct {
+}
 
-// WPSUVZwpPrimarySelectionOfferV1OfferEvent requests to advertise offered mime type
+// WPSUVZwpPrimarySelectionOfferV1OfferEvent signals when advertise offered mime type
 //
 // Sent immediately after creating announcing the
 // wp_primary_selection_offer through
 // wp_primary_selection_device.data_offer. One event is sent per offered
 // mime type.
-type WPSUVZwpPrimarySelectionOfferV1OfferEvent struct{}
+type WPSUVZwpPrimarySelectionOfferV1OfferEvent struct {
+	MimeType uintptr
+}
 
 // WPSUVZwpPrimarySelectionSourceV1OfferRequest requests to add an offered mime type
 //
 // This request adds a mime type to the set of mime types advertised to
 // targets. Can be called several times to offer multiple types.
-type WPSUVZwpPrimarySelectionSourceV1OfferRequest struct{}
+type WPSUVZwpPrimarySelectionSourceV1OfferRequest struct {
+	MimeType uintptr
+}
 
 // WPSUVZwpPrimarySelectionSourceV1DestroyRequest requests to destroy the primary selection source
 //
 // Destroy the primary selection source.
-type WPSUVZwpPrimarySelectionSourceV1DestroyRequest struct{}
+type WPSUVZwpPrimarySelectionSourceV1DestroyRequest struct {
+}
 
-// WPSUVZwpPrimarySelectionSourceV1SendEvent requests to send the primary selection contents
+// WPSUVZwpPrimarySelectionSourceV1SendEvent signals when send the primary selection contents
 //
 // Request for the current primary selection contents from the client.
 // Send the specified mime type over the passed file descriptor, then
 // close it.
-type WPSUVZwpPrimarySelectionSourceV1SendEvent struct{}
+type WPSUVZwpPrimarySelectionSourceV1SendEvent struct {
+	MimeType uintptr
 
-// WPSUVZwpPrimarySelectionSourceV1CancelledEvent requests to request for primary selection contents was canceled
+	FD uintptr
+}
+
+// WPSUVZwpPrimarySelectionSourceV1CancelledEvent signals when request for primary selection contents was canceled
 //
 // This primary selection source is no longer valid. The client should
 // clean up and destroy this primary selection source.
-type WPSUVZwpPrimarySelectionSourceV1CancelledEvent struct{}
+type WPSUVZwpPrimarySelectionSourceV1CancelledEvent struct {
+}
 
 // XAVXdgActivationV1DestroyRequest requests to destroy the xdg_activation object
 //
@@ -8084,14 +7717,17 @@ type WPSUVZwpPrimarySelectionSourceV1CancelledEvent struct{}
 //
 // The child objects created via this interface are unaffected and should
 // be destroyed separately.
-type XAVXdgActivationV1DestroyRequest struct{}
+type XAVXdgActivationV1DestroyRequest struct {
+}
 
 // XAVXdgActivationV1GetActivationTokenRequest requests to requests a token
 //
 // Creates an xdg_activation_token_v1 object that will provide
 // the initiating client with a unique token for this activation. This
 // token should be offered to the clients to be activated.
-type XAVXdgActivationV1GetActivationTokenRequest struct{}
+type XAVXdgActivationV1GetActivationTokenRequest struct {
+	ID uintptr
+}
 
 // XAVXdgActivationV1ActivateRequest requests to notify new interaction being available
 //
@@ -8105,11 +7741,18 @@ type XAVXdgActivationV1GetActivationTokenRequest struct{}
 //
 // Compositors can ignore unknown activation tokens when an invalid
 // token is passed.
-type XAVXdgActivationV1ActivateRequest struct{}
+type XAVXdgActivationV1ActivateRequest struct {
+	// Token contains the activation token of the initiating client
+	Token uintptr
+
+	// Surface contains the wl_surface to activate
+	Surface uintptr
+}
 
 type XAVXdgActivationTokenV1Error int
 
 const (
+	// XAVXdgActivationTokenV1ErrorAlreadyUsed corresponds to The token has already been used previously
 	XAVXdgActivationTokenV1ErrorAlreadyUsed XAVXdgActivationTokenV1Error = 0
 )
 
@@ -8127,15 +7770,24 @@ const (
 // doesn't have a valid and recent enough event serial.
 //
 // Must be sent before commit. This information is optional.
-type XAVXdgActivationTokenV1SetSerialRequest struct{}
+type XAVXdgActivationTokenV1SetSerialRequest struct {
+	// Serial contains the serial of the event that triggered the activation
+	Serial uintptr
 
-// XAVXdgActivationTokenV1SetAppIdRequest requests to specifies the application being activated
+	// Seat contains the wl_seat of the event
+	Seat uintptr
+}
+
+// XAVXdgActivationTokenV1SetAppIDRequest requests to specifies the application being activated
 //
 // The requesting client can specify an app_id to associate the token
 // being created with it.
 //
 // Must be sent before commit. This information is optional.
-type XAVXdgActivationTokenV1SetAppIdRequest struct{}
+type XAVXdgActivationTokenV1SetAppIDRequest struct {
+	// AppID contains the application id of the client being activated.
+	AppID uintptr
+}
 
 // XAVXdgActivationTokenV1SetSurfaceRequest requests to specifies the surface requesting activation
 //
@@ -8146,31 +7798,40 @@ type XAVXdgActivationTokenV1SetAppIdRequest struct{}
 // doesn't have a requesting surface.
 //
 // Must be sent before commit. This information is optional.
-type XAVXdgActivationTokenV1SetSurfaceRequest struct{}
+type XAVXdgActivationTokenV1SetSurfaceRequest struct {
+	// Surface contains the requesting surface
+	Surface uintptr
+}
 
 // XAVXdgActivationTokenV1CommitRequest requests to issues the token request
 //
 // Requests an activation token based on the different parameters that
 // have been offered through set_serial, set_surface and set_app_id.
-type XAVXdgActivationTokenV1CommitRequest struct{}
+type XAVXdgActivationTokenV1CommitRequest struct {
+}
 
 // XAVXdgActivationTokenV1DestroyRequest requests to destroy the xdg_activation_token_v1 object
 //
 // Notify the compositor that the xdg_activation_token_v1 object will no
 // longer be used.
-type XAVXdgActivationTokenV1DestroyRequest struct{}
+type XAVXdgActivationTokenV1DestroyRequest struct {
+}
 
-// XAVXdgActivationTokenV1DoneEvent requests to the exported activation token
+// XAVXdgActivationTokenV1DoneEvent signals when the exported activation token
 //
 // The 'done' event contains the unique token of this activation request
 // and notifies that the provider is done.
-type XAVXdgActivationTokenV1DoneEvent struct{}
+type XAVXdgActivationTokenV1DoneEvent struct {
+	// Token contains the exported activation token
+	Token uintptr
+}
 
 // XDUVZxdgDecorationManagerV1DestroyRequest requests to destroy the decoration manager object
 //
 // Destroy the decoration manager. This doesn't destroy objects created
 // with the manager.
-type XDUVZxdgDecorationManagerV1DestroyRequest struct{}
+type XDUVZxdgDecorationManagerV1DestroyRequest struct {
+}
 
 // XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest requests to create a new toplevel decoration object
 //
@@ -8181,15 +7842,22 @@ type XDUVZxdgDecorationManagerV1DestroyRequest struct{}
 // client to attach or manipulate a buffer prior to the first
 // xdg_toplevel_decoration.configure event must also be treated as
 // errors.
-type XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest struct{}
+type XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest struct {
+	ID uintptr
+
+	Toplevel uintptr
+}
 
 type XDUVZxdgToplevelDecorationV1Error int
 
 const (
+	// XDUVZxdgToplevelDecorationV1ErrorUnconfiguredBuffer corresponds to xdg_toplevel has a buffer attached before configure
 	XDUVZxdgToplevelDecorationV1ErrorUnconfiguredBuffer XDUVZxdgToplevelDecorationV1Error = 0
 
+	// XDUVZxdgToplevelDecorationV1ErrorAlreadyConstructed corresponds to xdg_toplevel already has a decoration object
 	XDUVZxdgToplevelDecorationV1ErrorAlreadyConstructed XDUVZxdgToplevelDecorationV1Error = 1
 
+	// XDUVZxdgToplevelDecorationV1ErrorOrphaned corresponds to xdg_toplevel destroyed before the decoration object
 	XDUVZxdgToplevelDecorationV1ErrorOrphaned XDUVZxdgToplevelDecorationV1Error = 2
 )
 
@@ -8199,14 +7867,10 @@ const (
 type XDUVZxdgToplevelDecorationV1Mode int
 
 const (
-	// XDUVZxdgToplevelDecorationV1ModeClientSide corresponds to window decoration modes
-	//
-	// These values describe window decoration modes.
+	// XDUVZxdgToplevelDecorationV1ModeClientSide corresponds to no server-side window decoration
 	XDUVZxdgToplevelDecorationV1ModeClientSide XDUVZxdgToplevelDecorationV1Mode = 1
 
-	// XDUVZxdgToplevelDecorationV1ModeServerSide corresponds to window decoration modes
-	//
-	// These values describe window decoration modes.
+	// XDUVZxdgToplevelDecorationV1ModeServerSide corresponds to server-side window decoration
 	XDUVZxdgToplevelDecorationV1ModeServerSide XDUVZxdgToplevelDecorationV1Mode = 2
 )
 
@@ -8214,7 +7878,8 @@ const (
 //
 // Switch back to a mode without any server-side decorations at the next
 // commit.
-type XDUVZxdgToplevelDecorationV1DestroyRequest struct{}
+type XDUVZxdgToplevelDecorationV1DestroyRequest struct {
+}
 
 // XDUVZxdgToplevelDecorationV1SetModeRequest requests to set the decoration mode
 //
@@ -8236,7 +7901,10 @@ type XDUVZxdgToplevelDecorationV1DestroyRequest struct{}
 // Such clients are responsible for preventing configure loops and must
 // make sure not to send multiple successive set_mode requests with the
 // same decoration mode.
-type XDUVZxdgToplevelDecorationV1SetModeRequest struct{}
+type XDUVZxdgToplevelDecorationV1SetModeRequest struct {
+	// Mode contains the decoration mode
+	Mode uintptr
+}
 
 // XDUVZxdgToplevelDecorationV1UnsetModeRequest requests to unset the decoration mode
 //
@@ -8244,9 +7912,10 @@ type XDUVZxdgToplevelDecorationV1SetModeRequest struct{}
 // that the client doesn't prefer a particular decoration mode.
 //
 // This request has the same semantics as set_mode.
-type XDUVZxdgToplevelDecorationV1UnsetModeRequest struct{}
+type XDUVZxdgToplevelDecorationV1UnsetModeRequest struct {
+}
 
-// XDUVZxdgToplevelDecorationV1ConfigureEvent requests to suggest a surface change
+// XDUVZxdgToplevelDecorationV1ConfigureEvent signals when suggest a surface change
 //
 // The configure event asks the client to change its decoration mode. The
 // configured state should not be applied immediately. Clients must send an
@@ -8255,13 +7924,17 @@ type XDUVZxdgToplevelDecorationV1UnsetModeRequest struct{}
 //
 // A configure event can be sent at any time. The specified mode must be
 // obeyed by the client.
-type XDUVZxdgToplevelDecorationV1ConfigureEvent struct{}
+type XDUVZxdgToplevelDecorationV1ConfigureEvent struct {
+	// Mode contains the decoration mode
+	Mode uintptr
+}
 
 // XFUVZxdgExporterV1DestroyRequest requests to destroy the xdg_exporter object
 //
 // Notify the compositor that the xdg_exporter object will no longer be
 // used.
-type XFUVZxdgExporterV1DestroyRequest struct{}
+type XFUVZxdgExporterV1DestroyRequest struct {
+}
 
 // XFUVZxdgExporterV1ExportRequest requests to export a surface
 //
@@ -8273,13 +7946,20 @@ type XFUVZxdgExporterV1DestroyRequest struct{}
 // A surface may be exported multiple times, and each exported handle may
 // be used to create an xdg_imported multiple times. Only xdg_surface
 // surfaces may be exported.
-type XFUVZxdgExporterV1ExportRequest struct{}
+type XFUVZxdgExporterV1ExportRequest struct {
+	// ID contains the new xdg_exported object
+	ID uintptr
+
+	// Surface contains the surface to export
+	Surface uintptr
+}
 
 // XFUVZxdgImporterV1DestroyRequest requests to destroy the xdg_importer object
 //
 // Notify the compositor that the xdg_importer object will no longer be
 // used.
-type XFUVZxdgImporterV1DestroyRequest struct{}
+type XFUVZxdgImporterV1DestroyRequest struct {
+}
 
 // XFUVZxdgImporterV1ImportRequest requests to import a surface
 //
@@ -8288,29 +7968,40 @@ type XFUVZxdgImporterV1DestroyRequest struct{}
 // called, a new xdg_imported object will be created. This new object
 // represents the imported surface, and the importing client can
 // manipulate its relationship using it. See xdg_imported for details.
-type XFUVZxdgImporterV1ImportRequest struct{}
+type XFUVZxdgImporterV1ImportRequest struct {
+	// ID contains the new xdg_imported object
+	ID uintptr
+
+	// Handle contains the exported surface handle
+	Handle uintptr
+}
 
 // XFUVZxdgExportedV1DestroyRequest requests to unexport the exported surface
 //
 // Revoke the previously exported surface. This invalidates any
 // relationship the importer may have set up using the xdg_imported created
 // given the handle sent via xdg_exported.handle.
-type XFUVZxdgExportedV1DestroyRequest struct{}
+type XFUVZxdgExportedV1DestroyRequest struct {
+}
 
-// XFUVZxdgExportedV1HandleEvent requests to the exported surface handle
+// XFUVZxdgExportedV1HandleEvent signals when the exported surface handle
 //
 // The handle event contains the unique handle of this exported surface
 // reference. It may be shared with any client, which then can use it to
 // import the surface by calling xdg_importer.import. A handle may be
 // used to import the surface multiple times.
-type XFUVZxdgExportedV1HandleEvent struct{}
+type XFUVZxdgExportedV1HandleEvent struct {
+	// Handle contains the exported surface handle
+	Handle uintptr
+}
 
 // XFUVZxdgImportedV1DestroyRequest requests to destroy the xdg_imported object
 //
 // Notify the compositor that it will no longer use the xdg_imported
 // object. Any relationship that may have been set up will at this point
 // be invalidated.
-type XFUVZxdgImportedV1DestroyRequest struct{}
+type XFUVZxdgImportedV1DestroyRequest struct {
+}
 
 // XFUVZxdgImportedV1SetParentOfRequest requests to set as the parent of some surface
 //
@@ -8318,15 +8009,19 @@ type XFUVZxdgImportedV1DestroyRequest struct{}
 // The passed surface must be a toplevel xdg_surface. Calling this function
 // sets up a surface to surface relation with the same stacking and positioning
 // semantics as xdg_surface.set_parent.
-type XFUVZxdgImportedV1SetParentOfRequest struct{}
+type XFUVZxdgImportedV1SetParentOfRequest struct {
+	// Surface contains the child surface
+	Surface uintptr
+}
 
-// XFUVZxdgImportedV1DestroyedEvent requests to the imported surface handle has been destroyed
+// XFUVZxdgImportedV1DestroyedEvent signals when the imported surface handle has been destroyed
 //
 // The imported surface handle has been destroyed and any relationship set
 // up has been invalidated. This may happen for various reasons, for
 // example if the exported surface or the exported surface handle has been
 // destroyed, if the handle used for importing was invalid.
-type XFUVZxdgImportedV1DestroyedEvent struct{}
+type XFUVZxdgImportedV1DestroyedEvent struct {
+}
 
 // XFUVZxdgExporterV2Error represents error values
 //
@@ -8335,10 +8030,7 @@ type XFUVZxdgImportedV1DestroyedEvent struct{}
 type XFUVZxdgExporterV2Error int
 
 const (
-	// XFUVZxdgExporterV2ErrorInvalidSurface corresponds to error values
-	//
-	// These errors can be emitted in response to invalid xdg_exporter
-	// requests.
+	// XFUVZxdgExporterV2ErrorInvalidSurface corresponds to surface is not an xdg_toplevel
 	XFUVZxdgExporterV2ErrorInvalidSurface XFUVZxdgExporterV2Error = 0
 )
 
@@ -8346,7 +8038,8 @@ const (
 //
 // Notify the compositor that the xdg_exporter object will no longer be
 // used.
-type XFUVZxdgExporterV2DestroyRequest struct{}
+type XFUVZxdgExporterV2DestroyRequest struct {
+}
 
 // XFUVZxdgExporterV2ExportToplevelRequest requests to export a toplevel surface
 //
@@ -8359,13 +8052,20 @@ type XFUVZxdgExporterV2DestroyRequest struct{}
 // be used to create an xdg_imported multiple times. Only xdg_toplevel
 // equivalent surfaces may be exported, otherwise an invalid_surface
 // protocol error is sent.
-type XFUVZxdgExporterV2ExportToplevelRequest struct{}
+type XFUVZxdgExporterV2ExportToplevelRequest struct {
+	// ID contains the new xdg_exported object
+	ID uintptr
+
+	// Surface contains the surface to export
+	Surface uintptr
+}
 
 // XFUVZxdgImporterV2DestroyRequest requests to destroy the xdg_importer object
 //
 // Notify the compositor that the xdg_importer object will no longer be
 // used.
-type XFUVZxdgImporterV2DestroyRequest struct{}
+type XFUVZxdgImporterV2DestroyRequest struct {
+}
 
 // XFUVZxdgImporterV2ImportToplevelRequest requests to import a toplevel surface
 //
@@ -8374,22 +8074,32 @@ type XFUVZxdgImporterV2DestroyRequest struct{}
 // When called, a new xdg_imported object will be created. This new object
 // represents the imported surface, and the importing client can
 // manipulate its relationship using it. See xdg_imported for details.
-type XFUVZxdgImporterV2ImportToplevelRequest struct{}
+type XFUVZxdgImporterV2ImportToplevelRequest struct {
+	// ID contains the new xdg_imported object
+	ID uintptr
+
+	// Handle contains the exported surface handle
+	Handle uintptr
+}
 
 // XFUVZxdgExportedV2DestroyRequest requests to unexport the exported surface
 //
 // Revoke the previously exported surface. This invalidates any
 // relationship the importer may have set up using the xdg_imported created
 // given the handle sent via xdg_exported.handle.
-type XFUVZxdgExportedV2DestroyRequest struct{}
+type XFUVZxdgExportedV2DestroyRequest struct {
+}
 
-// XFUVZxdgExportedV2HandleEvent requests to the exported surface handle
+// XFUVZxdgExportedV2HandleEvent signals when the exported surface handle
 //
 // The handle event contains the unique handle of this exported surface
 // reference. It may be shared with any client, which then can use it to
 // import the surface by calling xdg_importer.import_toplevel. A handle
 // may be used to import the surface multiple times.
-type XFUVZxdgExportedV2HandleEvent struct{}
+type XFUVZxdgExportedV2HandleEvent struct {
+	// Handle contains the exported surface handle
+	Handle uintptr
+}
 
 // XFUVZxdgImportedV2Error represents error values
 //
@@ -8398,10 +8108,7 @@ type XFUVZxdgExportedV2HandleEvent struct{}
 type XFUVZxdgImportedV2Error int
 
 const (
-	// XFUVZxdgImportedV2ErrorInvalidSurface corresponds to error values
-	//
-	// These errors can be emitted in response to invalid xdg_imported
-	// requests.
+	// XFUVZxdgImportedV2ErrorInvalidSurface corresponds to surface is not an xdg_toplevel
 	XFUVZxdgImportedV2ErrorInvalidSurface XFUVZxdgImportedV2Error = 0
 )
 
@@ -8410,7 +8117,8 @@ const (
 // Notify the compositor that it will no longer use the xdg_imported
 // object. Any relationship that may have been set up will at this point
 // be invalidated.
-type XFUVZxdgImportedV2DestroyRequest struct{}
+type XFUVZxdgImportedV2DestroyRequest struct {
+}
 
 // XFUVZxdgImportedV2SetParentOfRequest requests to set as the parent of some surface
 //
@@ -8419,15 +8127,19 @@ type XFUVZxdgImportedV2DestroyRequest struct{}
 // invalid_surface protocol error is sent. Calling this function sets up
 // a surface to surface relation with the same stacking and positioning
 // semantics as xdg_toplevel.set_parent.
-type XFUVZxdgImportedV2SetParentOfRequest struct{}
+type XFUVZxdgImportedV2SetParentOfRequest struct {
+	// Surface contains the child surface
+	Surface uintptr
+}
 
-// XFUVZxdgImportedV2DestroyedEvent requests to the imported surface handle has been destroyed
+// XFUVZxdgImportedV2DestroyedEvent signals when the imported surface handle has been destroyed
 //
 // The imported surface handle has been destroyed and any relationship set
 // up has been invalidated. This may happen for various reasons, for
 // example if the exported surface or the exported surface handle has been
 // destroyed, if the handle used for importing was invalid.
-type XFUVZxdgImportedV2DestroyedEvent struct{}
+type XFUVZxdgImportedV2DestroyedEvent struct {
+}
 
 // XOUVZxdgOutputManagerV1DestroyRequest requests to destroy the xdg_output_manager object
 //
@@ -8435,20 +8147,26 @@ type XFUVZxdgImportedV2DestroyedEvent struct{}
 // going to use the xdg_output_manager object anymore.
 //
 // Any objects already created through this instance are not affected.
-type XOUVZxdgOutputManagerV1DestroyRequest struct{}
+type XOUVZxdgOutputManagerV1DestroyRequest struct {
+}
 
 // XOUVZxdgOutputManagerV1GetXdgOutputRequest requests to create an xdg output from a wl_output
 //
 // This creates a new xdg_output object for the given wl_output.
-type XOUVZxdgOutputManagerV1GetXdgOutputRequest struct{}
+type XOUVZxdgOutputManagerV1GetXdgOutputRequest struct {
+	ID uintptr
+
+	Output uintptr
+}
 
 // XOUVZxdgOutputV1DestroyRequest requests to destroy the xdg_output object
 //
 // Using this request a client can tell the server that it is not
 // going to use the xdg_output object anymore.
-type XOUVZxdgOutputV1DestroyRequest struct{}
+type XOUVZxdgOutputV1DestroyRequest struct {
+}
 
-// XOUVZxdgOutputV1LogicalPositionEvent requests to position of the output within the global compositor space
+// XOUVZxdgOutputV1LogicalPositionEvent signals when position of the output within the global compositor space
 //
 // The position event describes the location of the wl_output within
 // the global compositor space.
@@ -8456,9 +8174,15 @@ type XOUVZxdgOutputV1DestroyRequest struct{}
 // The logical_position event is sent after creating an xdg_output
 // (see xdg_output_manager.get_xdg_output) and whenever the location
 // of the output changes within the global compositor space.
-type XOUVZxdgOutputV1LogicalPositionEvent struct{}
+type XOUVZxdgOutputV1LogicalPositionEvent struct {
+	// X contains x position within the global compositor space
+	X uintptr
 
-// XOUVZxdgOutputV1LogicalSizeEvent requests to size of the output in the global compositor space
+	// Y contains y position within the global compositor space
+	Y uintptr
+}
+
+// XOUVZxdgOutputV1LogicalSizeEvent signals when size of the output in the global compositor space
 //
 // The logical_size event describes the size of the output in the
 // global compositor space.
@@ -8494,9 +8218,15 @@ type XOUVZxdgOutputV1LogicalPositionEvent struct{}
 // size of the output changes, either as a result of a change in the
 // applied scale or because of a change in the corresponding output
 // mode(see wl_output.mode) or transform (see wl_output.transform).
-type XOUVZxdgOutputV1LogicalSizeEvent struct{}
+type XOUVZxdgOutputV1LogicalSizeEvent struct {
+	// Width contains width in global compositor space
+	Width uintptr
 
-// XOUVZxdgOutputV1DoneEvent requests to all information about the output have been sent
+	// Height contains height in global compositor space
+	Height uintptr
+}
+
+// XOUVZxdgOutputV1DoneEvent signals when all information about the output have been sent
 //
 // This event is sent after all other properties of an xdg_output
 // have been sent.
@@ -8507,9 +8237,10 @@ type XOUVZxdgOutputV1LogicalSizeEvent struct{}
 // For objects version 3 onwards, this event is deprecated. Compositors
 // are not required to send it anymore and must send wl_output.done
 // instead.
-type XOUVZxdgOutputV1DoneEvent struct{}
+type XOUVZxdgOutputV1DoneEvent struct {
+}
 
-// XOUVZxdgOutputV1NameEvent requests to name of this output
+// XOUVZxdgOutputV1NameEvent signals when name of this output
 //
 // Many compositors will assign names to their outputs, show them to the
 // user, allow them to be configured by name, etc. The client may wish to
@@ -8529,9 +8260,12 @@ type XOUVZxdgOutputV1DoneEvent struct{}
 // xdg_output_manager.get_xdg_output). This event is only sent once per
 // xdg_output, and the name does not change over the lifetime of the
 // wl_output global.
-type XOUVZxdgOutputV1NameEvent struct{}
+type XOUVZxdgOutputV1NameEvent struct {
+	// Name contains output name
+	Name uintptr
+}
 
-// XOUVZxdgOutputV1DescriptionEvent requests to human-readable description of this output
+// XOUVZxdgOutputV1DescriptionEvent signals when human-readable description of this output
 //
 // Many compositors can produce human-readable descriptions of their
 // outputs.  The client may wish to know this description as well, to
@@ -8548,21 +8282,30 @@ type XOUVZxdgOutputV1NameEvent struct{}
 // For objects of version 2 and lower, this event is only sent once per
 // xdg_output, and the description does not change over the lifetime of
 // the wl_output global.
-type XOUVZxdgOutputV1DescriptionEvent struct{}
+type XOUVZxdgOutputV1DescriptionEvent struct {
+	// Description contains output description
+	Description uintptr
+}
 
 type XSXdgWmBaseError int
 
 const (
+	// XSXdgWmBaseErrorRole corresponds to given wl_surface has another role
 	XSXdgWmBaseErrorRole XSXdgWmBaseError = 0
 
+	// XSXdgWmBaseErrorDefunctSurfaces corresponds to xdg_wm_base was destroyed before children
 	XSXdgWmBaseErrorDefunctSurfaces XSXdgWmBaseError = 1
 
+	// XSXdgWmBaseErrorNotTheTopmostPopup corresponds to the client tried to map or destroy a non-topmost popup
 	XSXdgWmBaseErrorNotTheTopmostPopup XSXdgWmBaseError = 2
 
+	// XSXdgWmBaseErrorInvalidPopupParent corresponds to the client specified an invalid popup parent surface
 	XSXdgWmBaseErrorInvalidPopupParent XSXdgWmBaseError = 3
 
+	// XSXdgWmBaseErrorInvalidSurfaceState corresponds to the client provided an invalid surface state
 	XSXdgWmBaseErrorInvalidSurfaceState XSXdgWmBaseError = 4
 
+	// XSXdgWmBaseErrorInvalidPositioner corresponds to the client provided an invalid positioner
 	XSXdgWmBaseErrorInvalidPositioner XSXdgWmBaseError = 5
 )
 
@@ -8573,14 +8316,17 @@ const (
 // Destroying a bound xdg_wm_base object while there are surfaces
 // still alive created by this xdg_wm_base object instance is illegal
 // and will result in a protocol error.
-type XSXdgWmBaseDestroyRequest struct{}
+type XSXdgWmBaseDestroyRequest struct {
+}
 
 // XSXdgWmBaseCreatePositionerRequest requests to create a positioner object
 //
 // Create a positioner object. A positioner object is used to position
 // surfaces relative to some parent surface. See the interface description
 // and xdg_surface.get_popup for details.
-type XSXdgWmBaseCreatePositionerRequest struct{}
+type XSXdgWmBaseCreatePositionerRequest struct {
+	ID uintptr
+}
 
 // XSXdgWmBaseGetXdgSurfaceRequest requests to create a shell surface from a surface
 //
@@ -8597,15 +8343,22 @@ type XSXdgWmBaseCreatePositionerRequest struct{}
 //
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
-type XSXdgWmBaseGetXdgSurfaceRequest struct{}
+type XSXdgWmBaseGetXdgSurfaceRequest struct {
+	ID uintptr
+
+	Surface uintptr
+}
 
 // XSXdgWmBasePongRequest requests to respond to a ping event
 //
 // A client must respond to a ping event with a pong request or
 // the client may be deemed unresponsive. See xdg_wm_base.ping.
-type XSXdgWmBasePongRequest struct{}
+type XSXdgWmBasePongRequest struct {
+	// Serial contains serial of the ping event
+	Serial uintptr
+}
 
-// XSXdgWmBasePingEvent requests to check if the client is alive
+// XSXdgWmBasePingEvent signals when check if the client is alive
 //
 // The ping event asks the client if it's still alive. Pass the
 // serial specified in the event back to the compositor by sending
@@ -8618,11 +8371,15 @@ type XSXdgWmBasePongRequest struct{}
 //
 // A compositor is free to ping in any way it wants, but a client must
 // always respond to any xdg_wm_base object it created.
-type XSXdgWmBasePingEvent struct{}
+type XSXdgWmBasePingEvent struct {
+	// Serial contains pass this to the pong request
+	Serial uintptr
+}
 
 type XSXdgPositionerError int
 
 const (
+	// XSXdgPositionerErrorInvalidInput corresponds to invalid input provided
 	XSXdgPositionerErrorInvalidInput XSXdgPositionerError = 0
 )
 
@@ -8686,116 +8443,26 @@ const (
 type XSXdgPositionerConstraintAdjustment uint
 
 const (
-	// XSXdgPositionerConstraintAdjustmentNone corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSXdgPositionerConstraintAdjustmentNone XSXdgPositionerConstraintAdjustment = 0
 
-	// XSXdgPositionerConstraintAdjustmentSlideX corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSXdgPositionerConstraintAdjustmentSlideX XSXdgPositionerConstraintAdjustment = 1
 
-	// XSXdgPositionerConstraintAdjustmentSlideY corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSXdgPositionerConstraintAdjustmentSlideY XSXdgPositionerConstraintAdjustment = 2
 
-	// XSXdgPositionerConstraintAdjustmentFlipX corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSXdgPositionerConstraintAdjustmentFlipX XSXdgPositionerConstraintAdjustment = 4
 
-	// XSXdgPositionerConstraintAdjustmentFlipY corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSXdgPositionerConstraintAdjustmentFlipY XSXdgPositionerConstraintAdjustment = 8
 
-	// XSXdgPositionerConstraintAdjustmentResizeX corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSXdgPositionerConstraintAdjustmentResizeX XSXdgPositionerConstraintAdjustment = 16
 
-	// XSXdgPositionerConstraintAdjustmentResizeY corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSXdgPositionerConstraintAdjustmentResizeY XSXdgPositionerConstraintAdjustment = 32
 )
 
 // XSXdgPositionerDestroyRequest requests to destroy the xdg_positioner object
 //
 // Notify the compositor that the xdg_positioner will no longer be used.
-type XSXdgPositionerDestroyRequest struct{}
+type XSXdgPositionerDestroyRequest struct {
+}
 
 // XSXdgPositionerSetSizeRequest requests to set the size of the to-be positioned rectangle
 //
@@ -8804,7 +8471,13 @@ type XSXdgPositionerDestroyRequest struct{}
 // window geometry. See xdg_surface.set_window_geometry.
 //
 // If a zero or negative size is set the invalid_input error is raised.
-type XSXdgPositionerSetSizeRequest struct{}
+type XSXdgPositionerSetSizeRequest struct {
+	// Width contains width of positioned rectangle
+	Width uintptr
+
+	// Height contains height of positioned rectangle
+	Height uintptr
+}
 
 // XSXdgPositionerSetAnchorRectRequest requests to set the anchor rectangle within the parent surface
 //
@@ -8818,7 +8491,19 @@ type XSXdgPositionerSetSizeRequest struct{}
 // positioned child's parent surface.
 //
 // If a negative size is set the invalid_input error is raised.
-type XSXdgPositionerSetAnchorRectRequest struct{}
+type XSXdgPositionerSetAnchorRectRequest struct {
+	// X contains x position of anchor rectangle
+	X uintptr
+
+	// Y contains y position of anchor rectangle
+	Y uintptr
+
+	// Width contains width of anchor rectangle
+	Width uintptr
+
+	// Height contains height of anchor rectangle
+	Height uintptr
+}
 
 // XSXdgPositionerSetAnchorRequest requests to set anchor rectangle anchor
 //
@@ -8828,7 +8513,10 @@ type XSXdgPositionerSetAnchorRectRequest struct{}
 // 'bottom_right'), the anchor point will be at the specified corner;
 // otherwise, the derived anchor point will be centered on the specified
 // edge, or in the center of the anchor rectangle if no edge is specified.
-type XSXdgPositionerSetAnchorRequest struct{}
+type XSXdgPositionerSetAnchorRequest struct {
+	// Anchor contains anchor
+	Anchor uintptr
+}
 
 // XSXdgPositionerSetGravityRequest requests to set child surface gravity
 //
@@ -8838,7 +8526,10 @@ type XSXdgPositionerSetAnchorRequest struct{}
 // will be placed towards the specified gravity; otherwise, the child
 // surface will be centered over the anchor point on any axis that had no
 // gravity specified.
-type XSXdgPositionerSetGravityRequest struct{}
+type XSXdgPositionerSetGravityRequest struct {
+	// Gravity contains gravity direction
+	Gravity uintptr
+}
 
 // XSXdgPositionerSetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
 //
@@ -8855,7 +8546,10 @@ type XSXdgPositionerSetGravityRequest struct{}
 // are applied is specified in the corresponding adjustment descriptions.
 //
 // The default adjustment is none.
-type XSXdgPositionerSetConstraintAdjustmentRequest struct{}
+type XSXdgPositionerSetConstraintAdjustmentRequest struct {
+	// ConstraintAdjustment contains bit mask of constraint adjustments
+	ConstraintAdjustment uintptr
+}
 
 // XSXdgPositionerSetOffsetRequest requests to set surface position offset
 //
@@ -8870,7 +8564,13 @@ type XSXdgPositionerSetConstraintAdjustmentRequest struct{}
 // An example use case is placing a popup menu on top of a user interface
 // element, while aligning the user interface element of the parent surface
 // with some user interface element placed somewhere in the popup surface.
-type XSXdgPositionerSetOffsetRequest struct{}
+type XSXdgPositionerSetOffsetRequest struct {
+	// X contains surface position x offset
+	X uintptr
+
+	// Y contains surface position y offset
+	Y uintptr
+}
 
 // XSXdgPositionerSetReactiveRequest requests to continuously reconstrain the surface
 //
@@ -8880,9 +8580,16 @@ type XSXdgPositionerSetOffsetRequest struct{}
 // If the conditions changed and the popup was reconstrained, an
 // xdg_popup.configure event is sent with updated geometry, followed by an
 // xdg_surface.configure event.
-type XSXdgPositionerSetReactiveRequest struct{}
+type XSXdgPositionerSetReactiveRequest struct {
+}
 
-type XSXdgPositionerSetParentSizeRequest struct{}
+type XSXdgPositionerSetParentSizeRequest struct {
+	// ParentWidth contains future window geometry width of parent
+	ParentWidth uintptr
+
+	// ParentHeight contains future window geometry height of parent
+	ParentHeight uintptr
+}
 
 // XSXdgPositionerSetParentConfigureRequest requests to set parent configure this is a response to
 //
@@ -8890,7 +8597,10 @@ type XSXdgPositionerSetParentSizeRequest struct{}
 // used in response to. The compositor may use this information together
 // with set_parent_size to determine what future state the popup should be
 // constrained using.
-type XSXdgPositionerSetParentConfigureRequest struct{}
+type XSXdgPositionerSetParentConfigureRequest struct {
+	// Serial contains serial of parent configure event
+	Serial uintptr
+}
 
 type XSXdgSurfaceError int
 
@@ -8906,7 +8616,8 @@ const (
 //
 // Destroy the xdg_surface object. An xdg_surface must only be destroyed
 // after its role object has been destroyed.
-type XSXdgSurfaceDestroyRequest struct{}
+type XSXdgSurfaceDestroyRequest struct {
+}
 
 // XSXdgSurfaceGetToplevelRequest requests to assign the xdg_toplevel surface role
 //
@@ -8915,7 +8626,9 @@ type XSXdgSurfaceDestroyRequest struct{}
 //
 // See the documentation of xdg_toplevel for more details about what an
 // xdg_toplevel is and how it is used.
-type XSXdgSurfaceGetToplevelRequest struct{}
+type XSXdgSurfaceGetToplevelRequest struct {
+	ID uintptr
+}
 
 // XSXdgSurfaceGetPopupRequest requests to assign the xdg_popup surface role
 //
@@ -8927,7 +8640,13 @@ type XSXdgSurfaceGetToplevelRequest struct{}
 //
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
-type XSXdgSurfaceGetPopupRequest struct{}
+type XSXdgSurfaceGetPopupRequest struct {
+	ID uintptr
+
+	Parent uintptr
+
+	Positioner uintptr
+}
 
 // XSXdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
 //
@@ -8960,7 +8679,15 @@ type XSXdgSurfaceGetPopupRequest struct{}
 // the set window geometry clamped to the bounding rectangle of the
 // combined geometry of the surface of the xdg_surface and the associated
 // subsurfaces.
-type XSXdgSurfaceSetWindowGeometryRequest struct{}
+type XSXdgSurfaceSetWindowGeometryRequest struct {
+	X uintptr
+
+	Y uintptr
+
+	Width uintptr
+
+	Height uintptr
+}
 
 // XSXdgSurfaceAckConfigureRequest requests to ack a configure event
 //
@@ -8983,9 +8710,12 @@ type XSXdgSurfaceSetWindowGeometryRequest struct{}
 // A client may send multiple ack_configure requests before committing, but
 // only the last request sent before a commit indicates which configure
 // event the client really is responding to.
-type XSXdgSurfaceAckConfigureRequest struct{}
+type XSXdgSurfaceAckConfigureRequest struct {
+	// Serial contains the serial from the configure event
+	Serial uintptr
+}
 
-// XSXdgSurfaceConfigureEvent requests to suggest a surface change
+// XSXdgSurfaceConfigureEvent signals when suggest a surface change
 //
 // The configure event marks the end of a configure sequence. A configure
 // sequence is a set of one or more events configuring the state of the
@@ -9003,7 +8733,10 @@ type XSXdgSurfaceAckConfigureRequest struct{}
 //
 // If the client receives multiple configure events before it can respond
 // to one, it is free to discard all but the last event it received.
-type XSXdgSurfaceConfigureEvent struct{}
+type XSXdgSurfaceConfigureEvent struct {
+	// Serial contains serial of the configure event
+	Serial uintptr
+}
 
 // XSXdgToplevelResizeEdge represents edge values for resizing
 //
@@ -9012,58 +8745,22 @@ type XSXdgSurfaceConfigureEvent struct{}
 type XSXdgToplevelResizeEdge int
 
 const (
-	// XSXdgToplevelResizeEdgeNone corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeNone XSXdgToplevelResizeEdge = 0
 
-	// XSXdgToplevelResizeEdgeTop corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeTop XSXdgToplevelResizeEdge = 1
 
-	// XSXdgToplevelResizeEdgeBottom corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeBottom XSXdgToplevelResizeEdge = 2
 
-	// XSXdgToplevelResizeEdgeLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeLeft XSXdgToplevelResizeEdge = 4
 
-	// XSXdgToplevelResizeEdgeTopLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeTopLeft XSXdgToplevelResizeEdge = 5
 
-	// XSXdgToplevelResizeEdgeBottomLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeBottomLeft XSXdgToplevelResizeEdge = 6
 
-	// XSXdgToplevelResizeEdgeRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeRight XSXdgToplevelResizeEdge = 8
 
-	// XSXdgToplevelResizeEdgeTopRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeTopRight XSXdgToplevelResizeEdge = 9
 
-	// XSXdgToplevelResizeEdgeBottomRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSXdgToplevelResizeEdgeBottomRight XSXdgToplevelResizeEdge = 10
 )
 
@@ -9079,92 +8776,24 @@ const (
 type XSXdgToplevelState int
 
 const (
-	// XSXdgToplevelStateMaximized corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSXdgToplevelStateMaximized corresponds to the surface is maximized
 	XSXdgToplevelStateMaximized XSXdgToplevelState = 1
 
-	// XSXdgToplevelStateFullscreen corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSXdgToplevelStateFullscreen corresponds to the surface is fullscreen
 	XSXdgToplevelStateFullscreen XSXdgToplevelState = 2
 
-	// XSXdgToplevelStateResizing corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSXdgToplevelStateResizing corresponds to the surface is being resized
 	XSXdgToplevelStateResizing XSXdgToplevelState = 3
 
-	// XSXdgToplevelStateActivated corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSXdgToplevelStateActivated corresponds to the surface is now activated
 	XSXdgToplevelStateActivated XSXdgToplevelState = 4
 
-	// XSXdgToplevelStateTiledLeft corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
 	XSXdgToplevelStateTiledLeft XSXdgToplevelState = 5
 
-	// XSXdgToplevelStateTiledRight corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
 	XSXdgToplevelStateTiledRight XSXdgToplevelState = 6
 
-	// XSXdgToplevelStateTiledTop corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
 	XSXdgToplevelStateTiledTop XSXdgToplevelState = 7
 
-	// XSXdgToplevelStateTiledBottom corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
 	XSXdgToplevelStateTiledBottom XSXdgToplevelState = 8
 )
 
@@ -9172,7 +8801,8 @@ const (
 //
 // This request destroys the role surface and unmaps the surface;
 // see "Unmapping" behavior in interface section for details.
-type XSXdgToplevelDestroyRequest struct{}
+type XSXdgToplevelDestroyRequest struct {
+}
 
 // XSXdgToplevelSetParentRequest requests to set the parent of this surface
 //
@@ -9192,7 +8822,9 @@ type XSXdgToplevelDestroyRequest struct{}
 // parent of this surface. If no parent exists for the now-unmapped
 // parent then the children are managed as though they have no
 // parent surface.
-type XSXdgToplevelSetParentRequest struct{}
+type XSXdgToplevelSetParentRequest struct {
+	Parent uintptr
+}
 
 // XSXdgToplevelSetTitleRequest requests to set surface title
 //
@@ -9203,9 +8835,11 @@ type XSXdgToplevelSetParentRequest struct{}
 // compositor.
 //
 // The string must be encoded in UTF-8.
-type XSXdgToplevelSetTitleRequest struct{}
+type XSXdgToplevelSetTitleRequest struct {
+	Title uintptr
+}
 
-// XSXdgToplevelSetAppIdRequest requests to set application ID
+// XSXdgToplevelSetAppIDRequest requests to set application ID
 //
 // Set an application identifier for the surface.
 //
@@ -9230,7 +8864,9 @@ type XSXdgToplevelSetTitleRequest struct{}
 // names and .desktop files.
 //
 // [0] http://standards.freedesktop.org/desktop-entry-spec/
-type XSXdgToplevelSetAppIdRequest struct{}
+type XSXdgToplevelSetAppIDRequest struct {
+	AppID uintptr
+}
 
 // XSXdgToplevelShowWindowMenuRequest requests to show the window menu
 //
@@ -9245,7 +8881,19 @@ type XSXdgToplevelSetAppIdRequest struct{}
 //
 // This request must be used in response to some sort of user action
 // like a button press, key press, or touch down event.
-type XSXdgToplevelShowWindowMenuRequest struct{}
+type XSXdgToplevelShowWindowMenuRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+
+	// X contains the x position to pop up the window menu at
+	X uintptr
+
+	// Y contains the y position to pop up the window menu at
+	Y uintptr
+}
 
 // XSXdgToplevelMoveRequest requests to start an interactive move
 //
@@ -9265,7 +8913,13 @@ type XSXdgToplevelShowWindowMenuRequest struct{}
 // compositor to visually indicate that the move is taking place, such as
 // updating a pointer cursor, during the move. There is no guarantee
 // that the device focus will return when the move is completed.
-type XSXdgToplevelMoveRequest struct{}
+type XSXdgToplevelMoveRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+}
 
 // XSXdgToplevelResizeRequest requests to start an interactive resize
 //
@@ -9299,7 +8953,16 @@ type XSXdgToplevelMoveRequest struct{}
 // example when dragging the top left corner. The compositor may also
 // use this information to adapt its behavior, e.g. choose an
 // appropriate cursor image.
-type XSXdgToplevelResizeRequest struct{}
+type XSXdgToplevelResizeRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+
+	// Edges contains which edge or corner is being dragged
+	Edges uintptr
+}
 
 // XSXdgToplevelSetMaxSizeRequest requests to set the maximum size
 //
@@ -9337,7 +9000,11 @@ type XSXdgToplevelResizeRequest struct{}
 // The width and height must be greater than or equal to zero. Using
 // strictly negative values for width and height will result in a
 // protocol error.
-type XSXdgToplevelSetMaxSizeRequest struct{}
+type XSXdgToplevelSetMaxSizeRequest struct {
+	Width uintptr
+
+	Height uintptr
+}
 
 // XSXdgToplevelSetMinSizeRequest requests to set the minimum size
 //
@@ -9375,7 +9042,11 @@ type XSXdgToplevelSetMaxSizeRequest struct{}
 // The width and height must be greater than or equal to zero. Using
 // strictly negative values for width and height will result in a
 // protocol error.
-type XSXdgToplevelSetMinSizeRequest struct{}
+type XSXdgToplevelSetMinSizeRequest struct {
+	Width uintptr
+
+	Height uintptr
+}
 
 // XSXdgToplevelSetMaximizedRequest requests to maximize the window
 //
@@ -9398,7 +9069,8 @@ type XSXdgToplevelSetMinSizeRequest struct{}
 // If the surface is in a fullscreen state, this request has no direct
 // effect. It may alter the state the surface is returned to when
 // unmaximized unless overridden by the compositor.
-type XSXdgToplevelSetMaximizedRequest struct{}
+type XSXdgToplevelSetMaximizedRequest struct {
+}
 
 // XSXdgToplevelUnsetMaximizedRequest requests to unmaximize the window
 //
@@ -9423,7 +9095,8 @@ type XSXdgToplevelSetMaximizedRequest struct{}
 // If the surface is in a fullscreen state, this request has no direct
 // effect. It may alter the state the surface is returned to when
 // unmaximized unless overridden by the compositor.
-type XSXdgToplevelUnsetMaximizedRequest struct{}
+type XSXdgToplevelUnsetMaximizedRequest struct {
+}
 
 // XSXdgToplevelSetFullscreenRequest requests to set the window as fullscreen on an output
 //
@@ -9450,7 +9123,9 @@ type XSXdgToplevelUnsetMaximizedRequest struct{}
 // sure that other screen content not part of the same surface tree (made
 // up of subsurfaces, popups or similarly coupled surfaces) are not
 // visible below the fullscreened surface.
-type XSXdgToplevelSetFullscreenRequest struct{}
+type XSXdgToplevelSetFullscreenRequest struct {
+	Output uintptr
+}
 
 // XSXdgToplevelUnsetFullscreenRequest requests to unset the window as fullscreen
 //
@@ -9471,7 +9146,8 @@ type XSXdgToplevelSetFullscreenRequest struct{}
 //
 // The client must also acknowledge the configure when committing the new
 // content (see ack_configure).
-type XSXdgToplevelUnsetFullscreenRequest struct{}
+type XSXdgToplevelUnsetFullscreenRequest struct {
+}
 
 // XSXdgToplevelSetMinimizedRequest requests to set the window as minimized
 //
@@ -9483,9 +9159,10 @@ type XSXdgToplevelUnsetFullscreenRequest struct{}
 // instead use the wl_surface.frame event for this, as this will
 // also work with live previews on windows in Alt-Tab, Expose or
 // similar compositor features.
-type XSXdgToplevelSetMinimizedRequest struct{}
+type XSXdgToplevelSetMinimizedRequest struct {
+}
 
-// XSXdgToplevelConfigureEvent requests to suggest a surface change
+// XSXdgToplevelConfigureEvent signals when suggest a surface change
 //
 // This configure event asks the client to resize its toplevel surface or
 // to change its state. The configured state should not be applied
@@ -9506,9 +9183,15 @@ type XSXdgToplevelSetMinimizedRequest struct{}
 //
 // Clients must send an ack_configure in response to this event. See
 // xdg_surface.configure and xdg_surface.ack_configure for details.
-type XSXdgToplevelConfigureEvent struct{}
+type XSXdgToplevelConfigureEvent struct {
+	Width uintptr
 
-// XSXdgToplevelCloseEvent requests to surface wants to be closed
+	Height uintptr
+
+	States uintptr
+}
+
+// XSXdgToplevelCloseEvent signals when surface wants to be closed
 //
 // The close event is sent by the compositor when the user
 // wants the surface to be closed. This should be equivalent to
@@ -9518,11 +9201,13 @@ type XSXdgToplevelConfigureEvent struct{}
 // This is only a request that the user intends to close the
 // window. The client may choose to ignore this request, or show
 // a dialog to ask the user to save their data, etc.
-type XSXdgToplevelCloseEvent struct{}
+type XSXdgToplevelCloseEvent struct {
+}
 
 type XSXdgPopupError int
 
 const (
+	// XSXdgPopupErrorInvalidGrab corresponds to tried to grab after being mapped
 	XSXdgPopupErrorInvalidGrab XSXdgPopupError = 0
 )
 
@@ -9533,7 +9218,8 @@ const (
 //
 // If this xdg_popup is not the "topmost" popup, a protocol error
 // will be sent.
-type XSXdgPopupDestroyRequest struct{}
+type XSXdgPopupDestroyRequest struct {
+}
 
 // XSXdgPopupGrabRequest requests to make the popup take an explicit grab
 //
@@ -9578,7 +9264,13 @@ type XSXdgPopupDestroyRequest struct{}
 // and touch events for all their surfaces as normal (similar to an
 // "owner-events" grab in X11 parlance), while the top most grabbing popup
 // will always have keyboard focus.
-type XSXdgPopupGrabRequest struct{}
+type XSXdgPopupGrabRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+}
 
 // XSXdgPopupRepositionRequest requests to recalculate the popup's location
 //
@@ -9605,9 +9297,14 @@ type XSXdgPopupGrabRequest struct{}
 // If the popup is repositioned together with a parent that is being
 // resized, but not in response to a configure event, the client should
 // send an xdg_positioner.set_parent_size request.
-type XSXdgPopupRepositionRequest struct{}
+type XSXdgPopupRepositionRequest struct {
+	Positioner uintptr
 
-// XSXdgPopupConfigureEvent requests to configure the popup surface
+	// Token contains reposition request token
+	Token uintptr
+}
+
+// XSXdgPopupConfigureEvent signals when configure the popup surface
 //
 // This event asks the popup surface to configure itself given the
 // configuration. The configured state should not be applied immediately.
@@ -9621,16 +9318,29 @@ type XSXdgPopupRepositionRequest struct{}
 // ever sent once for the initial configuration. Starting with version 3,
 // it may be sent again if the popup is setup with an xdg_positioner with
 // set_reactive requested, or in response to xdg_popup.reposition requests.
-type XSXdgPopupConfigureEvent struct{}
+type XSXdgPopupConfigureEvent struct {
+	// X contains x position relative to parent surface window geometry
+	X uintptr
 
-// XSXdgPopupPopupDoneEvent requests to popup interaction is done
+	// Y contains y position relative to parent surface window geometry
+	Y uintptr
+
+	// Width contains window geometry width
+	Width uintptr
+
+	// Height contains window geometry height
+	Height uintptr
+}
+
+// XSXdgPopupPopupDoneEvent signals when popup interaction is done
 //
 // The popup_done event is sent out when a popup is dismissed by the
 // compositor. The client should destroy the xdg_popup object at this
 // point.
-type XSXdgPopupPopupDoneEvent struct{}
+type XSXdgPopupPopupDoneEvent struct {
+}
 
-// XSXdgPopupRepositionedEvent requests to signal the completion of a repositioned request
+// XSXdgPopupRepositionedEvent signals when signal the completion of a repositioned request
 //
 // The repositioned event is sent as part of a popup configuration
 // sequence, together with xdg_popup.configure and lastly
@@ -9647,7 +9357,10 @@ type XSXdgPopupPopupDoneEvent struct{}
 // The client should optionally update the content of the popup, but must
 // acknowledge the new popup configuration for the new position to take
 // effect. See xdg_surface.ack_configure for details.
-type XSXdgPopupRepositionedEvent struct{}
+type XSXdgPopupRepositionedEvent struct {
+	// Token contains reposition request token
+	Token uintptr
+}
 
 // XSUVXdgShellVersion represents latest protocol version
 //
@@ -9658,24 +9371,23 @@ type XSXdgPopupRepositionedEvent struct{}
 type XSUVXdgShellVersion int
 
 const (
-	// XSUVXdgShellVersionCurrent corresponds to latest protocol version
-	//
-	// The 'current' member of this enum gives the version of the
-	// protocol.  Implementations can compare this to the version
-	// they implement using static_assert to ensure the protocol and
-	// implementation versions match.
+	// XSUVXdgShellVersionCurrent corresponds to Always the latest version
 	XSUVXdgShellVersionCurrent XSUVXdgShellVersion = 5
 )
 
 type XSUVXdgShellError int
 
 const (
+	// XSUVXdgShellErrorRole corresponds to given wl_surface has another role
 	XSUVXdgShellErrorRole XSUVXdgShellError = 0
 
+	// XSUVXdgShellErrorDefunctSurfaces corresponds to xdg_shell was destroyed before children
 	XSUVXdgShellErrorDefunctSurfaces XSUVXdgShellError = 1
 
+	// XSUVXdgShellErrorNotTheTopmostPopup corresponds to the client tried to map or destroy a non-topmost popup
 	XSUVXdgShellErrorNotTheTopmostPopup XSUVXdgShellError = 2
 
+	// XSUVXdgShellErrorInvalidPopupParent corresponds to the client specified an invalid popup parent surface
 	XSUVXdgShellErrorInvalidPopupParent XSUVXdgShellError = 3
 )
 
@@ -9686,7 +9398,8 @@ const (
 // Destroying a bound xdg_shell object while there are surfaces
 // still alive created by this xdg_shell object instance is illegal
 // and will result in a protocol error.
-type XSUVXdgShellDestroyRequest struct{}
+type XSUVXdgShellDestroyRequest struct {
+}
 
 // XSUVXdgShellUseUnstableVersionRequest requests to enable use of this unstable version
 //
@@ -9695,7 +9408,9 @@ type XSUVXdgShellDestroyRequest struct{}
 // unstable versions of the protocol that they speak or exit
 // cleanly if they don't agree.  This request will go away once
 // the xdg-shell protocol is stable.
-type XSUVXdgShellUseUnstableVersionRequest struct{}
+type XSUVXdgShellUseUnstableVersionRequest struct {
+	Version uintptr
+}
 
 // XSUVXdgShellGetXdgSurfaceRequest requests to create a shell surface from a surface
 //
@@ -9707,7 +9422,11 @@ type XSUVXdgShellUseUnstableVersionRequest struct{}
 //
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
-type XSUVXdgShellGetXdgSurfaceRequest struct{}
+type XSUVXdgShellGetXdgSurfaceRequest struct {
+	ID uintptr
+
+	Surface uintptr
+}
 
 // XSUVXdgShellGetXdgPopupRequest requests to create a popup for a surface
 //
@@ -9722,15 +9441,34 @@ type XSUVXdgShellGetXdgSurfaceRequest struct{}
 //
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
-type XSUVXdgShellGetXdgPopupRequest struct{}
+type XSUVXdgShellGetXdgPopupRequest struct {
+	ID uintptr
+
+	Surface uintptr
+
+	Parent uintptr
+
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+
+	X uintptr
+
+	Y uintptr
+}
 
 // XSUVXdgShellPongRequest requests to respond to a ping event
 //
 // A client must respond to a ping event with a pong request or
 // the client may be deemed unresponsive.
-type XSUVXdgShellPongRequest struct{}
+type XSUVXdgShellPongRequest struct {
+	// Serial contains serial of the ping event
+	Serial uintptr
+}
 
-// XSUVXdgShellPingEvent requests to check if the client is alive
+// XSUVXdgShellPingEvent signals when check if the client is alive
 //
 // The ping event asks the client if it's still alive. Pass the
 // serial specified in the event back to the compositor by sending
@@ -9743,7 +9481,10 @@ type XSUVXdgShellPongRequest struct{}
 //
 // A compositor is free to ping in any way it wants, but a client must
 // always respond to any xdg_shell object it created.
-type XSUVXdgShellPingEvent struct{}
+type XSUVXdgShellPingEvent struct {
+	// Serial contains pass this to the pong request
+	Serial uintptr
+}
 
 // XSUVXdgSurfaceResizeEdge represents edge values for resizing
 //
@@ -9752,58 +9493,22 @@ type XSUVXdgShellPingEvent struct{}
 type XSUVXdgSurfaceResizeEdge int
 
 const (
-	// XSUVXdgSurfaceResizeEdgeNone corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeNone XSUVXdgSurfaceResizeEdge = 0
 
-	// XSUVXdgSurfaceResizeEdgeTop corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeTop XSUVXdgSurfaceResizeEdge = 1
 
-	// XSUVXdgSurfaceResizeEdgeBottom corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeBottom XSUVXdgSurfaceResizeEdge = 2
 
-	// XSUVXdgSurfaceResizeEdgeLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeLeft XSUVXdgSurfaceResizeEdge = 4
 
-	// XSUVXdgSurfaceResizeEdgeTopLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeTopLeft XSUVXdgSurfaceResizeEdge = 5
 
-	// XSUVXdgSurfaceResizeEdgeBottomLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeBottomLeft XSUVXdgSurfaceResizeEdge = 6
 
-	// XSUVXdgSurfaceResizeEdgeRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeRight XSUVXdgSurfaceResizeEdge = 8
 
-	// XSUVXdgSurfaceResizeEdgeTopRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeTopRight XSUVXdgSurfaceResizeEdge = 9
 
-	// XSUVXdgSurfaceResizeEdgeBottomRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVXdgSurfaceResizeEdgeBottomRight XSUVXdgSurfaceResizeEdge = 10
 )
 
@@ -9831,96 +9536,16 @@ const (
 type XSUVXdgSurfaceState int
 
 const (
-	// XSUVXdgSurfaceStateMaximized corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
-	//
-	// Desktop environments may extend this enum by taking up a range of
-	// values and documenting the range they chose in this description.
-	// They are not required to document the values for the range that they
-	// chose. Ideally, any good extensions from a desktop environment should
-	// make its way into standardization into this enum.
-	//
-	// The current reserved ranges are:
-	//
-	// 0x0000 - 0x0FFF: xdg-shell core values, documented below.
-	// 0x1000 - 0x1FFF: GNOME
-	// 0x2000 - 0x2FFF: EFL
+	// XSUVXdgSurfaceStateMaximized corresponds to the surface is maximized
 	XSUVXdgSurfaceStateMaximized XSUVXdgSurfaceState = 1
 
-	// XSUVXdgSurfaceStateFullscreen corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
-	//
-	// Desktop environments may extend this enum by taking up a range of
-	// values and documenting the range they chose in this description.
-	// They are not required to document the values for the range that they
-	// chose. Ideally, any good extensions from a desktop environment should
-	// make its way into standardization into this enum.
-	//
-	// The current reserved ranges are:
-	//
-	// 0x0000 - 0x0FFF: xdg-shell core values, documented below.
-	// 0x1000 - 0x1FFF: GNOME
-	// 0x2000 - 0x2FFF: EFL
+	// XSUVXdgSurfaceStateFullscreen corresponds to the surface is fullscreen
 	XSUVXdgSurfaceStateFullscreen XSUVXdgSurfaceState = 2
 
-	// XSUVXdgSurfaceStateResizing corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
-	//
-	// Desktop environments may extend this enum by taking up a range of
-	// values and documenting the range they chose in this description.
-	// They are not required to document the values for the range that they
-	// chose. Ideally, any good extensions from a desktop environment should
-	// make its way into standardization into this enum.
-	//
-	// The current reserved ranges are:
-	//
-	// 0x0000 - 0x0FFF: xdg-shell core values, documented below.
-	// 0x1000 - 0x1FFF: GNOME
-	// 0x2000 - 0x2FFF: EFL
+	// XSUVXdgSurfaceStateResizing corresponds to the surface is being resized
 	XSUVXdgSurfaceStateResizing XSUVXdgSurfaceState = 3
 
-	// XSUVXdgSurfaceStateActivated corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
-	//
-	// Desktop environments may extend this enum by taking up a range of
-	// values and documenting the range they chose in this description.
-	// They are not required to document the values for the range that they
-	// chose. Ideally, any good extensions from a desktop environment should
-	// make its way into standardization into this enum.
-	//
-	// The current reserved ranges are:
-	//
-	// 0x0000 - 0x0FFF: xdg-shell core values, documented below.
-	// 0x1000 - 0x1FFF: GNOME
-	// 0x2000 - 0x2FFF: EFL
+	// XSUVXdgSurfaceStateActivated corresponds to the surface is now activated
 	XSUVXdgSurfaceStateActivated XSUVXdgSurfaceState = 4
 )
 
@@ -9929,7 +9554,8 @@ const (
 // Unmap and destroy the window. The window will be effectively
 // hidden from the user's point of view, and all state like
 // maximization, fullscreen, and so on, will be lost.
-type XSUVXdgSurfaceDestroyRequest struct{}
+type XSUVXdgSurfaceDestroyRequest struct {
+}
 
 // XSUVXdgSurfaceSetParentRequest requests to set the parent of this surface
 //
@@ -9940,7 +9566,9 @@ type XSUVXdgSurfaceDestroyRequest struct{}
 // Parent windows should be set on dialogs, toolboxes, or other
 // "auxiliary" surfaces, so that the parent is raised when the dialog
 // is raised.
-type XSUVXdgSurfaceSetParentRequest struct{}
+type XSUVXdgSurfaceSetParentRequest struct {
+	Parent uintptr
+}
 
 // XSUVXdgSurfaceSetTitleRequest requests to set surface title
 //
@@ -9951,9 +9579,11 @@ type XSUVXdgSurfaceSetParentRequest struct{}
 // compositor.
 //
 // The string must be encoded in UTF-8.
-type XSUVXdgSurfaceSetTitleRequest struct{}
+type XSUVXdgSurfaceSetTitleRequest struct {
+	Title uintptr
+}
 
-// XSUVXdgSurfaceSetAppIdRequest requests to set application ID
+// XSUVXdgSurfaceSetAppIDRequest requests to set application ID
 //
 // Set an application identifier for the surface.
 //
@@ -9975,7 +9605,9 @@ type XSUVXdgSurfaceSetTitleRequest struct{}
 // names and .desktop files.
 //
 // [0] http://standards.freedesktop.org/desktop-entry-spec/
-type XSUVXdgSurfaceSetAppIdRequest struct{}
+type XSUVXdgSurfaceSetAppIDRequest struct {
+	AppID uintptr
+}
 
 // XSUVXdgSurfaceShowWindowMenuRequest requests to show the window menu
 //
@@ -9990,7 +9622,19 @@ type XSUVXdgSurfaceSetAppIdRequest struct{}
 //
 // This request must be used in response to some sort of user action
 // like a button press, key press, or touch down event.
-type XSUVXdgSurfaceShowWindowMenuRequest struct{}
+type XSUVXdgSurfaceShowWindowMenuRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+
+	// X contains the x position to pop up the window menu at
+	X uintptr
+
+	// Y contains the y position to pop up the window menu at
+	Y uintptr
+}
 
 // XSUVXdgSurfaceMoveRequest requests to start an interactive move
 //
@@ -10010,7 +9654,13 @@ type XSUVXdgSurfaceShowWindowMenuRequest struct{}
 // compositor to visually indicate that the move is taking place, such as
 // updating a pointer cursor, during the move. There is no guarantee
 // that the device focus will return when the move is completed.
-type XSUVXdgSurfaceMoveRequest struct{}
+type XSUVXdgSurfaceMoveRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+}
 
 // XSUVXdgSurfaceResizeRequest requests to start an interactive resize
 //
@@ -10044,7 +9694,16 @@ type XSUVXdgSurfaceMoveRequest struct{}
 // example when dragging the top left corner. The compositor may also
 // use this information to adapt its behavior, e.g. choose an
 // appropriate cursor image.
-type XSUVXdgSurfaceResizeRequest struct{}
+type XSUVXdgSurfaceResizeRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+
+	// Edges contains which edge or corner is being dragged
+	Edges uintptr
+}
 
 // XSUVXdgSurfaceAckConfigureRequest requests to ack a configure event
 //
@@ -10067,7 +9726,10 @@ type XSUVXdgSurfaceResizeRequest struct{}
 // The compositor expects that the most recently received
 // ack_configure request at the time of a commit indicates which
 // configure event the client is responding to.
-type XSUVXdgSurfaceAckConfigureRequest struct{}
+type XSUVXdgSurfaceAckConfigureRequest struct {
+	// Serial contains the serial from the configure event
+	Serial uintptr
+}
 
 // XSUVXdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
 //
@@ -10096,7 +9758,15 @@ type XSUVXdgSurfaceAckConfigureRequest struct{}
 // the wl_surface associated with this xdg_surface.
 //
 // The width and height must be greater than zero.
-type XSUVXdgSurfaceSetWindowGeometryRequest struct{}
+type XSUVXdgSurfaceSetWindowGeometryRequest struct {
+	X uintptr
+
+	Y uintptr
+
+	Width uintptr
+
+	Height uintptr
+}
 
 // XSUVXdgSurfaceSetMaximizedRequest requests to maximize the window
 //
@@ -10116,7 +9786,8 @@ type XSUVXdgSurfaceSetWindowGeometryRequest struct{}
 //
 // If the surface was already maximized, the compositor will still emit
 // a configure event with the "maximized" state.
-type XSUVXdgSurfaceSetMaximizedRequest struct{}
+type XSUVXdgSurfaceSetMaximizedRequest struct {
+}
 
 // XSUVXdgSurfaceUnsetMaximizedRequest requests to unmaximize the window
 //
@@ -10137,7 +9808,8 @@ type XSUVXdgSurfaceSetMaximizedRequest struct{}
 //
 // If the surface was already not maximized, the compositor will still
 // emit a configure event without the "maximized" state.
-type XSUVXdgSurfaceUnsetMaximizedRequest struct{}
+type XSUVXdgSurfaceUnsetMaximizedRequest struct {
+}
 
 // XSUVXdgSurfaceSetFullscreenRequest requests to set the window as fullscreen on a monitor
 //
@@ -10150,9 +9822,12 @@ type XSUVXdgSurfaceUnsetMaximizedRequest struct{}
 // If the surface doesn't cover the whole output, the compositor will
 // position the surface in the center of the output and compensate with
 // black borders filling the rest of the output.
-type XSUVXdgSurfaceSetFullscreenRequest struct{}
+type XSUVXdgSurfaceSetFullscreenRequest struct {
+	Output uintptr
+}
 
-type XSUVXdgSurfaceUnsetFullscreenRequest struct{}
+type XSUVXdgSurfaceUnsetFullscreenRequest struct {
+}
 
 // XSUVXdgSurfaceSetMinimizedRequest requests to set the window as minimized
 //
@@ -10164,9 +9839,10 @@ type XSUVXdgSurfaceUnsetFullscreenRequest struct{}
 // instead use the wl_surface.frame event for this, as this will
 // also work with live previews on windows in Alt-Tab, Expose or
 // similar compositor features.
-type XSUVXdgSurfaceSetMinimizedRequest struct{}
+type XSUVXdgSurfaceSetMinimizedRequest struct {
+}
 
-// XSUVXdgSurfaceConfigureEvent requests to suggest a surface change
+// XSUVXdgSurfaceConfigureEvent signals when suggest a surface change
 //
 // The configure event asks the client to resize its surface or to
 // change its state.
@@ -10192,9 +9868,17 @@ type XSUVXdgSurfaceSetMinimizedRequest struct{}
 // If the client receives multiple configure events before it
 // can respond to one, it is free to discard all but the last
 // event it received.
-type XSUVXdgSurfaceConfigureEvent struct{}
+type XSUVXdgSurfaceConfigureEvent struct {
+	Width uintptr
 
-// XSUVXdgSurfaceCloseEvent requests to surface wants to be closed
+	Height uintptr
+
+	States uintptr
+
+	Serial uintptr
+}
+
+// XSUVXdgSurfaceCloseEvent signals when surface wants to be closed
 //
 // The close event is sent by the compositor when the user
 // wants the surface to be closed. This should be equivalent to
@@ -10204,7 +9888,8 @@ type XSUVXdgSurfaceConfigureEvent struct{}
 // This is only a request that the user intends to close your
 // window. The client may choose to ignore this request, or show
 // a dialog to ask the user to save their data...
-type XSUVXdgSurfaceCloseEvent struct{}
+type XSUVXdgSurfaceCloseEvent struct {
+}
 
 // XSUVXdgPopupDestroyRequest requests to remove xdg_popup interface
 //
@@ -10213,28 +9898,36 @@ type XSUVXdgSurfaceCloseEvent struct{}
 //
 // If this xdg_popup is not the "topmost" popup, a protocol error
 // will be sent.
-type XSUVXdgPopupDestroyRequest struct{}
+type XSUVXdgPopupDestroyRequest struct {
+}
 
-// XSUVXdgPopupPopupDoneEvent requests to popup interaction is done
+// XSUVXdgPopupPopupDoneEvent signals when popup interaction is done
 //
 // The popup_done event is sent out when a popup is dismissed by the
 // compositor. The client should destroy the xdg_popup object at this
 // point.
-type XSUVXdgPopupPopupDoneEvent struct{}
+type XSUVXdgPopupPopupDoneEvent struct {
+}
 
 type XSUVZxdgShellV6Error int
 
 const (
+	// XSUVZxdgShellV6ErrorRole corresponds to given wl_surface has another role
 	XSUVZxdgShellV6ErrorRole XSUVZxdgShellV6Error = 0
 
+	// XSUVZxdgShellV6ErrorDefunctSurfaces corresponds to xdg_shell was destroyed before children
 	XSUVZxdgShellV6ErrorDefunctSurfaces XSUVZxdgShellV6Error = 1
 
+	// XSUVZxdgShellV6ErrorNotTheTopmostPopup corresponds to the client tried to map or destroy a non-topmost popup
 	XSUVZxdgShellV6ErrorNotTheTopmostPopup XSUVZxdgShellV6Error = 2
 
+	// XSUVZxdgShellV6ErrorInvalidPopupParent corresponds to the client specified an invalid popup parent surface
 	XSUVZxdgShellV6ErrorInvalidPopupParent XSUVZxdgShellV6Error = 3
 
+	// XSUVZxdgShellV6ErrorInvalidSurfaceState corresponds to the client provided an invalid surface state
 	XSUVZxdgShellV6ErrorInvalidSurfaceState XSUVZxdgShellV6Error = 4
 
+	// XSUVZxdgShellV6ErrorInvalidPositioner corresponds to the client provided an invalid positioner
 	XSUVZxdgShellV6ErrorInvalidPositioner XSUVZxdgShellV6Error = 5
 )
 
@@ -10245,14 +9938,17 @@ const (
 // Destroying a bound xdg_shell object while there are surfaces
 // still alive created by this xdg_shell object instance is illegal
 // and will result in a protocol error.
-type XSUVZxdgShellV6DestroyRequest struct{}
+type XSUVZxdgShellV6DestroyRequest struct {
+}
 
 // XSUVZxdgShellV6CreatePositionerRequest requests to create a positioner object
 //
 // Create a positioner object. A positioner object is used to position
 // surfaces relative to some parent surface. See the interface description
 // and xdg_surface.get_popup for details.
-type XSUVZxdgShellV6CreatePositionerRequest struct{}
+type XSUVZxdgShellV6CreatePositionerRequest struct {
+	ID uintptr
+}
 
 // XSUVZxdgShellV6GetXdgSurfaceRequest requests to create a shell surface from a surface
 //
@@ -10267,15 +9963,22 @@ type XSUVZxdgShellV6CreatePositionerRequest struct{}
 //
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
-type XSUVZxdgShellV6GetXdgSurfaceRequest struct{}
+type XSUVZxdgShellV6GetXdgSurfaceRequest struct {
+	ID uintptr
+
+	Surface uintptr
+}
 
 // XSUVZxdgShellV6PongRequest requests to respond to a ping event
 //
 // A client must respond to a ping event with a pong request or
 // the client may be deemed unresponsive. See xdg_shell.ping.
-type XSUVZxdgShellV6PongRequest struct{}
+type XSUVZxdgShellV6PongRequest struct {
+	// Serial contains serial of the ping event
+	Serial uintptr
+}
 
-// XSUVZxdgShellV6PingEvent requests to check if the client is alive
+// XSUVZxdgShellV6PingEvent signals when check if the client is alive
 //
 // The ping event asks the client if it's still alive. Pass the
 // serial specified in the event back to the compositor by sending
@@ -10288,39 +9991,53 @@ type XSUVZxdgShellV6PongRequest struct{}
 //
 // A compositor is free to ping in any way it wants, but a client must
 // always respond to any xdg_shell object it created.
-type XSUVZxdgShellV6PingEvent struct{}
+type XSUVZxdgShellV6PingEvent struct {
+	// Serial contains pass this to the pong request
+	Serial uintptr
+}
 
 type XSUVZxdgPositionerV6Error int
 
 const (
+	// XSUVZxdgPositionerV6ErrorInvalidInput corresponds to invalid input provided
 	XSUVZxdgPositionerV6ErrorInvalidInput XSUVZxdgPositionerV6Error = 0
 )
 
 type XSUVZxdgPositionerV6Anchor uint
 
 const (
+	// XSUVZxdgPositionerV6AnchorNone corresponds to the center of the anchor rectangle
 	XSUVZxdgPositionerV6AnchorNone XSUVZxdgPositionerV6Anchor = 0
 
+	// XSUVZxdgPositionerV6AnchorTop corresponds to the top edge of the anchor rectangle
 	XSUVZxdgPositionerV6AnchorTop XSUVZxdgPositionerV6Anchor = 1
 
+	// XSUVZxdgPositionerV6AnchorBottom corresponds to the bottom edge of the anchor rectangle
 	XSUVZxdgPositionerV6AnchorBottom XSUVZxdgPositionerV6Anchor = 2
 
+	// XSUVZxdgPositionerV6AnchorLeft corresponds to the left edge of the anchor rectangle
 	XSUVZxdgPositionerV6AnchorLeft XSUVZxdgPositionerV6Anchor = 4
 
+	// XSUVZxdgPositionerV6AnchorRight corresponds to the right edge of the anchor rectangle
 	XSUVZxdgPositionerV6AnchorRight XSUVZxdgPositionerV6Anchor = 8
 )
 
 type XSUVZxdgPositionerV6Gravity uint
 
 const (
+	// XSUVZxdgPositionerV6GravityNone corresponds to center over the anchor edge
 	XSUVZxdgPositionerV6GravityNone XSUVZxdgPositionerV6Gravity = 0
 
+	// XSUVZxdgPositionerV6GravityTop corresponds to position above the anchor edge
 	XSUVZxdgPositionerV6GravityTop XSUVZxdgPositionerV6Gravity = 1
 
+	// XSUVZxdgPositionerV6GravityBottom corresponds to position below the anchor edge
 	XSUVZxdgPositionerV6GravityBottom XSUVZxdgPositionerV6Gravity = 2
 
+	// XSUVZxdgPositionerV6GravityLeft corresponds to position to the left of the anchor edge
 	XSUVZxdgPositionerV6GravityLeft XSUVZxdgPositionerV6Gravity = 4
 
+	// XSUVZxdgPositionerV6GravityRight corresponds to position to the right of the anchor edge
 	XSUVZxdgPositionerV6GravityRight XSUVZxdgPositionerV6Gravity = 8
 )
 
@@ -10340,116 +10057,26 @@ const (
 type XSUVZxdgPositionerV6ConstraintAdjustment uint
 
 const (
-	// XSUVZxdgPositionerV6ConstraintAdjustmentNone corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSUVZxdgPositionerV6ConstraintAdjustmentNone XSUVZxdgPositionerV6ConstraintAdjustment = 0
 
-	// XSUVZxdgPositionerV6ConstraintAdjustmentSlideX corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSUVZxdgPositionerV6ConstraintAdjustmentSlideX XSUVZxdgPositionerV6ConstraintAdjustment = 1
 
-	// XSUVZxdgPositionerV6ConstraintAdjustmentSlideY corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSUVZxdgPositionerV6ConstraintAdjustmentSlideY XSUVZxdgPositionerV6ConstraintAdjustment = 2
 
-	// XSUVZxdgPositionerV6ConstraintAdjustmentFlipX corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSUVZxdgPositionerV6ConstraintAdjustmentFlipX XSUVZxdgPositionerV6ConstraintAdjustment = 4
 
-	// XSUVZxdgPositionerV6ConstraintAdjustmentFlipY corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSUVZxdgPositionerV6ConstraintAdjustmentFlipY XSUVZxdgPositionerV6ConstraintAdjustment = 8
 
-	// XSUVZxdgPositionerV6ConstraintAdjustmentResizeX corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSUVZxdgPositionerV6ConstraintAdjustmentResizeX XSUVZxdgPositionerV6ConstraintAdjustment = 16
 
-	// XSUVZxdgPositionerV6ConstraintAdjustmentResizeY corresponds to constraint adjustments
-	//
-	// The constraint adjustment value define ways the compositor will adjust
-	// the position of the surface, if the unadjusted position would result
-	// in the surface being partly constrained.
-	//
-	// Whether a surface is considered 'constrained' is left to the compositor
-	// to determine. For example, the surface may be partly outside the
-	// compositor's defined 'work area', thus necessitating the child surface's
-	// position be adjusted until it is entirely inside the work area.
-	//
-	// The adjustments can be combined, according to a defined precedence: 1)
-	// Flip, 2) Slide, 3) Resize.
 	XSUVZxdgPositionerV6ConstraintAdjustmentResizeY XSUVZxdgPositionerV6ConstraintAdjustment = 32
 )
 
 // XSUVZxdgPositionerV6DestroyRequest requests to destroy the xdg_positioner object
 //
 // Notify the compositor that the xdg_positioner will no longer be used.
-type XSUVZxdgPositionerV6DestroyRequest struct{}
+type XSUVZxdgPositionerV6DestroyRequest struct {
+}
 
 // XSUVZxdgPositionerV6SetSizeRequest requests to set the size of the to-be positioned rectangle
 //
@@ -10458,7 +10085,13 @@ type XSUVZxdgPositionerV6DestroyRequest struct{}
 // window geometry. See xdg_surface.set_window_geometry.
 //
 // If a zero or negative size is set the invalid_input error is raised.
-type XSUVZxdgPositionerV6SetSizeRequest struct{}
+type XSUVZxdgPositionerV6SetSizeRequest struct {
+	// Width contains width of positioned rectangle
+	Width uintptr
+
+	// Height contains height of positioned rectangle
+	Height uintptr
+}
 
 // XSUVZxdgPositionerV6SetAnchorRectRequest requests to set the anchor rectangle within the parent surface
 //
@@ -10472,7 +10105,19 @@ type XSUVZxdgPositionerV6SetSizeRequest struct{}
 // positioned child's parent surface.
 //
 // If a zero or negative size is set the invalid_input error is raised.
-type XSUVZxdgPositionerV6SetAnchorRectRequest struct{}
+type XSUVZxdgPositionerV6SetAnchorRectRequest struct {
+	// X contains x position of anchor rectangle
+	X uintptr
+
+	// Y contains y position of anchor rectangle
+	Y uintptr
+
+	// Width contains width of anchor rectangle
+	Width uintptr
+
+	// Height contains height of anchor rectangle
+	Height uintptr
+}
 
 // XSUVZxdgPositionerV6SetAnchorRequest requests to set anchor rectangle anchor edges
 //
@@ -10486,7 +10131,10 @@ type XSUVZxdgPositionerV6SetAnchorRectRequest struct{}
 //
 // If two parallel anchor edges are specified (e.g. 'left' and 'right'),
 // the invalid_input error is raised.
-type XSUVZxdgPositionerV6SetAnchorRequest struct{}
+type XSUVZxdgPositionerV6SetAnchorRequest struct {
+	// Anchor contains bit mask of anchor edges
+	Anchor uintptr
+}
 
 // XSUVZxdgPositionerV6SetGravityRequest requests to set child surface gravity
 //
@@ -10499,7 +10147,10 @@ type XSUVZxdgPositionerV6SetAnchorRequest struct{}
 //
 // If two parallel gravities are specified (e.g. 'left' and 'right'), the
 // invalid_input error is raised.
-type XSUVZxdgPositionerV6SetGravityRequest struct{}
+type XSUVZxdgPositionerV6SetGravityRequest struct {
+	// Gravity contains bit mask of gravity directions
+	Gravity uintptr
+}
 
 // XSUVZxdgPositionerV6SetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
 //
@@ -10516,7 +10167,10 @@ type XSUVZxdgPositionerV6SetGravityRequest struct{}
 // are applied is specified in the corresponding adjustment descriptions.
 //
 // The default adjustment is none.
-type XSUVZxdgPositionerV6SetConstraintAdjustmentRequest struct{}
+type XSUVZxdgPositionerV6SetConstraintAdjustmentRequest struct {
+	// ConstraintAdjustment contains bit mask of constraint adjustments
+	ConstraintAdjustment uintptr
+}
 
 // XSUVZxdgPositionerV6SetOffsetRequest requests to set surface position offset
 //
@@ -10531,7 +10185,13 @@ type XSUVZxdgPositionerV6SetConstraintAdjustmentRequest struct{}
 // An example use case is placing a popup menu on top of a user interface
 // element, while aligning the user interface element of the parent surface
 // with some user interface element placed somewhere in the popup surface.
-type XSUVZxdgPositionerV6SetOffsetRequest struct{}
+type XSUVZxdgPositionerV6SetOffsetRequest struct {
+	// X contains surface position x offset
+	X uintptr
+
+	// Y contains surface position y offset
+	Y uintptr
+}
 
 type XSUVZxdgSurfaceV6Error int
 
@@ -10547,7 +10207,8 @@ const (
 //
 // Destroy the xdg_surface object. An xdg_surface must only be destroyed
 // after its role object has been destroyed.
-type XSUVZxdgSurfaceV6DestroyRequest struct{}
+type XSUVZxdgSurfaceV6DestroyRequest struct {
+}
 
 // XSUVZxdgSurfaceV6GetToplevelRequest requests to assign the xdg_toplevel surface role
 //
@@ -10556,7 +10217,9 @@ type XSUVZxdgSurfaceV6DestroyRequest struct{}
 //
 // See the documentation of xdg_toplevel for more details about what an
 // xdg_toplevel is and how it is used.
-type XSUVZxdgSurfaceV6GetToplevelRequest struct{}
+type XSUVZxdgSurfaceV6GetToplevelRequest struct {
+	ID uintptr
+}
 
 // XSUVZxdgSurfaceV6GetPopupRequest requests to assign the xdg_popup surface role
 //
@@ -10565,7 +10228,13 @@ type XSUVZxdgSurfaceV6GetToplevelRequest struct{}
 //
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
-type XSUVZxdgSurfaceV6GetPopupRequest struct{}
+type XSUVZxdgSurfaceV6GetPopupRequest struct {
+	ID uintptr
+
+	Parent uintptr
+
+	Positioner uintptr
+}
 
 // XSUVZxdgSurfaceV6SetWindowGeometryRequest requests to set the new window geometry
 //
@@ -10593,7 +10262,15 @@ type XSUVZxdgSurfaceV6GetPopupRequest struct{}
 // the set window geometry clamped to the bounding rectangle of the
 // combined geometry of the surface of the xdg_surface and the associated
 // subsurfaces.
-type XSUVZxdgSurfaceV6SetWindowGeometryRequest struct{}
+type XSUVZxdgSurfaceV6SetWindowGeometryRequest struct {
+	X uintptr
+
+	Y uintptr
+
+	Width uintptr
+
+	Height uintptr
+}
 
 // XSUVZxdgSurfaceV6AckConfigureRequest requests to ack a configure event
 //
@@ -10616,9 +10293,12 @@ type XSUVZxdgSurfaceV6SetWindowGeometryRequest struct{}
 // A client may send multiple ack_configure requests before committing, but
 // only the last request sent before a commit indicates which configure
 // event the client really is responding to.
-type XSUVZxdgSurfaceV6AckConfigureRequest struct{}
+type XSUVZxdgSurfaceV6AckConfigureRequest struct {
+	// Serial contains the serial from the configure event
+	Serial uintptr
+}
 
-// XSUVZxdgSurfaceV6ConfigureEvent requests to suggest a surface change
+// XSUVZxdgSurfaceV6ConfigureEvent signals when suggest a surface change
 //
 // The configure event marks the end of a configure sequence. A configure
 // sequence is a set of one or more events configuring the state of the
@@ -10636,7 +10316,10 @@ type XSUVZxdgSurfaceV6AckConfigureRequest struct{}
 //
 // If the client receives multiple configure events before it can respond
 // to one, it is free to discard all but the last event it received.
-type XSUVZxdgSurfaceV6ConfigureEvent struct{}
+type XSUVZxdgSurfaceV6ConfigureEvent struct {
+	// Serial contains serial of the configure event
+	Serial uintptr
+}
 
 // XSUVZxdgToplevelV6ResizeEdge represents edge values for resizing
 //
@@ -10645,58 +10328,22 @@ type XSUVZxdgSurfaceV6ConfigureEvent struct{}
 type XSUVZxdgToplevelV6ResizeEdge int
 
 const (
-	// XSUVZxdgToplevelV6ResizeEdgeNone corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeNone XSUVZxdgToplevelV6ResizeEdge = 0
 
-	// XSUVZxdgToplevelV6ResizeEdgeTop corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeTop XSUVZxdgToplevelV6ResizeEdge = 1
 
-	// XSUVZxdgToplevelV6ResizeEdgeBottom corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeBottom XSUVZxdgToplevelV6ResizeEdge = 2
 
-	// XSUVZxdgToplevelV6ResizeEdgeLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeLeft XSUVZxdgToplevelV6ResizeEdge = 4
 
-	// XSUVZxdgToplevelV6ResizeEdgeTopLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeTopLeft XSUVZxdgToplevelV6ResizeEdge = 5
 
-	// XSUVZxdgToplevelV6ResizeEdgeBottomLeft corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeBottomLeft XSUVZxdgToplevelV6ResizeEdge = 6
 
-	// XSUVZxdgToplevelV6ResizeEdgeRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeRight XSUVZxdgToplevelV6ResizeEdge = 8
 
-	// XSUVZxdgToplevelV6ResizeEdgeTopRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeTopRight XSUVZxdgToplevelV6ResizeEdge = 9
 
-	// XSUVZxdgToplevelV6ResizeEdgeBottomRight corresponds to edge values for resizing
-	//
-	// These values are used to indicate which edge of a surface
-	// is being dragged in a resize operation.
 	XSUVZxdgToplevelV6ResizeEdgeBottomRight XSUVZxdgToplevelV6ResizeEdge = 10
 )
 
@@ -10712,48 +10359,16 @@ const (
 type XSUVZxdgToplevelV6State int
 
 const (
-	// XSUVZxdgToplevelV6StateMaximized corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSUVZxdgToplevelV6StateMaximized corresponds to the surface is maximized
 	XSUVZxdgToplevelV6StateMaximized XSUVZxdgToplevelV6State = 1
 
-	// XSUVZxdgToplevelV6StateFullscreen corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSUVZxdgToplevelV6StateFullscreen corresponds to the surface is fullscreen
 	XSUVZxdgToplevelV6StateFullscreen XSUVZxdgToplevelV6State = 2
 
-	// XSUVZxdgToplevelV6StateResizing corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSUVZxdgToplevelV6StateResizing corresponds to the surface is being resized
 	XSUVZxdgToplevelV6StateResizing XSUVZxdgToplevelV6State = 3
 
-	// XSUVZxdgToplevelV6StateActivated corresponds to types of state on the surface
-	//
-	// The different state values used on the surface. This is designed for
-	// state values like maximized, fullscreen. It is paired with the
-	// configure event to ensure that both the client and the compositor
-	// setting the state can be synchronized.
-	//
-	// States set in this way are double-buffered. They will get applied on
-	// the next commit.
+	// XSUVZxdgToplevelV6StateActivated corresponds to the surface is now activated
 	XSUVZxdgToplevelV6StateActivated XSUVZxdgToplevelV6State = 4
 )
 
@@ -10762,7 +10377,8 @@ const (
 // Unmap and destroy the window. The window will be effectively
 // hidden from the user's point of view, and all state like
 // maximization, fullscreen, and so on, will be lost.
-type XSUVZxdgToplevelV6DestroyRequest struct{}
+type XSUVZxdgToplevelV6DestroyRequest struct {
+}
 
 // XSUVZxdgToplevelV6SetParentRequest requests to set the parent of this surface
 //
@@ -10773,7 +10389,9 @@ type XSUVZxdgToplevelV6DestroyRequest struct{}
 // Parent windows should be set on dialogs, toolboxes, or other
 // "auxiliary" surfaces, so that the parent is raised when the dialog
 // is raised.
-type XSUVZxdgToplevelV6SetParentRequest struct{}
+type XSUVZxdgToplevelV6SetParentRequest struct {
+	Parent uintptr
+}
 
 // XSUVZxdgToplevelV6SetTitleRequest requests to set surface title
 //
@@ -10784,9 +10402,11 @@ type XSUVZxdgToplevelV6SetParentRequest struct{}
 // compositor.
 //
 // The string must be encoded in UTF-8.
-type XSUVZxdgToplevelV6SetTitleRequest struct{}
+type XSUVZxdgToplevelV6SetTitleRequest struct {
+	Title uintptr
+}
 
-// XSUVZxdgToplevelV6SetAppIdRequest requests to set application ID
+// XSUVZxdgToplevelV6SetAppIDRequest requests to set application ID
 //
 // Set an application identifier for the surface.
 //
@@ -10808,7 +10428,9 @@ type XSUVZxdgToplevelV6SetTitleRequest struct{}
 // names and .desktop files.
 //
 // [0] http://standards.freedesktop.org/desktop-entry-spec/
-type XSUVZxdgToplevelV6SetAppIdRequest struct{}
+type XSUVZxdgToplevelV6SetAppIDRequest struct {
+	AppID uintptr
+}
 
 // XSUVZxdgToplevelV6ShowWindowMenuRequest requests to show the window menu
 //
@@ -10823,7 +10445,19 @@ type XSUVZxdgToplevelV6SetAppIdRequest struct{}
 //
 // This request must be used in response to some sort of user action
 // like a button press, key press, or touch down event.
-type XSUVZxdgToplevelV6ShowWindowMenuRequest struct{}
+type XSUVZxdgToplevelV6ShowWindowMenuRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+
+	// X contains the x position to pop up the window menu at
+	X uintptr
+
+	// Y contains the y position to pop up the window menu at
+	Y uintptr
+}
 
 // XSUVZxdgToplevelV6MoveRequest requests to start an interactive move
 //
@@ -10843,7 +10477,13 @@ type XSUVZxdgToplevelV6ShowWindowMenuRequest struct{}
 // compositor to visually indicate that the move is taking place, such as
 // updating a pointer cursor, during the move. There is no guarantee
 // that the device focus will return when the move is completed.
-type XSUVZxdgToplevelV6MoveRequest struct{}
+type XSUVZxdgToplevelV6MoveRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+}
 
 // XSUVZxdgToplevelV6ResizeRequest requests to start an interactive resize
 //
@@ -10877,7 +10517,16 @@ type XSUVZxdgToplevelV6MoveRequest struct{}
 // example when dragging the top left corner. The compositor may also
 // use this information to adapt its behavior, e.g. choose an
 // appropriate cursor image.
-type XSUVZxdgToplevelV6ResizeRequest struct{}
+type XSUVZxdgToplevelV6ResizeRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
+
+	// Serial contains the serial of the user event
+	Serial uintptr
+
+	// Edges contains which edge or corner is being dragged
+	Edges uintptr
+}
 
 // XSUVZxdgToplevelV6SetMaxSizeRequest requests to set the maximum size
 //
@@ -10915,7 +10564,11 @@ type XSUVZxdgToplevelV6ResizeRequest struct{}
 // The width and height must be greater than or equal to zero. Using
 // strictly negative values for width and height will result in a
 // protocol error.
-type XSUVZxdgToplevelV6SetMaxSizeRequest struct{}
+type XSUVZxdgToplevelV6SetMaxSizeRequest struct {
+	Width uintptr
+
+	Height uintptr
+}
 
 // XSUVZxdgToplevelV6SetMinSizeRequest requests to set the minimum size
 //
@@ -10953,7 +10606,11 @@ type XSUVZxdgToplevelV6SetMaxSizeRequest struct{}
 // The width and height must be greater than or equal to zero. Using
 // strictly negative values for width and height will result in a
 // protocol error.
-type XSUVZxdgToplevelV6SetMinSizeRequest struct{}
+type XSUVZxdgToplevelV6SetMinSizeRequest struct {
+	Width uintptr
+
+	Height uintptr
+}
 
 // XSUVZxdgToplevelV6SetMaximizedRequest requests to maximize the window
 //
@@ -10973,7 +10630,8 @@ type XSUVZxdgToplevelV6SetMinSizeRequest struct{}
 //
 // If the surface was already maximized, the compositor will still emit
 // a configure event with the "maximized" state.
-type XSUVZxdgToplevelV6SetMaximizedRequest struct{}
+type XSUVZxdgToplevelV6SetMaximizedRequest struct {
+}
 
 // XSUVZxdgToplevelV6UnsetMaximizedRequest requests to unmaximize the window
 //
@@ -10994,7 +10652,8 @@ type XSUVZxdgToplevelV6SetMaximizedRequest struct{}
 //
 // If the surface was already not maximized, the compositor will still
 // emit a configure event without the "maximized" state.
-type XSUVZxdgToplevelV6UnsetMaximizedRequest struct{}
+type XSUVZxdgToplevelV6UnsetMaximizedRequest struct {
+}
 
 // XSUVZxdgToplevelV6SetFullscreenRequest requests to set the window as fullscreen on a monitor
 //
@@ -11007,9 +10666,12 @@ type XSUVZxdgToplevelV6UnsetMaximizedRequest struct{}
 // If the surface doesn't cover the whole output, the compositor will
 // position the surface in the center of the output and compensate with
 // black borders filling the rest of the output.
-type XSUVZxdgToplevelV6SetFullscreenRequest struct{}
+type XSUVZxdgToplevelV6SetFullscreenRequest struct {
+	Output uintptr
+}
 
-type XSUVZxdgToplevelV6UnsetFullscreenRequest struct{}
+type XSUVZxdgToplevelV6UnsetFullscreenRequest struct {
+}
 
 // XSUVZxdgToplevelV6SetMinimizedRequest requests to set the window as minimized
 //
@@ -11021,9 +10683,10 @@ type XSUVZxdgToplevelV6UnsetFullscreenRequest struct{}
 // instead use the wl_surface.frame event for this, as this will
 // also work with live previews on windows in Alt-Tab, Expose or
 // similar compositor features.
-type XSUVZxdgToplevelV6SetMinimizedRequest struct{}
+type XSUVZxdgToplevelV6SetMinimizedRequest struct {
+}
 
-// XSUVZxdgToplevelV6ConfigureEvent requests to suggest a surface change
+// XSUVZxdgToplevelV6ConfigureEvent signals when suggest a surface change
 //
 // This configure event asks the client to resize its toplevel surface or
 // to change its state. The configured state should not be applied
@@ -11044,9 +10707,15 @@ type XSUVZxdgToplevelV6SetMinimizedRequest struct{}
 //
 // Clients must send an ack_configure in response to this event. See
 // xdg_surface.configure and xdg_surface.ack_configure for details.
-type XSUVZxdgToplevelV6ConfigureEvent struct{}
+type XSUVZxdgToplevelV6ConfigureEvent struct {
+	Width uintptr
 
-// XSUVZxdgToplevelV6CloseEvent requests to surface wants to be closed
+	Height uintptr
+
+	States uintptr
+}
+
+// XSUVZxdgToplevelV6CloseEvent signals when surface wants to be closed
 //
 // The close event is sent by the compositor when the user
 // wants the surface to be closed. This should be equivalent to
@@ -11056,11 +10725,13 @@ type XSUVZxdgToplevelV6ConfigureEvent struct{}
 // This is only a request that the user intends to close the
 // window. The client may choose to ignore this request, or show
 // a dialog to ask the user to save their data, etc.
-type XSUVZxdgToplevelV6CloseEvent struct{}
+type XSUVZxdgToplevelV6CloseEvent struct {
+}
 
 type XSUVZxdgPopupV6Error int
 
 const (
+	// XSUVZxdgPopupV6ErrorInvalidGrab corresponds to tried to grab after being mapped
 	XSUVZxdgPopupV6ErrorInvalidGrab XSUVZxdgPopupV6Error = 0
 )
 
@@ -11071,7 +10742,8 @@ const (
 //
 // If this xdg_popup is not the "topmost" popup, a protocol error
 // will be sent.
-type XSUVZxdgPopupV6DestroyRequest struct{}
+type XSUVZxdgPopupV6DestroyRequest struct {
+}
 
 // XSUVZxdgPopupV6GrabRequest requests to make the popup take an explicit grab
 //
@@ -11116,9 +10788,15 @@ type XSUVZxdgPopupV6DestroyRequest struct{}
 // and touch events for all their surfaces as normal (similar to an
 // "owner-events" grab in X11 parlance), while the top most grabbing popup
 // will always have keyboard focus.
-type XSUVZxdgPopupV6GrabRequest struct{}
+type XSUVZxdgPopupV6GrabRequest struct {
+	// Seat contains the wl_seat of the user event
+	Seat uintptr
 
-// XSUVZxdgPopupV6ConfigureEvent requests to configure the popup surface
+	// Serial contains the serial of the user event
+	Serial uintptr
+}
+
+// XSUVZxdgPopupV6ConfigureEvent signals when configure the popup surface
 //
 // This event asks the popup surface to configure itself given the
 // configuration. The configured state should not be applied immediately.
@@ -11127,19 +10805,33 @@ type XSUVZxdgPopupV6GrabRequest struct{}
 // The x and y arguments represent the position the popup was placed at
 // given the xdg_positioner rule, relative to the upper left corner of the
 // window geometry of the parent surface.
-type XSUVZxdgPopupV6ConfigureEvent struct{}
+type XSUVZxdgPopupV6ConfigureEvent struct {
+	// X contains x position relative to parent surface window geometry
+	X uintptr
 
-// XSUVZxdgPopupV6PopupDoneEvent requests to popup interaction is done
+	// Y contains y position relative to parent surface window geometry
+	Y uintptr
+
+	// Width contains window geometry width
+	Width uintptr
+
+	// Height contains window geometry height
+	Height uintptr
+}
+
+// XSUVZxdgPopupV6PopupDoneEvent signals when popup interaction is done
 //
 // The popup_done event is sent out when a popup is dismissed by the
 // compositor. The client should destroy the xdg_popup object at this
 // point.
-type XSUVZxdgPopupV6PopupDoneEvent struct{}
+type XSUVZxdgPopupV6PopupDoneEvent struct {
+}
 
 // XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest requests to destroy the keyboard grab manager
 //
 // Destroy the keyboard grab manager.
-type XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest struct{}
+type XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest struct {
+}
 
 // XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest requests to grab the keyboard to a surface
 //
@@ -11162,17 +10854,27 @@ type XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest struct{}
 // * does not guarantee that events sent to this client are continuous,
 // a compositor may change and reroute keyboard events while the grab
 // is nominally active.
-type XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest struct{}
+type XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest struct {
+	ID uintptr
+
+	// Surface contains surface to report keyboard events to
+	Surface uintptr
+
+	// Seat contains the seat for which the keyboard should be grabbed
+	Seat uintptr
+}
 
 // XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest requests to destroy the grabbed keyboard object
 //
 // Destroy the grabbed keyboard object. If applicable, the compositor
 // will ungrab the keyboard.
-type XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest struct{}
+type XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest struct {
+}
 
 type ZLESUVZwpLinuxExplicitSynchronizationV1Error int
 
 const (
+	// ZLESUVZwpLinuxExplicitSynchronizationV1ErrorSynchronizationExists corresponds to the surface already has a synchronization object associated
 	ZLESUVZwpLinuxExplicitSynchronizationV1ErrorSynchronizationExists ZLESUVZwpLinuxExplicitSynchronizationV1Error = 0
 )
 
@@ -11181,7 +10883,8 @@ const (
 // Destroy this explicit synchronization factory object. Other objects,
 // including zwp_linux_surface_synchronization_v1 objects created by this
 // factory, shall not be affected by this request.
-type ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest struct{}
+type ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest struct {
+}
 
 // ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest requests to extend surface interface for explicit synchronization
 //
@@ -11196,21 +10899,33 @@ type ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest struct{}
 // extension internally. If a client is using such an API for a
 // wl_surface, it should not directly use this extension on that surface,
 // to avoid raising a synchronization_exists protocol error.
-type ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest struct{}
+type ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest struct {
+	// ID contains the new synchronization interface id
+	ID uintptr
+
+	// Surface contains the surface
+	Surface uintptr
+}
 
 type ZLESUVZwpLinuxSurfaceSynchronizationV1Error int
 
 const (
+	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorInvalidFence corresponds to the fence specified by the client could not be imported
 	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorInvalidFence ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 0
 
+	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateFence corresponds to multiple fences added for a single surface commit
 	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateFence ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 1
 
+	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateRelease corresponds to multiple releases added for a single surface commit
 	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateRelease ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 2
 
+	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoSurface corresponds to the associated wl_surface was destroyed
 	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoSurface ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 3
 
+	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorUnsupportedBuffer corresponds to the buffer does not support explicit synchronization
 	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorUnsupportedBuffer ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 4
 
+	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoBuffer corresponds to no buffer was attached
 	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoBuffer ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 5
 )
 
@@ -11224,7 +10939,8 @@ const (
 //
 // zwp_linux_buffer_release_v1 objects created by this object are not
 // affected by this request.
-type ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest struct{}
+type ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest struct {
+}
 
 // ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest requests to set the acquire fence
 //
@@ -11251,7 +10967,10 @@ type ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest struct{}
 //
 // If at surface commit time there is no buffer attached, a NO_BUFFER
 // error is raised.
-type ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct{}
+type ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct {
+	// FD contains acquire fence fd
+	FD uintptr
+}
 
 // ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest requests to release fence for last-attached buffer
 //
@@ -11272,9 +10991,12 @@ type ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct{}
 //
 // If at surface commit time there is no buffer attached, a NO_BUFFER
 // error is raised.
-type ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct{}
+type ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct {
+	// Release contains new zwp_linux_buffer_release_v1 object
+	Release uintptr
+}
 
-// ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent requests to release buffer with fence
+// ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent signals when release buffer with fence
 //
 // Sent when the compositor has finalised its usage of the associated
 // buffer for the relevant commit, providing a dma_fence which will be
@@ -11287,9 +11009,12 @@ type ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct{}
 // destroy the buffer.
 //
 // This event destroys the zwp_linux_buffer_release_v1 object.
-type ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent struct{}
+type ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent struct {
+	// Fence contains fence for last operation on buffer
+	Fence uintptr
+}
 
-// ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent requests to release buffer immediately
+// ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent signals when release buffer immediately
 //
 // Sent when the compositor has finalised its usage of the associated
 // buffer for the relevant commit, and either performed no operations
@@ -11302,4 +11027,5 @@ type ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent struct{}
 // destroy the buffer.
 //
 // This event destroys the zwp_linux_buffer_release_v1 object.
-type ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent struct{}
+type ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent struct {
+}
