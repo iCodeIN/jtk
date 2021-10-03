@@ -226,17 +226,27 @@ func codegenproto(w io.Writer, proto protocol) error {
 			enumname := namegen(initialism(proto.Name), intf.Name, enum.Name)
 
 			// Make doc comment.
-			docgen(w, enumname, enum.Description, "represents", "")
+			if err := docgen(w, enumname, enum.Description, "represents", ""); err != nil {
+				return fmt.Errorf("writing enum %s doc comment: %v", enumname, err)
+			}
 
 			// Make type declaration.
-			fmt.Fprintf(w, "type %s %s\n", enumname, typ)
+			if _, err := fmt.Fprintf(w, "type %s %s\n", enumname, typ); err != nil {
+				return fmt.Errorf("writing enum %s type declaration: %v", enumname, err)
+			}
 
 			// Make entry constants.
 			fmt.Fprintf(w, "const (\n")
 			for _, entry := range enum.Entries {
 				entryname := namegen(initialism(proto.Name), intf.Name, enum.Name, entry.Name)
-				docgen(w, entryname, description{Summary: entry.Summary}, "corresponds to", "\t")
-				fmt.Fprintf(w, "\t%s %s = %s\n\n", entryname, enumname, entry.Value)
+
+				if err := docgen(w, entryname, description{Summary: entry.Summary}, "corresponds to", "\t"); err != nil {
+					return fmt.Errorf("writing enum entry %s doc comment: %v", entryname, err)
+				}
+
+				if _, err := fmt.Fprintf(w, "\t%s %s = %s\n\n", entryname, enumname, entry.Value); err != nil {
+					return fmt.Errorf("writing enum entry %s declaration: %v", entryname, err)
+				}
 			}
 			fmt.Fprint(w, ")\n\n")
 		}
@@ -246,18 +256,26 @@ func codegenproto(w io.Writer, proto protocol) error {
 			structname := namegen(initialism(proto.Name), intf.Name, request.Name, "request")
 
 			// Make doc comment.
-			docgen(w, structname, request.Description, "requests to", "")
-
-			// Make struct declaration.
-			fmt.Fprintf(w, "type %s struct {\n", structname)
-			for _, arg := range request.Args {
-				// Make doc comment.
-				argname := namegen(arg.Name)
-				docgen(w, argname, description{Summary: arg.Summary}, "contains", "\t")
-				// TODO: proper types
-				fmt.Fprintf(w, "\t%s uintptr\n\n", argname)
+			if err := docgen(w, structname, request.Description, "requests to", ""); err != nil {
+				return fmt.Errorf("writing request %s doc comment: %v", structname, err)
 			}
-			fmt.Fprint(w, "}\n\n")
+
+			// Open struct declaration.
+			if _, err := fmt.Fprintf(w, "type %s struct {\n", structname); err != nil {
+				return fmt.Errorf("writing request %s struct open: %v", structname, err)
+			}
+
+			// Write arguments.
+			for _, arg := range request.Args {
+				if err := arggen(w, arg); err != nil {
+					return fmt.Errorf("writing request %s struct: %v", structname, err)
+				}
+			}
+
+			// Close struct declaration.
+			if _, err := fmt.Fprint(w, "}\n\n"); err != nil {
+				return fmt.Errorf("writing request %s struct close: %v", structname, err)
+			}
 		}
 
 		// Generate event structs.
@@ -265,19 +283,63 @@ func codegenproto(w io.Writer, proto protocol) error {
 			structname := namegen(initialism(proto.Name), intf.Name, event.Name, "event")
 
 			// Make doc comment.
-			docgen(w, structname, event.Description, "signals when", "")
-
-			// Make struct declaration.
-			fmt.Fprintf(w, "type %s struct {\n", structname)
-			for _, arg := range event.Args {
-				// Make doc comment.
-				argname := namegen(arg.Name)
-				docgen(w, argname, description{Summary: arg.Summary}, "contains", "\t")
-				// TODO: proper types
-				fmt.Fprintf(w, "\t%s uintptr\n\n", argname)
+			if err := docgen(w, structname, event.Description, "signals when", ""); err != nil {
+				return fmt.Errorf("writing event %s doc comment: %v", structname, err)
 			}
-			fmt.Fprint(w, "}\n\n")
+
+			// Open struct declaration.
+			if _, err := fmt.Fprintf(w, "type %s struct {\n", structname); err != nil {
+				return fmt.Errorf("writing event %s struct open: %v", structname, err)
+			}
+
+			// Write arguments.
+			for _, arg := range event.Args {
+				if err := arggen(w, arg); err != nil {
+					return fmt.Errorf("writing event %s struct: %v", structname, err)
+				}
+			}
+
+			// Close struct declaration.
+			if _, err := fmt.Fprint(w, "}\n\n"); err != nil {
+				return fmt.Errorf("writing event %s struct close: %v", structname, err)
+			}
 		}
+	}
+
+	return nil
+}
+
+func arggen(w io.Writer, arg arg) error {
+	argname := namegen(arg.Name)
+
+	// Make doc comment.
+	if err := docgen(w, argname, description{Summary: arg.Summary}, "contains", "\t"); err != nil {
+		return fmt.Errorf("writing argument %s doc comment: %v", argname, err)
+	}
+
+	typ := ""
+	switch arg.Type {
+	case "int":
+		typ = "int32"
+	case "uint":
+		typ = "uint32"
+	case "fixed":
+		typ = "int32"
+	case "object", "new_id":
+		typ = "uint32"
+	case "string":
+		typ = "string"
+	case "array":
+		typ = "[]byte"
+	case "fd":
+		typ = "struct{}"
+	default:
+		return fmt.Errorf("argument %s: unknown argument type %q", argname, arg.Type)
+	}
+
+	// Write actual arg.
+	if _, err := fmt.Fprintf(w, "\t%s %s\n\n", argname, typ); err != nil {
+		return fmt.Errorf("writing argument %s: %v", argname, err)
 	}
 
 	return nil
@@ -288,14 +350,20 @@ func docgen(w io.Writer, name string, desc description, filler string, prefix st
 	if desc.Summary != "" {
 		// Summary
 		summary := strings.TrimSpace(spacesRE.ReplaceAllString(desc.Summary, " "))
-		fmt.Fprintf(w, "%s// %s %s %s\n", prefix, name, filler, summary)
+		if _, err := fmt.Fprintf(w, "%s// %s %s %s\n", prefix, name, filler, summary); err != nil {
+			return err
+		}
 
 		// Full documentation
 		text := strings.TrimSpace(desc.Text)
 		if text != "" {
-			fmt.Fprintf(w, "%s//\n", prefix)
+			if _, err := fmt.Fprintf(w, "%s//\n", prefix); err != nil {
+				return err
+			}
 			for _, line := range strings.Split(text, "\n") {
-				fmt.Fprintf(w, "%s// %s\n", prefix, strings.TrimSpace(line))
+				if _, err := fmt.Fprintf(w, "%s// %s\n", prefix, strings.TrimSpace(line)); err != nil {
+					return err
+				}
 			}
 		}
 	}
@@ -305,15 +373,18 @@ func docgen(w io.Writer, name string, desc description, filler string, prefix st
 
 func initialism(name string) string {
 	b := strings.Builder{}
+
 	for _, part := range strings.Split(name, "_") {
 		b.WriteByte(part[0])
 		b.WriteByte('_')
 	}
+
 	return b.String()
 }
 
 func namegen(names ...string) string {
 	b := strings.Builder{}
+
 	for _, name := range names {
 		for _, part := range strings.Split(name, "_") {
 			if part == "" {
@@ -323,6 +394,7 @@ func namegen(names ...string) string {
 			switch part {
 			case "id", "fd":
 				b.WriteString(strings.ToUpper(part))
+
 			default:
 				if part[0] >= 'a' && part[0] <= 'z' {
 					b.WriteByte(part[0] & 0b11011111)
@@ -333,5 +405,6 @@ func namegen(names ...string) string {
 			}
 		}
 	}
+
 	return b.String()
 }

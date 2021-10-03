@@ -10,7 +10,7 @@ type BTWTFDPasserDestroyRequest struct {
 // Tells this fd passer object about another one to send events
 // to for more complicated fd leak tests.
 type BTWTFDPasserConjoinRequest struct {
-	Passer uintptr
+	Passer uint32
 }
 
 type BTWTFDPasserPreFDEvent struct {
@@ -19,7 +19,7 @@ type BTWTFDPasserPreFDEvent struct {
 // BTWTFDPasserFDEvent signals when passes a file descriptor
 type BTWTFDPasserFDEvent struct {
 	// FD contains file descriptor
-	FD uintptr
+	FD struct{}
 }
 
 // DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest requests to create a lease request object
@@ -28,7 +28,7 @@ type BTWTFDPasserFDEvent struct {
 //
 // See the documentation for wp_drm_lease_request_v1 for details.
 type DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // DLVWpDrmLeaseDeviceV1ReleaseRequest requests to release this object
@@ -54,7 +54,7 @@ type DLVWpDrmLeaseDeviceV1ReleaseRequest struct {
 // appropriate DRM device or select the appropriate connectors therein.
 type DLVWpDrmLeaseDeviceV1DrmFDEvent struct {
 	// FD contains DRM file descriptor
-	FD uintptr
+	FD struct{}
 }
 
 // DLVWpDrmLeaseDeviceV1ConnectorEvent signals when advertise connectors available for leases
@@ -70,7 +70,7 @@ type DLVWpDrmLeaseDeviceV1DrmFDEvent struct {
 // After the drm_fd event it will send all available connectors but may
 // send additional connectors at any time.
 type DLVWpDrmLeaseDeviceV1ConnectorEvent struct {
-	ID uintptr
+	ID uint32
 }
 
 // DLVWpDrmLeaseDeviceV1DoneEvent signals when signals grouping of connectors
@@ -112,7 +112,7 @@ type DLVWpDrmLeaseConnectorV1DestroyRequest struct {
 // between sessions.
 type DLVWpDrmLeaseConnectorV1NameEvent struct {
 	// Name contains connector name
-	Name uintptr
+	Name string
 }
 
 // DLVWpDrmLeaseConnectorV1DescriptionEvent signals when description
@@ -123,7 +123,7 @@ type DLVWpDrmLeaseConnectorV1NameEvent struct {
 // lifetime of this object to reflect changes in the description.
 type DLVWpDrmLeaseConnectorV1DescriptionEvent struct {
 	// Description contains connector description
-	Description uintptr
+	Description string
 }
 
 // DLVWpDrmLeaseConnectorV1ConnectorIDEvent signals when connector_id
@@ -134,7 +134,7 @@ type DLVWpDrmLeaseConnectorV1DescriptionEvent struct {
 // object IDs, such as CRTCs and planes.
 type DLVWpDrmLeaseConnectorV1ConnectorIDEvent struct {
 	// ConnectorID contains DRM connector ID
-	ConnectorID uintptr
+	ConnectorID uint32
 }
 
 // DLVWpDrmLeaseConnectorV1DoneEvent signals when all properties have been sent
@@ -183,7 +183,7 @@ const (
 // than this lease request raises the wrong_device error. Requesting a
 // connector twice will raise the duplicate_connector error.
 type DLVWpDrmLeaseRequestV1RequestConnectorRequest struct {
-	Connector uintptr
+	Connector uint32
 }
 
 // DLVWpDrmLeaseRequestV1SubmitRequest requests to submit the lease request
@@ -196,7 +196,7 @@ type DLVWpDrmLeaseRequestV1RequestConnectorRequest struct {
 // Not requesting any connectors before submitting the lease request
 // will raise the empty_lease error.
 type DLVWpDrmLeaseRequestV1SubmitRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // DLVWpDrmLeaseV1DestroyRequest requests to destroys the lease object
@@ -221,7 +221,7 @@ type DLVWpDrmLeaseV1DestroyRequest struct {
 // lifetime.
 type DLVWpDrmLeaseV1LeaseFDEvent struct {
 	// LeasedFD contains leased DRM file descriptor
-	LeasedFD uintptr
+	LeasedFD struct{}
 }
 
 // DLVWpDrmLeaseV1FinishedEvent signals when sent when the lease has been revoked
@@ -341,11 +341,11 @@ type FSUVZwpFullscreenShellV1ReleaseRequest struct {
 // If the surface already has another role, it raises a role protocol
 // error.
 type FSUVZwpFullscreenShellV1PresentSurfaceRequest struct {
-	Surface uintptr
+	Surface uint32
 
-	Method uintptr
+	Method uint32
 
-	Output uintptr
+	Output uint32
 }
 
 // FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest requests to present surface for display at a particular mode
@@ -392,13 +392,13 @@ type FSUVZwpFullscreenShellV1PresentSurfaceRequest struct {
 // If the surface already has another role, it raises a role protocol
 // error.
 type FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest struct {
-	Surface uintptr
+	Surface uint32
 
-	Output uintptr
+	Output uint32
 
-	Framerate uintptr
+	Framerate int32
 
-	Feedback uintptr
+	Feedback uint32
 }
 
 // FSUVZwpFullscreenShellV1CapabilityEvent signals when advertises a capability of the compositor
@@ -412,7 +412,7 @@ type FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest struct {
 // wl_display.sync request immediately after binding to ensure that they
 // receive all the capability events.
 type FSUVZwpFullscreenShellV1CapabilityEvent struct {
-	Capability uintptr
+	Capability uint32
 }
 
 // FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent signals when mode switch succeeded
@@ -458,10 +458,10 @@ type IIUVZwpIdleInhibitManagerV1DestroyRequest struct {
 //
 // Create a new inhibitor object associated with the given surface.
 type IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Surface contains the surface that inhibits the idle behavior
-	Surface uintptr
+	Surface uint32
 }
 
 // IIUVZwpIdleInhibitorV1DestroyRequest requests to destroy the idle inhibitor object
@@ -486,9 +486,9 @@ type IMUVZwpInputMethodContextV1DestroyRequest struct {
 // Any previously set composing text will be removed.
 type IMUVZwpInputMethodContextV1CommitStringRequest struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Text uintptr
+	Text string
 }
 
 // IMUVZwpInputMethodContextV1PreeditStringRequest requests to pre-edit string
@@ -502,11 +502,11 @@ type IMUVZwpInputMethodContextV1CommitStringRequest struct {
 // processed by the text_input.
 type IMUVZwpInputMethodContextV1PreeditStringRequest struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Text uintptr
+	Text string
 
-	Commit uintptr
+	Commit string
 }
 
 // IMUVZwpInputMethodContextV1PreeditStylingRequest requests to pre-edit styling
@@ -518,11 +518,11 @@ type IMUVZwpInputMethodContextV1PreeditStringRequest struct {
 //
 // This request should be sent before sending a preedit_string request.
 type IMUVZwpInputMethodContextV1PreeditStylingRequest struct {
-	Index uintptr
+	Index uint32
 
-	Length uintptr
+	Length uint32
 
-	Style uintptr
+	Style uint32
 }
 
 // IMUVZwpInputMethodContextV1PreeditCursorRequest requests to pre-edit cursor
@@ -534,7 +534,7 @@ type IMUVZwpInputMethodContextV1PreeditStylingRequest struct {
 //
 // This request should be sent before sending a preedit_string request.
 type IMUVZwpInputMethodContextV1PreeditCursorRequest struct {
-	Index uintptr
+	Index int32
 }
 
 // IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest requests to delete text
@@ -544,9 +544,9 @@ type IMUVZwpInputMethodContextV1PreeditCursorRequest struct {
 // This request will be handled on the text_input side directly following
 // a commit_string request.
 type IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest struct {
-	Index uintptr
+	Index int32
 
-	Length uintptr
+	Length uint32
 }
 
 // IMUVZwpInputMethodContextV1CursorPositionRequest requests to set cursor to a new position
@@ -562,13 +562,13 @@ type IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest struct {
 // This request will be handled on the text_input side directly following
 // a commit_string request.
 type IMUVZwpInputMethodContextV1CursorPositionRequest struct {
-	Index uintptr
+	Index int32
 
-	Anchor uintptr
+	Anchor int32
 }
 
 type IMUVZwpInputMethodContextV1ModifiersMapRequest struct {
-	Map uintptr
+	Map []byte
 }
 
 // IMUVZwpInputMethodContextV1KeysymRequest requests to keysym
@@ -579,15 +579,15 @@ type IMUVZwpInputMethodContextV1ModifiersMapRequest struct {
 // event convention. Sym is an XKB keysym, state is a wl_keyboard key_state.
 type IMUVZwpInputMethodContextV1KeysymRequest struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Time uintptr
+	Time uint32
 
-	Sym uintptr
+	Sym uint32
 
-	State uintptr
+	State uint32
 
-	Modifiers uintptr
+	Modifiers uint32
 }
 
 // IMUVZwpInputMethodContextV1GrabKeyboardRequest requests to grab hardware keyboard
@@ -597,7 +597,7 @@ type IMUVZwpInputMethodContextV1KeysymRequest struct {
 // allows input methods which compose multiple key events for inputting
 // text like it is done for CJK languages.
 type IMUVZwpInputMethodContextV1GrabKeyboardRequest struct {
-	Keyboard uintptr
+	Keyboard uint32
 }
 
 // IMUVZwpInputMethodContextV1KeyRequest requests to forward key event
@@ -610,16 +610,16 @@ type IMUVZwpInputMethodContextV1GrabKeyboardRequest struct {
 // For generating custom key events use the keysym request instead.
 type IMUVZwpInputMethodContextV1KeyRequest struct {
 	// Serial contains serial from wl_keyboard::key
-	Serial uintptr
+	Serial uint32
 
 	// Time contains time from wl_keyboard::key
-	Time uintptr
+	Time uint32
 
 	// Key contains key from wl_keyboard::key
-	Key uintptr
+	Key uint32
 
 	// State contains state from wl_keyboard::key
-	State uintptr
+	State uint32
 }
 
 // IMUVZwpInputMethodContextV1ModifiersRequest requests to forward modifiers event
@@ -630,33 +630,33 @@ type IMUVZwpInputMethodContextV1KeyRequest struct {
 // from the wl_keyboard::modifiers event.
 type IMUVZwpInputMethodContextV1ModifiersRequest struct {
 	// Serial contains serial from wl_keyboard::modifiers
-	Serial uintptr
+	Serial uint32
 
 	// ModsDepressed contains mods_depressed from wl_keyboard::modifiers
-	ModsDepressed uintptr
+	ModsDepressed uint32
 
 	// ModsLatched contains mods_latched from wl_keyboard::modifiers
-	ModsLatched uintptr
+	ModsLatched uint32
 
 	// ModsLocked contains mods_locked from wl_keyboard::modifiers
-	ModsLocked uintptr
+	ModsLocked uint32
 
 	// Group contains group from wl_keyboard::modifiers
-	Group uintptr
+	Group uint32
 }
 
 type IMUVZwpInputMethodContextV1LanguageRequest struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Language uintptr
+	Language string
 }
 
 type IMUVZwpInputMethodContextV1TextDirectionRequest struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Direction uintptr
+	Direction uint32
 }
 
 // IMUVZwpInputMethodContextV1SurroundingTextEvent signals when surrounding text event
@@ -667,35 +667,35 @@ type IMUVZwpInputMethodContextV1TextDirectionRequest struct {
 // within the surrounding text relative to the beginning of the text. If
 // there is no selected text then anchor is the same as cursor.
 type IMUVZwpInputMethodContextV1SurroundingTextEvent struct {
-	Text uintptr
+	Text string
 
-	Cursor uintptr
+	Cursor uint32
 
-	Anchor uintptr
+	Anchor uint32
 }
 
 type IMUVZwpInputMethodContextV1ResetEvent struct {
 }
 
 type IMUVZwpInputMethodContextV1ContentTypeEvent struct {
-	Hint uintptr
+	Hint uint32
 
-	Purpose uintptr
+	Purpose uint32
 }
 
 type IMUVZwpInputMethodContextV1InvokeActionEvent struct {
-	Button uintptr
+	Button uint32
 
-	Index uintptr
+	Index uint32
 }
 
 type IMUVZwpInputMethodContextV1CommitStateEvent struct {
 	// Serial contains serial of text input state
-	Serial uintptr
+	Serial uint32
 }
 
 type IMUVZwpInputMethodContextV1PreferredLanguageEvent struct {
-	Language uintptr
+	Language string
 }
 
 // IMUVZwpInputMethodV1ActivateEvent signals when activate event
@@ -703,7 +703,7 @@ type IMUVZwpInputMethodContextV1PreferredLanguageEvent struct {
 // A text input was activated. Creates an input method context object
 // which allows communication with the text input.
 type IMUVZwpInputMethodV1ActivateEvent struct {
-	ID uintptr
+	ID uint32
 }
 
 // IMUVZwpInputMethodV1DeactivateEvent signals when deactivate event
@@ -712,13 +712,13 @@ type IMUVZwpInputMethodV1ActivateEvent struct {
 // The input method context should be destroyed after deactivation is
 // handled.
 type IMUVZwpInputMethodV1DeactivateEvent struct {
-	Context uintptr
+	Context uint32
 }
 
 type IMUVZwpInputPanelV1GetInputPanelSurfaceRequest struct {
-	ID uintptr
+	ID uint32
 
-	Surface uintptr
+	Surface uint32
 }
 
 type IMUVZwpInputPanelSurfaceV1Position int
@@ -733,9 +733,9 @@ const (
 //
 // A keyboard surface is only shown when a text input is active.
 type IMUVZwpInputPanelSurfaceV1SetToplevelRequest struct {
-	Output uintptr
+	Output uint32
 
-	Position uintptr
+	Position uint32
 }
 
 // IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest requests to set the surface type as an overlay panel
@@ -766,10 +766,10 @@ type ITUVZwpInputTimestampsManagerV1DestroyRequest struct {
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
 type ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Keyboard contains the wl_keyboard object for which to get timestamp events
-	Keyboard uintptr
+	Keyboard uint32
 }
 
 // ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest requests to subscribe to high-resolution pointer timestamp events
@@ -783,10 +783,10 @@ type ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct {
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
 type ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Pointer contains the wl_pointer object for which to get timestamp events
-	Pointer uintptr
+	Pointer uint32
 }
 
 // ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest requests to subscribe to high-resolution touch timestamp events
@@ -800,10 +800,10 @@ type ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct {
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
 type ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Touch contains the wl_touch object for which to get timestamp events
-	Touch uintptr
+	Touch uint32
 }
 
 // ITUVZwpInputTimestampsV1DestroyRequest requests to destroy the input timestamps object
@@ -832,13 +832,13 @@ type ITUVZwpInputTimestampsV1DestroyRequest struct {
 // for valid timestamps tv_nsec must be in [0, 999999999].
 type ITUVZwpInputTimestampsV1TimestampEvent struct {
 	// TvSecHi contains high 32 bits of the seconds part of the timestamp
-	TvSecHi uintptr
+	TvSecHi uint32
 
 	// TvSecLo contains low 32 bits of the seconds part of the timestamp
-	TvSecLo uintptr
+	TvSecLo uint32
 
 	// TvNsec contains nanoseconds part of the timestamp
-	TvNsec uintptr
+	TvNsec uint32
 }
 
 type KSIUVZwpKeyboardShortcutsInhibitManagerV1Error int
@@ -862,13 +862,13 @@ type KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest struct {
 // If shortcuts are already inhibited for the specified seat and surface,
 // a protocol error "already_inhibited" is raised by the compositor.
 type KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Surface contains the surface that inhibits the keyboard shortcuts behavior
-	Surface uintptr
+	Surface uint32
 
 	// Seat contains the wl_seat for which keyboard shortcuts should be disabled
-	Seat uintptr
+	Seat uint32
 }
 
 // KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest requests to destroy the keyboard shortcuts inhibitor object
@@ -915,7 +915,7 @@ type LDUVZwpLinuxDmabufV1DestroyRequest struct {
 // received.
 type LDUVZwpLinuxDmabufV1CreateParamsRequest struct {
 	// ParamsID contains the new temporary
-	ParamsID uintptr
+	ParamsID uint32
 }
 
 // LDUVZwpLinuxDmabufV1FormatEvent signals when supported buffer format
@@ -934,7 +934,7 @@ type LDUVZwpLinuxDmabufV1CreateParamsRequest struct {
 // received from this event.
 type LDUVZwpLinuxDmabufV1FormatEvent struct {
 	// Format contains DRM_FORMAT code
-	Format uintptr
+	Format uint32
 }
 
 // LDUVZwpLinuxDmabufV1ModifierEvent signals when supported buffer format modifier
@@ -960,13 +960,13 @@ type LDUVZwpLinuxDmabufV1FormatEvent struct {
 // requests.
 type LDUVZwpLinuxDmabufV1ModifierEvent struct {
 	// Format contains DRM_FORMAT code
-	Format uintptr
+	Format uint32
 
 	// ModifierHi contains high 32 bits of layout modifier
-	ModifierHi uintptr
+	ModifierHi uint32
 
 	// ModifierLo contains low 32 bits of layout modifier
-	ModifierLo uintptr
+	ModifierLo uint32
 }
 
 type LDUVZwpLinuxBufferParamsV1Error int
@@ -1039,22 +1039,22 @@ type LDUVZwpLinuxBufferParamsV1DestroyRequest struct {
 // was already set.
 type LDUVZwpLinuxBufferParamsV1AddRequest struct {
 	// FD contains dmabuf fd
-	FD uintptr
+	FD struct{}
 
 	// PlaneIdx contains plane index
-	PlaneIdx uintptr
+	PlaneIdx uint32
 
 	// Offset contains offset in bytes
-	Offset uintptr
+	Offset uint32
 
 	// Stride contains stride in bytes
-	Stride uintptr
+	Stride uint32
 
 	// ModifierHi contains high 32 bits of layout modifier
-	ModifierHi uintptr
+	ModifierHi uint32
 
 	// ModifierLo contains low 32 bits of layout modifier
-	ModifierLo uintptr
+	ModifierLo uint32
 }
 
 // LDUVZwpLinuxBufferParamsV1CreateRequest requests to create a wl_buffer from the given dmabufs
@@ -1120,16 +1120,16 @@ type LDUVZwpLinuxBufferParamsV1AddRequest struct {
 // cancel the buffer creation, it can just destroy this object.
 type LDUVZwpLinuxBufferParamsV1CreateRequest struct {
 	// Width contains base plane width in pixels
-	Width uintptr
+	Width int32
 
 	// Height contains base plane height in pixels
-	Height uintptr
+	Height int32
 
 	// Format contains DRM_FORMAT code
-	Format uintptr
+	Format uint32
 
 	// Flags contains see enum flags
-	Flags uintptr
+	Flags uint32
 }
 
 // LDUVZwpLinuxBufferParamsV1CreateImmedRequest requests to immediately create a wl_buffer from the given dmabufs
@@ -1159,19 +1159,19 @@ type LDUVZwpLinuxBufferParamsV1CreateRequest struct {
 // same restrictions.
 type LDUVZwpLinuxBufferParamsV1CreateImmedRequest struct {
 	// BufferID contains id for the newly created wl_buffer
-	BufferID uintptr
+	BufferID uint32
 
 	// Width contains base plane width in pixels
-	Width uintptr
+	Width int32
 
 	// Height contains base plane height in pixels
-	Height uintptr
+	Height int32
 
 	// Format contains DRM_FORMAT code
-	Format uintptr
+	Format uint32
 
 	// Flags contains see enum flags
-	Flags uintptr
+	Flags uint32
 }
 
 // LDUVZwpLinuxBufferParamsV1CreatedEvent signals when buffer creation succeeded
@@ -1183,7 +1183,7 @@ type LDUVZwpLinuxBufferParamsV1CreateImmedRequest struct {
 // zlinux_dmabuf_params object.
 type LDUVZwpLinuxBufferParamsV1CreatedEvent struct {
 	// Buffer contains the newly created wl_buffer
-	Buffer uintptr
+	Buffer uint32
 }
 
 // LDUVZwpLinuxBufferParamsV1FailedEvent signals when buffer creation failed
@@ -1265,19 +1265,19 @@ type PCUVZwpPointerConstraintsV1DestroyRequest struct {
 // objects of the same seat. wl_pointer.axis and wl_pointer.button events
 // are unaffected.
 type PCUVZwpPointerConstraintsV1LockPointerRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Surface contains surface to lock pointer to
-	Surface uintptr
+	Surface uint32
 
 	// Pointer contains the pointer that should be locked
-	Pointer uintptr
+	Pointer uint32
 
 	// Region contains region of surface
-	Region uintptr
+	Region uint32
 
 	// Lifetime contains lock lifetime
-	Lifetime uintptr
+	Lifetime uint32
 }
 
 // PCUVZwpPointerConstraintsV1ConfinePointerRequest requests to confine pointer to a region
@@ -1300,19 +1300,19 @@ type PCUVZwpPointerConstraintsV1LockPointerRequest struct {
 // state. See the the description of wp_confined_pointer for further
 // information.
 type PCUVZwpPointerConstraintsV1ConfinePointerRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Surface contains surface to lock pointer to
-	Surface uintptr
+	Surface uint32
 
 	// Pointer contains the pointer that should be confined
-	Pointer uintptr
+	Pointer uint32
 
 	// Region contains region of surface
-	Region uintptr
+	Region uint32
 
 	// Lifetime contains confinement lifetime
-	Lifetime uintptr
+	Lifetime uint32
 }
 
 // PCUVZwpLockedPointerV1DestroyRequest requests to destroy the locked pointer object
@@ -1337,10 +1337,10 @@ type PCUVZwpLockedPointerV1DestroyRequest struct {
 // wl_surface.commit for details.
 type PCUVZwpLockedPointerV1SetCursorPositionHintRequest struct {
 	// SurfaceX contains surface-local x coordinate
-	SurfaceX uintptr
+	SurfaceX int32
 
 	// SurfaceY contains surface-local y coordinate
-	SurfaceY uintptr
+	SurfaceY int32
 }
 
 // PCUVZwpLockedPointerV1SetRegionRequest requests to set a new lock region
@@ -1354,7 +1354,7 @@ type PCUVZwpLockedPointerV1SetCursorPositionHintRequest struct {
 // For details about the lock region, see wp_locked_pointer.
 type PCUVZwpLockedPointerV1SetRegionRequest struct {
 	// Region contains region of surface
-	Region uintptr
+	Region uint32
 }
 
 // PCUVZwpLockedPointerV1LockedEvent signals when lock activation event
@@ -1401,7 +1401,7 @@ type PCUVZwpConfinedPointerV1DestroyRequest struct {
 // For details about the confine region, see wp_confined_pointer.
 type PCUVZwpConfinedPointerV1SetRegionRequest struct {
 	// Region contains region of surface
-	Region uintptr
+	Region uint32
 }
 
 // PCUVZwpConfinedPointerV1ConfinedEvent signals when pointer confined
@@ -1427,9 +1427,9 @@ type PCUVZwpConfinedPointerV1UnconfinedEvent struct {
 // Create a swipe gesture object. See the
 // wl_pointer_gesture_swipe interface for details.
 type PGUVZwpPointerGesturesV1GetSwipeGestureRequest struct {
-	ID uintptr
+	ID uint32
 
-	Pointer uintptr
+	Pointer uint32
 }
 
 // PGUVZwpPointerGesturesV1GetPinchGestureRequest requests to get pinch gesture
@@ -1437,9 +1437,9 @@ type PGUVZwpPointerGesturesV1GetSwipeGestureRequest struct {
 // Create a pinch gesture object. See the
 // wl_pointer_gesture_pinch interface for details.
 type PGUVZwpPointerGesturesV1GetPinchGestureRequest struct {
-	ID uintptr
+	ID uint32
 
-	Pointer uintptr
+	Pointer uint32
 }
 
 // PGUVZwpPointerGesturesV1ReleaseRequest requests to destroy the pointer gesture object
@@ -1454,9 +1454,9 @@ type PGUVZwpPointerGesturesV1ReleaseRequest struct {
 // Create a hold gesture object. See the
 // wl_pointer_gesture_hold interface for details.
 type PGUVZwpPointerGesturesV1GetHoldGestureRequest struct {
-	ID uintptr
+	ID uint32
 
-	Pointer uintptr
+	Pointer uint32
 }
 
 // PGUVZwpPointerGestureSwipeV1DestroyRequest requests to destroy the pointer swipe gesture object
@@ -1468,15 +1468,15 @@ type PGUVZwpPointerGestureSwipeV1DestroyRequest struct {
 // This event is sent when a multi-finger swipe gesture is detected
 // on the device.
 type PGUVZwpPointerGestureSwipeV1BeginEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
-	Surface uintptr
+	Surface uint32
 
 	// Fingers contains number of fingers
-	Fingers uintptr
+	Fingers uint32
 }
 
 // PGUVZwpPointerGestureSwipeV1UpdateEvent signals when multi-finger swipe motion
@@ -1488,13 +1488,13 @@ type PGUVZwpPointerGestureSwipeV1BeginEvent struct {
 // center of the gesture compared to the previous event.
 type PGUVZwpPointerGestureSwipeV1UpdateEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Dx contains delta x coordinate in surface coordinate space
-	Dx uintptr
+	Dx int32
 
 	// Dy contains delta y coordinate in surface coordinate space
-	Dy uintptr
+	Dy int32
 }
 
 // PGUVZwpPointerGestureSwipeV1EndEvent signals when multi-finger swipe end
@@ -1507,13 +1507,13 @@ type PGUVZwpPointerGestureSwipeV1UpdateEvent struct {
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
 type PGUVZwpPointerGestureSwipeV1EndEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Cancelled contains 1 if the gesture was cancelled, 0 otherwise
-	Cancelled uintptr
+	Cancelled int32
 }
 
 // PGUVZwpPointerGesturePinchV1DestroyRequest requests to destroy the pinch gesture object
@@ -1525,15 +1525,15 @@ type PGUVZwpPointerGesturePinchV1DestroyRequest struct {
 // This event is sent when a multi-finger pinch gesture is detected
 // on the device.
 type PGUVZwpPointerGesturePinchV1BeginEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
-	Surface uintptr
+	Surface uint32
 
 	// Fingers contains number of fingers
-	Fingers uintptr
+	Fingers uint32
 }
 
 // PGUVZwpPointerGesturePinchV1UpdateEvent signals when multi-finger pinch motion
@@ -1552,19 +1552,19 @@ type PGUVZwpPointerGesturePinchV1BeginEvent struct {
 // pointer_gesture_pinch.begin or pointer_gesture_pinch.update event.
 type PGUVZwpPointerGesturePinchV1UpdateEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Dx contains delta x coordinate in surface coordinate space
-	Dx uintptr
+	Dx int32
 
 	// Dy contains delta y coordinate in surface coordinate space
-	Dy uintptr
+	Dy int32
 
 	// Scale contains scale relative to the initial finger position
-	Scale uintptr
+	Scale int32
 
 	// Rotation contains angle in degrees cw relative to the previous event
-	Rotation uintptr
+	Rotation int32
 }
 
 // PGUVZwpPointerGesturePinchV1EndEvent signals when multi-finger pinch end
@@ -1577,13 +1577,13 @@ type PGUVZwpPointerGesturePinchV1UpdateEvent struct {
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
 type PGUVZwpPointerGesturePinchV1EndEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Cancelled contains 1 if the gesture was cancelled, 0 otherwise
-	Cancelled uintptr
+	Cancelled int32
 }
 
 // PGUVZwpPointerGestureHoldV1DestroyRequest requests to destroy the hold gesture object
@@ -1594,15 +1594,15 @@ type PGUVZwpPointerGestureHoldV1DestroyRequest struct {
 //
 // This event is sent when a hold gesture is detected on the device.
 type PGUVZwpPointerGestureHoldV1BeginEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
-	Surface uintptr
+	Surface uint32
 
 	// Fingers contains number of fingers
-	Fingers uintptr
+	Fingers uint32
 }
 
 // PGUVZwpPointerGestureHoldV1EndEvent signals when multi-finger hold end
@@ -1617,13 +1617,13 @@ type PGUVZwpPointerGestureHoldV1BeginEvent struct {
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
 type PGUVZwpPointerGestureHoldV1EndEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Cancelled contains 1 if the gesture was cancelled, 0 otherwise
-	Cancelled uintptr
+	Cancelled int32
 }
 
 // PTWpPresentationError represents fatal presentation errors
@@ -1660,10 +1660,10 @@ type PTWpPresentationDestroyRequest struct {
 // presentation_feedback interface.
 type PTWpPresentationFeedbackRequest struct {
 	// Surface contains target surface
-	Surface uintptr
+	Surface uint32
 
 	// Callback contains new feedback object
-	Callback uintptr
+	Callback uint32
 }
 
 // PTWpPresentationClockIDEvent signals when clock ID for timestamps
@@ -1699,7 +1699,7 @@ type PTWpPresentationFeedbackRequest struct {
 // value directly, not by asking the compositor.
 type PTWpPresentationClockIDEvent struct {
 	// ClkID contains platform clock identifier
-	ClkID uintptr
+	ClkID uint32
 }
 
 // PTWpPresentationFeedbackKind represents bitmask of flags in presented event
@@ -1732,7 +1732,7 @@ const (
 // right wl_output global at all, this event is not sent.
 type PTWpPresentationFeedbackSyncOutputEvent struct {
 	// Output contains presentation output
-	Output uintptr
+	Output uint32
 }
 
 // PTWpPresentationFeedbackPresentedEvent signals when the content update was displayed
@@ -1780,25 +1780,25 @@ type PTWpPresentationFeedbackSyncOutputEvent struct {
 // and seq_lo must be zero.
 type PTWpPresentationFeedbackPresentedEvent struct {
 	// TvSecHi contains high 32 bits of the seconds part of the presentation timestamp
-	TvSecHi uintptr
+	TvSecHi uint32
 
 	// TvSecLo contains low 32 bits of the seconds part of the presentation timestamp
-	TvSecLo uintptr
+	TvSecLo uint32
 
 	// TvNsec contains nanoseconds part of the presentation timestamp
-	TvNsec uintptr
+	TvNsec uint32
 
 	// Refresh contains nanoseconds till next refresh
-	Refresh uintptr
+	Refresh uint32
 
 	// SeqHi contains high 32 bits of refresh counter
-	SeqHi uintptr
+	SeqHi uint32
 
 	// SeqLo contains low 32 bits of refresh counter
-	SeqLo uintptr
+	SeqLo uint32
 
 	// Flags contains combination of 'kind' values
-	Flags uintptr
+	Flags uint32
 }
 
 // PTWpPresentationFeedbackDiscardedEvent signals when the content update was not displayed
@@ -1819,9 +1819,9 @@ type RPUVZwpRelativePointerManagerV1DestroyRequest struct {
 // Create a relative pointer interface given a wl_pointer object. See the
 // wp_relative_pointer interface for more details.
 type RPUVZwpRelativePointerManagerV1GetRelativePointerRequest struct {
-	ID uintptr
+	ID uint32
 
-	Pointer uintptr
+	Pointer uint32
 }
 
 // RPUVZwpRelativePointerV1DestroyRequest requests to release the relative pointer object
@@ -1862,22 +1862,22 @@ type RPUVZwpRelativePointerV1DestroyRequest struct {
 // object is associated with.
 type RPUVZwpRelativePointerV1RelativeMotionEvent struct {
 	// UtimeHi contains high 32 bits of a 64 bit timestamp with microsecond granularity
-	UtimeHi uintptr
+	UtimeHi uint32
 
 	// UtimeLo contains low 32 bits of a 64 bit timestamp with microsecond granularity
-	UtimeLo uintptr
+	UtimeLo uint32
 
 	// Dx contains the x component of the motion vector
-	Dx uintptr
+	Dx int32
 
 	// Dy contains the y component of the motion vector
-	Dy uintptr
+	Dy int32
 
 	// DxUnaccel contains the x component of the unaccelerated motion vector
-	DxUnaccel uintptr
+	DxUnaccel int32
 
 	// DyUnaccel contains the y component of the unaccelerated motion vector
-	DyUnaccel uintptr
+	DyUnaccel int32
 }
 
 // TUVZwpTabletManagerV1GetTabletSeatRequest requests to get the tablet seat
@@ -1885,10 +1885,10 @@ type RPUVZwpRelativePointerV1RelativeMotionEvent struct {
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
 type TUVZwpTabletManagerV1GetTabletSeatRequest struct {
-	TabletSeat uintptr
+	TabletSeat uint32
 
 	// Seat contains The wl_seat object to retrieve the tablets for
-	Seat uintptr
+	Seat uint32
 }
 
 // TUVZwpTabletManagerV1DestroyRequest requests to release the memory for the tablet manager object
@@ -1913,7 +1913,7 @@ type TUVZwpTabletSeatV1DestroyRequest struct {
 // sent through the wp_tablet interface.
 type TUVZwpTabletSeatV1TabletAddedEvent struct {
 	// ID contains the newly added graphics tablet
-	ID uintptr
+	ID uint32
 }
 
 // TUVZwpTabletSeatV1ToolAddedEvent signals when a new tool has been used with a tablet
@@ -1924,7 +1924,7 @@ type TUVZwpTabletSeatV1TabletAddedEvent struct {
 // type, etc.) is sent through the wp_tablet_tool interface.
 type TUVZwpTabletSeatV1ToolAddedEvent struct {
 	// ID contains the newly added tablet tool
-	ID uintptr
+	ID uint32
 }
 
 // TUVZwpTabletToolV1Type represents a physical tool type
@@ -2050,15 +2050,15 @@ const (
 // seats.
 type TUVZwpTabletToolV1SetCursorRequest struct {
 	// Serial contains serial of the enter event
-	Serial uintptr
+	Serial uint32
 
-	Surface uintptr
+	Surface uint32
 
 	// HotspotX contains surface-local x coordinate
-	HotspotX uintptr
+	HotspotX int32
 
 	// HotspotY contains surface-local y coordinate
-	HotspotY uintptr
+	HotspotY int32
 }
 
 // TUVZwpTabletToolV1DestroyRequest requests to destroy the tool object
@@ -2076,7 +2076,7 @@ type TUVZwpTabletToolV1DestroyRequest struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV1TypeEvent struct {
 	// ToolType contains the physical tool type
-	ToolType uintptr
+	ToolType uint32
 }
 
 // TUVZwpTabletToolV1HardwareSerialEvent signals when unique hardware serial number of the tool
@@ -2098,10 +2098,10 @@ type TUVZwpTabletToolV1TypeEvent struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV1HardwareSerialEvent struct {
 	// HardwareSerialHi contains the unique serial number of the tool, most significant bits
-	HardwareSerialHi uintptr
+	HardwareSerialHi uint32
 
 	// HardwareSerialLo contains the unique serial number of the tool, least significant bits
-	HardwareSerialLo uintptr
+	HardwareSerialLo uint32
 }
 
 // TUVZwpTabletToolV1HardwareIDWacomEvent signals when hardware id notification in Wacom's format
@@ -2118,10 +2118,10 @@ type TUVZwpTabletToolV1HardwareSerialEvent struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV1HardwareIDWacomEvent struct {
 	// HardwareIDHi contains the hardware id, most significant bits
-	HardwareIDHi uintptr
+	HardwareIDHi uint32
 
 	// HardwareIDLo contains the hardware id, least significant bits
-	HardwareIDLo uintptr
+	HardwareIDLo uint32
 }
 
 // TUVZwpTabletToolV1CapabilityEvent signals when tool capability notification
@@ -2135,7 +2135,7 @@ type TUVZwpTabletToolV1HardwareIDWacomEvent struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV1CapabilityEvent struct {
 	// Capability contains the capability
-	Capability uintptr
+	Capability uint32
 }
 
 // TUVZwpTabletToolV1DoneEvent signals when tool description events sequence complete
@@ -2177,13 +2177,13 @@ type TUVZwpTabletToolV1RemovedEvent struct {
 // the respective button event is sent after the proximity_in event but
 // within the same frame as the proximity_in event.
 type TUVZwpTabletToolV1ProximityInEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Tablet contains The tablet the tool is in proximity of
-	Tablet uintptr
+	Tablet uint32
 
 	// Surface contains The current surface the tablet tool is over
-	Surface uintptr
+	Surface uint32
 }
 
 // TUVZwpTabletToolV1ProximityOutEvent signals when proximity out event
@@ -2218,7 +2218,7 @@ type TUVZwpTabletToolV1ProximityOutEvent struct {
 // logical contact until a minimum physical pressure threshold is
 // exceeded.
 type TUVZwpTabletToolV1DownEvent struct {
-	Serial uintptr
+	Serial uint32
 }
 
 // TUVZwpTabletToolV1UpEvent signals when tablet tool is no longer making contact
@@ -2247,10 +2247,10 @@ type TUVZwpTabletToolV1UpEvent struct {
 // Sent whenever a tablet tool moves.
 type TUVZwpTabletToolV1MotionEvent struct {
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 }
 
 // TUVZwpTabletToolV1PressureEvent signals when pressure change event
@@ -2262,7 +2262,7 @@ type TUVZwpTabletToolV1MotionEvent struct {
 // contact. See the down and up events for more details.
 type TUVZwpTabletToolV1PressureEvent struct {
 	// Pressure contains The current pressure value
-	Pressure uintptr
+	Pressure uint32
 }
 
 // TUVZwpTabletToolV1DistanceEvent signals when distance change event
@@ -2274,7 +2274,7 @@ type TUVZwpTabletToolV1PressureEvent struct {
 // contact. See the down and up events for more details.
 type TUVZwpTabletToolV1DistanceEvent struct {
 	// Distance contains The current distance value
-	Distance uintptr
+	Distance uint32
 }
 
 // TUVZwpTabletToolV1TiltEvent signals when tilt change event
@@ -2285,10 +2285,10 @@ type TUVZwpTabletToolV1DistanceEvent struct {
 // positive x or y axis.
 type TUVZwpTabletToolV1TiltEvent struct {
 	// TiltX contains The current value of the X tilt axis
-	TiltX uintptr
+	TiltX int32
 
 	// TiltY contains The current value of the Y tilt axis
-	TiltY uintptr
+	TiltY int32
 }
 
 // TUVZwpTabletToolV1RotationEvent signals when z-rotation change event
@@ -2298,7 +2298,7 @@ type TUVZwpTabletToolV1TiltEvent struct {
 // logical neutral position.
 type TUVZwpTabletToolV1RotationEvent struct {
 	// Degrees contains The current rotation of the Z axis
-	Degrees uintptr
+	Degrees int32
 }
 
 // TUVZwpTabletToolV1SliderEvent signals when Slider position change event
@@ -2310,7 +2310,7 @@ type TUVZwpTabletToolV1RotationEvent struct {
 // The slider is available on e.g. the Wacom Airbrush tool.
 type TUVZwpTabletToolV1SliderEvent struct {
 	// Position contains The current position of slider
-	Position uintptr
+	Position int32
 }
 
 // TUVZwpTabletToolV1WheelEvent signals when Wheel delta event
@@ -2329,10 +2329,10 @@ type TUVZwpTabletToolV1SliderEvent struct {
 // have different degrees values.
 type TUVZwpTabletToolV1WheelEvent struct {
 	// Degrees contains The wheel delta in 0.01 of a degree
-	Degrees uintptr
+	Degrees int32
 
 	// Clicks contains The wheel delta in discrete clicks
-	Clicks uintptr
+	Clicks int32
 }
 
 // TUVZwpTabletToolV1ButtonEvent signals when button event
@@ -2344,13 +2344,13 @@ type TUVZwpTabletToolV1WheelEvent struct {
 // wp_tablet_tool.proximity_in and wp_tablet_tool.proximity_out for
 // details.
 type TUVZwpTabletToolV1ButtonEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Button contains The button whose state has changed
-	Button uintptr
+	Button uint32
 
 	// State contains Whether the button was pressed or released
-	State uintptr
+	State uint32
 }
 
 // TUVZwpTabletToolV1FrameEvent signals when frame event
@@ -2361,7 +2361,7 @@ type TUVZwpTabletToolV1ButtonEvent struct {
 // one hardware event.
 type TUVZwpTabletToolV1FrameEvent struct {
 	// Time contains The time of the event with millisecond granularity
-	Time uintptr
+	Time uint32
 }
 
 // TUVZwpTabletV1DestroyRequest requests to destroy the tablet object
@@ -2376,7 +2376,7 @@ type TUVZwpTabletV1DestroyRequest struct {
 // wp_tablet.done event.
 type TUVZwpTabletV1NameEvent struct {
 	// Name contains the device name
-	Name uintptr
+	Name string
 }
 
 // TUVZwpTabletV1IDEvent signals when tablet device USB vendor/product id
@@ -2385,10 +2385,10 @@ type TUVZwpTabletV1NameEvent struct {
 // wp_tablet.done event.
 type TUVZwpTabletV1IDEvent struct {
 	// Vid contains USB vendor id
-	Vid uintptr
+	Vid uint32
 
 	// Pid contains USB product id
-	Pid uintptr
+	Pid uint32
 }
 
 // TUVZwpTabletV1PathEvent signals when path to the device
@@ -2409,7 +2409,7 @@ type TUVZwpTabletV1IDEvent struct {
 // wp_tablet.done event.
 type TUVZwpTabletV1PathEvent struct {
 	// Path contains path to local device
-	Path uintptr
+	Path string
 }
 
 // TUVZwpTabletV1DoneEvent signals when tablet description events sequence complete
@@ -2436,10 +2436,10 @@ type TUVZwpTabletV1RemovedEvent struct {
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
 type TUVZwpTabletManagerV2GetTabletSeatRequest struct {
-	TabletSeat uintptr
+	TabletSeat uint32
 
 	// Seat contains The wl_seat object to retrieve the tablets for
-	Seat uintptr
+	Seat uint32
 }
 
 // TUVZwpTabletManagerV2DestroyRequest requests to release the memory for the tablet manager object
@@ -2464,7 +2464,7 @@ type TUVZwpTabletSeatV2DestroyRequest struct {
 // sent through the wp_tablet interface.
 type TUVZwpTabletSeatV2TabletAddedEvent struct {
 	// ID contains the newly added graphics tablet
-	ID uintptr
+	ID uint32
 }
 
 // TUVZwpTabletSeatV2ToolAddedEvent signals when a new tool has been used with a tablet
@@ -2475,7 +2475,7 @@ type TUVZwpTabletSeatV2TabletAddedEvent struct {
 // type, etc.) is sent through the wp_tablet_tool interface.
 type TUVZwpTabletSeatV2ToolAddedEvent struct {
 	// ID contains the newly added tablet tool
-	ID uintptr
+	ID uint32
 }
 
 // TUVZwpTabletSeatV2PadAddedEvent signals when new pad notification
@@ -2492,7 +2492,7 @@ type TUVZwpTabletSeatV2ToolAddedEvent struct {
 // interface.
 type TUVZwpTabletSeatV2PadAddedEvent struct {
 	// ID contains the newly added pad
-	ID uintptr
+	ID uint32
 }
 
 // TUVZwpTabletToolV2Type represents a physical tool type
@@ -2616,15 +2616,15 @@ const (
 // protocol error is raised.
 type TUVZwpTabletToolV2SetCursorRequest struct {
 	// Serial contains serial of the enter event
-	Serial uintptr
+	Serial uint32
 
-	Surface uintptr
+	Surface uint32
 
 	// HotspotX contains surface-local x coordinate
-	HotspotX uintptr
+	HotspotX int32
 
 	// HotspotY contains surface-local y coordinate
-	HotspotY uintptr
+	HotspotY int32
 }
 
 // TUVZwpTabletToolV2DestroyRequest requests to destroy the tool object
@@ -2642,7 +2642,7 @@ type TUVZwpTabletToolV2DestroyRequest struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV2TypeEvent struct {
 	// ToolType contains the physical tool type
-	ToolType uintptr
+	ToolType uint32
 }
 
 // TUVZwpTabletToolV2HardwareSerialEvent signals when unique hardware serial number of the tool
@@ -2664,10 +2664,10 @@ type TUVZwpTabletToolV2TypeEvent struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV2HardwareSerialEvent struct {
 	// HardwareSerialHi contains the unique serial number of the tool, most significant bits
-	HardwareSerialHi uintptr
+	HardwareSerialHi uint32
 
 	// HardwareSerialLo contains the unique serial number of the tool, least significant bits
-	HardwareSerialLo uintptr
+	HardwareSerialLo uint32
 }
 
 // TUVZwpTabletToolV2HardwareIDWacomEvent signals when hardware id notification in Wacom's format
@@ -2684,10 +2684,10 @@ type TUVZwpTabletToolV2HardwareSerialEvent struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV2HardwareIDWacomEvent struct {
 	// HardwareIDHi contains the hardware id, most significant bits
-	HardwareIDHi uintptr
+	HardwareIDHi uint32
 
 	// HardwareIDLo contains the hardware id, least significant bits
-	HardwareIDLo uintptr
+	HardwareIDLo uint32
 }
 
 // TUVZwpTabletToolV2CapabilityEvent signals when tool capability notification
@@ -2701,7 +2701,7 @@ type TUVZwpTabletToolV2HardwareIDWacomEvent struct {
 // wp_tablet_tool.done event.
 type TUVZwpTabletToolV2CapabilityEvent struct {
 	// Capability contains the capability
-	Capability uintptr
+	Capability uint32
 }
 
 // TUVZwpTabletToolV2DoneEvent signals when tool description events sequence complete
@@ -2743,13 +2743,13 @@ type TUVZwpTabletToolV2RemovedEvent struct {
 // the respective button event is sent after the proximity_in event but
 // within the same frame as the proximity_in event.
 type TUVZwpTabletToolV2ProximityInEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Tablet contains The tablet the tool is in proximity of
-	Tablet uintptr
+	Tablet uint32
 
 	// Surface contains The current surface the tablet tool is over
-	Surface uintptr
+	Surface uint32
 }
 
 // TUVZwpTabletToolV2ProximityOutEvent signals when proximity out event
@@ -2784,7 +2784,7 @@ type TUVZwpTabletToolV2ProximityOutEvent struct {
 // logical contact until a minimum physical pressure threshold is
 // exceeded.
 type TUVZwpTabletToolV2DownEvent struct {
-	Serial uintptr
+	Serial uint32
 }
 
 // TUVZwpTabletToolV2UpEvent signals when tablet tool is no longer making contact
@@ -2813,10 +2813,10 @@ type TUVZwpTabletToolV2UpEvent struct {
 // Sent whenever a tablet tool moves.
 type TUVZwpTabletToolV2MotionEvent struct {
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 }
 
 // TUVZwpTabletToolV2PressureEvent signals when pressure change event
@@ -2828,7 +2828,7 @@ type TUVZwpTabletToolV2MotionEvent struct {
 // contact. See the down and up events for more details.
 type TUVZwpTabletToolV2PressureEvent struct {
 	// Pressure contains The current pressure value
-	Pressure uintptr
+	Pressure uint32
 }
 
 // TUVZwpTabletToolV2DistanceEvent signals when distance change event
@@ -2840,7 +2840,7 @@ type TUVZwpTabletToolV2PressureEvent struct {
 // contact. See the down and up events for more details.
 type TUVZwpTabletToolV2DistanceEvent struct {
 	// Distance contains The current distance value
-	Distance uintptr
+	Distance uint32
 }
 
 // TUVZwpTabletToolV2TiltEvent signals when tilt change event
@@ -2851,10 +2851,10 @@ type TUVZwpTabletToolV2DistanceEvent struct {
 // positive x or y axis.
 type TUVZwpTabletToolV2TiltEvent struct {
 	// TiltX contains The current value of the X tilt axis
-	TiltX uintptr
+	TiltX int32
 
 	// TiltY contains The current value of the Y tilt axis
-	TiltY uintptr
+	TiltY int32
 }
 
 // TUVZwpTabletToolV2RotationEvent signals when z-rotation change event
@@ -2864,7 +2864,7 @@ type TUVZwpTabletToolV2TiltEvent struct {
 // logical neutral position.
 type TUVZwpTabletToolV2RotationEvent struct {
 	// Degrees contains The current rotation of the Z axis
-	Degrees uintptr
+	Degrees int32
 }
 
 // TUVZwpTabletToolV2SliderEvent signals when Slider position change event
@@ -2876,7 +2876,7 @@ type TUVZwpTabletToolV2RotationEvent struct {
 // The slider is available on e.g. the Wacom Airbrush tool.
 type TUVZwpTabletToolV2SliderEvent struct {
 	// Position contains The current position of slider
-	Position uintptr
+	Position int32
 }
 
 // TUVZwpTabletToolV2WheelEvent signals when Wheel delta event
@@ -2895,10 +2895,10 @@ type TUVZwpTabletToolV2SliderEvent struct {
 // have different degrees values.
 type TUVZwpTabletToolV2WheelEvent struct {
 	// Degrees contains The wheel delta in degrees
-	Degrees uintptr
+	Degrees int32
 
 	// Clicks contains The wheel delta in discrete clicks
-	Clicks uintptr
+	Clicks int32
 }
 
 // TUVZwpTabletToolV2ButtonEvent signals when button event
@@ -2910,13 +2910,13 @@ type TUVZwpTabletToolV2WheelEvent struct {
 // wp_tablet_tool.proximity_in and wp_tablet_tool.proximity_out for
 // details.
 type TUVZwpTabletToolV2ButtonEvent struct {
-	Serial uintptr
+	Serial uint32
 
 	// Button contains The button whose state has changed
-	Button uintptr
+	Button uint32
 
 	// State contains Whether the button was pressed or released
-	State uintptr
+	State uint32
 }
 
 // TUVZwpTabletToolV2FrameEvent signals when frame event
@@ -2927,7 +2927,7 @@ type TUVZwpTabletToolV2ButtonEvent struct {
 // one hardware event.
 type TUVZwpTabletToolV2FrameEvent struct {
 	// Time contains The time of the event with millisecond granularity
-	Time uintptr
+	Time uint32
 }
 
 // TUVZwpTabletV2DestroyRequest requests to destroy the tablet object
@@ -2942,7 +2942,7 @@ type TUVZwpTabletV2DestroyRequest struct {
 // wp_tablet.done event.
 type TUVZwpTabletV2NameEvent struct {
 	// Name contains the device name
-	Name uintptr
+	Name string
 }
 
 // TUVZwpTabletV2IDEvent signals when tablet device USB vendor/product id
@@ -2951,10 +2951,10 @@ type TUVZwpTabletV2NameEvent struct {
 // wp_tablet.done event.
 type TUVZwpTabletV2IDEvent struct {
 	// Vid contains USB vendor id
-	Vid uintptr
+	Vid uint32
 
 	// Pid contains USB product id
-	Pid uintptr
+	Pid uint32
 }
 
 // TUVZwpTabletV2PathEvent signals when path to the device
@@ -2975,7 +2975,7 @@ type TUVZwpTabletV2IDEvent struct {
 // wp_tablet.done event.
 type TUVZwpTabletV2PathEvent struct {
 	// Path contains path to local device
-	Path uintptr
+	Path string
 }
 
 // TUVZwpTabletV2DoneEvent signals when tablet description events sequence complete
@@ -3033,10 +3033,10 @@ const (
 // ignored.
 type TUVZwpTabletPadRingV2SetFeedbackRequest struct {
 	// Description contains ring description
-	Description uintptr
+	Description string
 
 	// Serial contains serial of the mode switch event
-	Serial uintptr
+	Serial uint32
 }
 
 // TUVZwpTabletPadRingV2DestroyRequest requests to destroy the ring object
@@ -3061,7 +3061,7 @@ type TUVZwpTabletPadRingV2DestroyRequest struct {
 // no event is sent.
 type TUVZwpTabletPadRingV2SourceEvent struct {
 	// Source contains the event source
-	Source uintptr
+	Source uint32
 }
 
 // TUVZwpTabletPadRingV2AngleEvent signals when angle changed
@@ -3072,7 +3072,7 @@ type TUVZwpTabletPadRingV2SourceEvent struct {
 // north of the ring in the pad's current rotation.
 type TUVZwpTabletPadRingV2AngleEvent struct {
 	// Degrees contains the current angle in degrees
-	Degrees uintptr
+	Degrees int32
 }
 
 // TUVZwpTabletPadRingV2StopEvent signals when interaction stopped
@@ -3107,7 +3107,7 @@ type TUVZwpTabletPadRingV2StopEvent struct {
 // angle, frame, etc.
 type TUVZwpTabletPadRingV2FrameEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 }
 
 // TUVZwpTabletPadStripV2Source represents strip axis source
@@ -3146,10 +3146,10 @@ const (
 // ignored.
 type TUVZwpTabletPadStripV2SetFeedbackRequest struct {
 	// Description contains strip description
-	Description uintptr
+	Description string
 
 	// Serial contains serial of the mode switch event
-	Serial uintptr
+	Serial uint32
 }
 
 // TUVZwpTabletPadStripV2DestroyRequest requests to destroy the strip object
@@ -3174,7 +3174,7 @@ type TUVZwpTabletPadStripV2DestroyRequest struct {
 // no event is sent.
 type TUVZwpTabletPadStripV2SourceEvent struct {
 	// Source contains the event source
-	Source uintptr
+	Source uint32
 }
 
 // TUVZwpTabletPadStripV2PositionEvent signals when position changed
@@ -3186,7 +3186,7 @@ type TUVZwpTabletPadStripV2SourceEvent struct {
 // the pad's current rotation.
 type TUVZwpTabletPadStripV2PositionEvent struct {
 	// Position contains the current position
-	Position uintptr
+	Position uint32
 }
 
 // TUVZwpTabletPadStripV2StopEvent signals when interaction stopped
@@ -3222,7 +3222,7 @@ type TUVZwpTabletPadStripV2StopEvent struct {
 // position, frame, etc.
 type TUVZwpTabletPadStripV2FrameEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 }
 
 // TUVZwpTabletPadGroupV2DestroyRequest requests to destroy the pad object
@@ -3248,7 +3248,7 @@ type TUVZwpTabletPadGroupV2DestroyRequest struct {
 // will be sent with an empty array.
 type TUVZwpTabletPadGroupV2ButtonsEvent struct {
 	// Buttons contains buttons in this group
-	Buttons uintptr
+	Buttons []byte
 }
 
 // TUVZwpTabletPadGroupV2RingEvent signals when ring announced
@@ -3259,7 +3259,7 @@ type TUVZwpTabletPadGroupV2ButtonsEvent struct {
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event.
 type TUVZwpTabletPadGroupV2RingEvent struct {
-	Ring uintptr
+	Ring uint32
 }
 
 // TUVZwpTabletPadGroupV2StripEvent signals when strip announced
@@ -3270,7 +3270,7 @@ type TUVZwpTabletPadGroupV2RingEvent struct {
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event.
 type TUVZwpTabletPadGroupV2StripEvent struct {
-	Strip uintptr
+	Strip uint32
 }
 
 // TUVZwpTabletPadGroupV2ModesEvent signals when mode-switch ability announced
@@ -3289,7 +3289,7 @@ type TUVZwpTabletPadGroupV2StripEvent struct {
 // more than one mode is available.
 type TUVZwpTabletPadGroupV2ModesEvent struct {
 	// Modes contains the number of modes
-	Modes uintptr
+	Modes uint32
 }
 
 // TUVZwpTabletPadGroupV2DoneEvent signals when tablet group description events sequence complete
@@ -3332,12 +3332,12 @@ type TUVZwpTabletPadGroupV2DoneEvent struct {
 // for each changed ring or strip.
 type TUVZwpTabletPadGroupV2ModeSwitchEvent struct {
 	// Time contains the time of the event with millisecond granularity
-	Time uintptr
+	Time uint32
 
-	Serial uintptr
+	Serial uint32
 
 	// Mode contains the new mode of the pad
-	Mode uintptr
+	Mode uint32
 }
 
 // TUVZwpTabletPadV2ButtonState represents physical button state
@@ -3382,13 +3382,13 @@ const (
 // be ignored.
 type TUVZwpTabletPadV2SetFeedbackRequest struct {
 	// Button contains button index
-	Button uintptr
+	Button uint32
 
 	// Description contains button description
-	Description uintptr
+	Description string
 
 	// Serial contains serial of the mode switch event
-	Serial uintptr
+	Serial uint32
 }
 
 // TUVZwpTabletPadV2DestroyRequest requests to destroy the pad object
@@ -3406,7 +3406,7 @@ type TUVZwpTabletPadV2DestroyRequest struct {
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad.done event. At least one group will be announced.
 type TUVZwpTabletPadV2GroupEvent struct {
-	PadGroup uintptr
+	PadGroup uint32
 }
 
 // TUVZwpTabletPadV2PathEvent signals when path to the device
@@ -3423,7 +3423,7 @@ type TUVZwpTabletPadV2GroupEvent struct {
 // wp_tablet_pad.done event.
 type TUVZwpTabletPadV2PathEvent struct {
 	// Path contains path to local device
-	Path uintptr
+	Path string
 }
 
 // TUVZwpTabletPadV2ButtonsEvent signals when buttons announced
@@ -3436,7 +3436,7 @@ type TUVZwpTabletPadV2PathEvent struct {
 // button is available.
 type TUVZwpTabletPadV2ButtonsEvent struct {
 	// Buttons contains the number of buttons
-	Buttons uintptr
+	Buttons uint32
 }
 
 // TUVZwpTabletPadV2DoneEvent signals when pad description event sequence complete
@@ -3452,12 +3452,12 @@ type TUVZwpTabletPadV2DoneEvent struct {
 // Sent whenever the physical state of a button changes.
 type TUVZwpTabletPadV2ButtonEvent struct {
 	// Time contains the time of the event with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Button contains the index of the button that changed state
-	Button uintptr
+	Button uint32
 
-	State uintptr
+	State uint32
 }
 
 // TUVZwpTabletPadV2EnterEvent signals when enter event
@@ -3465,13 +3465,13 @@ type TUVZwpTabletPadV2ButtonEvent struct {
 // Notification that this pad is focused on the specified surface.
 type TUVZwpTabletPadV2EnterEvent struct {
 	// Serial contains serial number of the enter event
-	Serial uintptr
+	Serial uint32
 
 	// Tablet contains the tablet the pad is attached to
-	Tablet uintptr
+	Tablet uint32
 
 	// Surface contains surface the pad is focused on
-	Surface uintptr
+	Surface uint32
 }
 
 // TUVZwpTabletPadV2LeaveEvent signals when enter event
@@ -3480,10 +3480,10 @@ type TUVZwpTabletPadV2EnterEvent struct {
 // surface.
 type TUVZwpTabletPadV2LeaveEvent struct {
 	// Serial contains serial number of the leave event
-	Serial uintptr
+	Serial uint32
 
 	// Surface contains surface the pad is no longer focused on
-	Surface uintptr
+	Surface uint32
 }
 
 // TUVZwpTabletPadV2RemovedEvent signals when pad removed event
@@ -3639,9 +3639,9 @@ const (
 // text_input object and tracked for focus lost. The enter event
 // is emitted on successful activation.
 type TIUVZwpTextInputV1ActivateRequest struct {
-	Seat uintptr
+	Seat uint32
 
-	Surface uintptr
+	Surface uint32
 }
 
 // TIUVZwpTextInputV1DeactivateRequest requests to request deactivation
@@ -3650,7 +3650,7 @@ type TIUVZwpTextInputV1ActivateRequest struct {
 // text entry lost focus). The seat argument is a wl_seat which was used
 // for activation.
 type TIUVZwpTextInputV1DeactivateRequest struct {
-	Seat uintptr
+	Seat uint32
 }
 
 // TIUVZwpTextInputV1ShowInputPanelRequest requests to show input panels
@@ -3681,11 +3681,11 @@ type TIUVZwpTextInputV1ResetRequest struct {
 // selection anchor within the surrounding text. If there is no selected
 // text anchor, then it is the same as cursor.
 type TIUVZwpTextInputV1SetSurroundingTextRequest struct {
-	Text uintptr
+	Text string
 
-	Cursor uintptr
+	Cursor uint32
 
-	Anchor uintptr
+	Anchor uint32
 }
 
 // TIUVZwpTextInputV1SetContentTypeRequest requests to set content purpose and hint
@@ -3698,19 +3698,19 @@ type TIUVZwpTextInputV1SetSurroundingTextRequest struct {
 // default hints (auto completion, auto correction, auto capitalization)
 // should be assumed.
 type TIUVZwpTextInputV1SetContentTypeRequest struct {
-	Hint uintptr
+	Hint uint32
 
-	Purpose uintptr
+	Purpose uint32
 }
 
 type TIUVZwpTextInputV1SetCursorRectangleRequest struct {
-	X uintptr
+	X int32
 
-	Y uintptr
+	Y int32
 
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // TIUVZwpTextInputV1SetPreferredLanguageRequest requests to sets preferred language
@@ -3723,18 +3723,18 @@ type TIUVZwpTextInputV1SetCursorRectangleRequest struct {
 // language of the currently edited document or in an instant message
 // application which tracks languages of contacts.
 type TIUVZwpTextInputV1SetPreferredLanguageRequest struct {
-	Language uintptr
+	Language string
 }
 
 type TIUVZwpTextInputV1CommitStateRequest struct {
 	// Serial contains used to identify the known state
-	Serial uintptr
+	Serial uint32
 }
 
 type TIUVZwpTextInputV1InvokeActionRequest struct {
-	Button uintptr
+	Button uint32
 
-	Index uintptr
+	Index uint32
 }
 
 // TIUVZwpTextInputV1EnterEvent signals when enter event
@@ -3742,7 +3742,7 @@ type TIUVZwpTextInputV1InvokeActionRequest struct {
 // Notify the text_input object when it received focus. Typically in
 // response to an activate request.
 type TIUVZwpTextInputV1EnterEvent struct {
-	Surface uintptr
+	Surface uint32
 }
 
 // TIUVZwpTextInputV1LeaveEvent signals when leave event
@@ -3759,14 +3759,14 @@ type TIUVZwpTextInputV1LeaveEvent struct {
 // the array is the index of the modifier as used in the modifiers
 // bitmask in the keysym event.
 type TIUVZwpTextInputV1ModifiersMapEvent struct {
-	Map uintptr
+	Map []byte
 }
 
 // TIUVZwpTextInputV1InputPanelStateEvent signals when state of the input panel
 //
 // Notify when the visibility state of the input panel changed.
 type TIUVZwpTextInputV1InputPanelStateEvent struct {
-	State uintptr
+	State uint32
 }
 
 // TIUVZwpTextInputV1PreeditStringEvent signals when pre-edit
@@ -3782,11 +3782,11 @@ type TIUVZwpTextInputV1InputPanelStateEvent struct {
 // events occurring directly before preedit_string.
 type TIUVZwpTextInputV1PreeditStringEvent struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Text uintptr
+	Text string
 
-	Commit uintptr
+	Commit string
 }
 
 // TIUVZwpTextInputV1PreeditStylingEvent signals when pre-edit styling
@@ -3799,11 +3799,11 @@ type TIUVZwpTextInputV1PreeditStringEvent struct {
 //
 // This event is handled as part of a following preedit_string event.
 type TIUVZwpTextInputV1PreeditStylingEvent struct {
-	Index uintptr
+	Index uint32
 
-	Length uintptr
+	Length uint32
 
-	Style uintptr
+	Style uint32
 }
 
 // TIUVZwpTextInputV1PreeditCursorEvent signals when pre-edit cursor
@@ -3814,7 +3814,7 @@ type TIUVZwpTextInputV1PreeditStylingEvent struct {
 //
 // This event is handled as part of a following preedit_string event.
 type TIUVZwpTextInputV1PreeditCursorEvent struct {
-	Index uintptr
+	Index int32
 }
 
 // TIUVZwpTextInputV1CommitStringEvent signals when commit
@@ -3828,9 +3828,9 @@ type TIUVZwpTextInputV1PreeditCursorEvent struct {
 // Any previously set composing text should be removed.
 type TIUVZwpTextInputV1CommitStringEvent struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Text uintptr
+	Text string
 }
 
 // TIUVZwpTextInputV1CursorPositionEvent signals when set cursor to new position
@@ -3840,9 +3840,9 @@ type TIUVZwpTextInputV1CommitStringEvent struct {
 // This event should be handled as part of a following commit_string
 // event.
 type TIUVZwpTextInputV1CursorPositionEvent struct {
-	Index uintptr
+	Index int32
 
-	Anchor uintptr
+	Anchor int32
 }
 
 // TIUVZwpTextInputV1DeleteSurroundingTextEvent signals when delete surrounding text
@@ -3856,9 +3856,9 @@ type TIUVZwpTextInputV1CursorPositionEvent struct {
 // This event should be handled as part of a following commit_string
 // event.
 type TIUVZwpTextInputV1DeleteSurroundingTextEvent struct {
-	Index uintptr
+	Index int32
 
-	Length uintptr
+	Length uint32
 }
 
 // TIUVZwpTextInputV1KeysymEvent signals when keysym
@@ -3871,15 +3871,15 @@ type TIUVZwpTextInputV1DeleteSurroundingTextEvent struct {
 // (where the modifier indices are set by the modifiers_map event)
 type TIUVZwpTextInputV1KeysymEvent struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Time uintptr
+	Time uint32
 
-	Sym uintptr
+	Sym uint32
 
-	State uintptr
+	State uint32
 
-	Modifiers uintptr
+	Modifiers uint32
 }
 
 // TIUVZwpTextInputV1LanguageEvent signals when language
@@ -3888,9 +3888,9 @@ type TIUVZwpTextInputV1KeysymEvent struct {
 // RFC-3066 format language tag.
 type TIUVZwpTextInputV1LanguageEvent struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Language uintptr
+	Language string
 }
 
 // TIUVZwpTextInputV1TextDirectionEvent signals when text direction
@@ -3902,16 +3902,16 @@ type TIUVZwpTextInputV1LanguageEvent struct {
 // direction text is laid out properly.
 type TIUVZwpTextInputV1TextDirectionEvent struct {
 	// Serial contains serial of the latest known text input state
-	Serial uintptr
+	Serial uint32
 
-	Direction uintptr
+	Direction uint32
 }
 
 // TIUVZwpTextInputManagerV1CreateTextInputRequest requests to create text input
 //
 // Creates a new text_input object.
 type TIUVZwpTextInputManagerV1CreateTextInputRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // TIUVZwpTextInputV3ChangeCause represents text change reason
@@ -4106,11 +4106,11 @@ type TIUVZwpTextInputV3DisableRequest struct {
 // input does not support sending surrounding text. If the empty values
 // get applied, subsequent attempts to change them may have no effect.
 type TIUVZwpTextInputV3SetSurroundingTextRequest struct {
-	Text uintptr
+	Text string
 
-	Cursor uintptr
+	Cursor int32
 
-	Anchor uintptr
+	Anchor int32
 }
 
 // TIUVZwpTextInputV3SetTextChangeCauseRequest requests to indicates the cause of surrounding text change
@@ -4130,7 +4130,7 @@ type TIUVZwpTextInputV3SetSurroundingTextRequest struct {
 //
 // The initial value of cause is input_method.
 type TIUVZwpTextInputV3SetTextChangeCauseRequest struct {
-	Cause uintptr
+	Cause uint32
 }
 
 // TIUVZwpTextInputV3SetContentTypeRequest requests to set content purpose and hint
@@ -4147,9 +4147,9 @@ type TIUVZwpTextInputV3SetTextChangeCauseRequest struct {
 // The initial value for hint is none, and the initial value for purpose
 // is normal.
 type TIUVZwpTextInputV3SetContentTypeRequest struct {
-	Hint uintptr
+	Hint uint32
 
-	Purpose uintptr
+	Purpose uint32
 }
 
 // TIUVZwpTextInputV3SetCursorRectangleRequest requests to set cursor position
@@ -4172,13 +4172,13 @@ type TIUVZwpTextInputV3SetContentTypeRequest struct {
 // empty values get applied, subsequent attempts to change them may have
 // no effect.
 type TIUVZwpTextInputV3SetCursorRectangleRequest struct {
-	X uintptr
+	X int32
 
-	Y uintptr
+	Y int32
 
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // TIUVZwpTextInputV3CommitRequest requests to commit state
@@ -4220,7 +4220,7 @@ type TIUVZwpTextInputV3CommitRequest struct {
 // the keyboard focus. This event sets the current surface for the
 // text-input object.
 type TIUVZwpTextInputV3EnterEvent struct {
-	Surface uintptr
+	Surface uint32
 }
 
 // TIUVZwpTextInputV3LeaveEvent signals when leave event
@@ -4237,7 +4237,7 @@ type TIUVZwpTextInputV3EnterEvent struct {
 // When the seat has the keyboard capability the text-input focus follows
 // the keyboard focus.
 type TIUVZwpTextInputV3LeaveEvent struct {
-	Surface uintptr
+	Surface uint32
 }
 
 // TIUVZwpTextInputV3PreeditStringEvent signals when pre-edit
@@ -4261,11 +4261,11 @@ type TIUVZwpTextInputV3LeaveEvent struct {
 // The initial value of text is an empty string, and cursor_begin,
 // cursor_end and cursor_hidden are all 0.
 type TIUVZwpTextInputV3PreeditStringEvent struct {
-	Text uintptr
+	Text string
 
-	CursorBegin uintptr
+	CursorBegin int32
 
-	CursorEnd uintptr
+	CursorEnd int32
 }
 
 // TIUVZwpTextInputV3CommitStringEvent signals when text commit
@@ -4279,7 +4279,7 @@ type TIUVZwpTextInputV3PreeditStringEvent struct {
 //
 // The initial value of text is an empty string.
 type TIUVZwpTextInputV3CommitStringEvent struct {
-	Text uintptr
+	Text string
 }
 
 // TIUVZwpTextInputV3DeleteSurroundingTextEvent signals when delete surrounding text
@@ -4300,10 +4300,10 @@ type TIUVZwpTextInputV3CommitStringEvent struct {
 // The initial values of both before_length and after_length are 0.
 type TIUVZwpTextInputV3DeleteSurroundingTextEvent struct {
 	// BeforeLength contains length of text before current cursor position
-	BeforeLength uintptr
+	BeforeLength uint32
 
 	// AfterLength contains length of text after current cursor position
-	AfterLength uintptr
+	AfterLength uint32
 }
 
 // TIUVZwpTextInputV3DoneEvent signals when apply changes
@@ -4331,7 +4331,7 @@ type TIUVZwpTextInputV3DeleteSurroundingTextEvent struct {
 // number of past commit requests, it must proceed as normal, except it
 // should not change the current state of the zwp_text_input_v3 object.
 type TIUVZwpTextInputV3DoneEvent struct {
-	Serial uintptr
+	Serial uint32
 }
 
 // TIUVZwpTextInputManagerV3DestroyRequest requests to Destroy the wp_text_input_manager
@@ -4344,9 +4344,9 @@ type TIUVZwpTextInputManagerV3DestroyRequest struct {
 //
 // Creates a new text-input object for a given seat.
 type TIUVZwpTextInputManagerV3GetTextInputRequest struct {
-	ID uintptr
+	ID uint32
 
-	Seat uintptr
+	Seat uint32
 }
 
 type VWpViewporterError int
@@ -4372,10 +4372,10 @@ type VWpViewporterDestroyRequest struct {
 // protocol error is raised.
 type VWpViewporterGetViewportRequest struct {
 	// ID contains the new viewport interface id
-	ID uintptr
+	ID uint32
 
 	// Surface contains the surface
-	Surface uintptr
+	Surface uint32
 }
 
 type VWpViewportError int
@@ -4416,16 +4416,16 @@ type VWpViewportDestroyRequest struct {
 // applied on the next wl_surface.commit.
 type VWpViewportSetSourceRequest struct {
 	// X contains source rectangle x
-	X uintptr
+	X int32
 
 	// Y contains source rectangle y
-	Y uintptr
+	Y int32
 
 	// Width contains source rectangle width
-	Width uintptr
+	Width int32
 
 	// Height contains source rectangle height
-	Height uintptr
+	Height int32
 }
 
 // VWpViewportSetDestinationRequest requests to set the surface size for scaling
@@ -4443,10 +4443,10 @@ type VWpViewportSetSourceRequest struct {
 // applied on the next wl_surface.commit.
 type VWpViewportSetDestinationRequest struct {
 	// Width contains surface width
-	Width uintptr
+	Width int32
 
 	// Height contains surface height
-	Height uintptr
+	Height int32
 }
 
 // WWlDisplayError represents global error values
@@ -4484,7 +4484,7 @@ const (
 // The callback_data passed in the callback is the event serial.
 type WWlDisplaySyncRequest struct {
 	// Callback contains callback object for the sync request
-	Callback uintptr
+	Callback uint32
 }
 
 // WWlDisplayGetRegistryRequest requests to get global registry object
@@ -4500,7 +4500,7 @@ type WWlDisplaySyncRequest struct {
 // possible to avoid wasting memory.
 type WWlDisplayGetRegistryRequest struct {
 	// Registry contains global registry object
-	Registry uintptr
+	Registry uint32
 }
 
 // WWlDisplayErrorEvent signals when fatal error event
@@ -4514,13 +4514,13 @@ type WWlDisplayGetRegistryRequest struct {
 // of the error, for (debugging) convenience.
 type WWlDisplayErrorEvent struct {
 	// ObjectID contains object where the error occurred
-	ObjectID uintptr
+	ObjectID uint32
 
 	// Code contains error code
-	Code uintptr
+	Code uint32
 
 	// Message contains error description
-	Message uintptr
+	Message string
 }
 
 // WWlDisplayDeleteIDEvent signals when acknowledge object ID deletion
@@ -4532,7 +4532,7 @@ type WWlDisplayErrorEvent struct {
 // it will know that it can safely reuse the object ID.
 type WWlDisplayDeleteIDEvent struct {
 	// ID contains deleted object ID
-	ID uintptr
+	ID uint32
 }
 
 // WWlRegistryBindRequest requests to bind an object to the display
@@ -4541,10 +4541,10 @@ type WWlDisplayDeleteIDEvent struct {
 // specified name as the identifier.
 type WWlRegistryBindRequest struct {
 	// Name contains unique numeric name of the object
-	Name uintptr
+	Name uint32
 
 	// ID contains bounded object
-	ID uintptr
+	ID uint32
 }
 
 // WWlRegistryGlobalEvent signals when announce global object
@@ -4556,13 +4556,13 @@ type WWlRegistryBindRequest struct {
 // given version of the given interface.
 type WWlRegistryGlobalEvent struct {
 	// Name contains numeric name of the global object
-	Name uintptr
+	Name uint32
 
 	// Interface contains interface implemented by the object
-	Interface uintptr
+	Interface string
 
 	// Version contains interface version
-	Version uintptr
+	Version uint32
 }
 
 // WWlRegistryGlobalRemoveEvent signals when announce removal of global object
@@ -4579,7 +4579,7 @@ type WWlRegistryGlobalEvent struct {
 // the global going away and a client sending a request to it.
 type WWlRegistryGlobalRemoveEvent struct {
 	// Name contains numeric name of the global object
-	Name uintptr
+	Name uint32
 }
 
 // WWlCallbackDoneEvent signals when done event
@@ -4587,7 +4587,7 @@ type WWlRegistryGlobalRemoveEvent struct {
 // Notify the client when the related request is done.
 type WWlCallbackDoneEvent struct {
 	// CallbackData contains request-specific data for the callback
-	CallbackData uintptr
+	CallbackData uint32
 }
 
 // WWlCompositorCreateSurfaceRequest requests to create new surface
@@ -4595,7 +4595,7 @@ type WWlCallbackDoneEvent struct {
 // Ask the compositor to create a new surface.
 type WWlCompositorCreateSurfaceRequest struct {
 	// ID contains the new surface
-	ID uintptr
+	ID uint32
 }
 
 // WWlCompositorCreateRegionRequest requests to create new region
@@ -4603,7 +4603,7 @@ type WWlCompositorCreateSurfaceRequest struct {
 // Ask the compositor to create a new region.
 type WWlCompositorCreateRegionRequest struct {
 	// ID contains the new region
-	ID uintptr
+	ID uint32
 }
 
 // WWlShmPoolCreateBufferRequest requests to create a buffer from the pool
@@ -4621,22 +4621,22 @@ type WWlCompositorCreateRegionRequest struct {
 // a buffer from it.
 type WWlShmPoolCreateBufferRequest struct {
 	// ID contains buffer to create
-	ID uintptr
+	ID uint32
 
 	// Offset contains buffer byte offset within the pool
-	Offset uintptr
+	Offset int32
 
 	// Width contains buffer width, in pixels
-	Width uintptr
+	Width int32
 
 	// Height contains buffer height, in pixels
-	Height uintptr
+	Height int32
 
 	// Stride contains number of bytes from the beginning of one row to the beginning of the next row
-	Stride uintptr
+	Stride int32
 
 	// Format contains buffer pixel format
-	Format uintptr
+	Format uint32
 }
 
 // WWlShmPoolDestroyRequest requests to destroy the pool
@@ -4657,7 +4657,7 @@ type WWlShmPoolDestroyRequest struct {
 // used to make the pool bigger.
 type WWlShmPoolResizeRequest struct {
 	// Size contains new size of the pool, in bytes
-	Size uintptr
+	Size int32
 }
 
 // WWlShmError represents wl_shm error values
@@ -5000,13 +5000,13 @@ const (
 // descriptor, to use as backing memory for the pool.
 type WWlShmCreatePoolRequest struct {
 	// ID contains pool to create
-	ID uintptr
+	ID uint32
 
 	// FD contains file descriptor for the pool
-	FD uintptr
+	FD struct{}
 
 	// Size contains pool size, in bytes
-	Size uintptr
+	Size int32
 }
 
 // WWlShmFormatEvent signals when pixel format description
@@ -5016,7 +5016,7 @@ type WWlShmCreatePoolRequest struct {
 // argb8888 and xrgb8888.
 type WWlShmFormatEvent struct {
 	// Format contains buffer pixel format
-	Format uintptr
+	Format uint32
 }
 
 // WWlBufferDestroyRequest requests to destroy a buffer
@@ -5079,10 +5079,10 @@ const (
 // conjunction with wl_data_source.action for feedback.
 type WWlDataOfferAcceptRequest struct {
 	// Serial contains serial number of the accept request
-	Serial uintptr
+	Serial uint32
 
 	// MimeType contains mime type accepted by the client
-	MimeType uintptr
+	MimeType string
 }
 
 // WWlDataOfferReceiveRequest requests to request that the data is transferred
@@ -5104,10 +5104,10 @@ type WWlDataOfferAcceptRequest struct {
 // determine acceptance.
 type WWlDataOfferReceiveRequest struct {
 	// MimeType contains mime type desired by receiver
-	MimeType uintptr
+	MimeType string
 
 	// FD contains file descriptor for data transfer
-	FD uintptr
+	FD struct{}
 }
 
 // WWlDataOfferDestroyRequest requests to destroy data offer
@@ -5170,10 +5170,10 @@ type WWlDataOfferFinishRequest struct {
 // will be raised otherwise.
 type WWlDataOfferSetActionsRequest struct {
 	// DndActions contains actions supported by the destination client
-	DndActions uintptr
+	DndActions uint32
 
 	// PreferredAction contains action preferred by the destination client
-	PreferredAction uintptr
+	PreferredAction uint32
 }
 
 // WWlDataOfferOfferEvent signals when advertise offered mime type
@@ -5182,7 +5182,7 @@ type WWlDataOfferSetActionsRequest struct {
 // event per offered mime type.
 type WWlDataOfferOfferEvent struct {
 	// MimeType contains offered mime type
-	MimeType uintptr
+	MimeType string
 }
 
 // WWlDataOfferSourceActionsEvent signals when notify the source-side available actions
@@ -5192,7 +5192,7 @@ type WWlDataOfferOfferEvent struct {
 // side changes its offered actions through wl_data_source.set_actions.
 type WWlDataOfferSourceActionsEvent struct {
 	// SourceActions contains actions offered by the data source
-	SourceActions uintptr
+	SourceActions uint32
 }
 
 // WWlDataOfferActionEvent signals when notify the selected action
@@ -5234,7 +5234,7 @@ type WWlDataOfferSourceActionsEvent struct {
 // must happen before the call to wl_data_offer.finish.
 type WWlDataOfferActionEvent struct {
 	// DndAction contains action selected by the compositor
-	DndAction uintptr
+	DndAction uint32
 }
 
 type WWlDataSourceError int
@@ -5254,7 +5254,7 @@ const (
 // multiple types.
 type WWlDataSourceOfferRequest struct {
 	// MimeType contains mime type offered by the data source
-	MimeType uintptr
+	MimeType string
 }
 
 // WWlDataSourceDestroyRequest requests to destroy the data source
@@ -5280,7 +5280,7 @@ type WWlDataSourceDestroyRequest struct {
 // for drag-and-drop will raise a protocol error.
 type WWlDataSourceSetActionsRequest struct {
 	// DndActions contains actions supported by the data source
-	DndActions uintptr
+	DndActions uint32
 }
 
 // WWlDataSourceTargetEvent signals when a target accepts an offered mime type
@@ -5291,7 +5291,7 @@ type WWlDataSourceSetActionsRequest struct {
 // Used for feedback during drag-and-drop.
 type WWlDataSourceTargetEvent struct {
 	// MimeType contains mime type accepted by the target
-	MimeType uintptr
+	MimeType string
 }
 
 // WWlDataSourceSendEvent signals when send the data
@@ -5301,10 +5301,10 @@ type WWlDataSourceTargetEvent struct {
 // close it.
 type WWlDataSourceSendEvent struct {
 	// MimeType contains mime type for the data
-	MimeType uintptr
+	MimeType string
 
 	// FD contains file descriptor for the data
-	FD uintptr
+	FD struct{}
 }
 
 // WWlDataSourceCancelledEvent signals when selection was cancelled
@@ -5386,7 +5386,7 @@ type WWlDataSourceDndFinishedEvent struct {
 // they reflect the current action.
 type WWlDataSourceActionEvent struct {
 	// DndAction contains action selected by the compositor
-	DndAction uintptr
+	DndAction uint32
 }
 
 type WWlDataDeviceError int
@@ -5428,16 +5428,16 @@ const (
 // undefined, and the wl_surface is unmapped.
 type WWlDataDeviceStartDragRequest struct {
 	// Source contains data source for the eventual transfer
-	Source uintptr
+	Source uint32
 
 	// Origin contains surface where the drag originates
-	Origin uintptr
+	Origin uint32
 
 	// Icon contains drag-and-drop icon surface
-	Icon uintptr
+	Icon uint32
 
 	// Serial contains serial number of the implicit grab on the origin
-	Serial uintptr
+	Serial uint32
 }
 
 // WWlDataDeviceSetSelectionRequest requests to copy data to the selection
@@ -5448,10 +5448,10 @@ type WWlDataDeviceStartDragRequest struct {
 // To unset the selection, set the source to NULL.
 type WWlDataDeviceSetSelectionRequest struct {
 	// Source contains data source for the selection
-	Source uintptr
+	Source uint32
 
 	// Serial contains serial number of the event that triggered this request
-	Serial uintptr
+	Serial uint32
 }
 
 // WWlDataDeviceReleaseRequest requests to destroy data device
@@ -5471,7 +5471,7 @@ type WWlDataDeviceReleaseRequest struct {
 // mime types it offers.
 type WWlDataDeviceDataOfferEvent struct {
 	// ID contains the new data_offer object
-	ID uintptr
+	ID uint32
 }
 
 // WWlDataDeviceEnterEvent signals when initiate drag-and-drop session
@@ -5482,19 +5482,19 @@ type WWlDataDeviceDataOfferEvent struct {
 // coordinates.
 type WWlDataDeviceEnterEvent struct {
 	// Serial contains serial number of the enter event
-	Serial uintptr
+	Serial uint32
 
 	// Surface contains client surface entered
-	Surface uintptr
+	Surface uint32
 
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 
 	// ID contains source data_offer object
-	ID uintptr
+	ID uint32
 }
 
 // WWlDataDeviceLeaveEvent signals when end drag-and-drop session
@@ -5513,13 +5513,13 @@ type WWlDataDeviceLeaveEvent struct {
 // coordinates.
 type WWlDataDeviceMotionEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 }
 
 // WWlDataDeviceDropEvent signals when end drag-and-drop session successfully
@@ -5555,7 +5555,7 @@ type WWlDataDeviceDropEvent struct {
 // this event.
 type WWlDataDeviceSelectionEvent struct {
 	// ID contains selection data_offer object
-	ID uintptr
+	ID uint32
 }
 
 // WWlDataDeviceManagerDndAction represents drag and drop actions
@@ -5604,7 +5604,7 @@ const (
 // Create a new data source.
 type WWlDataDeviceManagerCreateDataSourceRequest struct {
 	// ID contains data source to create
-	ID uintptr
+	ID uint32
 }
 
 // WWlDataDeviceManagerGetDataDeviceRequest requests to create a new data device
@@ -5612,10 +5612,10 @@ type WWlDataDeviceManagerCreateDataSourceRequest struct {
 // Create a new data device for a given seat.
 type WWlDataDeviceManagerGetDataDeviceRequest struct {
 	// ID contains data device to create
-	ID uintptr
+	ID uint32
 
 	// Seat contains seat associated with the data device
-	Seat uintptr
+	Seat uint32
 }
 
 type WWlShellError int
@@ -5634,10 +5634,10 @@ const (
 // Only one shell surface can be associated with a given surface.
 type WWlShellGetShellSurfaceRequest struct {
 	// ID contains shell surface to create
-	ID uintptr
+	ID uint32
 
 	// Surface contains surface to be given the shell surface role
-	Surface uintptr
+	Surface uint32
 }
 
 // WWlShellSurfaceResize represents edge values for resizing
@@ -5715,7 +5715,7 @@ const (
 // the client may be deemed unresponsive.
 type WWlShellSurfacePongRequest struct {
 	// Serial contains serial number of the ping event
-	Serial uintptr
+	Serial uint32
 }
 
 // WWlShellSurfaceMoveRequest requests to start an interactive move
@@ -5727,10 +5727,10 @@ type WWlShellSurfacePongRequest struct {
 // the surface (e.g. fullscreen or maximized).
 type WWlShellSurfaceMoveRequest struct {
 	// Seat contains seat whose pointer is used
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains serial number of the implicit grab on the pointer
-	Serial uintptr
+	Serial uint32
 }
 
 // WWlShellSurfaceResizeRequest requests to start an interactive resize
@@ -5742,13 +5742,13 @@ type WWlShellSurfaceMoveRequest struct {
 // the surface (e.g. fullscreen or maximized).
 type WWlShellSurfaceResizeRequest struct {
 	// Seat contains seat whose pointer is used
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains serial number of the implicit grab on the pointer
-	Serial uintptr
+	Serial uint32
 
 	// Edges contains which edge or corner is being dragged
-	Edges uintptr
+	Edges uint32
 }
 
 // WWlShellSurfaceSetToplevelRequest requests to make the surface a toplevel surface
@@ -5770,16 +5770,16 @@ type WWlShellSurfaceSetToplevelRequest struct {
 // The flags argument controls details of the transient behaviour.
 type WWlShellSurfaceSetTransientRequest struct {
 	// Parent contains parent surface
-	Parent uintptr
+	Parent uint32
 
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 
 	// Flags contains transient surface behavior
-	Flags uintptr
+	Flags uint32
 }
 
 // WWlShellSurfaceSetFullscreenRequest requests to make the surface a fullscreen surface
@@ -5819,13 +5819,13 @@ type WWlShellSurfaceSetTransientRequest struct {
 // be made fullscreen.
 type WWlShellSurfaceSetFullscreenRequest struct {
 	// Method contains method for resolving size conflict
-	Method uintptr
+	Method uint32
 
 	// Framerate contains framerate in mHz
-	Framerate uintptr
+	Framerate uint32
 
 	// Output contains output on which the surface is to be fullscreen
-	Output uintptr
+	Output uint32
 }
 
 // WWlShellSurfaceSetPopupRequest requests to make the surface a popup surface
@@ -5851,22 +5851,22 @@ type WWlShellSurfaceSetFullscreenRequest struct {
 // parent surface, in surface-local coordinates.
 type WWlShellSurfaceSetPopupRequest struct {
 	// Seat contains seat whose pointer is used
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains serial number of the implicit grab on the pointer
-	Serial uintptr
+	Serial uint32
 
 	// Parent contains parent surface
-	Parent uintptr
+	Parent uint32
 
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 
 	// Flags contains transient surface behavior
-	Flags uintptr
+	Flags uint32
 }
 
 // WWlShellSurfaceSetMaximizedRequest requests to make the surface a maximized surface
@@ -5891,7 +5891,7 @@ type WWlShellSurfaceSetPopupRequest struct {
 // The details depend on the compositor implementation.
 type WWlShellSurfaceSetMaximizedRequest struct {
 	// Output contains output on which the surface is to be maximized
-	Output uintptr
+	Output uint32
 }
 
 // WWlShellSurfaceSetTitleRequest requests to set surface title
@@ -5905,7 +5905,7 @@ type WWlShellSurfaceSetMaximizedRequest struct {
 // The string must be encoded in UTF-8.
 type WWlShellSurfaceSetTitleRequest struct {
 	// Title contains surface title
-	Title uintptr
+	Title string
 }
 
 // WWlShellSurfaceSetClassRequest requests to set surface class
@@ -5918,7 +5918,7 @@ type WWlShellSurfaceSetTitleRequest struct {
 // the application's .desktop file as the class.
 type WWlShellSurfaceSetClassRequest struct {
 	// Class contains surface class
-	Class uintptr
+	Class string
 }
 
 // WWlShellSurfacePingEvent signals when ping client
@@ -5927,7 +5927,7 @@ type WWlShellSurfaceSetClassRequest struct {
 // requests. A client is expected to reply with a pong request.
 type WWlShellSurfacePingEvent struct {
 	// Serial contains serial number of the ping
-	Serial uintptr
+	Serial uint32
 }
 
 // WWlShellSurfaceConfigureEvent signals when suggest resize
@@ -5951,13 +5951,13 @@ type WWlShellSurfacePingEvent struct {
 // in surface-local coordinates.
 type WWlShellSurfaceConfigureEvent struct {
 	// Edges contains how the surface was resized
-	Edges uintptr
+	Edges uint32
 
 	// Width contains new width of the surface
-	Width uintptr
+	Width int32
 
 	// Height contains new height of the surface
-	Height uintptr
+	Height int32
 }
 
 // WWlShellSurfacePopupDoneEvent signals when popup interaction is done
@@ -6043,13 +6043,13 @@ type WWlSurfaceDestroyRequest struct {
 // following wl_surface.commit will remove the surface content.
 type WWlSurfaceAttachRequest struct {
 	// Buffer contains buffer of surface contents
-	Buffer uintptr
+	Buffer uint32
 
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 }
 
 // WWlSurfaceDamageRequest requests to mark part of the surface damaged
@@ -6077,16 +6077,16 @@ type WWlSurfaceAttachRequest struct {
 // instead of surface coordinates.
 type WWlSurfaceDamageRequest struct {
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 
 	// Width contains width of damage rectangle
-	Width uintptr
+	Width int32
 
 	// Height contains height of damage rectangle
-	Height uintptr
+	Height int32
 }
 
 // WWlSurfaceFrameRequest requests to request a frame throttling hint
@@ -6125,7 +6125,7 @@ type WWlSurfaceDamageRequest struct {
 // milliseconds, with an undefined base.
 type WWlSurfaceFrameRequest struct {
 	// Callback contains callback object for the frame request
-	Callback uintptr
+	Callback uint32
 }
 
 // WWlSurfaceSetOpaqueRegionRequest requests to set opaque region
@@ -6156,7 +6156,7 @@ type WWlSurfaceFrameRequest struct {
 // region to be set to empty.
 type WWlSurfaceSetOpaqueRegionRequest struct {
 	// Region contains opaque region of the surface
-	Region uintptr
+	Region uint32
 }
 
 // WWlSurfaceSetInputRegionRequest requests to set input region
@@ -6185,7 +6185,7 @@ type WWlSurfaceSetOpaqueRegionRequest struct {
 // to infinite.
 type WWlSurfaceSetInputRegionRequest struct {
 	// Region contains input region of the surface
-	Region uintptr
+	Region uint32
 }
 
 // WWlSurfaceCommitRequest requests to commit pending surface state
@@ -6243,7 +6243,7 @@ type WWlSurfaceCommitRequest struct {
 // is raised.
 type WWlSurfaceSetBufferTransformRequest struct {
 	// Transform contains transform for interpreting buffer contents
-	Transform uintptr
+	Transform int32
 }
 
 // WWlSurfaceSetBufferScaleRequest requests to sets the buffer scaling factor
@@ -6273,7 +6273,7 @@ type WWlSurfaceSetBufferTransformRequest struct {
 // raised.
 type WWlSurfaceSetBufferScaleRequest struct {
 	// Scale contains positive scale for interpreting buffer contents
-	Scale uintptr
+	Scale int32
 }
 
 // WWlSurfaceDamageBufferRequest requests to mark part of the surface damaged using buffer coordinates
@@ -6312,16 +6312,16 @@ type WWlSurfaceSetBufferScaleRequest struct {
 // after receiving the wl_surface.commit.
 type WWlSurfaceDamageBufferRequest struct {
 	// X contains buffer-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains buffer-local y coordinate
-	Y uintptr
+	Y int32
 
 	// Width contains width of damage rectangle
-	Width uintptr
+	Width int32
 
 	// Height contains height of damage rectangle
-	Height uintptr
+	Height int32
 }
 
 // WWlSurfaceEnterEvent signals when surface enters an output
@@ -6333,7 +6333,7 @@ type WWlSurfaceDamageBufferRequest struct {
 // Note that a surface may be overlapping with zero or more outputs.
 type WWlSurfaceEnterEvent struct {
 	// Output contains output entered by the surface
-	Output uintptr
+	Output uint32
 }
 
 // WWlSurfaceLeaveEvent signals when surface leaves an output
@@ -6349,7 +6349,7 @@ type WWlSurfaceEnterEvent struct {
 // used instead.
 type WWlSurfaceLeaveEvent struct {
 	// Output contains output left by the surface
-	Output uintptr
+	Output uint32
 }
 
 // WWlSeatCapability represents seat capability bitmask
@@ -6391,7 +6391,7 @@ const (
 // be sent in this case.
 type WWlSeatGetPointerRequest struct {
 	// ID contains seat pointer
-	ID uintptr
+	ID uint32
 }
 
 // WWlSeatGetKeyboardRequest requests to return keyboard object
@@ -6406,7 +6406,7 @@ type WWlSeatGetPointerRequest struct {
 // be sent in this case.
 type WWlSeatGetKeyboardRequest struct {
 	// ID contains seat keyboard
-	ID uintptr
+	ID uint32
 }
 
 // WWlSeatGetTouchRequest requests to return touch object
@@ -6421,7 +6421,7 @@ type WWlSeatGetKeyboardRequest struct {
 // be sent in this case.
 type WWlSeatGetTouchRequest struct {
 	// ID contains seat touch interface
-	ID uintptr
+	ID uint32
 }
 
 // WWlSeatReleaseRequest requests to release the seat object
@@ -6459,7 +6459,7 @@ type WWlSeatReleaseRequest struct {
 // keyboard and touch capabilities, respectively.
 type WWlSeatCapabilitiesEvent struct {
 	// Capabilities contains capabilities of the seat
-	Capabilities uintptr
+	Capabilities uint32
 }
 
 // WWlSeatNameEvent signals when unique identifier for this seat
@@ -6482,7 +6482,7 @@ type WWlSeatCapabilitiesEvent struct {
 // destroyed and re-created later.
 type WWlSeatNameEvent struct {
 	// Name contains seat identifier
-	Name uintptr
+	Name string
 }
 
 type WWlPointerError int
@@ -6592,16 +6592,16 @@ const (
 // ignored.
 type WWlPointerSetCursorRequest struct {
 	// Serial contains serial number of the enter event
-	Serial uintptr
+	Serial uint32
 
 	// Surface contains pointer surface
-	Surface uintptr
+	Surface uint32
 
 	// HotspotX contains surface-local x coordinate
-	HotspotX uintptr
+	HotspotX int32
 
 	// HotspotY contains surface-local y coordinate
-	HotspotY uintptr
+	HotspotY int32
 }
 
 // WWlPointerReleaseRequest requests to release the pointer object
@@ -6624,16 +6624,16 @@ type WWlPointerReleaseRequest struct {
 // an appropriate pointer image with the set_cursor request.
 type WWlPointerEnterEvent struct {
 	// Serial contains serial number of the enter event
-	Serial uintptr
+	Serial uint32
 
 	// Surface contains surface entered by the pointer
-	Surface uintptr
+	Surface uint32
 
 	// SurfaceX contains surface-local x coordinate
-	SurfaceX uintptr
+	SurfaceX int32
 
 	// SurfaceY contains surface-local y coordinate
-	SurfaceY uintptr
+	SurfaceY int32
 }
 
 // WWlPointerLeaveEvent signals when leave event
@@ -6645,10 +6645,10 @@ type WWlPointerEnterEvent struct {
 // for the new focus.
 type WWlPointerLeaveEvent struct {
 	// Serial contains serial number of the leave event
-	Serial uintptr
+	Serial uint32
 
 	// Surface contains surface left by the pointer
-	Surface uintptr
+	Surface uint32
 }
 
 // WWlPointerMotionEvent signals when pointer motion event
@@ -6658,13 +6658,13 @@ type WWlPointerLeaveEvent struct {
 // focused surface.
 type WWlPointerMotionEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// SurfaceX contains surface-local x coordinate
-	SurfaceX uintptr
+	SurfaceX int32
 
 	// SurfaceY contains surface-local y coordinate
-	SurfaceY uintptr
+	SurfaceY int32
 }
 
 // WWlPointerButtonEvent signals when pointer button event
@@ -6685,16 +6685,16 @@ type WWlPointerMotionEvent struct {
 // protocol.
 type WWlPointerButtonEvent struct {
 	// Serial contains serial number of the button event
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Button contains button that produced the event
-	Button uintptr
+	Button uint32
 
 	// State contains physical state of the button
-	State uintptr
+	State uint32
 }
 
 // WWlPointerAxisEvent signals when axis event
@@ -6717,13 +6717,13 @@ type WWlPointerButtonEvent struct {
 // scroll distance.
 type WWlPointerAxisEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Axis contains axis type
-	Axis uintptr
+	Axis uint32
 
 	// Value contains length of vector in surface-local coordinate space
-	Value uintptr
+	Value int32
 }
 
 // WWlPointerFrameEvent signals when end of a pointer event sequence
@@ -6794,7 +6794,7 @@ type WWlPointerFrameEvent struct {
 // not guaranteed.
 type WWlPointerAxisSourceEvent struct {
 	// AxisSource contains source of the axis event
-	AxisSource uintptr
+	AxisSource uint32
 }
 
 // WWlPointerAxisStopEvent signals when axis stop event
@@ -6815,10 +6815,10 @@ type WWlPointerAxisSourceEvent struct {
 // preceding wl_pointer.axis event.
 type WWlPointerAxisStopEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Axis contains the axis stopped with this event
-	Axis uintptr
+	Axis uint32
 }
 
 // WWlPointerAxisDiscreteEvent signals when axis click event
@@ -6851,10 +6851,10 @@ type WWlPointerAxisStopEvent struct {
 // not guaranteed.
 type WWlPointerAxisDiscreteEvent struct {
 	// Axis contains axis type
-	Axis uintptr
+	Axis uint32
 
 	// Discrete contains number of steps
-	Discrete uintptr
+	Discrete int32
 }
 
 // WWlKeyboardKeymapFormat represents keyboard mapping format
@@ -6898,13 +6898,13 @@ type WWlKeyboardReleaseRequest struct {
 // the recipient, as MAP_SHARED may fail.
 type WWlKeyboardKeymapEvent struct {
 	// Format contains keymap format
-	Format uintptr
+	Format uint32
 
 	// FD contains keymap file descriptor
-	FD uintptr
+	FD struct{}
 
 	// Size contains keymap size, in bytes
-	Size uintptr
+	Size uint32
 }
 
 // WWlKeyboardEnterEvent signals when enter event
@@ -6916,13 +6916,13 @@ type WWlKeyboardKeymapEvent struct {
 // event.
 type WWlKeyboardEnterEvent struct {
 	// Serial contains serial number of the enter event
-	Serial uintptr
+	Serial uint32
 
 	// Surface contains surface gaining keyboard focus
-	Surface uintptr
+	Surface uint32
 
 	// Keys contains the currently pressed keys
-	Keys uintptr
+	Keys []byte
 }
 
 // WWlKeyboardLeaveEvent signals when leave event
@@ -6937,10 +6937,10 @@ type WWlKeyboardEnterEvent struct {
 // are lifted and also it must stop key repeating if there's some going on.
 type WWlKeyboardLeaveEvent struct {
 	// Serial contains serial number of the leave event
-	Serial uintptr
+	Serial uint32
 
 	// Surface contains surface that lost keyboard focus
-	Surface uintptr
+	Surface uint32
 }
 
 // WWlKeyboardKeyEvent signals when key event
@@ -6956,16 +6956,16 @@ type WWlKeyboardLeaveEvent struct {
 // wl_keyboard.modifiers event must be sent after this event.
 type WWlKeyboardKeyEvent struct {
 	// Serial contains serial number of the key event
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Key contains key that produced the event
-	Key uintptr
+	Key uint32
 
 	// State contains physical state of the key
-	State uintptr
+	State uint32
 }
 
 // WWlKeyboardModifiersEvent signals when modifier and group state
@@ -6974,19 +6974,19 @@ type WWlKeyboardKeyEvent struct {
 // changed, and it should update its local state.
 type WWlKeyboardModifiersEvent struct {
 	// Serial contains serial number of the modifiers event
-	Serial uintptr
+	Serial uint32
 
 	// ModsDepressed contains depressed modifiers
-	ModsDepressed uintptr
+	ModsDepressed uint32
 
 	// ModsLatched contains latched modifiers
-	ModsLatched uintptr
+	ModsLatched uint32
 
 	// ModsLocked contains locked modifiers
-	ModsLocked uintptr
+	ModsLocked uint32
 
 	// Group contains keyboard layout
-	Group uintptr
+	Group uint32
 }
 
 // WWlKeyboardRepeatInfoEvent signals when repeat rate and delay
@@ -7005,10 +7005,10 @@ type WWlKeyboardModifiersEvent struct {
 // of wl_keyboard.
 type WWlKeyboardRepeatInfoEvent struct {
 	// Rate contains the rate of repeating keys in characters per second
-	Rate uintptr
+	Rate int32
 
 	// Delay contains delay in milliseconds since key down until repeating starts
-	Delay uintptr
+	Delay int32
 }
 
 // WWlTouchReleaseRequest requests to release the touch object
@@ -7023,22 +7023,22 @@ type WWlTouchReleaseRequest struct {
 // reused in the future.
 type WWlTouchDownEvent struct {
 	// Serial contains serial number of the touch down event
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// Surface contains surface touched
-	Surface uintptr
+	Surface uint32
 
 	// ID contains the unique ID of this touch point
-	ID uintptr
+	ID int32
 
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 }
 
 // WWlTouchUpEvent signals when end of a touch event sequence
@@ -7048,13 +7048,13 @@ type WWlTouchDownEvent struct {
 // reused in a future touch down event.
 type WWlTouchUpEvent struct {
 	// Serial contains serial number of the touch up event
-	Serial uintptr
+	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// ID contains the unique ID of this touch point
-	ID uintptr
+	ID int32
 }
 
 // WWlTouchMotionEvent signals when update of touch point coordinates
@@ -7062,16 +7062,16 @@ type WWlTouchUpEvent struct {
 // A touch point has changed coordinates.
 type WWlTouchMotionEvent struct {
 	// Time contains timestamp with millisecond granularity
-	Time uintptr
+	Time uint32
 
 	// ID contains the unique ID of this touch point
-	ID uintptr
+	ID int32
 
 	// X contains surface-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains surface-local y coordinate
-	Y uintptr
+	Y int32
 }
 
 // WWlTouchFrameEvent signals when end of touch frame event
@@ -7127,13 +7127,13 @@ type WWlTouchCancelEvent struct {
 // shape if it did not receive this event.
 type WWlTouchShapeEvent struct {
 	// ID contains the unique ID of this touch point
-	ID uintptr
+	ID int32
 
 	// Major contains length of the major axis in surface-local coordinates
-	Major uintptr
+	Major int32
 
 	// Minor contains length of the minor axis in surface-local coordinates
-	Minor uintptr
+	Minor int32
 }
 
 // WWlTouchOrientationEvent signals when update orientation of touch point
@@ -7163,10 +7163,10 @@ type WWlTouchShapeEvent struct {
 // orientation reports.
 type WWlTouchOrientationEvent struct {
 	// ID contains the unique ID of this touch point
-	ID uintptr
+	ID int32
 
 	// Orientation contains angle between major axis and positive surface y-axis in degrees
-	Orientation uintptr
+	Orientation int32
 }
 
 // WWlOutputSubpixel represents subpixel geometry information
@@ -7274,28 +7274,28 @@ type WWlOutputReleaseRequest struct {
 // clients should use xdg_output.name and xdg_output.description.
 type WWlOutputGeometryEvent struct {
 	// X contains x position within the global compositor space
-	X uintptr
+	X int32
 
 	// Y contains y position within the global compositor space
-	Y uintptr
+	Y int32
 
 	// PhysicalWidth contains width in millimeters of the output
-	PhysicalWidth uintptr
+	PhysicalWidth int32
 
 	// PhysicalHeight contains height in millimeters of the output
-	PhysicalHeight uintptr
+	PhysicalHeight int32
 
 	// Subpixel contains subpixel orientation of the output
-	Subpixel uintptr
+	Subpixel int32
 
 	// Make contains textual description of the manufacturer
-	Make uintptr
+	Make string
 
 	// Model contains textual description of the model
-	Model uintptr
+	Model string
 
 	// Transform contains transform that maps framebuffer to output
-	Transform uintptr
+	Transform int32
 }
 
 // WWlOutputModeEvent signals when advertise available modes for the output
@@ -7332,16 +7332,16 @@ type WWlOutputGeometryEvent struct {
 // refresh rate or the size.
 type WWlOutputModeEvent struct {
 	// Flags contains bitfield of mode flags
-	Flags uintptr
+	Flags uint32
 
 	// Width contains width of the mode in hardware units
-	Width uintptr
+	Width int32
 
 	// Height contains height of the mode in hardware units
-	Height uintptr
+	Height int32
 
 	// Refresh contains vertical refresh rate in mHz
-	Refresh uintptr
+	Refresh int32
 }
 
 // WWlOutputDoneEvent signals when sent all information about output
@@ -7376,7 +7376,7 @@ type WWlOutputDoneEvent struct {
 // a higher detail image.
 type WWlOutputScaleEvent struct {
 	// Factor contains scaling factor of output
-	Factor uintptr
+	Factor int32
 }
 
 // WWlRegionDestroyRequest requests to destroy region
@@ -7390,16 +7390,16 @@ type WWlRegionDestroyRequest struct {
 // Add the specified rectangle to the region.
 type WWlRegionAddRequest struct {
 	// X contains region-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains region-local y coordinate
-	Y uintptr
+	Y int32
 
 	// Width contains rectangle width
-	Width uintptr
+	Width int32
 
 	// Height contains rectangle height
-	Height uintptr
+	Height int32
 }
 
 // WWlRegionSubtractRequest requests to subtract rectangle from region
@@ -7407,16 +7407,16 @@ type WWlRegionAddRequest struct {
 // Subtract the specified rectangle from the region.
 type WWlRegionSubtractRequest struct {
 	// X contains region-local x coordinate
-	X uintptr
+	X int32
 
 	// Y contains region-local y coordinate
-	Y uintptr
+	Y int32
 
 	// Width contains rectangle width
-	Width uintptr
+	Width int32
 
 	// Height contains rectangle height
-	Height uintptr
+	Height int32
 }
 
 type WWlSubcompositorError int
@@ -7453,13 +7453,13 @@ type WWlSubcompositorDestroyRequest struct {
 // the sub-surface, see the documentation on wl_subsurface interface.
 type WWlSubcompositorGetSubsurfaceRequest struct {
 	// ID contains the new sub-surface object ID
-	ID uintptr
+	ID uint32
 
 	// Surface contains the surface to be turned into a sub-surface
-	Surface uintptr
+	Surface uint32
 
 	// Parent contains the parent surface
-	Parent uintptr
+	Parent uint32
 }
 
 type WWlSubsurfaceError int
@@ -7499,10 +7499,10 @@ type WWlSubsurfaceDestroyRequest struct {
 // The initial position is 0, 0.
 type WWlSubsurfaceSetPositionRequest struct {
 	// X contains x coordinate in the parent surface
-	X uintptr
+	X int32
 
 	// Y contains y coordinate in the parent surface
-	Y uintptr
+	Y int32
 }
 
 // WWlSubsurfacePlaceAboveRequest requests to restack the sub-surface
@@ -7524,7 +7524,7 @@ type WWlSubsurfaceSetPositionRequest struct {
 // of its siblings and parent.
 type WWlSubsurfacePlaceAboveRequest struct {
 	// Sibling contains the reference surface
-	Sibling uintptr
+	Sibling uint32
 }
 
 // WWlSubsurfacePlaceBelowRequest requests to restack the sub-surface
@@ -7533,7 +7533,7 @@ type WWlSubsurfacePlaceAboveRequest struct {
 // See wl_subsurface.place_above.
 type WWlSubsurfacePlaceBelowRequest struct {
 	// Sibling contains the reference surface
-	Sibling uintptr
+	Sibling uint32
 }
 
 // WWlSubsurfaceSetSyncRequest requests to set sub-surface to synchronized mode
@@ -7582,16 +7582,16 @@ type WWlSubsurfaceSetDesyncRequest struct {
 //
 // Create a new primary selection source.
 type WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest requests to create a new primary selection device
 //
 // Create a new data device for a given seat.
 type WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest struct {
-	ID uintptr
+	ID uint32
 
-	Seat uintptr
+	Seat uint32
 }
 
 // WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest requests to destroy the primary selection device manager
@@ -7607,10 +7607,10 @@ type WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest struct {
 //
 // To unset the selection, set the source to NULL.
 type WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest struct {
-	Source uintptr
+	Source uint32
 
 	// Serial contains serial of the event that triggered this request
-	Serial uintptr
+	Serial uint32
 }
 
 // WPSUVZwpPrimarySelectionDeviceV1DestroyRequest requests to destroy the primary selection device
@@ -7627,7 +7627,7 @@ type WPSUVZwpPrimarySelectionDeviceV1DestroyRequest struct {
 // wp_primary_selection_offer.offer events to describe the offered mime
 // types.
 type WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent struct {
-	Offer uintptr
+	Offer uint32
 }
 
 // WPSUVZwpPrimarySelectionDeviceV1SelectionEvent signals when advertise a new primary selection
@@ -7642,7 +7642,7 @@ type WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent struct {
 // or until the client loses keyboard focus. The client must destroy the
 // previous selection data_offer, if any, upon receiving this event.
 type WPSUVZwpPrimarySelectionDeviceV1SelectionEvent struct {
-	ID uintptr
+	ID uint32
 }
 
 // WPSUVZwpPrimarySelectionOfferV1ReceiveRequest requests to request that the data is transferred
@@ -7657,9 +7657,9 @@ type WPSUVZwpPrimarySelectionDeviceV1SelectionEvent struct {
 // The receiving client reads from the read end of the pipe until EOF and
 // closes its end, at which point the transfer is complete.
 type WPSUVZwpPrimarySelectionOfferV1ReceiveRequest struct {
-	MimeType uintptr
+	MimeType string
 
-	FD uintptr
+	FD struct{}
 }
 
 // WPSUVZwpPrimarySelectionOfferV1DestroyRequest requests to destroy the primary selection offer
@@ -7675,7 +7675,7 @@ type WPSUVZwpPrimarySelectionOfferV1DestroyRequest struct {
 // wp_primary_selection_device.data_offer. One event is sent per offered
 // mime type.
 type WPSUVZwpPrimarySelectionOfferV1OfferEvent struct {
-	MimeType uintptr
+	MimeType string
 }
 
 // WPSUVZwpPrimarySelectionSourceV1OfferRequest requests to add an offered mime type
@@ -7683,7 +7683,7 @@ type WPSUVZwpPrimarySelectionOfferV1OfferEvent struct {
 // This request adds a mime type to the set of mime types advertised to
 // targets. Can be called several times to offer multiple types.
 type WPSUVZwpPrimarySelectionSourceV1OfferRequest struct {
-	MimeType uintptr
+	MimeType string
 }
 
 // WPSUVZwpPrimarySelectionSourceV1DestroyRequest requests to destroy the primary selection source
@@ -7698,9 +7698,9 @@ type WPSUVZwpPrimarySelectionSourceV1DestroyRequest struct {
 // Send the specified mime type over the passed file descriptor, then
 // close it.
 type WPSUVZwpPrimarySelectionSourceV1SendEvent struct {
-	MimeType uintptr
+	MimeType string
 
-	FD uintptr
+	FD struct{}
 }
 
 // WPSUVZwpPrimarySelectionSourceV1CancelledEvent signals when request for primary selection contents was canceled
@@ -7726,7 +7726,7 @@ type XAVXdgActivationV1DestroyRequest struct {
 // the initiating client with a unique token for this activation. This
 // token should be offered to the clients to be activated.
 type XAVXdgActivationV1GetActivationTokenRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // XAVXdgActivationV1ActivateRequest requests to notify new interaction being available
@@ -7743,10 +7743,10 @@ type XAVXdgActivationV1GetActivationTokenRequest struct {
 // token is passed.
 type XAVXdgActivationV1ActivateRequest struct {
 	// Token contains the activation token of the initiating client
-	Token uintptr
+	Token string
 
 	// Surface contains the wl_surface to activate
-	Surface uintptr
+	Surface uint32
 }
 
 type XAVXdgActivationTokenV1Error int
@@ -7772,10 +7772,10 @@ const (
 // Must be sent before commit. This information is optional.
 type XAVXdgActivationTokenV1SetSerialRequest struct {
 	// Serial contains the serial of the event that triggered the activation
-	Serial uintptr
+	Serial uint32
 
 	// Seat contains the wl_seat of the event
-	Seat uintptr
+	Seat uint32
 }
 
 // XAVXdgActivationTokenV1SetAppIDRequest requests to specifies the application being activated
@@ -7786,7 +7786,7 @@ type XAVXdgActivationTokenV1SetSerialRequest struct {
 // Must be sent before commit. This information is optional.
 type XAVXdgActivationTokenV1SetAppIDRequest struct {
 	// AppID contains the application id of the client being activated.
-	AppID uintptr
+	AppID string
 }
 
 // XAVXdgActivationTokenV1SetSurfaceRequest requests to specifies the surface requesting activation
@@ -7800,7 +7800,7 @@ type XAVXdgActivationTokenV1SetAppIDRequest struct {
 // Must be sent before commit. This information is optional.
 type XAVXdgActivationTokenV1SetSurfaceRequest struct {
 	// Surface contains the requesting surface
-	Surface uintptr
+	Surface uint32
 }
 
 // XAVXdgActivationTokenV1CommitRequest requests to issues the token request
@@ -7823,7 +7823,7 @@ type XAVXdgActivationTokenV1DestroyRequest struct {
 // and notifies that the provider is done.
 type XAVXdgActivationTokenV1DoneEvent struct {
 	// Token contains the exported activation token
-	Token uintptr
+	Token string
 }
 
 // XDUVZxdgDecorationManagerV1DestroyRequest requests to destroy the decoration manager object
@@ -7843,9 +7843,9 @@ type XDUVZxdgDecorationManagerV1DestroyRequest struct {
 // xdg_toplevel_decoration.configure event must also be treated as
 // errors.
 type XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest struct {
-	ID uintptr
+	ID uint32
 
-	Toplevel uintptr
+	Toplevel uint32
 }
 
 type XDUVZxdgToplevelDecorationV1Error int
@@ -7903,7 +7903,7 @@ type XDUVZxdgToplevelDecorationV1DestroyRequest struct {
 // same decoration mode.
 type XDUVZxdgToplevelDecorationV1SetModeRequest struct {
 	// Mode contains the decoration mode
-	Mode uintptr
+	Mode uint32
 }
 
 // XDUVZxdgToplevelDecorationV1UnsetModeRequest requests to unset the decoration mode
@@ -7926,7 +7926,7 @@ type XDUVZxdgToplevelDecorationV1UnsetModeRequest struct {
 // obeyed by the client.
 type XDUVZxdgToplevelDecorationV1ConfigureEvent struct {
 	// Mode contains the decoration mode
-	Mode uintptr
+	Mode uint32
 }
 
 // XFUVZxdgExporterV1DestroyRequest requests to destroy the xdg_exporter object
@@ -7948,10 +7948,10 @@ type XFUVZxdgExporterV1DestroyRequest struct {
 // surfaces may be exported.
 type XFUVZxdgExporterV1ExportRequest struct {
 	// ID contains the new xdg_exported object
-	ID uintptr
+	ID uint32
 
 	// Surface contains the surface to export
-	Surface uintptr
+	Surface uint32
 }
 
 // XFUVZxdgImporterV1DestroyRequest requests to destroy the xdg_importer object
@@ -7970,10 +7970,10 @@ type XFUVZxdgImporterV1DestroyRequest struct {
 // manipulate its relationship using it. See xdg_imported for details.
 type XFUVZxdgImporterV1ImportRequest struct {
 	// ID contains the new xdg_imported object
-	ID uintptr
+	ID uint32
 
 	// Handle contains the exported surface handle
-	Handle uintptr
+	Handle string
 }
 
 // XFUVZxdgExportedV1DestroyRequest requests to unexport the exported surface
@@ -7992,7 +7992,7 @@ type XFUVZxdgExportedV1DestroyRequest struct {
 // used to import the surface multiple times.
 type XFUVZxdgExportedV1HandleEvent struct {
 	// Handle contains the exported surface handle
-	Handle uintptr
+	Handle string
 }
 
 // XFUVZxdgImportedV1DestroyRequest requests to destroy the xdg_imported object
@@ -8011,7 +8011,7 @@ type XFUVZxdgImportedV1DestroyRequest struct {
 // semantics as xdg_surface.set_parent.
 type XFUVZxdgImportedV1SetParentOfRequest struct {
 	// Surface contains the child surface
-	Surface uintptr
+	Surface uint32
 }
 
 // XFUVZxdgImportedV1DestroyedEvent signals when the imported surface handle has been destroyed
@@ -8054,10 +8054,10 @@ type XFUVZxdgExporterV2DestroyRequest struct {
 // protocol error is sent.
 type XFUVZxdgExporterV2ExportToplevelRequest struct {
 	// ID contains the new xdg_exported object
-	ID uintptr
+	ID uint32
 
 	// Surface contains the surface to export
-	Surface uintptr
+	Surface uint32
 }
 
 // XFUVZxdgImporterV2DestroyRequest requests to destroy the xdg_importer object
@@ -8076,10 +8076,10 @@ type XFUVZxdgImporterV2DestroyRequest struct {
 // manipulate its relationship using it. See xdg_imported for details.
 type XFUVZxdgImporterV2ImportToplevelRequest struct {
 	// ID contains the new xdg_imported object
-	ID uintptr
+	ID uint32
 
 	// Handle contains the exported surface handle
-	Handle uintptr
+	Handle string
 }
 
 // XFUVZxdgExportedV2DestroyRequest requests to unexport the exported surface
@@ -8098,7 +8098,7 @@ type XFUVZxdgExportedV2DestroyRequest struct {
 // may be used to import the surface multiple times.
 type XFUVZxdgExportedV2HandleEvent struct {
 	// Handle contains the exported surface handle
-	Handle uintptr
+	Handle string
 }
 
 // XFUVZxdgImportedV2Error represents error values
@@ -8129,7 +8129,7 @@ type XFUVZxdgImportedV2DestroyRequest struct {
 // semantics as xdg_toplevel.set_parent.
 type XFUVZxdgImportedV2SetParentOfRequest struct {
 	// Surface contains the child surface
-	Surface uintptr
+	Surface uint32
 }
 
 // XFUVZxdgImportedV2DestroyedEvent signals when the imported surface handle has been destroyed
@@ -8154,9 +8154,9 @@ type XOUVZxdgOutputManagerV1DestroyRequest struct {
 //
 // This creates a new xdg_output object for the given wl_output.
 type XOUVZxdgOutputManagerV1GetXdgOutputRequest struct {
-	ID uintptr
+	ID uint32
 
-	Output uintptr
+	Output uint32
 }
 
 // XOUVZxdgOutputV1DestroyRequest requests to destroy the xdg_output object
@@ -8176,10 +8176,10 @@ type XOUVZxdgOutputV1DestroyRequest struct {
 // of the output changes within the global compositor space.
 type XOUVZxdgOutputV1LogicalPositionEvent struct {
 	// X contains x position within the global compositor space
-	X uintptr
+	X int32
 
 	// Y contains y position within the global compositor space
-	Y uintptr
+	Y int32
 }
 
 // XOUVZxdgOutputV1LogicalSizeEvent signals when size of the output in the global compositor space
@@ -8220,10 +8220,10 @@ type XOUVZxdgOutputV1LogicalPositionEvent struct {
 // mode(see wl_output.mode) or transform (see wl_output.transform).
 type XOUVZxdgOutputV1LogicalSizeEvent struct {
 	// Width contains width in global compositor space
-	Width uintptr
+	Width int32
 
 	// Height contains height in global compositor space
-	Height uintptr
+	Height int32
 }
 
 // XOUVZxdgOutputV1DoneEvent signals when all information about the output have been sent
@@ -8262,7 +8262,7 @@ type XOUVZxdgOutputV1DoneEvent struct {
 // wl_output global.
 type XOUVZxdgOutputV1NameEvent struct {
 	// Name contains output name
-	Name uintptr
+	Name string
 }
 
 // XOUVZxdgOutputV1DescriptionEvent signals when human-readable description of this output
@@ -8284,7 +8284,7 @@ type XOUVZxdgOutputV1NameEvent struct {
 // the wl_output global.
 type XOUVZxdgOutputV1DescriptionEvent struct {
 	// Description contains output description
-	Description uintptr
+	Description string
 }
 
 type XSXdgWmBaseError int
@@ -8325,7 +8325,7 @@ type XSXdgWmBaseDestroyRequest struct {
 // surfaces relative to some parent surface. See the interface description
 // and xdg_surface.get_popup for details.
 type XSXdgWmBaseCreatePositionerRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // XSXdgWmBaseGetXdgSurfaceRequest requests to create a shell surface from a surface
@@ -8344,9 +8344,9 @@ type XSXdgWmBaseCreatePositionerRequest struct {
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
 type XSXdgWmBaseGetXdgSurfaceRequest struct {
-	ID uintptr
+	ID uint32
 
-	Surface uintptr
+	Surface uint32
 }
 
 // XSXdgWmBasePongRequest requests to respond to a ping event
@@ -8355,7 +8355,7 @@ type XSXdgWmBaseGetXdgSurfaceRequest struct {
 // the client may be deemed unresponsive. See xdg_wm_base.ping.
 type XSXdgWmBasePongRequest struct {
 	// Serial contains serial of the ping event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSXdgWmBasePingEvent signals when check if the client is alive
@@ -8373,7 +8373,7 @@ type XSXdgWmBasePongRequest struct {
 // always respond to any xdg_wm_base object it created.
 type XSXdgWmBasePingEvent struct {
 	// Serial contains pass this to the pong request
-	Serial uintptr
+	Serial uint32
 }
 
 type XSXdgPositionerError int
@@ -8473,10 +8473,10 @@ type XSXdgPositionerDestroyRequest struct {
 // If a zero or negative size is set the invalid_input error is raised.
 type XSXdgPositionerSetSizeRequest struct {
 	// Width contains width of positioned rectangle
-	Width uintptr
+	Width int32
 
 	// Height contains height of positioned rectangle
-	Height uintptr
+	Height int32
 }
 
 // XSXdgPositionerSetAnchorRectRequest requests to set the anchor rectangle within the parent surface
@@ -8493,16 +8493,16 @@ type XSXdgPositionerSetSizeRequest struct {
 // If a negative size is set the invalid_input error is raised.
 type XSXdgPositionerSetAnchorRectRequest struct {
 	// X contains x position of anchor rectangle
-	X uintptr
+	X int32
 
 	// Y contains y position of anchor rectangle
-	Y uintptr
+	Y int32
 
 	// Width contains width of anchor rectangle
-	Width uintptr
+	Width int32
 
 	// Height contains height of anchor rectangle
-	Height uintptr
+	Height int32
 }
 
 // XSXdgPositionerSetAnchorRequest requests to set anchor rectangle anchor
@@ -8515,7 +8515,7 @@ type XSXdgPositionerSetAnchorRectRequest struct {
 // edge, or in the center of the anchor rectangle if no edge is specified.
 type XSXdgPositionerSetAnchorRequest struct {
 	// Anchor contains anchor
-	Anchor uintptr
+	Anchor uint32
 }
 
 // XSXdgPositionerSetGravityRequest requests to set child surface gravity
@@ -8528,7 +8528,7 @@ type XSXdgPositionerSetAnchorRequest struct {
 // gravity specified.
 type XSXdgPositionerSetGravityRequest struct {
 	// Gravity contains gravity direction
-	Gravity uintptr
+	Gravity uint32
 }
 
 // XSXdgPositionerSetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
@@ -8548,7 +8548,7 @@ type XSXdgPositionerSetGravityRequest struct {
 // The default adjustment is none.
 type XSXdgPositionerSetConstraintAdjustmentRequest struct {
 	// ConstraintAdjustment contains bit mask of constraint adjustments
-	ConstraintAdjustment uintptr
+	ConstraintAdjustment uint32
 }
 
 // XSXdgPositionerSetOffsetRequest requests to set surface position offset
@@ -8566,10 +8566,10 @@ type XSXdgPositionerSetConstraintAdjustmentRequest struct {
 // with some user interface element placed somewhere in the popup surface.
 type XSXdgPositionerSetOffsetRequest struct {
 	// X contains surface position x offset
-	X uintptr
+	X int32
 
 	// Y contains surface position y offset
-	Y uintptr
+	Y int32
 }
 
 // XSXdgPositionerSetReactiveRequest requests to continuously reconstrain the surface
@@ -8585,10 +8585,10 @@ type XSXdgPositionerSetReactiveRequest struct {
 
 type XSXdgPositionerSetParentSizeRequest struct {
 	// ParentWidth contains future window geometry width of parent
-	ParentWidth uintptr
+	ParentWidth int32
 
 	// ParentHeight contains future window geometry height of parent
-	ParentHeight uintptr
+	ParentHeight int32
 }
 
 // XSXdgPositionerSetParentConfigureRequest requests to set parent configure this is a response to
@@ -8599,7 +8599,7 @@ type XSXdgPositionerSetParentSizeRequest struct {
 // constrained using.
 type XSXdgPositionerSetParentConfigureRequest struct {
 	// Serial contains serial of parent configure event
-	Serial uintptr
+	Serial uint32
 }
 
 type XSXdgSurfaceError int
@@ -8627,7 +8627,7 @@ type XSXdgSurfaceDestroyRequest struct {
 // See the documentation of xdg_toplevel for more details about what an
 // xdg_toplevel is and how it is used.
 type XSXdgSurfaceGetToplevelRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // XSXdgSurfaceGetPopupRequest requests to assign the xdg_popup surface role
@@ -8641,11 +8641,11 @@ type XSXdgSurfaceGetToplevelRequest struct {
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
 type XSXdgSurfaceGetPopupRequest struct {
-	ID uintptr
+	ID uint32
 
-	Parent uintptr
+	Parent uint32
 
-	Positioner uintptr
+	Positioner uint32
 }
 
 // XSXdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
@@ -8680,13 +8680,13 @@ type XSXdgSurfaceGetPopupRequest struct {
 // combined geometry of the surface of the xdg_surface and the associated
 // subsurfaces.
 type XSXdgSurfaceSetWindowGeometryRequest struct {
-	X uintptr
+	X int32
 
-	Y uintptr
+	Y int32
 
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // XSXdgSurfaceAckConfigureRequest requests to ack a configure event
@@ -8712,7 +8712,7 @@ type XSXdgSurfaceSetWindowGeometryRequest struct {
 // event the client really is responding to.
 type XSXdgSurfaceAckConfigureRequest struct {
 	// Serial contains the serial from the configure event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSXdgSurfaceConfigureEvent signals when suggest a surface change
@@ -8735,7 +8735,7 @@ type XSXdgSurfaceAckConfigureRequest struct {
 // to one, it is free to discard all but the last event it received.
 type XSXdgSurfaceConfigureEvent struct {
 	// Serial contains serial of the configure event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSXdgToplevelResizeEdge represents edge values for resizing
@@ -8823,7 +8823,7 @@ type XSXdgToplevelDestroyRequest struct {
 // parent then the children are managed as though they have no
 // parent surface.
 type XSXdgToplevelSetParentRequest struct {
-	Parent uintptr
+	Parent uint32
 }
 
 // XSXdgToplevelSetTitleRequest requests to set surface title
@@ -8836,7 +8836,7 @@ type XSXdgToplevelSetParentRequest struct {
 //
 // The string must be encoded in UTF-8.
 type XSXdgToplevelSetTitleRequest struct {
-	Title uintptr
+	Title string
 }
 
 // XSXdgToplevelSetAppIDRequest requests to set application ID
@@ -8865,7 +8865,7 @@ type XSXdgToplevelSetTitleRequest struct {
 //
 // [0] http://standards.freedesktop.org/desktop-entry-spec/
 type XSXdgToplevelSetAppIDRequest struct {
-	AppID uintptr
+	AppID string
 }
 
 // XSXdgToplevelShowWindowMenuRequest requests to show the window menu
@@ -8883,16 +8883,16 @@ type XSXdgToplevelSetAppIDRequest struct {
 // like a button press, key press, or touch down event.
 type XSXdgToplevelShowWindowMenuRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 
 	// X contains the x position to pop up the window menu at
-	X uintptr
+	X int32
 
 	// Y contains the y position to pop up the window menu at
-	Y uintptr
+	Y int32
 }
 
 // XSXdgToplevelMoveRequest requests to start an interactive move
@@ -8915,10 +8915,10 @@ type XSXdgToplevelShowWindowMenuRequest struct {
 // that the device focus will return when the move is completed.
 type XSXdgToplevelMoveRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSXdgToplevelResizeRequest requests to start an interactive resize
@@ -8955,13 +8955,13 @@ type XSXdgToplevelMoveRequest struct {
 // appropriate cursor image.
 type XSXdgToplevelResizeRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 
 	// Edges contains which edge or corner is being dragged
-	Edges uintptr
+	Edges uint32
 }
 
 // XSXdgToplevelSetMaxSizeRequest requests to set the maximum size
@@ -9001,9 +9001,9 @@ type XSXdgToplevelResizeRequest struct {
 // strictly negative values for width and height will result in a
 // protocol error.
 type XSXdgToplevelSetMaxSizeRequest struct {
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // XSXdgToplevelSetMinSizeRequest requests to set the minimum size
@@ -9043,9 +9043,9 @@ type XSXdgToplevelSetMaxSizeRequest struct {
 // strictly negative values for width and height will result in a
 // protocol error.
 type XSXdgToplevelSetMinSizeRequest struct {
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // XSXdgToplevelSetMaximizedRequest requests to maximize the window
@@ -9124,7 +9124,7 @@ type XSXdgToplevelUnsetMaximizedRequest struct {
 // up of subsurfaces, popups or similarly coupled surfaces) are not
 // visible below the fullscreened surface.
 type XSXdgToplevelSetFullscreenRequest struct {
-	Output uintptr
+	Output uint32
 }
 
 // XSXdgToplevelUnsetFullscreenRequest requests to unset the window as fullscreen
@@ -9184,11 +9184,11 @@ type XSXdgToplevelSetMinimizedRequest struct {
 // Clients must send an ack_configure in response to this event. See
 // xdg_surface.configure and xdg_surface.ack_configure for details.
 type XSXdgToplevelConfigureEvent struct {
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 
-	States uintptr
+	States []byte
 }
 
 // XSXdgToplevelCloseEvent signals when surface wants to be closed
@@ -9266,10 +9266,10 @@ type XSXdgPopupDestroyRequest struct {
 // will always have keyboard focus.
 type XSXdgPopupGrabRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSXdgPopupRepositionRequest requests to recalculate the popup's location
@@ -9298,10 +9298,10 @@ type XSXdgPopupGrabRequest struct {
 // resized, but not in response to a configure event, the client should
 // send an xdg_positioner.set_parent_size request.
 type XSXdgPopupRepositionRequest struct {
-	Positioner uintptr
+	Positioner uint32
 
 	// Token contains reposition request token
-	Token uintptr
+	Token uint32
 }
 
 // XSXdgPopupConfigureEvent signals when configure the popup surface
@@ -9320,16 +9320,16 @@ type XSXdgPopupRepositionRequest struct {
 // set_reactive requested, or in response to xdg_popup.reposition requests.
 type XSXdgPopupConfigureEvent struct {
 	// X contains x position relative to parent surface window geometry
-	X uintptr
+	X int32
 
 	// Y contains y position relative to parent surface window geometry
-	Y uintptr
+	Y int32
 
 	// Width contains window geometry width
-	Width uintptr
+	Width int32
 
 	// Height contains window geometry height
-	Height uintptr
+	Height int32
 }
 
 // XSXdgPopupPopupDoneEvent signals when popup interaction is done
@@ -9359,7 +9359,7 @@ type XSXdgPopupPopupDoneEvent struct {
 // effect. See xdg_surface.ack_configure for details.
 type XSXdgPopupRepositionedEvent struct {
 	// Token contains reposition request token
-	Token uintptr
+	Token uint32
 }
 
 // XSUVXdgShellVersion represents latest protocol version
@@ -9409,7 +9409,7 @@ type XSUVXdgShellDestroyRequest struct {
 // cleanly if they don't agree.  This request will go away once
 // the xdg-shell protocol is stable.
 type XSUVXdgShellUseUnstableVersionRequest struct {
-	Version uintptr
+	Version int32
 }
 
 // XSUVXdgShellGetXdgSurfaceRequest requests to create a shell surface from a surface
@@ -9423,9 +9423,9 @@ type XSUVXdgShellUseUnstableVersionRequest struct {
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
 type XSUVXdgShellGetXdgSurfaceRequest struct {
-	ID uintptr
+	ID uint32
 
-	Surface uintptr
+	Surface uint32
 }
 
 // XSUVXdgShellGetXdgPopupRequest requests to create a popup for a surface
@@ -9442,21 +9442,21 @@ type XSUVXdgShellGetXdgSurfaceRequest struct {
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
 type XSUVXdgShellGetXdgPopupRequest struct {
-	ID uintptr
+	ID uint32
 
-	Surface uintptr
+	Surface uint32
 
-	Parent uintptr
+	Parent uint32
 
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 
-	X uintptr
+	X int32
 
-	Y uintptr
+	Y int32
 }
 
 // XSUVXdgShellPongRequest requests to respond to a ping event
@@ -9465,7 +9465,7 @@ type XSUVXdgShellGetXdgPopupRequest struct {
 // the client may be deemed unresponsive.
 type XSUVXdgShellPongRequest struct {
 	// Serial contains serial of the ping event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVXdgShellPingEvent signals when check if the client is alive
@@ -9483,7 +9483,7 @@ type XSUVXdgShellPongRequest struct {
 // always respond to any xdg_shell object it created.
 type XSUVXdgShellPingEvent struct {
 	// Serial contains pass this to the pong request
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVXdgSurfaceResizeEdge represents edge values for resizing
@@ -9567,7 +9567,7 @@ type XSUVXdgSurfaceDestroyRequest struct {
 // "auxiliary" surfaces, so that the parent is raised when the dialog
 // is raised.
 type XSUVXdgSurfaceSetParentRequest struct {
-	Parent uintptr
+	Parent uint32
 }
 
 // XSUVXdgSurfaceSetTitleRequest requests to set surface title
@@ -9580,7 +9580,7 @@ type XSUVXdgSurfaceSetParentRequest struct {
 //
 // The string must be encoded in UTF-8.
 type XSUVXdgSurfaceSetTitleRequest struct {
-	Title uintptr
+	Title string
 }
 
 // XSUVXdgSurfaceSetAppIDRequest requests to set application ID
@@ -9606,7 +9606,7 @@ type XSUVXdgSurfaceSetTitleRequest struct {
 //
 // [0] http://standards.freedesktop.org/desktop-entry-spec/
 type XSUVXdgSurfaceSetAppIDRequest struct {
-	AppID uintptr
+	AppID string
 }
 
 // XSUVXdgSurfaceShowWindowMenuRequest requests to show the window menu
@@ -9624,16 +9624,16 @@ type XSUVXdgSurfaceSetAppIDRequest struct {
 // like a button press, key press, or touch down event.
 type XSUVXdgSurfaceShowWindowMenuRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 
 	// X contains the x position to pop up the window menu at
-	X uintptr
+	X int32
 
 	// Y contains the y position to pop up the window menu at
-	Y uintptr
+	Y int32
 }
 
 // XSUVXdgSurfaceMoveRequest requests to start an interactive move
@@ -9656,10 +9656,10 @@ type XSUVXdgSurfaceShowWindowMenuRequest struct {
 // that the device focus will return when the move is completed.
 type XSUVXdgSurfaceMoveRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVXdgSurfaceResizeRequest requests to start an interactive resize
@@ -9696,13 +9696,13 @@ type XSUVXdgSurfaceMoveRequest struct {
 // appropriate cursor image.
 type XSUVXdgSurfaceResizeRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 
 	// Edges contains which edge or corner is being dragged
-	Edges uintptr
+	Edges uint32
 }
 
 // XSUVXdgSurfaceAckConfigureRequest requests to ack a configure event
@@ -9728,7 +9728,7 @@ type XSUVXdgSurfaceResizeRequest struct {
 // configure event the client is responding to.
 type XSUVXdgSurfaceAckConfigureRequest struct {
 	// Serial contains the serial from the configure event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVXdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
@@ -9759,13 +9759,13 @@ type XSUVXdgSurfaceAckConfigureRequest struct {
 //
 // The width and height must be greater than zero.
 type XSUVXdgSurfaceSetWindowGeometryRequest struct {
-	X uintptr
+	X int32
 
-	Y uintptr
+	Y int32
 
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // XSUVXdgSurfaceSetMaximizedRequest requests to maximize the window
@@ -9823,7 +9823,7 @@ type XSUVXdgSurfaceUnsetMaximizedRequest struct {
 // position the surface in the center of the output and compensate with
 // black borders filling the rest of the output.
 type XSUVXdgSurfaceSetFullscreenRequest struct {
-	Output uintptr
+	Output uint32
 }
 
 type XSUVXdgSurfaceUnsetFullscreenRequest struct {
@@ -9869,13 +9869,13 @@ type XSUVXdgSurfaceSetMinimizedRequest struct {
 // can respond to one, it is free to discard all but the last
 // event it received.
 type XSUVXdgSurfaceConfigureEvent struct {
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 
-	States uintptr
+	States []byte
 
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVXdgSurfaceCloseEvent signals when surface wants to be closed
@@ -9947,7 +9947,7 @@ type XSUVZxdgShellV6DestroyRequest struct {
 // surfaces relative to some parent surface. See the interface description
 // and xdg_surface.get_popup for details.
 type XSUVZxdgShellV6CreatePositionerRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // XSUVZxdgShellV6GetXdgSurfaceRequest requests to create a shell surface from a surface
@@ -9964,9 +9964,9 @@ type XSUVZxdgShellV6CreatePositionerRequest struct {
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
 type XSUVZxdgShellV6GetXdgSurfaceRequest struct {
-	ID uintptr
+	ID uint32
 
-	Surface uintptr
+	Surface uint32
 }
 
 // XSUVZxdgShellV6PongRequest requests to respond to a ping event
@@ -9975,7 +9975,7 @@ type XSUVZxdgShellV6GetXdgSurfaceRequest struct {
 // the client may be deemed unresponsive. See xdg_shell.ping.
 type XSUVZxdgShellV6PongRequest struct {
 	// Serial contains serial of the ping event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVZxdgShellV6PingEvent signals when check if the client is alive
@@ -9993,7 +9993,7 @@ type XSUVZxdgShellV6PongRequest struct {
 // always respond to any xdg_shell object it created.
 type XSUVZxdgShellV6PingEvent struct {
 	// Serial contains pass this to the pong request
-	Serial uintptr
+	Serial uint32
 }
 
 type XSUVZxdgPositionerV6Error int
@@ -10087,10 +10087,10 @@ type XSUVZxdgPositionerV6DestroyRequest struct {
 // If a zero or negative size is set the invalid_input error is raised.
 type XSUVZxdgPositionerV6SetSizeRequest struct {
 	// Width contains width of positioned rectangle
-	Width uintptr
+	Width int32
 
 	// Height contains height of positioned rectangle
-	Height uintptr
+	Height int32
 }
 
 // XSUVZxdgPositionerV6SetAnchorRectRequest requests to set the anchor rectangle within the parent surface
@@ -10107,16 +10107,16 @@ type XSUVZxdgPositionerV6SetSizeRequest struct {
 // If a zero or negative size is set the invalid_input error is raised.
 type XSUVZxdgPositionerV6SetAnchorRectRequest struct {
 	// X contains x position of anchor rectangle
-	X uintptr
+	X int32
 
 	// Y contains y position of anchor rectangle
-	Y uintptr
+	Y int32
 
 	// Width contains width of anchor rectangle
-	Width uintptr
+	Width int32
 
 	// Height contains height of anchor rectangle
-	Height uintptr
+	Height int32
 }
 
 // XSUVZxdgPositionerV6SetAnchorRequest requests to set anchor rectangle anchor edges
@@ -10133,7 +10133,7 @@ type XSUVZxdgPositionerV6SetAnchorRectRequest struct {
 // the invalid_input error is raised.
 type XSUVZxdgPositionerV6SetAnchorRequest struct {
 	// Anchor contains bit mask of anchor edges
-	Anchor uintptr
+	Anchor uint32
 }
 
 // XSUVZxdgPositionerV6SetGravityRequest requests to set child surface gravity
@@ -10149,7 +10149,7 @@ type XSUVZxdgPositionerV6SetAnchorRequest struct {
 // invalid_input error is raised.
 type XSUVZxdgPositionerV6SetGravityRequest struct {
 	// Gravity contains bit mask of gravity directions
-	Gravity uintptr
+	Gravity uint32
 }
 
 // XSUVZxdgPositionerV6SetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
@@ -10169,7 +10169,7 @@ type XSUVZxdgPositionerV6SetGravityRequest struct {
 // The default adjustment is none.
 type XSUVZxdgPositionerV6SetConstraintAdjustmentRequest struct {
 	// ConstraintAdjustment contains bit mask of constraint adjustments
-	ConstraintAdjustment uintptr
+	ConstraintAdjustment uint32
 }
 
 // XSUVZxdgPositionerV6SetOffsetRequest requests to set surface position offset
@@ -10187,10 +10187,10 @@ type XSUVZxdgPositionerV6SetConstraintAdjustmentRequest struct {
 // with some user interface element placed somewhere in the popup surface.
 type XSUVZxdgPositionerV6SetOffsetRequest struct {
 	// X contains surface position x offset
-	X uintptr
+	X int32
 
 	// Y contains surface position y offset
-	Y uintptr
+	Y int32
 }
 
 type XSUVZxdgSurfaceV6Error int
@@ -10218,7 +10218,7 @@ type XSUVZxdgSurfaceV6DestroyRequest struct {
 // See the documentation of xdg_toplevel for more details about what an
 // xdg_toplevel is and how it is used.
 type XSUVZxdgSurfaceV6GetToplevelRequest struct {
-	ID uintptr
+	ID uint32
 }
 
 // XSUVZxdgSurfaceV6GetPopupRequest requests to assign the xdg_popup surface role
@@ -10229,11 +10229,11 @@ type XSUVZxdgSurfaceV6GetToplevelRequest struct {
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
 type XSUVZxdgSurfaceV6GetPopupRequest struct {
-	ID uintptr
+	ID uint32
 
-	Parent uintptr
+	Parent uint32
 
-	Positioner uintptr
+	Positioner uint32
 }
 
 // XSUVZxdgSurfaceV6SetWindowGeometryRequest requests to set the new window geometry
@@ -10263,13 +10263,13 @@ type XSUVZxdgSurfaceV6GetPopupRequest struct {
 // combined geometry of the surface of the xdg_surface and the associated
 // subsurfaces.
 type XSUVZxdgSurfaceV6SetWindowGeometryRequest struct {
-	X uintptr
+	X int32
 
-	Y uintptr
+	Y int32
 
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // XSUVZxdgSurfaceV6AckConfigureRequest requests to ack a configure event
@@ -10295,7 +10295,7 @@ type XSUVZxdgSurfaceV6SetWindowGeometryRequest struct {
 // event the client really is responding to.
 type XSUVZxdgSurfaceV6AckConfigureRequest struct {
 	// Serial contains the serial from the configure event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVZxdgSurfaceV6ConfigureEvent signals when suggest a surface change
@@ -10318,7 +10318,7 @@ type XSUVZxdgSurfaceV6AckConfigureRequest struct {
 // to one, it is free to discard all but the last event it received.
 type XSUVZxdgSurfaceV6ConfigureEvent struct {
 	// Serial contains serial of the configure event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVZxdgToplevelV6ResizeEdge represents edge values for resizing
@@ -10390,7 +10390,7 @@ type XSUVZxdgToplevelV6DestroyRequest struct {
 // "auxiliary" surfaces, so that the parent is raised when the dialog
 // is raised.
 type XSUVZxdgToplevelV6SetParentRequest struct {
-	Parent uintptr
+	Parent uint32
 }
 
 // XSUVZxdgToplevelV6SetTitleRequest requests to set surface title
@@ -10403,7 +10403,7 @@ type XSUVZxdgToplevelV6SetParentRequest struct {
 //
 // The string must be encoded in UTF-8.
 type XSUVZxdgToplevelV6SetTitleRequest struct {
-	Title uintptr
+	Title string
 }
 
 // XSUVZxdgToplevelV6SetAppIDRequest requests to set application ID
@@ -10429,7 +10429,7 @@ type XSUVZxdgToplevelV6SetTitleRequest struct {
 //
 // [0] http://standards.freedesktop.org/desktop-entry-spec/
 type XSUVZxdgToplevelV6SetAppIDRequest struct {
-	AppID uintptr
+	AppID string
 }
 
 // XSUVZxdgToplevelV6ShowWindowMenuRequest requests to show the window menu
@@ -10447,16 +10447,16 @@ type XSUVZxdgToplevelV6SetAppIDRequest struct {
 // like a button press, key press, or touch down event.
 type XSUVZxdgToplevelV6ShowWindowMenuRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 
 	// X contains the x position to pop up the window menu at
-	X uintptr
+	X int32
 
 	// Y contains the y position to pop up the window menu at
-	Y uintptr
+	Y int32
 }
 
 // XSUVZxdgToplevelV6MoveRequest requests to start an interactive move
@@ -10479,10 +10479,10 @@ type XSUVZxdgToplevelV6ShowWindowMenuRequest struct {
 // that the device focus will return when the move is completed.
 type XSUVZxdgToplevelV6MoveRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVZxdgToplevelV6ResizeRequest requests to start an interactive resize
@@ -10519,13 +10519,13 @@ type XSUVZxdgToplevelV6MoveRequest struct {
 // appropriate cursor image.
 type XSUVZxdgToplevelV6ResizeRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 
 	// Edges contains which edge or corner is being dragged
-	Edges uintptr
+	Edges uint32
 }
 
 // XSUVZxdgToplevelV6SetMaxSizeRequest requests to set the maximum size
@@ -10565,9 +10565,9 @@ type XSUVZxdgToplevelV6ResizeRequest struct {
 // strictly negative values for width and height will result in a
 // protocol error.
 type XSUVZxdgToplevelV6SetMaxSizeRequest struct {
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // XSUVZxdgToplevelV6SetMinSizeRequest requests to set the minimum size
@@ -10607,9 +10607,9 @@ type XSUVZxdgToplevelV6SetMaxSizeRequest struct {
 // strictly negative values for width and height will result in a
 // protocol error.
 type XSUVZxdgToplevelV6SetMinSizeRequest struct {
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 }
 
 // XSUVZxdgToplevelV6SetMaximizedRequest requests to maximize the window
@@ -10667,7 +10667,7 @@ type XSUVZxdgToplevelV6UnsetMaximizedRequest struct {
 // position the surface in the center of the output and compensate with
 // black borders filling the rest of the output.
 type XSUVZxdgToplevelV6SetFullscreenRequest struct {
-	Output uintptr
+	Output uint32
 }
 
 type XSUVZxdgToplevelV6UnsetFullscreenRequest struct {
@@ -10708,11 +10708,11 @@ type XSUVZxdgToplevelV6SetMinimizedRequest struct {
 // Clients must send an ack_configure in response to this event. See
 // xdg_surface.configure and xdg_surface.ack_configure for details.
 type XSUVZxdgToplevelV6ConfigureEvent struct {
-	Width uintptr
+	Width int32
 
-	Height uintptr
+	Height int32
 
-	States uintptr
+	States []byte
 }
 
 // XSUVZxdgToplevelV6CloseEvent signals when surface wants to be closed
@@ -10790,10 +10790,10 @@ type XSUVZxdgPopupV6DestroyRequest struct {
 // will always have keyboard focus.
 type XSUVZxdgPopupV6GrabRequest struct {
 	// Seat contains the wl_seat of the user event
-	Seat uintptr
+	Seat uint32
 
 	// Serial contains the serial of the user event
-	Serial uintptr
+	Serial uint32
 }
 
 // XSUVZxdgPopupV6ConfigureEvent signals when configure the popup surface
@@ -10807,16 +10807,16 @@ type XSUVZxdgPopupV6GrabRequest struct {
 // window geometry of the parent surface.
 type XSUVZxdgPopupV6ConfigureEvent struct {
 	// X contains x position relative to parent surface window geometry
-	X uintptr
+	X int32
 
 	// Y contains y position relative to parent surface window geometry
-	Y uintptr
+	Y int32
 
 	// Width contains window geometry width
-	Width uintptr
+	Width int32
 
 	// Height contains window geometry height
-	Height uintptr
+	Height int32
 }
 
 // XSUVZxdgPopupV6PopupDoneEvent signals when popup interaction is done
@@ -10855,13 +10855,13 @@ type XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest struct {
 // a compositor may change and reroute keyboard events while the grab
 // is nominally active.
 type XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest struct {
-	ID uintptr
+	ID uint32
 
 	// Surface contains surface to report keyboard events to
-	Surface uintptr
+	Surface uint32
 
 	// Seat contains the seat for which the keyboard should be grabbed
-	Seat uintptr
+	Seat uint32
 }
 
 // XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest requests to destroy the grabbed keyboard object
@@ -10901,10 +10901,10 @@ type ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest struct {
 // to avoid raising a synchronization_exists protocol error.
 type ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest struct {
 	// ID contains the new synchronization interface id
-	ID uintptr
+	ID uint32
 
 	// Surface contains the surface
-	Surface uintptr
+	Surface uint32
 }
 
 type ZLESUVZwpLinuxSurfaceSynchronizationV1Error int
@@ -10969,7 +10969,7 @@ type ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest struct {
 // error is raised.
 type ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct {
 	// FD contains acquire fence fd
-	FD uintptr
+	FD struct{}
 }
 
 // ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest requests to release fence for last-attached buffer
@@ -10993,7 +10993,7 @@ type ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct {
 // error is raised.
 type ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct {
 	// Release contains new zwp_linux_buffer_release_v1 object
-	Release uintptr
+	Release uint32
 }
 
 // ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent signals when release buffer with fence
@@ -11011,7 +11011,7 @@ type ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct {
 // This event destroys the zwp_linux_buffer_release_v1 object.
 type ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent struct {
 	// Fence contains fence for last operation on buffer
-	Fence uintptr
+	Fence struct{}
 }
 
 // ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent signals when release buffer immediately
