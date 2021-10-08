@@ -372,7 +372,7 @@ func arggen(w io.Writer, arg arg) error {
 	case "array":
 		typ = "[]byte"
 	case "fd":
-		typ = "struct{}"
+		typ = "FD"
 	default:
 		return fmt.Errorf("argument %s: unknown argument type %q", argname, arg.Type)
 	}

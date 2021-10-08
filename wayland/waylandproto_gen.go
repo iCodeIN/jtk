@@ -43,7 +43,7 @@ var _ Message = BTWTFDPasserPreFDEvent{}
 // BTWTFDPasserFDEvent signals when passes a file descriptor
 type BTWTFDPasserFDEvent struct {
 	// FD contains file descriptor
-	FD struct{}
+	FD FD
 }
 
 // Opcode returns the event opcode for fd_passer.fd in build_time_wayland_tests
@@ -107,7 +107,7 @@ var _ Message = DLVWpDrmLeaseDeviceV1ReleaseRequest{}
 // appropriate DRM device or select the appropriate connectors therein.
 type DLVWpDrmLeaseDeviceV1DrmFDEvent struct {
 	// FD contains DRM file descriptor
-	FD struct{}
+	FD FD
 }
 
 // Opcode returns the event opcode for wp_drm_lease_device_v1.drm_fd in drm_lease_v1
@@ -367,7 +367,7 @@ var _ Message = DLVWpDrmLeaseV1DestroyRequest{}
 // lifetime.
 type DLVWpDrmLeaseV1LeaseFDEvent struct {
 	// LeasedFD contains leased DRM file descriptor
-	LeasedFD struct{}
+	LeasedFD FD
 }
 
 // Opcode returns the event opcode for wp_drm_lease_v1.lease_fd in drm_lease_v1
@@ -1609,7 +1609,7 @@ var _ Message = LDUVZwpLinuxBufferParamsV1DestroyRequest{}
 // was already set.
 type LDUVZwpLinuxBufferParamsV1AddRequest struct {
 	// FD contains dmabuf fd
-	FD struct{}
+	FD FD
 
 	// PlaneIdx contains plane index
 	PlaneIdx uint32
@@ -6978,7 +6978,7 @@ type WWlShmCreatePoolRequest struct {
 	ID uint32
 
 	// FD contains file descriptor for the pool
-	FD struct{}
+	FD FD
 
 	// Size contains pool size, in bytes
 	Size int32
@@ -7122,7 +7122,7 @@ type WWlDataOfferReceiveRequest struct {
 	MimeType string
 
 	// FD contains file descriptor for data transfer
-	FD struct{}
+	FD FD
 }
 
 // Opcode returns the request opcode for wl_data_offer.receive in wayland
@@ -7390,7 +7390,7 @@ type WWlDataSourceSendEvent struct {
 	MimeType string
 
 	// FD contains file descriptor for the data
-	FD struct{}
+	FD FD
 }
 
 // Opcode returns the event opcode for wl_data_source.send in wayland
@@ -9387,7 +9387,7 @@ type WWlKeyboardKeymapEvent struct {
 	Format uint32
 
 	// FD contains keymap file descriptor
-	FD struct{}
+	FD FD
 
 	// Size contains keymap size, in bytes
 	Size uint32
@@ -10413,7 +10413,7 @@ var _ Message = WPSUVZwpPrimarySelectionDeviceV1SelectionEvent{}
 type WPSUVZwpPrimarySelectionOfferV1ReceiveRequest struct {
 	MimeType string
 
-	FD struct{}
+	FD FD
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_offer_v1.receive in wp_primary_selection_unstable_v1
@@ -10489,7 +10489,7 @@ var _ Message = WPSUVZwpPrimarySelectionSourceV1DestroyRequest{}
 type WPSUVZwpPrimarySelectionSourceV1SendEvent struct {
 	MimeType string
 
-	FD struct{}
+	FD FD
 }
 
 // Opcode returns the event opcode for zwp_primary_selection_source_v1.send in wp_primary_selection_unstable_v1
@@ -14897,7 +14897,7 @@ var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
 // error is raised.
 type ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct {
 	// FD contains acquire fence fd
-	FD struct{}
+	FD FD
 }
 
 // Opcode returns the request opcode for zwp_linux_surface_synchronization_v1.set_acquire_fence in zwp_linux_explicit_synchronization_unstable_v1
@@ -14956,7 +14956,7 @@ var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
 // This event destroys the zwp_linux_buffer_release_v1 object.
 type ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent struct {
 	// Fence contains fence for last operation on buffer
-	Fence struct{}
+	Fence FD
 }
 
 // Opcode returns the event opcode for zwp_linux_buffer_release_v1.fenced_release in zwp_linux_explicit_synchronization_unstable_v1
