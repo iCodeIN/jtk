@@ -3,103 +3,27 @@
 package wayland
 
 ////////////////////////////////////////////////////////////////////////////////
-// #region Protocol build_time_wayland_tests
-
-// ----------------------------------------------------------------------------
-// #region Interface build_time_wayland_tests.fd_passer
-
-type BTWTFDPasserDestroyRequest struct {
-}
-
-// Opcode returns the request opcode for fd_passer.destroy in build_time_wayland_tests
-func (BTWTFDPasserDestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure BTWTFDPasserDestroyRequest implements Message.
-var _ Message = BTWTFDPasserDestroyRequest{}
-
-// BTWTFDPasserConjoinRequest requests to register another fd passer with this one
-//
-// Tells this fd passer object about another one to send events
-// to for more complicated fd leak tests.
-type BTWTFDPasserConjoinRequest struct {
-	Passer ObjectID
-}
-
-// Opcode returns the request opcode for fd_passer.conjoin in build_time_wayland_tests
-func (BTWTFDPasserConjoinRequest) Opcode() uint16 { return 1 }
-
-// Ensure BTWTFDPasserConjoinRequest implements Message.
-var _ Message = BTWTFDPasserConjoinRequest{}
-
-type BTWTFDPasserPreFDEvent struct {
-}
-
-// Opcode returns the event opcode for fd_passer.pre_fd in build_time_wayland_tests
-func (BTWTFDPasserPreFDEvent) Opcode() uint16 { return 0 }
-
-// Ensure BTWTFDPasserPreFDEvent implements Message.
-var _ Message = BTWTFDPasserPreFDEvent{}
-
-// Scan scans the event from the socket.
-func (e *BTWTFDPasserPreFDEvent) Scan(s *EventScanner) error {
-	return nil
-}
-
-// Ensure BTWTFDPasserPreFDEvent implements Event.
-var _ Event = &BTWTFDPasserPreFDEvent{}
-
-// BTWTFDPasserFDEvent signals when passes a file descriptor
-type BTWTFDPasserFDEvent struct {
-	// FD contains file descriptor
-	FD FD
-}
-
-// Opcode returns the event opcode for fd_passer.fd in build_time_wayland_tests
-func (BTWTFDPasserFDEvent) Opcode() uint16 { return 1 }
-
-// Ensure BTWTFDPasserFDEvent implements Message.
-var _ Message = BTWTFDPasserFDEvent{}
-
-// Scan scans the event from the socket.
-func (e *BTWTFDPasserFDEvent) Scan(s *EventScanner) error {
-	if v, err := s.FD(); err != nil {
-		return err
-	} else {
-		e.FD = v
-	}
-	return nil
-}
-
-// Ensure BTWTFDPasserFDEvent implements Event.
-var _ Event = &BTWTFDPasserFDEvent{}
-
-// #endregion Interface build_time_wayland_tests.fd_passer
-
-////////////////////////////////////////////////////////////////////////////////
-// #endregion Protocol build_time_wayland_tests
-
-////////////////////////////////////////////////////////////////////////////////
 // #region Protocol drm_lease_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface drm_lease_v1.wp_drm_lease_device_v1
 
-// DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest requests to create a lease request object
+// WpDrmLeaseDeviceV1CreateLeaseRequestRequest requests to create a lease request object
 //
 // Creates a lease request object.
 //
 // See the documentation for wp_drm_lease_request_v1 for details.
-type DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest struct {
+type WpDrmLeaseDeviceV1CreateLeaseRequestRequest struct {
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wp_drm_lease_device_v1.create_lease_request in drm_lease_v1
-func (DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest) Opcode() uint16 { return 0 }
+func (WpDrmLeaseDeviceV1CreateLeaseRequestRequest) Opcode() uint16 { return 0 }
 
-// Ensure DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest implements Message.
-var _ Message = DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest{}
+// Ensure WpDrmLeaseDeviceV1CreateLeaseRequestRequest implements Message.
+var _ Message = WpDrmLeaseDeviceV1CreateLeaseRequestRequest{}
 
-// DLVWpDrmLeaseDeviceV1ReleaseRequest requests to release this object
+// WpDrmLeaseDeviceV1ReleaseRequest requests to release this object
 //
 // Indicates the client no longer wishes to use this object. In response
 // the compositor will immediately send the released event and destroy
@@ -107,16 +31,16 @@ var _ Message = DLVWpDrmLeaseDeviceV1CreateLeaseRequestRequest{}
 // connector events before the released event. The client must not send any
 // requests after this one, doing so will raise a wl_display error.
 // Existing connectors, lease request and leases will not be affected.
-type DLVWpDrmLeaseDeviceV1ReleaseRequest struct {
+type WpDrmLeaseDeviceV1ReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for wp_drm_lease_device_v1.release in drm_lease_v1
-func (DLVWpDrmLeaseDeviceV1ReleaseRequest) Opcode() uint16 { return 1 }
+func (WpDrmLeaseDeviceV1ReleaseRequest) Opcode() uint16 { return 1 }
 
-// Ensure DLVWpDrmLeaseDeviceV1ReleaseRequest implements Message.
-var _ Message = DLVWpDrmLeaseDeviceV1ReleaseRequest{}
+// Ensure WpDrmLeaseDeviceV1ReleaseRequest implements Message.
+var _ Message = WpDrmLeaseDeviceV1ReleaseRequest{}
 
-// DLVWpDrmLeaseDeviceV1DrmFDEvent signals when open a non-master fd for this DRM node
+// WpDrmLeaseDeviceV1DrmFDEvent signals when open a non-master fd for this DRM node
 //
 // The compositor will send this event when the wp_drm_lease_device_v1
 // global is bound, although there are no guarantees as to how long this
@@ -126,19 +50,19 @@ var _ Message = DLVWpDrmLeaseDeviceV1ReleaseRequest{}
 // The purpose of this event is to give the client the ability to
 // query DRM and discover information which may help them pick the
 // appropriate DRM device or select the appropriate connectors therein.
-type DLVWpDrmLeaseDeviceV1DrmFDEvent struct {
+type WpDrmLeaseDeviceV1DrmFDEvent struct {
 	// FD contains DRM file descriptor
 	FD FD
 }
 
 // Opcode returns the event opcode for wp_drm_lease_device_v1.drm_fd in drm_lease_v1
-func (DLVWpDrmLeaseDeviceV1DrmFDEvent) Opcode() uint16 { return 0 }
+func (WpDrmLeaseDeviceV1DrmFDEvent) Opcode() uint16 { return 0 }
 
-// Ensure DLVWpDrmLeaseDeviceV1DrmFDEvent implements Message.
-var _ Message = DLVWpDrmLeaseDeviceV1DrmFDEvent{}
+// Ensure WpDrmLeaseDeviceV1DrmFDEvent implements Message.
+var _ Message = WpDrmLeaseDeviceV1DrmFDEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseDeviceV1DrmFDEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseDeviceV1DrmFDEvent) Scan(s *EventScanner) error {
 	if v, err := s.FD(); err != nil {
 		return err
 	} else {
@@ -147,10 +71,10 @@ func (e *DLVWpDrmLeaseDeviceV1DrmFDEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseDeviceV1DrmFDEvent implements Event.
-var _ Event = &DLVWpDrmLeaseDeviceV1DrmFDEvent{}
+// Ensure WpDrmLeaseDeviceV1DrmFDEvent implements Event.
+var _ Event = &WpDrmLeaseDeviceV1DrmFDEvent{}
 
-// DLVWpDrmLeaseDeviceV1ConnectorEvent signals when advertise connectors available for leases
+// WpDrmLeaseDeviceV1ConnectorEvent signals when advertise connectors available for leases
 //
 // The compositor will use this event to advertise connectors available for
 // lease by clients. This object may be passed into a lease request to
@@ -162,18 +86,18 @@ var _ Event = &DLVWpDrmLeaseDeviceV1DrmFDEvent{}
 // The compositor must send the drm_fd event before sending connectors.
 // After the drm_fd event it will send all available connectors but may
 // send additional connectors at any time.
-type DLVWpDrmLeaseDeviceV1ConnectorEvent struct {
+type WpDrmLeaseDeviceV1ConnectorEvent struct {
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for wp_drm_lease_device_v1.connector in drm_lease_v1
-func (DLVWpDrmLeaseDeviceV1ConnectorEvent) Opcode() uint16 { return 1 }
+func (WpDrmLeaseDeviceV1ConnectorEvent) Opcode() uint16 { return 1 }
 
-// Ensure DLVWpDrmLeaseDeviceV1ConnectorEvent implements Message.
-var _ Message = DLVWpDrmLeaseDeviceV1ConnectorEvent{}
+// Ensure WpDrmLeaseDeviceV1ConnectorEvent implements Message.
+var _ Message = WpDrmLeaseDeviceV1ConnectorEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseDeviceV1ConnectorEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseDeviceV1ConnectorEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -182,10 +106,10 @@ func (e *DLVWpDrmLeaseDeviceV1ConnectorEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseDeviceV1ConnectorEvent implements Event.
-var _ Event = &DLVWpDrmLeaseDeviceV1ConnectorEvent{}
+// Ensure WpDrmLeaseDeviceV1ConnectorEvent implements Event.
+var _ Event = &WpDrmLeaseDeviceV1ConnectorEvent{}
 
-// DLVWpDrmLeaseDeviceV1DoneEvent signals when signals grouping of connectors
+// WpDrmLeaseDeviceV1DoneEvent signals when signals grouping of connectors
 //
 // The compositor will send this event to indicate that it has sent all
 // currently available connectors after the client binds to the global or
@@ -193,87 +117,87 @@ var _ Event = &DLVWpDrmLeaseDeviceV1ConnectorEvent{}
 // change or when a leased connector becomes available again. It will
 // similarly send this event to group wp_drm_lease_connector_v1.withdrawn
 // events of connectors of this device.
-type DLVWpDrmLeaseDeviceV1DoneEvent struct {
+type WpDrmLeaseDeviceV1DoneEvent struct {
 }
 
 // Opcode returns the event opcode for wp_drm_lease_device_v1.done in drm_lease_v1
-func (DLVWpDrmLeaseDeviceV1DoneEvent) Opcode() uint16 { return 2 }
+func (WpDrmLeaseDeviceV1DoneEvent) Opcode() uint16 { return 2 }
 
-// Ensure DLVWpDrmLeaseDeviceV1DoneEvent implements Message.
-var _ Message = DLVWpDrmLeaseDeviceV1DoneEvent{}
+// Ensure WpDrmLeaseDeviceV1DoneEvent implements Message.
+var _ Message = WpDrmLeaseDeviceV1DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseDeviceV1DoneEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseDeviceV1DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseDeviceV1DoneEvent implements Event.
-var _ Event = &DLVWpDrmLeaseDeviceV1DoneEvent{}
+// Ensure WpDrmLeaseDeviceV1DoneEvent implements Event.
+var _ Event = &WpDrmLeaseDeviceV1DoneEvent{}
 
-// DLVWpDrmLeaseDeviceV1ReleasedEvent signals when the compositor has finished using the device
+// WpDrmLeaseDeviceV1ReleasedEvent signals when the compositor has finished using the device
 //
 // This event is sent in response to the release request and indicates
 // that the compositor is done sending connector events.
 // The compositor will destroy this object immediately after sending the
 // event and it will become invalid. The client should release any
 // resources associated with this device after receiving this event.
-type DLVWpDrmLeaseDeviceV1ReleasedEvent struct {
+type WpDrmLeaseDeviceV1ReleasedEvent struct {
 }
 
 // Opcode returns the event opcode for wp_drm_lease_device_v1.released in drm_lease_v1
-func (DLVWpDrmLeaseDeviceV1ReleasedEvent) Opcode() uint16 { return 3 }
+func (WpDrmLeaseDeviceV1ReleasedEvent) Opcode() uint16 { return 3 }
 
-// Ensure DLVWpDrmLeaseDeviceV1ReleasedEvent implements Message.
-var _ Message = DLVWpDrmLeaseDeviceV1ReleasedEvent{}
+// Ensure WpDrmLeaseDeviceV1ReleasedEvent implements Message.
+var _ Message = WpDrmLeaseDeviceV1ReleasedEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseDeviceV1ReleasedEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseDeviceV1ReleasedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseDeviceV1ReleasedEvent implements Event.
-var _ Event = &DLVWpDrmLeaseDeviceV1ReleasedEvent{}
+// Ensure WpDrmLeaseDeviceV1ReleasedEvent implements Event.
+var _ Event = &WpDrmLeaseDeviceV1ReleasedEvent{}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_device_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface drm_lease_v1.wp_drm_lease_connector_v1
 
-// DLVWpDrmLeaseConnectorV1DestroyRequest requests to destroy connector
+// WpDrmLeaseConnectorV1DestroyRequest requests to destroy connector
 //
 // The client may send this request to indicate that it will not use this
 // connector. Clients are encouraged to send this after receiving the
 // "withdrawn" event so that the server can release the resources
 // associated with this connector offer. Neither existing lease requests
 // nor leases will be affected.
-type DLVWpDrmLeaseConnectorV1DestroyRequest struct {
+type WpDrmLeaseConnectorV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wp_drm_lease_connector_v1.destroy in drm_lease_v1
-func (DLVWpDrmLeaseConnectorV1DestroyRequest) Opcode() uint16 { return 0 }
+func (WpDrmLeaseConnectorV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure DLVWpDrmLeaseConnectorV1DestroyRequest implements Message.
-var _ Message = DLVWpDrmLeaseConnectorV1DestroyRequest{}
+// Ensure WpDrmLeaseConnectorV1DestroyRequest implements Message.
+var _ Message = WpDrmLeaseConnectorV1DestroyRequest{}
 
-// DLVWpDrmLeaseConnectorV1NameEvent signals when name
+// WpDrmLeaseConnectorV1NameEvent signals when name
 //
 // The compositor sends this event once the connector is created to
 // indicate the name of this connector. This will not change for the
 // duration of the Wayland session, but is not guaranteed to be consistent
 // between sessions.
-type DLVWpDrmLeaseConnectorV1NameEvent struct {
+type WpDrmLeaseConnectorV1NameEvent struct {
 	// Name contains connector name
 	Name string
 }
 
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.name in drm_lease_v1
-func (DLVWpDrmLeaseConnectorV1NameEvent) Opcode() uint16 { return 0 }
+func (WpDrmLeaseConnectorV1NameEvent) Opcode() uint16 { return 0 }
 
-// Ensure DLVWpDrmLeaseConnectorV1NameEvent implements Message.
-var _ Message = DLVWpDrmLeaseConnectorV1NameEvent{}
+// Ensure WpDrmLeaseConnectorV1NameEvent implements Message.
+var _ Message = WpDrmLeaseConnectorV1NameEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseConnectorV1NameEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseConnectorV1NameEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -282,28 +206,28 @@ func (e *DLVWpDrmLeaseConnectorV1NameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseConnectorV1NameEvent implements Event.
-var _ Event = &DLVWpDrmLeaseConnectorV1NameEvent{}
+// Ensure WpDrmLeaseConnectorV1NameEvent implements Event.
+var _ Event = &WpDrmLeaseConnectorV1NameEvent{}
 
-// DLVWpDrmLeaseConnectorV1DescriptionEvent signals when description
+// WpDrmLeaseConnectorV1DescriptionEvent signals when description
 //
 // The compositor sends this event once the connector is created to provide
 // a human-readable description for this connector, which may be presented
 // to the user. The compositor may send this event multiple times over the
 // lifetime of this object to reflect changes in the description.
-type DLVWpDrmLeaseConnectorV1DescriptionEvent struct {
+type WpDrmLeaseConnectorV1DescriptionEvent struct {
 	// Description contains connector description
 	Description string
 }
 
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.description in drm_lease_v1
-func (DLVWpDrmLeaseConnectorV1DescriptionEvent) Opcode() uint16 { return 1 }
+func (WpDrmLeaseConnectorV1DescriptionEvent) Opcode() uint16 { return 1 }
 
-// Ensure DLVWpDrmLeaseConnectorV1DescriptionEvent implements Message.
-var _ Message = DLVWpDrmLeaseConnectorV1DescriptionEvent{}
+// Ensure WpDrmLeaseConnectorV1DescriptionEvent implements Message.
+var _ Message = WpDrmLeaseConnectorV1DescriptionEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseConnectorV1DescriptionEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseConnectorV1DescriptionEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -312,28 +236,28 @@ func (e *DLVWpDrmLeaseConnectorV1DescriptionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseConnectorV1DescriptionEvent implements Event.
-var _ Event = &DLVWpDrmLeaseConnectorV1DescriptionEvent{}
+// Ensure WpDrmLeaseConnectorV1DescriptionEvent implements Event.
+var _ Event = &WpDrmLeaseConnectorV1DescriptionEvent{}
 
-// DLVWpDrmLeaseConnectorV1ConnectorIDEvent signals when connector_id
+// WpDrmLeaseConnectorV1ConnectorIDEvent signals when connector_id
 //
 // The compositor sends this event once the connector is created to
 // indicate the DRM object ID which represents the underlying connector
 // that is being offered. Note that the final lease may include additional
 // object IDs, such as CRTCs and planes.
-type DLVWpDrmLeaseConnectorV1ConnectorIDEvent struct {
+type WpDrmLeaseConnectorV1ConnectorIDEvent struct {
 	// ConnectorID contains DRM connector ID
 	ConnectorID uint32
 }
 
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.connector_id in drm_lease_v1
-func (DLVWpDrmLeaseConnectorV1ConnectorIDEvent) Opcode() uint16 { return 2 }
+func (WpDrmLeaseConnectorV1ConnectorIDEvent) Opcode() uint16 { return 2 }
 
-// Ensure DLVWpDrmLeaseConnectorV1ConnectorIDEvent implements Message.
-var _ Message = DLVWpDrmLeaseConnectorV1ConnectorIDEvent{}
+// Ensure WpDrmLeaseConnectorV1ConnectorIDEvent implements Message.
+var _ Message = WpDrmLeaseConnectorV1ConnectorIDEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseConnectorV1ConnectorIDEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseConnectorV1ConnectorIDEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -342,32 +266,32 @@ func (e *DLVWpDrmLeaseConnectorV1ConnectorIDEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseConnectorV1ConnectorIDEvent implements Event.
-var _ Event = &DLVWpDrmLeaseConnectorV1ConnectorIDEvent{}
+// Ensure WpDrmLeaseConnectorV1ConnectorIDEvent implements Event.
+var _ Event = &WpDrmLeaseConnectorV1ConnectorIDEvent{}
 
-// DLVWpDrmLeaseConnectorV1DoneEvent signals when all properties have been sent
+// WpDrmLeaseConnectorV1DoneEvent signals when all properties have been sent
 //
 // This event is sent after all properties of a connector have been sent.
 // This allows changes to the properties to be seen as atomic even if they
 // happen via multiple events.
-type DLVWpDrmLeaseConnectorV1DoneEvent struct {
+type WpDrmLeaseConnectorV1DoneEvent struct {
 }
 
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.done in drm_lease_v1
-func (DLVWpDrmLeaseConnectorV1DoneEvent) Opcode() uint16 { return 3 }
+func (WpDrmLeaseConnectorV1DoneEvent) Opcode() uint16 { return 3 }
 
-// Ensure DLVWpDrmLeaseConnectorV1DoneEvent implements Message.
-var _ Message = DLVWpDrmLeaseConnectorV1DoneEvent{}
+// Ensure WpDrmLeaseConnectorV1DoneEvent implements Message.
+var _ Message = WpDrmLeaseConnectorV1DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseConnectorV1DoneEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseConnectorV1DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseConnectorV1DoneEvent implements Event.
-var _ Event = &DLVWpDrmLeaseConnectorV1DoneEvent{}
+// Ensure WpDrmLeaseConnectorV1DoneEvent implements Event.
+var _ Event = &WpDrmLeaseConnectorV1DoneEvent{}
 
-// DLVWpDrmLeaseConnectorV1WithdrawnEvent signals when lease offer withdrawn
+// WpDrmLeaseConnectorV1WithdrawnEvent signals when lease offer withdrawn
 //
 // Sent to indicate that the compositor will no longer honor requests for
 // DRM leases which include this connector. The client may still issue a
@@ -376,42 +300,42 @@ var _ Event = &DLVWpDrmLeaseConnectorV1DoneEvent{}
 // encouraged to send this event when they lose access to connector, for
 // example when the connector is hot-unplugged, when the connector gets
 // leased to a client or when the compositor loses DRM master.
-type DLVWpDrmLeaseConnectorV1WithdrawnEvent struct {
+type WpDrmLeaseConnectorV1WithdrawnEvent struct {
 }
 
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.withdrawn in drm_lease_v1
-func (DLVWpDrmLeaseConnectorV1WithdrawnEvent) Opcode() uint16 { return 4 }
+func (WpDrmLeaseConnectorV1WithdrawnEvent) Opcode() uint16 { return 4 }
 
-// Ensure DLVWpDrmLeaseConnectorV1WithdrawnEvent implements Message.
-var _ Message = DLVWpDrmLeaseConnectorV1WithdrawnEvent{}
+// Ensure WpDrmLeaseConnectorV1WithdrawnEvent implements Message.
+var _ Message = WpDrmLeaseConnectorV1WithdrawnEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseConnectorV1WithdrawnEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseConnectorV1WithdrawnEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseConnectorV1WithdrawnEvent implements Event.
-var _ Event = &DLVWpDrmLeaseConnectorV1WithdrawnEvent{}
+// Ensure WpDrmLeaseConnectorV1WithdrawnEvent implements Event.
+var _ Event = &WpDrmLeaseConnectorV1WithdrawnEvent{}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_connector_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface drm_lease_v1.wp_drm_lease_request_v1
 
-type DLVWpDrmLeaseRequestV1Error int
+type WpDrmLeaseRequestV1Error int
 
 const (
-	// DLVWpDrmLeaseRequestV1ErrorWrongDevice corresponds to requested a connector from a different lease device
-	DLVWpDrmLeaseRequestV1ErrorWrongDevice DLVWpDrmLeaseRequestV1Error = 0
+	// WpDrmLeaseRequestV1ErrorWrongDevice corresponds to requested a connector from a different lease device
+	WpDrmLeaseRequestV1ErrorWrongDevice WpDrmLeaseRequestV1Error = 0
 
-	// DLVWpDrmLeaseRequestV1ErrorDuplicateConnector corresponds to requested a connector twice
-	DLVWpDrmLeaseRequestV1ErrorDuplicateConnector DLVWpDrmLeaseRequestV1Error = 1
+	// WpDrmLeaseRequestV1ErrorDuplicateConnector corresponds to requested a connector twice
+	WpDrmLeaseRequestV1ErrorDuplicateConnector WpDrmLeaseRequestV1Error = 1
 
-	// DLVWpDrmLeaseRequestV1ErrorEmptyLease corresponds to requested a lease without requesting a connector
-	DLVWpDrmLeaseRequestV1ErrorEmptyLease DLVWpDrmLeaseRequestV1Error = 2
+	// WpDrmLeaseRequestV1ErrorEmptyLease corresponds to requested a lease without requesting a connector
+	WpDrmLeaseRequestV1ErrorEmptyLease WpDrmLeaseRequestV1Error = 2
 )
 
-// DLVWpDrmLeaseRequestV1RequestConnectorRequest requests to request a connector for this lease
+// WpDrmLeaseRequestV1RequestConnectorRequest requests to request a connector for this lease
 //
 // Indicates that the client would like to lease the given connector.
 // This is only used as a suggestion, the compositor may choose to
@@ -423,17 +347,17 @@ const (
 // Requesting a connector that was created from a different lease device
 // than this lease request raises the wrong_device error. Requesting a
 // connector twice will raise the duplicate_connector error.
-type DLVWpDrmLeaseRequestV1RequestConnectorRequest struct {
+type WpDrmLeaseRequestV1RequestConnectorRequest struct {
 	Connector ObjectID
 }
 
 // Opcode returns the request opcode for wp_drm_lease_request_v1.request_connector in drm_lease_v1
-func (DLVWpDrmLeaseRequestV1RequestConnectorRequest) Opcode() uint16 { return 0 }
+func (WpDrmLeaseRequestV1RequestConnectorRequest) Opcode() uint16 { return 0 }
 
-// Ensure DLVWpDrmLeaseRequestV1RequestConnectorRequest implements Message.
-var _ Message = DLVWpDrmLeaseRequestV1RequestConnectorRequest{}
+// Ensure WpDrmLeaseRequestV1RequestConnectorRequest implements Message.
+var _ Message = WpDrmLeaseRequestV1RequestConnectorRequest{}
 
-// DLVWpDrmLeaseRequestV1SubmitRequest requests to submit the lease request
+// WpDrmLeaseRequestV1SubmitRequest requests to submit the lease request
 //
 // Submits the lease request and creates a new wp_drm_lease_v1 object.
 // After calling submit the compositor will immediately destroy this
@@ -442,36 +366,36 @@ var _ Message = DLVWpDrmLeaseRequestV1RequestConnectorRequest{}
 // lease object, clients cannot expect an immediate response.
 // Not requesting any connectors before submitting the lease request
 // will raise the empty_lease error.
-type DLVWpDrmLeaseRequestV1SubmitRequest struct {
+type WpDrmLeaseRequestV1SubmitRequest struct {
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wp_drm_lease_request_v1.submit in drm_lease_v1
-func (DLVWpDrmLeaseRequestV1SubmitRequest) Opcode() uint16 { return 1 }
+func (WpDrmLeaseRequestV1SubmitRequest) Opcode() uint16 { return 1 }
 
-// Ensure DLVWpDrmLeaseRequestV1SubmitRequest implements Message.
-var _ Message = DLVWpDrmLeaseRequestV1SubmitRequest{}
+// Ensure WpDrmLeaseRequestV1SubmitRequest implements Message.
+var _ Message = WpDrmLeaseRequestV1SubmitRequest{}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_request_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface drm_lease_v1.wp_drm_lease_v1
 
-// DLVWpDrmLeaseV1DestroyRequest requests to destroys the lease object
+// WpDrmLeaseV1DestroyRequest requests to destroys the lease object
 //
 // The client should send this to indicate that it no longer wishes to use
 // this lease. The compositor should use drmModeRevokeLease on the
 // appropriate file descriptor, if necessary.
-type DLVWpDrmLeaseV1DestroyRequest struct {
+type WpDrmLeaseV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wp_drm_lease_v1.destroy in drm_lease_v1
-func (DLVWpDrmLeaseV1DestroyRequest) Opcode() uint16 { return 0 }
+func (WpDrmLeaseV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure DLVWpDrmLeaseV1DestroyRequest implements Message.
-var _ Message = DLVWpDrmLeaseV1DestroyRequest{}
+// Ensure WpDrmLeaseV1DestroyRequest implements Message.
+var _ Message = WpDrmLeaseV1DestroyRequest{}
 
-// DLVWpDrmLeaseV1LeaseFDEvent signals when shares the DRM file descriptor
+// WpDrmLeaseV1LeaseFDEvent signals when shares the DRM file descriptor
 //
 // This event returns a file descriptor suitable for use with DRM-related
 // ioctls. The client should use drmModeGetLease to enumerate the DRM
@@ -483,19 +407,19 @@ var _ Message = DLVWpDrmLeaseV1DestroyRequest{}
 //
 // The compositor will send this event at most once during this objects
 // lifetime.
-type DLVWpDrmLeaseV1LeaseFDEvent struct {
+type WpDrmLeaseV1LeaseFDEvent struct {
 	// LeasedFD contains leased DRM file descriptor
 	LeasedFD FD
 }
 
 // Opcode returns the event opcode for wp_drm_lease_v1.lease_fd in drm_lease_v1
-func (DLVWpDrmLeaseV1LeaseFDEvent) Opcode() uint16 { return 0 }
+func (WpDrmLeaseV1LeaseFDEvent) Opcode() uint16 { return 0 }
 
-// Ensure DLVWpDrmLeaseV1LeaseFDEvent implements Message.
-var _ Message = DLVWpDrmLeaseV1LeaseFDEvent{}
+// Ensure WpDrmLeaseV1LeaseFDEvent implements Message.
+var _ Message = WpDrmLeaseV1LeaseFDEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseV1LeaseFDEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseV1LeaseFDEvent) Scan(s *EventScanner) error {
 	if v, err := s.FD(); err != nil {
 		return err
 	} else {
@@ -504,10 +428,10 @@ func (e *DLVWpDrmLeaseV1LeaseFDEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseV1LeaseFDEvent implements Event.
-var _ Event = &DLVWpDrmLeaseV1LeaseFDEvent{}
+// Ensure WpDrmLeaseV1LeaseFDEvent implements Event.
+var _ Event = &WpDrmLeaseV1LeaseFDEvent{}
 
-// DLVWpDrmLeaseV1FinishedEvent signals when sent when the lease has been revoked
+// WpDrmLeaseV1FinishedEvent signals when sent when the lease has been revoked
 //
 // The compositor uses this event to either reject a lease request, or if
 // it previously sent a lease_fd, to notify the client that the lease has
@@ -517,22 +441,22 @@ var _ Event = &DLVWpDrmLeaseV1LeaseFDEvent{}
 // Compositors should revoke the lease when any of the leased resources
 // become unavailable, namely when a hot-unplug occurs or when the
 // compositor loses DRM master.
-type DLVWpDrmLeaseV1FinishedEvent struct {
+type WpDrmLeaseV1FinishedEvent struct {
 }
 
 // Opcode returns the event opcode for wp_drm_lease_v1.finished in drm_lease_v1
-func (DLVWpDrmLeaseV1FinishedEvent) Opcode() uint16 { return 1 }
+func (WpDrmLeaseV1FinishedEvent) Opcode() uint16 { return 1 }
 
-// Ensure DLVWpDrmLeaseV1FinishedEvent implements Message.
-var _ Message = DLVWpDrmLeaseV1FinishedEvent{}
+// Ensure WpDrmLeaseV1FinishedEvent implements Message.
+var _ Message = WpDrmLeaseV1FinishedEvent{}
 
 // Scan scans the event from the socket.
-func (e *DLVWpDrmLeaseV1FinishedEvent) Scan(s *EventScanner) error {
+func (e *WpDrmLeaseV1FinishedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure DLVWpDrmLeaseV1FinishedEvent implements Event.
-var _ Event = &DLVWpDrmLeaseV1FinishedEvent{}
+// Ensure WpDrmLeaseV1FinishedEvent implements Event.
+var _ Event = &WpDrmLeaseV1FinishedEvent{}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_v1
 
@@ -545,7 +469,7 @@ var _ Event = &DLVWpDrmLeaseV1FinishedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_v1
 
-// FSUVZwpFullscreenShellV1Capability represents capabilities advertised by the compositor
+// ZwpFullscreenShellV1Capability represents capabilities advertised by the compositor
 //
 // Various capabilities that can be advertised by the compositor.  They
 // are advertised one-at-a-time when the wl_fullscreen_shell interface is
@@ -568,70 +492,70 @@ var _ Event = &DLVWpDrmLeaseV1FinishedEvent{}
 // wl_pointer.cursor may degrade performance or be ignored entirely.  If
 // CURSOR_PLANE is not advertised, it is recommended that the client draw
 // its own cursor and set wl_pointer.cursor(NULL).
-type FSUVZwpFullscreenShellV1Capability int
+type ZwpFullscreenShellV1Capability int
 
 const (
-	// FSUVZwpFullscreenShellV1CapabilityArbitraryModes corresponds to compositor is capable of almost any output mode
-	FSUVZwpFullscreenShellV1CapabilityArbitraryModes FSUVZwpFullscreenShellV1Capability = 1
+	// ZwpFullscreenShellV1CapabilityArbitraryModes corresponds to compositor is capable of almost any output mode
+	ZwpFullscreenShellV1CapabilityArbitraryModes ZwpFullscreenShellV1Capability = 1
 
-	// FSUVZwpFullscreenShellV1CapabilityCursorPlane corresponds to compositor has a separate cursor plane
-	FSUVZwpFullscreenShellV1CapabilityCursorPlane FSUVZwpFullscreenShellV1Capability = 2
+	// ZwpFullscreenShellV1CapabilityCursorPlane corresponds to compositor has a separate cursor plane
+	ZwpFullscreenShellV1CapabilityCursorPlane ZwpFullscreenShellV1Capability = 2
 )
 
-// FSUVZwpFullscreenShellV1PresentMethod represents different method to set the surface fullscreen
+// ZwpFullscreenShellV1PresentMethod represents different method to set the surface fullscreen
 //
 // Hints to indicate to the compositor how to deal with a conflict
 // between the dimensions of the surface and the dimensions of the
 // output. The compositor is free to ignore this parameter.
-type FSUVZwpFullscreenShellV1PresentMethod int
+type ZwpFullscreenShellV1PresentMethod int
 
 const (
-	// FSUVZwpFullscreenShellV1PresentMethodDefault corresponds to no preference, apply default policy
-	FSUVZwpFullscreenShellV1PresentMethodDefault FSUVZwpFullscreenShellV1PresentMethod = 0
+	// ZwpFullscreenShellV1PresentMethodDefault corresponds to no preference, apply default policy
+	ZwpFullscreenShellV1PresentMethodDefault ZwpFullscreenShellV1PresentMethod = 0
 
-	// FSUVZwpFullscreenShellV1PresentMethodCenter corresponds to center the surface on the output
-	FSUVZwpFullscreenShellV1PresentMethodCenter FSUVZwpFullscreenShellV1PresentMethod = 1
+	// ZwpFullscreenShellV1PresentMethodCenter corresponds to center the surface on the output
+	ZwpFullscreenShellV1PresentMethodCenter ZwpFullscreenShellV1PresentMethod = 1
 
-	// FSUVZwpFullscreenShellV1PresentMethodZoom corresponds to scale the surface, preserving aspect ratio, to the largest size that will fit on the output
-	FSUVZwpFullscreenShellV1PresentMethodZoom FSUVZwpFullscreenShellV1PresentMethod = 2
+	// ZwpFullscreenShellV1PresentMethodZoom corresponds to scale the surface, preserving aspect ratio, to the largest size that will fit on the output
+	ZwpFullscreenShellV1PresentMethodZoom ZwpFullscreenShellV1PresentMethod = 2
 
-	// FSUVZwpFullscreenShellV1PresentMethodZoomCrop corresponds to scale the surface, preserving aspect ratio, to fully fill the output cropping if needed
-	FSUVZwpFullscreenShellV1PresentMethodZoomCrop FSUVZwpFullscreenShellV1PresentMethod = 3
+	// ZwpFullscreenShellV1PresentMethodZoomCrop corresponds to scale the surface, preserving aspect ratio, to fully fill the output cropping if needed
+	ZwpFullscreenShellV1PresentMethodZoomCrop ZwpFullscreenShellV1PresentMethod = 3
 
-	// FSUVZwpFullscreenShellV1PresentMethodStretch corresponds to scale the surface to the size of the output ignoring aspect ratio
-	FSUVZwpFullscreenShellV1PresentMethodStretch FSUVZwpFullscreenShellV1PresentMethod = 4
+	// ZwpFullscreenShellV1PresentMethodStretch corresponds to scale the surface to the size of the output ignoring aspect ratio
+	ZwpFullscreenShellV1PresentMethodStretch ZwpFullscreenShellV1PresentMethod = 4
 )
 
-// FSUVZwpFullscreenShellV1Error represents wl_fullscreen_shell error values
+// ZwpFullscreenShellV1Error represents wl_fullscreen_shell error values
 //
 // These errors can be emitted in response to wl_fullscreen_shell requests.
-type FSUVZwpFullscreenShellV1Error int
+type ZwpFullscreenShellV1Error int
 
 const (
-	// FSUVZwpFullscreenShellV1ErrorInvalidMethod corresponds to present_method is not known
-	FSUVZwpFullscreenShellV1ErrorInvalidMethod FSUVZwpFullscreenShellV1Error = 0
+	// ZwpFullscreenShellV1ErrorInvalidMethod corresponds to present_method is not known
+	ZwpFullscreenShellV1ErrorInvalidMethod ZwpFullscreenShellV1Error = 0
 
-	// FSUVZwpFullscreenShellV1ErrorRole corresponds to given wl_surface has another role
-	FSUVZwpFullscreenShellV1ErrorRole FSUVZwpFullscreenShellV1Error = 1
+	// ZwpFullscreenShellV1ErrorRole corresponds to given wl_surface has another role
+	ZwpFullscreenShellV1ErrorRole ZwpFullscreenShellV1Error = 1
 )
 
-// FSUVZwpFullscreenShellV1ReleaseRequest requests to release the wl_fullscreen_shell interface
+// ZwpFullscreenShellV1ReleaseRequest requests to release the wl_fullscreen_shell interface
 //
 // Release the binding from the wl_fullscreen_shell interface.
 //
 // This destroys the server-side object and frees this binding.  If
 // the client binds to wl_fullscreen_shell multiple times, it may wish
 // to free some of those bindings.
-type FSUVZwpFullscreenShellV1ReleaseRequest struct {
+type ZwpFullscreenShellV1ReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_fullscreen_shell_v1.release in fullscreen_shell_unstable_v1
-func (FSUVZwpFullscreenShellV1ReleaseRequest) Opcode() uint16 { return 0 }
+func (ZwpFullscreenShellV1ReleaseRequest) Opcode() uint16 { return 0 }
 
-// Ensure FSUVZwpFullscreenShellV1ReleaseRequest implements Message.
-var _ Message = FSUVZwpFullscreenShellV1ReleaseRequest{}
+// Ensure ZwpFullscreenShellV1ReleaseRequest implements Message.
+var _ Message = ZwpFullscreenShellV1ReleaseRequest{}
 
-// FSUVZwpFullscreenShellV1PresentSurfaceRequest requests to present surface for display
+// ZwpFullscreenShellV1PresentSurfaceRequest requests to present surface for display
 //
 // Present a surface on the given output.
 //
@@ -654,7 +578,7 @@ var _ Message = FSUVZwpFullscreenShellV1ReleaseRequest{}
 // This request gives the surface the role of a fullscreen shell surface.
 // If the surface already has another role, it raises a role protocol
 // error.
-type FSUVZwpFullscreenShellV1PresentSurfaceRequest struct {
+type ZwpFullscreenShellV1PresentSurfaceRequest struct {
 	Surface ObjectID
 
 	Method uint32
@@ -663,12 +587,12 @@ type FSUVZwpFullscreenShellV1PresentSurfaceRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_fullscreen_shell_v1.present_surface in fullscreen_shell_unstable_v1
-func (FSUVZwpFullscreenShellV1PresentSurfaceRequest) Opcode() uint16 { return 1 }
+func (ZwpFullscreenShellV1PresentSurfaceRequest) Opcode() uint16 { return 1 }
 
-// Ensure FSUVZwpFullscreenShellV1PresentSurfaceRequest implements Message.
-var _ Message = FSUVZwpFullscreenShellV1PresentSurfaceRequest{}
+// Ensure ZwpFullscreenShellV1PresentSurfaceRequest implements Message.
+var _ Message = ZwpFullscreenShellV1PresentSurfaceRequest{}
 
-// FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest requests to present surface for display at a particular mode
+// ZwpFullscreenShellV1PresentSurfaceForModeRequest requests to present surface for display at a particular mode
 //
 // Presents a surface on the given output for a particular mode.
 //
@@ -711,7 +635,7 @@ var _ Message = FSUVZwpFullscreenShellV1PresentSurfaceRequest{}
 // This request gives the surface the role of a fullscreen shell surface.
 // If the surface already has another role, it raises a role protocol
 // error.
-type FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest struct {
+type ZwpFullscreenShellV1PresentSurfaceForModeRequest struct {
 	Surface ObjectID
 
 	Output ObjectID
@@ -722,12 +646,12 @@ type FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_fullscreen_shell_v1.present_surface_for_mode in fullscreen_shell_unstable_v1
-func (FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest) Opcode() uint16 { return 2 }
+func (ZwpFullscreenShellV1PresentSurfaceForModeRequest) Opcode() uint16 { return 2 }
 
-// Ensure FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest implements Message.
-var _ Message = FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest{}
+// Ensure ZwpFullscreenShellV1PresentSurfaceForModeRequest implements Message.
+var _ Message = ZwpFullscreenShellV1PresentSurfaceForModeRequest{}
 
-// FSUVZwpFullscreenShellV1CapabilityEvent signals when advertises a capability of the compositor
+// ZwpFullscreenShellV1CapabilityEvent signals when advertises a capability of the compositor
 //
 // Advertises a single capability of the compositor.
 //
@@ -737,18 +661,18 @@ var _ Message = FSUVZwpFullscreenShellV1PresentSurfaceForModeRequest{}
 // advantage of any of these capabilities, they should use a
 // wl_display.sync request immediately after binding to ensure that they
 // receive all the capability events.
-type FSUVZwpFullscreenShellV1CapabilityEvent struct {
+type ZwpFullscreenShellV1CapabilityEvent struct {
 	Capability uint32
 }
 
 // Opcode returns the event opcode for zwp_fullscreen_shell_v1.capability in fullscreen_shell_unstable_v1
-func (FSUVZwpFullscreenShellV1CapabilityEvent) Opcode() uint16 { return 0 }
+func (ZwpFullscreenShellV1CapabilityEvent) Opcode() uint16 { return 0 }
 
-// Ensure FSUVZwpFullscreenShellV1CapabilityEvent implements Message.
-var _ Message = FSUVZwpFullscreenShellV1CapabilityEvent{}
+// Ensure ZwpFullscreenShellV1CapabilityEvent implements Message.
+var _ Message = ZwpFullscreenShellV1CapabilityEvent{}
 
 // Scan scans the event from the socket.
-func (e *FSUVZwpFullscreenShellV1CapabilityEvent) Scan(s *EventScanner) error {
+func (e *ZwpFullscreenShellV1CapabilityEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -757,15 +681,15 @@ func (e *FSUVZwpFullscreenShellV1CapabilityEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure FSUVZwpFullscreenShellV1CapabilityEvent implements Event.
-var _ Event = &FSUVZwpFullscreenShellV1CapabilityEvent{}
+// Ensure ZwpFullscreenShellV1CapabilityEvent implements Event.
+var _ Event = &ZwpFullscreenShellV1CapabilityEvent{}
 
 // #endregion Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_mode_feedback_v1
 
-// FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent signals when mode switch succeeded
+// ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent signals when mode switch succeeded
 //
 // This event indicates that the attempted mode switch operation was
 // successful.  A surface of the size requested in the mode switch
@@ -773,24 +697,24 @@ var _ Event = &FSUVZwpFullscreenShellV1CapabilityEvent{}
 //
 // Upon receiving this event, the client should destroy the
 // wl_fullscreen_shell_mode_feedback object.
-type FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent struct {
+type ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_fullscreen_shell_mode_feedback_v1.mode_successful in fullscreen_shell_unstable_v1
-func (FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent) Opcode() uint16 { return 0 }
+func (ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent) Opcode() uint16 { return 0 }
 
-// Ensure FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent implements Message.
-var _ Message = FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}
+// Ensure ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent implements Message.
+var _ Message = ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}
 
 // Scan scans the event from the socket.
-func (e *FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent) Scan(s *EventScanner) error {
+func (e *ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent implements Event.
-var _ Event = &FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}
+// Ensure ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent implements Event.
+var _ Event = &ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}
 
-// FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent signals when mode switch failed
+// ZwpFullscreenShellModeFeedbackV1ModeFailedEvent signals when mode switch failed
 //
 // This event indicates that the attempted mode switch operation
 // failed.  This may be because the requested output mode is not
@@ -798,24 +722,24 @@ var _ Event = &FSUVZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}
 //
 // Upon receiving this event, the client should destroy the
 // wl_fullscreen_shell_mode_feedback object.
-type FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent struct {
+type ZwpFullscreenShellModeFeedbackV1ModeFailedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_fullscreen_shell_mode_feedback_v1.mode_failed in fullscreen_shell_unstable_v1
-func (FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent) Opcode() uint16 { return 1 }
+func (ZwpFullscreenShellModeFeedbackV1ModeFailedEvent) Opcode() uint16 { return 1 }
 
-// Ensure FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent implements Message.
-var _ Message = FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}
+// Ensure ZwpFullscreenShellModeFeedbackV1ModeFailedEvent implements Message.
+var _ Message = ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}
 
 // Scan scans the event from the socket.
-func (e *FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent) Scan(s *EventScanner) error {
+func (e *ZwpFullscreenShellModeFeedbackV1ModeFailedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent implements Event.
-var _ Event = &FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}
+// Ensure ZwpFullscreenShellModeFeedbackV1ModeFailedEvent implements Event.
+var _ Event = &ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}
 
-// FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent signals when mode switch cancelled
+// ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent signals when mode switch cancelled
 //
 // This event indicates that the attempted mode switch operation was
 // cancelled.  Most likely this is because the client requested a
@@ -823,22 +747,22 @@ var _ Event = &FSUVZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}
 //
 // Upon receiving this event, the client should destroy the
 // wl_fullscreen_shell_mode_feedback object.
-type FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent struct {
+type ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_fullscreen_shell_mode_feedback_v1.present_cancelled in fullscreen_shell_unstable_v1
-func (FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) Opcode() uint16 { return 2 }
+func (ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) Opcode() uint16 { return 2 }
 
-// Ensure FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent implements Message.
-var _ Message = FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
+// Ensure ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent implements Message.
+var _ Message = ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
 
 // Scan scans the event from the socket.
-func (e *FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) Scan(s *EventScanner) error {
+func (e *ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent implements Event.
-var _ Event = &FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
+// Ensure ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent implements Event.
+var _ Event = &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
 
 // #endregion Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_mode_feedback_v1
 
@@ -851,22 +775,22 @@ var _ Event = &FSUVZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface idle_inhibit_unstable_v1.zwp_idle_inhibit_manager_v1
 
-// IIUVZwpIdleInhibitManagerV1DestroyRequest requests to destroy the idle inhibitor object
+// ZwpIdleInhibitManagerV1DestroyRequest requests to destroy the idle inhibitor object
 //
 // Destroy the inhibit manager.
-type IIUVZwpIdleInhibitManagerV1DestroyRequest struct {
+type ZwpIdleInhibitManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_idle_inhibit_manager_v1.destroy in idle_inhibit_unstable_v1
-func (IIUVZwpIdleInhibitManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpIdleInhibitManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure IIUVZwpIdleInhibitManagerV1DestroyRequest implements Message.
-var _ Message = IIUVZwpIdleInhibitManagerV1DestroyRequest{}
+// Ensure ZwpIdleInhibitManagerV1DestroyRequest implements Message.
+var _ Message = ZwpIdleInhibitManagerV1DestroyRequest{}
 
-// IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest requests to create a new inhibitor object
+// ZwpIdleInhibitManagerV1CreateInhibitorRequest requests to create a new inhibitor object
 //
 // Create a new inhibitor object associated with the given surface.
-type IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest struct {
+type ZwpIdleInhibitManagerV1CreateInhibitorRequest struct {
 	ID ObjectID
 
 	// Surface contains the surface that inhibits the idle behavior
@@ -874,27 +798,27 @@ type IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_idle_inhibit_manager_v1.create_inhibitor in idle_inhibit_unstable_v1
-func (IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest) Opcode() uint16 { return 1 }
+func (ZwpIdleInhibitManagerV1CreateInhibitorRequest) Opcode() uint16 { return 1 }
 
-// Ensure IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest implements Message.
-var _ Message = IIUVZwpIdleInhibitManagerV1CreateInhibitorRequest{}
+// Ensure ZwpIdleInhibitManagerV1CreateInhibitorRequest implements Message.
+var _ Message = ZwpIdleInhibitManagerV1CreateInhibitorRequest{}
 
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibit_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface idle_inhibit_unstable_v1.zwp_idle_inhibitor_v1
 
-// IIUVZwpIdleInhibitorV1DestroyRequest requests to destroy the idle inhibitor object
+// ZwpIdleInhibitorV1DestroyRequest requests to destroy the idle inhibitor object
 //
 // Remove the inhibitor effect from the associated wl_surface.
-type IIUVZwpIdleInhibitorV1DestroyRequest struct {
+type ZwpIdleInhibitorV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_idle_inhibitor_v1.destroy in idle_inhibit_unstable_v1
-func (IIUVZwpIdleInhibitorV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpIdleInhibitorV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure IIUVZwpIdleInhibitorV1DestroyRequest implements Message.
-var _ Message = IIUVZwpIdleInhibitorV1DestroyRequest{}
+// Ensure ZwpIdleInhibitorV1DestroyRequest implements Message.
+var _ Message = ZwpIdleInhibitorV1DestroyRequest{}
 
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibitor_v1
 
@@ -907,16 +831,16 @@ var _ Message = IIUVZwpIdleInhibitorV1DestroyRequest{}
 // ----------------------------------------------------------------------------
 // #region Interface input_method_unstable_v1.zwp_input_method_context_v1
 
-type IMUVZwpInputMethodContextV1DestroyRequest struct {
+type ZwpInputMethodContextV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.destroy in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpInputMethodContextV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure IMUVZwpInputMethodContextV1DestroyRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1DestroyRequest{}
+// Ensure ZwpInputMethodContextV1DestroyRequest implements Message.
+var _ Message = ZwpInputMethodContextV1DestroyRequest{}
 
-// IMUVZwpInputMethodContextV1CommitStringRequest requests to commit string
+// ZwpInputMethodContextV1CommitStringRequest requests to commit string
 //
 // Send the commit string text for insertion to the application.
 //
@@ -927,7 +851,7 @@ var _ Message = IMUVZwpInputMethodContextV1DestroyRequest{}
 // cursor_position).
 //
 // Any previously set composing text will be removed.
-type IMUVZwpInputMethodContextV1CommitStringRequest struct {
+type ZwpInputMethodContextV1CommitStringRequest struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -935,12 +859,12 @@ type IMUVZwpInputMethodContextV1CommitStringRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.commit_string in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1CommitStringRequest) Opcode() uint16 { return 1 }
+func (ZwpInputMethodContextV1CommitStringRequest) Opcode() uint16 { return 1 }
 
-// Ensure IMUVZwpInputMethodContextV1CommitStringRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1CommitStringRequest{}
+// Ensure ZwpInputMethodContextV1CommitStringRequest implements Message.
+var _ Message = ZwpInputMethodContextV1CommitStringRequest{}
 
-// IMUVZwpInputMethodContextV1PreeditStringRequest requests to pre-edit string
+// ZwpInputMethodContextV1PreeditStringRequest requests to pre-edit string
 //
 // Send the pre-edit string text to the application text input.
 //
@@ -949,7 +873,7 @@ var _ Message = IMUVZwpInputMethodContextV1CommitStringRequest{}
 //
 // Previously sent preedit_style and preedit_cursor requests are also
 // processed by the text_input.
-type IMUVZwpInputMethodContextV1PreeditStringRequest struct {
+type ZwpInputMethodContextV1PreeditStringRequest struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -959,12 +883,12 @@ type IMUVZwpInputMethodContextV1PreeditStringRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.preedit_string in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1PreeditStringRequest) Opcode() uint16 { return 2 }
+func (ZwpInputMethodContextV1PreeditStringRequest) Opcode() uint16 { return 2 }
 
-// Ensure IMUVZwpInputMethodContextV1PreeditStringRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1PreeditStringRequest{}
+// Ensure ZwpInputMethodContextV1PreeditStringRequest implements Message.
+var _ Message = ZwpInputMethodContextV1PreeditStringRequest{}
 
-// IMUVZwpInputMethodContextV1PreeditStylingRequest requests to pre-edit styling
+// ZwpInputMethodContextV1PreeditStylingRequest requests to pre-edit styling
 //
 // Set the styling information on composing text. The style is applied for
 // length in bytes from index relative to the beginning of
@@ -972,7 +896,7 @@ var _ Message = IMUVZwpInputMethodContextV1PreeditStringRequest{}
 // be applied to a composing text.
 //
 // This request should be sent before sending a preedit_string request.
-type IMUVZwpInputMethodContextV1PreeditStylingRequest struct {
+type ZwpInputMethodContextV1PreeditStylingRequest struct {
 	Index uint32
 
 	Length uint32
@@ -981,12 +905,12 @@ type IMUVZwpInputMethodContextV1PreeditStylingRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.preedit_styling in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1PreeditStylingRequest) Opcode() uint16 { return 3 }
+func (ZwpInputMethodContextV1PreeditStylingRequest) Opcode() uint16 { return 3 }
 
-// Ensure IMUVZwpInputMethodContextV1PreeditStylingRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1PreeditStylingRequest{}
+// Ensure ZwpInputMethodContextV1PreeditStylingRequest implements Message.
+var _ Message = ZwpInputMethodContextV1PreeditStylingRequest{}
 
-// IMUVZwpInputMethodContextV1PreeditCursorRequest requests to pre-edit cursor
+// ZwpInputMethodContextV1PreeditCursorRequest requests to pre-edit cursor
 //
 // Set the cursor position inside the composing text (as byte offset)
 // relative to the start of the composing text.
@@ -994,35 +918,35 @@ var _ Message = IMUVZwpInputMethodContextV1PreeditStylingRequest{}
 // When index is negative no cursor should be displayed.
 //
 // This request should be sent before sending a preedit_string request.
-type IMUVZwpInputMethodContextV1PreeditCursorRequest struct {
+type ZwpInputMethodContextV1PreeditCursorRequest struct {
 	Index int32
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.preedit_cursor in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1PreeditCursorRequest) Opcode() uint16 { return 4 }
+func (ZwpInputMethodContextV1PreeditCursorRequest) Opcode() uint16 { return 4 }
 
-// Ensure IMUVZwpInputMethodContextV1PreeditCursorRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1PreeditCursorRequest{}
+// Ensure ZwpInputMethodContextV1PreeditCursorRequest implements Message.
+var _ Message = ZwpInputMethodContextV1PreeditCursorRequest{}
 
-// IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest requests to delete text
+// ZwpInputMethodContextV1DeleteSurroundingTextRequest requests to delete text
 //
 // Remove the surrounding text.
 //
 // This request will be handled on the text_input side directly following
 // a commit_string request.
-type IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest struct {
+type ZwpInputMethodContextV1DeleteSurroundingTextRequest struct {
 	Index int32
 
 	Length uint32
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.delete_surrounding_text in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest) Opcode() uint16 { return 5 }
+func (ZwpInputMethodContextV1DeleteSurroundingTextRequest) Opcode() uint16 { return 5 }
 
-// Ensure IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest{}
+// Ensure ZwpInputMethodContextV1DeleteSurroundingTextRequest implements Message.
+var _ Message = ZwpInputMethodContextV1DeleteSurroundingTextRequest{}
 
-// IMUVZwpInputMethodContextV1CursorPositionRequest requests to set cursor to a new position
+// ZwpInputMethodContextV1CursorPositionRequest requests to set cursor to a new position
 //
 // Set the cursor and anchor to a new position. Index is the new cursor
 // position in bytes (when >= 0 this is relative to the end of the inserted text,
@@ -1034,35 +958,35 @@ var _ Message = IMUVZwpInputMethodContextV1DeleteSurroundingTextRequest{}
 //
 // This request will be handled on the text_input side directly following
 // a commit_string request.
-type IMUVZwpInputMethodContextV1CursorPositionRequest struct {
+type ZwpInputMethodContextV1CursorPositionRequest struct {
 	Index int32
 
 	Anchor int32
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.cursor_position in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1CursorPositionRequest) Opcode() uint16 { return 6 }
+func (ZwpInputMethodContextV1CursorPositionRequest) Opcode() uint16 { return 6 }
 
-// Ensure IMUVZwpInputMethodContextV1CursorPositionRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1CursorPositionRequest{}
+// Ensure ZwpInputMethodContextV1CursorPositionRequest implements Message.
+var _ Message = ZwpInputMethodContextV1CursorPositionRequest{}
 
-type IMUVZwpInputMethodContextV1ModifiersMapRequest struct {
+type ZwpInputMethodContextV1ModifiersMapRequest struct {
 	Map []byte
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.modifiers_map in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1ModifiersMapRequest) Opcode() uint16 { return 7 }
+func (ZwpInputMethodContextV1ModifiersMapRequest) Opcode() uint16 { return 7 }
 
-// Ensure IMUVZwpInputMethodContextV1ModifiersMapRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1ModifiersMapRequest{}
+// Ensure ZwpInputMethodContextV1ModifiersMapRequest implements Message.
+var _ Message = ZwpInputMethodContextV1ModifiersMapRequest{}
 
-// IMUVZwpInputMethodContextV1KeysymRequest requests to keysym
+// ZwpInputMethodContextV1KeysymRequest requests to keysym
 //
 // Notify when a key event was sent. Key events should not be used for
 // normal text input operations, which should be done with commit_string,
 // delete_surrounding_text, etc. The key event follows the wl_keyboard key
 // event convention. Sym is an XKB keysym, state is a wl_keyboard key_state.
-type IMUVZwpInputMethodContextV1KeysymRequest struct {
+type ZwpInputMethodContextV1KeysymRequest struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -1076,28 +1000,28 @@ type IMUVZwpInputMethodContextV1KeysymRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.keysym in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1KeysymRequest) Opcode() uint16 { return 8 }
+func (ZwpInputMethodContextV1KeysymRequest) Opcode() uint16 { return 8 }
 
-// Ensure IMUVZwpInputMethodContextV1KeysymRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1KeysymRequest{}
+// Ensure ZwpInputMethodContextV1KeysymRequest implements Message.
+var _ Message = ZwpInputMethodContextV1KeysymRequest{}
 
-// IMUVZwpInputMethodContextV1GrabKeyboardRequest requests to grab hardware keyboard
+// ZwpInputMethodContextV1GrabKeyboardRequest requests to grab hardware keyboard
 //
 // Allow an input method to receive hardware keyboard input and process
 // key events to generate text events (with pre-edit) over the wire. This
 // allows input methods which compose multiple key events for inputting
 // text like it is done for CJK languages.
-type IMUVZwpInputMethodContextV1GrabKeyboardRequest struct {
+type ZwpInputMethodContextV1GrabKeyboardRequest struct {
 	Keyboard ObjectID
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.grab_keyboard in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1GrabKeyboardRequest) Opcode() uint16 { return 9 }
+func (ZwpInputMethodContextV1GrabKeyboardRequest) Opcode() uint16 { return 9 }
 
-// Ensure IMUVZwpInputMethodContextV1GrabKeyboardRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1GrabKeyboardRequest{}
+// Ensure ZwpInputMethodContextV1GrabKeyboardRequest implements Message.
+var _ Message = ZwpInputMethodContextV1GrabKeyboardRequest{}
 
-// IMUVZwpInputMethodContextV1KeyRequest requests to forward key event
+// ZwpInputMethodContextV1KeyRequest requests to forward key event
 //
 // Forward a wl_keyboard::key event to the client that was not processed
 // by the input method itself. Should be used when filtering key events
@@ -1105,7 +1029,7 @@ var _ Message = IMUVZwpInputMethodContextV1GrabKeyboardRequest{}
 // wl_keyboard::key event.
 //
 // For generating custom key events use the keysym request instead.
-type IMUVZwpInputMethodContextV1KeyRequest struct {
+type ZwpInputMethodContextV1KeyRequest struct {
 	// Serial contains serial from wl_keyboard::key
 	Serial uint32
 
@@ -1120,18 +1044,18 @@ type IMUVZwpInputMethodContextV1KeyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.key in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1KeyRequest) Opcode() uint16 { return 10 }
+func (ZwpInputMethodContextV1KeyRequest) Opcode() uint16 { return 10 }
 
-// Ensure IMUVZwpInputMethodContextV1KeyRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1KeyRequest{}
+// Ensure ZwpInputMethodContextV1KeyRequest implements Message.
+var _ Message = ZwpInputMethodContextV1KeyRequest{}
 
-// IMUVZwpInputMethodContextV1ModifiersRequest requests to forward modifiers event
+// ZwpInputMethodContextV1ModifiersRequest requests to forward modifiers event
 //
 // Forward a wl_keyboard::modifiers event to the client that was not
 // processed by the input method itself.  Should be used when filtering
 // key events with grab_keyboard. The arguments should be the ones
 // from the wl_keyboard::modifiers event.
-type IMUVZwpInputMethodContextV1ModifiersRequest struct {
+type ZwpInputMethodContextV1ModifiersRequest struct {
 	// Serial contains serial from wl_keyboard::modifiers
 	Serial uint32
 
@@ -1149,12 +1073,12 @@ type IMUVZwpInputMethodContextV1ModifiersRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.modifiers in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1ModifiersRequest) Opcode() uint16 { return 11 }
+func (ZwpInputMethodContextV1ModifiersRequest) Opcode() uint16 { return 11 }
 
-// Ensure IMUVZwpInputMethodContextV1ModifiersRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1ModifiersRequest{}
+// Ensure ZwpInputMethodContextV1ModifiersRequest implements Message.
+var _ Message = ZwpInputMethodContextV1ModifiersRequest{}
 
-type IMUVZwpInputMethodContextV1LanguageRequest struct {
+type ZwpInputMethodContextV1LanguageRequest struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -1162,12 +1086,12 @@ type IMUVZwpInputMethodContextV1LanguageRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.language in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1LanguageRequest) Opcode() uint16 { return 12 }
+func (ZwpInputMethodContextV1LanguageRequest) Opcode() uint16 { return 12 }
 
-// Ensure IMUVZwpInputMethodContextV1LanguageRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1LanguageRequest{}
+// Ensure ZwpInputMethodContextV1LanguageRequest implements Message.
+var _ Message = ZwpInputMethodContextV1LanguageRequest{}
 
-type IMUVZwpInputMethodContextV1TextDirectionRequest struct {
+type ZwpInputMethodContextV1TextDirectionRequest struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -1175,19 +1099,19 @@ type IMUVZwpInputMethodContextV1TextDirectionRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.text_direction in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1TextDirectionRequest) Opcode() uint16 { return 13 }
+func (ZwpInputMethodContextV1TextDirectionRequest) Opcode() uint16 { return 13 }
 
-// Ensure IMUVZwpInputMethodContextV1TextDirectionRequest implements Message.
-var _ Message = IMUVZwpInputMethodContextV1TextDirectionRequest{}
+// Ensure ZwpInputMethodContextV1TextDirectionRequest implements Message.
+var _ Message = ZwpInputMethodContextV1TextDirectionRequest{}
 
-// IMUVZwpInputMethodContextV1SurroundingTextEvent signals when surrounding text event
+// ZwpInputMethodContextV1SurroundingTextEvent signals when surrounding text event
 //
 // The plain surrounding text around the input position. Cursor is the
 // position in bytes within the surrounding text relative to the beginning
 // of the text. Anchor is the position in bytes of the selection anchor
 // within the surrounding text relative to the beginning of the text. If
 // there is no selected text then anchor is the same as cursor.
-type IMUVZwpInputMethodContextV1SurroundingTextEvent struct {
+type ZwpInputMethodContextV1SurroundingTextEvent struct {
 	Text string
 
 	Cursor uint32
@@ -1196,13 +1120,13 @@ type IMUVZwpInputMethodContextV1SurroundingTextEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.surrounding_text in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1SurroundingTextEvent) Opcode() uint16 { return 0 }
+func (ZwpInputMethodContextV1SurroundingTextEvent) Opcode() uint16 { return 0 }
 
-// Ensure IMUVZwpInputMethodContextV1SurroundingTextEvent implements Message.
-var _ Message = IMUVZwpInputMethodContextV1SurroundingTextEvent{}
+// Ensure ZwpInputMethodContextV1SurroundingTextEvent implements Message.
+var _ Message = ZwpInputMethodContextV1SurroundingTextEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodContextV1SurroundingTextEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodContextV1SurroundingTextEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -1221,40 +1145,40 @@ func (e *IMUVZwpInputMethodContextV1SurroundingTextEvent) Scan(s *EventScanner) 
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodContextV1SurroundingTextEvent implements Event.
-var _ Event = &IMUVZwpInputMethodContextV1SurroundingTextEvent{}
+// Ensure ZwpInputMethodContextV1SurroundingTextEvent implements Event.
+var _ Event = &ZwpInputMethodContextV1SurroundingTextEvent{}
 
-type IMUVZwpInputMethodContextV1ResetEvent struct {
+type ZwpInputMethodContextV1ResetEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.reset in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1ResetEvent) Opcode() uint16 { return 1 }
+func (ZwpInputMethodContextV1ResetEvent) Opcode() uint16 { return 1 }
 
-// Ensure IMUVZwpInputMethodContextV1ResetEvent implements Message.
-var _ Message = IMUVZwpInputMethodContextV1ResetEvent{}
+// Ensure ZwpInputMethodContextV1ResetEvent implements Message.
+var _ Message = ZwpInputMethodContextV1ResetEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodContextV1ResetEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodContextV1ResetEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodContextV1ResetEvent implements Event.
-var _ Event = &IMUVZwpInputMethodContextV1ResetEvent{}
+// Ensure ZwpInputMethodContextV1ResetEvent implements Event.
+var _ Event = &ZwpInputMethodContextV1ResetEvent{}
 
-type IMUVZwpInputMethodContextV1ContentTypeEvent struct {
+type ZwpInputMethodContextV1ContentTypeEvent struct {
 	Hint uint32
 
 	Purpose uint32
 }
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.content_type in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1ContentTypeEvent) Opcode() uint16 { return 2 }
+func (ZwpInputMethodContextV1ContentTypeEvent) Opcode() uint16 { return 2 }
 
-// Ensure IMUVZwpInputMethodContextV1ContentTypeEvent implements Message.
-var _ Message = IMUVZwpInputMethodContextV1ContentTypeEvent{}
+// Ensure ZwpInputMethodContextV1ContentTypeEvent implements Message.
+var _ Message = ZwpInputMethodContextV1ContentTypeEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodContextV1ContentTypeEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodContextV1ContentTypeEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -1268,23 +1192,23 @@ func (e *IMUVZwpInputMethodContextV1ContentTypeEvent) Scan(s *EventScanner) erro
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodContextV1ContentTypeEvent implements Event.
-var _ Event = &IMUVZwpInputMethodContextV1ContentTypeEvent{}
+// Ensure ZwpInputMethodContextV1ContentTypeEvent implements Event.
+var _ Event = &ZwpInputMethodContextV1ContentTypeEvent{}
 
-type IMUVZwpInputMethodContextV1InvokeActionEvent struct {
+type ZwpInputMethodContextV1InvokeActionEvent struct {
 	Button uint32
 
 	Index uint32
 }
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.invoke_action in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1InvokeActionEvent) Opcode() uint16 { return 3 }
+func (ZwpInputMethodContextV1InvokeActionEvent) Opcode() uint16 { return 3 }
 
-// Ensure IMUVZwpInputMethodContextV1InvokeActionEvent implements Message.
-var _ Message = IMUVZwpInputMethodContextV1InvokeActionEvent{}
+// Ensure ZwpInputMethodContextV1InvokeActionEvent implements Message.
+var _ Message = ZwpInputMethodContextV1InvokeActionEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodContextV1InvokeActionEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodContextV1InvokeActionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -1298,22 +1222,22 @@ func (e *IMUVZwpInputMethodContextV1InvokeActionEvent) Scan(s *EventScanner) err
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodContextV1InvokeActionEvent implements Event.
-var _ Event = &IMUVZwpInputMethodContextV1InvokeActionEvent{}
+// Ensure ZwpInputMethodContextV1InvokeActionEvent implements Event.
+var _ Event = &ZwpInputMethodContextV1InvokeActionEvent{}
 
-type IMUVZwpInputMethodContextV1CommitStateEvent struct {
+type ZwpInputMethodContextV1CommitStateEvent struct {
 	// Serial contains serial of text input state
 	Serial uint32
 }
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.commit_state in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1CommitStateEvent) Opcode() uint16 { return 4 }
+func (ZwpInputMethodContextV1CommitStateEvent) Opcode() uint16 { return 4 }
 
-// Ensure IMUVZwpInputMethodContextV1CommitStateEvent implements Message.
-var _ Message = IMUVZwpInputMethodContextV1CommitStateEvent{}
+// Ensure ZwpInputMethodContextV1CommitStateEvent implements Message.
+var _ Message = ZwpInputMethodContextV1CommitStateEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodContextV1CommitStateEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodContextV1CommitStateEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -1322,21 +1246,21 @@ func (e *IMUVZwpInputMethodContextV1CommitStateEvent) Scan(s *EventScanner) erro
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodContextV1CommitStateEvent implements Event.
-var _ Event = &IMUVZwpInputMethodContextV1CommitStateEvent{}
+// Ensure ZwpInputMethodContextV1CommitStateEvent implements Event.
+var _ Event = &ZwpInputMethodContextV1CommitStateEvent{}
 
-type IMUVZwpInputMethodContextV1PreferredLanguageEvent struct {
+type ZwpInputMethodContextV1PreferredLanguageEvent struct {
 	Language string
 }
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.preferred_language in input_method_unstable_v1
-func (IMUVZwpInputMethodContextV1PreferredLanguageEvent) Opcode() uint16 { return 5 }
+func (ZwpInputMethodContextV1PreferredLanguageEvent) Opcode() uint16 { return 5 }
 
-// Ensure IMUVZwpInputMethodContextV1PreferredLanguageEvent implements Message.
-var _ Message = IMUVZwpInputMethodContextV1PreferredLanguageEvent{}
+// Ensure ZwpInputMethodContextV1PreferredLanguageEvent implements Message.
+var _ Message = ZwpInputMethodContextV1PreferredLanguageEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodContextV1PreferredLanguageEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodContextV1PreferredLanguageEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -1345,30 +1269,30 @@ func (e *IMUVZwpInputMethodContextV1PreferredLanguageEvent) Scan(s *EventScanner
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodContextV1PreferredLanguageEvent implements Event.
-var _ Event = &IMUVZwpInputMethodContextV1PreferredLanguageEvent{}
+// Ensure ZwpInputMethodContextV1PreferredLanguageEvent implements Event.
+var _ Event = &ZwpInputMethodContextV1PreferredLanguageEvent{}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_method_context_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface input_method_unstable_v1.zwp_input_method_v1
 
-// IMUVZwpInputMethodV1ActivateEvent signals when activate event
+// ZwpInputMethodV1ActivateEvent signals when activate event
 //
 // A text input was activated. Creates an input method context object
 // which allows communication with the text input.
-type IMUVZwpInputMethodV1ActivateEvent struct {
+type ZwpInputMethodV1ActivateEvent struct {
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for zwp_input_method_v1.activate in input_method_unstable_v1
-func (IMUVZwpInputMethodV1ActivateEvent) Opcode() uint16 { return 0 }
+func (ZwpInputMethodV1ActivateEvent) Opcode() uint16 { return 0 }
 
-// Ensure IMUVZwpInputMethodV1ActivateEvent implements Message.
-var _ Message = IMUVZwpInputMethodV1ActivateEvent{}
+// Ensure ZwpInputMethodV1ActivateEvent implements Message.
+var _ Message = ZwpInputMethodV1ActivateEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodV1ActivateEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodV1ActivateEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -1377,26 +1301,26 @@ func (e *IMUVZwpInputMethodV1ActivateEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodV1ActivateEvent implements Event.
-var _ Event = &IMUVZwpInputMethodV1ActivateEvent{}
+// Ensure ZwpInputMethodV1ActivateEvent implements Event.
+var _ Event = &ZwpInputMethodV1ActivateEvent{}
 
-// IMUVZwpInputMethodV1DeactivateEvent signals when deactivate event
+// ZwpInputMethodV1DeactivateEvent signals when deactivate event
 //
 // The text input corresponding to the context argument was deactivated.
 // The input method context should be destroyed after deactivation is
 // handled.
-type IMUVZwpInputMethodV1DeactivateEvent struct {
+type ZwpInputMethodV1DeactivateEvent struct {
 	Context ObjectID
 }
 
 // Opcode returns the event opcode for zwp_input_method_v1.deactivate in input_method_unstable_v1
-func (IMUVZwpInputMethodV1DeactivateEvent) Opcode() uint16 { return 1 }
+func (ZwpInputMethodV1DeactivateEvent) Opcode() uint16 { return 1 }
 
-// Ensure IMUVZwpInputMethodV1DeactivateEvent implements Message.
-var _ Message = IMUVZwpInputMethodV1DeactivateEvent{}
+// Ensure ZwpInputMethodV1DeactivateEvent implements Message.
+var _ Message = ZwpInputMethodV1DeactivateEvent{}
 
 // Scan scans the event from the socket.
-func (e *IMUVZwpInputMethodV1DeactivateEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputMethodV1DeactivateEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -1405,68 +1329,68 @@ func (e *IMUVZwpInputMethodV1DeactivateEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure IMUVZwpInputMethodV1DeactivateEvent implements Event.
-var _ Event = &IMUVZwpInputMethodV1DeactivateEvent{}
+// Ensure ZwpInputMethodV1DeactivateEvent implements Event.
+var _ Event = &ZwpInputMethodV1DeactivateEvent{}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_method_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface input_method_unstable_v1.zwp_input_panel_v1
 
-type IMUVZwpInputPanelV1GetInputPanelSurfaceRequest struct {
+type ZwpInputPanelV1GetInputPanelSurfaceRequest struct {
 	ID ObjectID
 
 	Surface ObjectID
 }
 
 // Opcode returns the request opcode for zwp_input_panel_v1.get_input_panel_surface in input_method_unstable_v1
-func (IMUVZwpInputPanelV1GetInputPanelSurfaceRequest) Opcode() uint16 { return 0 }
+func (ZwpInputPanelV1GetInputPanelSurfaceRequest) Opcode() uint16 { return 0 }
 
-// Ensure IMUVZwpInputPanelV1GetInputPanelSurfaceRequest implements Message.
-var _ Message = IMUVZwpInputPanelV1GetInputPanelSurfaceRequest{}
+// Ensure ZwpInputPanelV1GetInputPanelSurfaceRequest implements Message.
+var _ Message = ZwpInputPanelV1GetInputPanelSurfaceRequest{}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface input_method_unstable_v1.zwp_input_panel_surface_v1
 
-type IMUVZwpInputPanelSurfaceV1Position int
+type ZwpInputPanelSurfaceV1Position int
 
 const (
-	IMUVZwpInputPanelSurfaceV1PositionCenterBottom IMUVZwpInputPanelSurfaceV1Position = 0
+	ZwpInputPanelSurfaceV1PositionCenterBottom ZwpInputPanelSurfaceV1Position = 0
 )
 
-// IMUVZwpInputPanelSurfaceV1SetToplevelRequest requests to set the surface type as a keyboard
+// ZwpInputPanelSurfaceV1SetToplevelRequest requests to set the surface type as a keyboard
 //
 // Set the input_panel_surface type to keyboard.
 //
 // A keyboard surface is only shown when a text input is active.
-type IMUVZwpInputPanelSurfaceV1SetToplevelRequest struct {
+type ZwpInputPanelSurfaceV1SetToplevelRequest struct {
 	Output ObjectID
 
 	Position uint32
 }
 
 // Opcode returns the request opcode for zwp_input_panel_surface_v1.set_toplevel in input_method_unstable_v1
-func (IMUVZwpInputPanelSurfaceV1SetToplevelRequest) Opcode() uint16 { return 0 }
+func (ZwpInputPanelSurfaceV1SetToplevelRequest) Opcode() uint16 { return 0 }
 
-// Ensure IMUVZwpInputPanelSurfaceV1SetToplevelRequest implements Message.
-var _ Message = IMUVZwpInputPanelSurfaceV1SetToplevelRequest{}
+// Ensure ZwpInputPanelSurfaceV1SetToplevelRequest implements Message.
+var _ Message = ZwpInputPanelSurfaceV1SetToplevelRequest{}
 
-// IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest requests to set the surface type as an overlay panel
+// ZwpInputPanelSurfaceV1SetOverlayPanelRequest requests to set the surface type as an overlay panel
 //
 // Set the input_panel_surface to be an overlay panel.
 //
 // This is shown near the input cursor above the application window when
 // a text input is active.
-type IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest struct {
+type ZwpInputPanelSurfaceV1SetOverlayPanelRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_panel_surface_v1.set_overlay_panel in input_method_unstable_v1
-func (IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest) Opcode() uint16 { return 1 }
+func (ZwpInputPanelSurfaceV1SetOverlayPanelRequest) Opcode() uint16 { return 1 }
 
-// Ensure IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest implements Message.
-var _ Message = IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
+// Ensure ZwpInputPanelSurfaceV1SetOverlayPanelRequest implements Message.
+var _ Message = ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_surface_v1
 
@@ -1479,21 +1403,21 @@ var _ Message = IMUVZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
 // ----------------------------------------------------------------------------
 // #region Interface input_timestamps_unstable_v1.zwp_input_timestamps_manager_v1
 
-// ITUVZwpInputTimestampsManagerV1DestroyRequest requests to destroy the input timestamps manager object
+// ZwpInputTimestampsManagerV1DestroyRequest requests to destroy the input timestamps manager object
 //
 // Informs the server that the client will no longer be using this
 // protocol object. Existing objects created by this object are not
 // affected.
-type ITUVZwpInputTimestampsManagerV1DestroyRequest struct {
+type ZwpInputTimestampsManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.destroy in input_timestamps_unstable_v1
-func (ITUVZwpInputTimestampsManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpInputTimestampsManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure ITUVZwpInputTimestampsManagerV1DestroyRequest implements Message.
-var _ Message = ITUVZwpInputTimestampsManagerV1DestroyRequest{}
+// Ensure ZwpInputTimestampsManagerV1DestroyRequest implements Message.
+var _ Message = ZwpInputTimestampsManagerV1DestroyRequest{}
 
-// ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest requests to subscribe to high-resolution keyboard timestamp events
+// ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest requests to subscribe to high-resolution keyboard timestamp events
 //
 // Creates a new input timestamps object that represents a subscription
 // to high-resolution timestamp events for all wl_keyboard events that
@@ -1503,7 +1427,7 @@ var _ Message = ITUVZwpInputTimestampsManagerV1DestroyRequest{}
 // client action (e.g. release) or server-side changes, the input
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
-type ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct {
+type ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct {
 	ID ObjectID
 
 	// Keyboard contains the wl_keyboard object for which to get timestamp events
@@ -1511,12 +1435,12 @@ type ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.get_keyboard_timestamps in input_timestamps_unstable_v1
-func (ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest) Opcode() uint16 { return 1 }
+func (ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest) Opcode() uint16 { return 1 }
 
-// Ensure ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest implements Message.
-var _ Message = ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}
+// Ensure ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest implements Message.
+var _ Message = ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}
 
-// ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest requests to subscribe to high-resolution pointer timestamp events
+// ZwpInputTimestampsManagerV1GetPointerTimestampsRequest requests to subscribe to high-resolution pointer timestamp events
 //
 // Creates a new input timestamps object that represents a subscription
 // to high-resolution timestamp events for all wl_pointer events that
@@ -1526,7 +1450,7 @@ var _ Message = ITUVZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}
 // client action (e.g. release) or server-side changes, the input
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
-type ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct {
+type ZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct {
 	ID ObjectID
 
 	// Pointer contains the wl_pointer object for which to get timestamp events
@@ -1534,12 +1458,12 @@ type ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.get_pointer_timestamps in input_timestamps_unstable_v1
-func (ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest) Opcode() uint16 { return 2 }
+func (ZwpInputTimestampsManagerV1GetPointerTimestampsRequest) Opcode() uint16 { return 2 }
 
-// Ensure ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest implements Message.
-var _ Message = ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}
+// Ensure ZwpInputTimestampsManagerV1GetPointerTimestampsRequest implements Message.
+var _ Message = ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}
 
-// ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest requests to subscribe to high-resolution touch timestamp events
+// ZwpInputTimestampsManagerV1GetTouchTimestampsRequest requests to subscribe to high-resolution touch timestamp events
 //
 // Creates a new input timestamps object that represents a subscription
 // to high-resolution timestamp events for all wl_touch events that
@@ -1549,7 +1473,7 @@ var _ Message = ITUVZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}
 // client action (e.g. release) or server-side changes, the input
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
-type ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest struct {
+type ZwpInputTimestampsManagerV1GetTouchTimestampsRequest struct {
 	ID ObjectID
 
 	// Touch contains the wl_touch object for which to get timestamp events
@@ -1557,31 +1481,31 @@ type ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.get_touch_timestamps in input_timestamps_unstable_v1
-func (ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest) Opcode() uint16 { return 3 }
+func (ZwpInputTimestampsManagerV1GetTouchTimestampsRequest) Opcode() uint16 { return 3 }
 
-// Ensure ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest implements Message.
-var _ Message = ITUVZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}
+// Ensure ZwpInputTimestampsManagerV1GetTouchTimestampsRequest implements Message.
+var _ Message = ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}
 
 // #endregion Interface input_timestamps_unstable_v1.zwp_input_timestamps_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface input_timestamps_unstable_v1.zwp_input_timestamps_v1
 
-// ITUVZwpInputTimestampsV1DestroyRequest requests to destroy the input timestamps object
+// ZwpInputTimestampsV1DestroyRequest requests to destroy the input timestamps object
 //
 // Informs the server that the client will no longer be using this
 // protocol object. After the server processes the request, no more
 // timestamp events will be emitted.
-type ITUVZwpInputTimestampsV1DestroyRequest struct {
+type ZwpInputTimestampsV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_input_timestamps_v1.destroy in input_timestamps_unstable_v1
-func (ITUVZwpInputTimestampsV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpInputTimestampsV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure ITUVZwpInputTimestampsV1DestroyRequest implements Message.
-var _ Message = ITUVZwpInputTimestampsV1DestroyRequest{}
+// Ensure ZwpInputTimestampsV1DestroyRequest implements Message.
+var _ Message = ZwpInputTimestampsV1DestroyRequest{}
 
-// ITUVZwpInputTimestampsV1TimestampEvent signals when high-resolution timestamp event
+// ZwpInputTimestampsV1TimestampEvent signals when high-resolution timestamp event
 //
 // The timestamp event is associated with the first subsequent input event
 // carrying a timestamp which belongs to the set of input events this
@@ -1597,7 +1521,7 @@ var _ Message = ITUVZwpInputTimestampsV1DestroyRequest{}
 // tv_sec which is a 64-bit value combined from tv_sec_hi and tv_sec_lo,
 // and the additional fractional part in tv_nsec as nanoseconds. Hence,
 // for valid timestamps tv_nsec must be in [0, 999999999].
-type ITUVZwpInputTimestampsV1TimestampEvent struct {
+type ZwpInputTimestampsV1TimestampEvent struct {
 	// TvSecHi contains high 32 bits of the seconds part of the timestamp
 	TvSecHi uint32
 
@@ -1609,13 +1533,13 @@ type ITUVZwpInputTimestampsV1TimestampEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_input_timestamps_v1.timestamp in input_timestamps_unstable_v1
-func (ITUVZwpInputTimestampsV1TimestampEvent) Opcode() uint16 { return 0 }
+func (ZwpInputTimestampsV1TimestampEvent) Opcode() uint16 { return 0 }
 
-// Ensure ITUVZwpInputTimestampsV1TimestampEvent implements Message.
-var _ Message = ITUVZwpInputTimestampsV1TimestampEvent{}
+// Ensure ZwpInputTimestampsV1TimestampEvent implements Message.
+var _ Message = ZwpInputTimestampsV1TimestampEvent{}
 
 // Scan scans the event from the socket.
-func (e *ITUVZwpInputTimestampsV1TimestampEvent) Scan(s *EventScanner) error {
+func (e *ZwpInputTimestampsV1TimestampEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -1634,8 +1558,8 @@ func (e *ITUVZwpInputTimestampsV1TimestampEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure ITUVZwpInputTimestampsV1TimestampEvent implements Event.
-var _ Event = &ITUVZwpInputTimestampsV1TimestampEvent{}
+// Ensure ZwpInputTimestampsV1TimestampEvent implements Event.
+var _ Event = &ZwpInputTimestampsV1TimestampEvent{}
 
 // #endregion Interface input_timestamps_unstable_v1.zwp_input_timestamps_v1
 
@@ -1648,33 +1572,33 @@ var _ Event = &ITUVZwpInputTimestampsV1TimestampEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibit_manager_v1
 
-type KSIUVZwpKeyboardShortcutsInhibitManagerV1Error int
+type ZwpKeyboardShortcutsInhibitManagerV1Error int
 
 const (
-	// KSIUVZwpKeyboardShortcutsInhibitManagerV1ErrorAlreadyInhibited corresponds to the shortcuts are already inhibited for this surface
-	KSIUVZwpKeyboardShortcutsInhibitManagerV1ErrorAlreadyInhibited KSIUVZwpKeyboardShortcutsInhibitManagerV1Error = 0
+	// ZwpKeyboardShortcutsInhibitManagerV1ErrorAlreadyInhibited corresponds to the shortcuts are already inhibited for this surface
+	ZwpKeyboardShortcutsInhibitManagerV1ErrorAlreadyInhibited ZwpKeyboardShortcutsInhibitManagerV1Error = 0
 )
 
-// KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest requests to destroy the keyboard shortcuts inhibitor object
+// ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest requests to destroy the keyboard shortcuts inhibitor object
 //
 // Destroy the keyboard shortcuts inhibitor manager.
-type KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest struct {
+type ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_keyboard_shortcuts_inhibit_manager_v1.destroy in keyboard_shortcuts_inhibit_unstable_v1
-func (KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest implements Message.
-var _ Message = KSIUVZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}
+// Ensure ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest implements Message.
+var _ Message = ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}
 
-// KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest requests to create a new keyboard shortcuts inhibitor object
+// ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest requests to create a new keyboard shortcuts inhibitor object
 //
 // Create a new keyboard shortcuts inhibitor object associated with
 // the given surface for the given seat.
 //
 // If shortcuts are already inhibited for the specified seat and surface,
 // a protocol error "already_inhibited" is raised by the compositor.
-type KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest struct {
+type ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest struct {
 	ID ObjectID
 
 	// Surface contains the surface that inhibits the keyboard shortcuts behavior
@@ -1685,29 +1609,29 @@ type KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_keyboard_shortcuts_inhibit_manager_v1.inhibit_shortcuts in keyboard_shortcuts_inhibit_unstable_v1
-func (KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest) Opcode() uint16 { return 1 }
+func (ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest) Opcode() uint16 { return 1 }
 
-// Ensure KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest implements Message.
-var _ Message = KSIUVZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}
+// Ensure ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest implements Message.
+var _ Message = ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}
 
 // #endregion Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibit_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibitor_v1
 
-// KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest requests to destroy the keyboard shortcuts inhibitor object
+// ZwpKeyboardShortcutsInhibitorV1DestroyRequest requests to destroy the keyboard shortcuts inhibitor object
 //
 // Remove the keyboard shortcuts inhibitor from the associated wl_surface.
-type KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest struct {
+type ZwpKeyboardShortcutsInhibitorV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_keyboard_shortcuts_inhibitor_v1.destroy in keyboard_shortcuts_inhibit_unstable_v1
-func (KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpKeyboardShortcutsInhibitorV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest implements Message.
-var _ Message = KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest{}
+// Ensure ZwpKeyboardShortcutsInhibitorV1DestroyRequest implements Message.
+var _ Message = ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}
 
-// KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent signals when shortcuts are inhibited
+// ZwpKeyboardShortcutsInhibitorV1ActiveEvent signals when shortcuts are inhibited
 //
 // This event indicates that the shortcut inhibitor is active.
 //
@@ -1720,43 +1644,43 @@ var _ Message = KSIUVZwpKeyboardShortcutsInhibitorV1DestroyRequest{}
 // first becomes active or when the user instructs the compositor to
 // re-enable and existing shortcuts inhibitor using any mechanism
 // offered by the compositor.
-type KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent struct {
+type ZwpKeyboardShortcutsInhibitorV1ActiveEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_keyboard_shortcuts_inhibitor_v1.active in keyboard_shortcuts_inhibit_unstable_v1
-func (KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent) Opcode() uint16 { return 0 }
+func (ZwpKeyboardShortcutsInhibitorV1ActiveEvent) Opcode() uint16 { return 0 }
 
-// Ensure KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent implements Message.
-var _ Message = KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent{}
+// Ensure ZwpKeyboardShortcutsInhibitorV1ActiveEvent implements Message.
+var _ Message = ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}
 
 // Scan scans the event from the socket.
-func (e *KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent) Scan(s *EventScanner) error {
+func (e *ZwpKeyboardShortcutsInhibitorV1ActiveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent implements Event.
-var _ Event = &KSIUVZwpKeyboardShortcutsInhibitorV1ActiveEvent{}
+// Ensure ZwpKeyboardShortcutsInhibitorV1ActiveEvent implements Event.
+var _ Event = &ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}
 
-// KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent signals when shortcuts are restored
+// ZwpKeyboardShortcutsInhibitorV1InactiveEvent signals when shortcuts are restored
 //
 // This event indicates that the shortcuts inhibitor is inactive,
 // normal shortcuts processing is restored by the compositor.
-type KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent struct {
+type ZwpKeyboardShortcutsInhibitorV1InactiveEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_keyboard_shortcuts_inhibitor_v1.inactive in keyboard_shortcuts_inhibit_unstable_v1
-func (KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent) Opcode() uint16 { return 1 }
+func (ZwpKeyboardShortcutsInhibitorV1InactiveEvent) Opcode() uint16 { return 1 }
 
-// Ensure KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent implements Message.
-var _ Message = KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
+// Ensure ZwpKeyboardShortcutsInhibitorV1InactiveEvent implements Message.
+var _ Message = ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
 
 // Scan scans the event from the socket.
-func (e *KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent) Scan(s *EventScanner) error {
+func (e *ZwpKeyboardShortcutsInhibitorV1InactiveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent implements Event.
-var _ Event = &KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
+// Ensure ZwpKeyboardShortcutsInhibitorV1InactiveEvent implements Event.
+var _ Event = &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
 
 // #endregion Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibitor_v1
 
@@ -1769,37 +1693,37 @@ var _ Event = &KSIUVZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface linux_dmabuf_unstable_v1.zwp_linux_dmabuf_v1
 
-// LDUVZwpLinuxDmabufV1DestroyRequest requests to unbind the factory
+// ZwpLinuxDmabufV1DestroyRequest requests to unbind the factory
 //
 // Objects created through this interface, especially wl_buffers, will
 // remain valid.
-type LDUVZwpLinuxDmabufV1DestroyRequest struct {
+type ZwpLinuxDmabufV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_dmabuf_v1.destroy in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxDmabufV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpLinuxDmabufV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure LDUVZwpLinuxDmabufV1DestroyRequest implements Message.
-var _ Message = LDUVZwpLinuxDmabufV1DestroyRequest{}
+// Ensure ZwpLinuxDmabufV1DestroyRequest implements Message.
+var _ Message = ZwpLinuxDmabufV1DestroyRequest{}
 
-// LDUVZwpLinuxDmabufV1CreateParamsRequest requests to create a temporary object for buffer parameters
+// ZwpLinuxDmabufV1CreateParamsRequest requests to create a temporary object for buffer parameters
 //
 // This temporary object is used to collect multiple dmabuf handles into
 // a single batch to create a wl_buffer. It can only be used once and
 // should be destroyed after a 'created' or 'failed' event has been
 // received.
-type LDUVZwpLinuxDmabufV1CreateParamsRequest struct {
+type ZwpLinuxDmabufV1CreateParamsRequest struct {
 	// ParamsID contains the new temporary
 	ParamsID ObjectID
 }
 
 // Opcode returns the request opcode for zwp_linux_dmabuf_v1.create_params in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxDmabufV1CreateParamsRequest) Opcode() uint16 { return 1 }
+func (ZwpLinuxDmabufV1CreateParamsRequest) Opcode() uint16 { return 1 }
 
-// Ensure LDUVZwpLinuxDmabufV1CreateParamsRequest implements Message.
-var _ Message = LDUVZwpLinuxDmabufV1CreateParamsRequest{}
+// Ensure ZwpLinuxDmabufV1CreateParamsRequest implements Message.
+var _ Message = ZwpLinuxDmabufV1CreateParamsRequest{}
 
-// LDUVZwpLinuxDmabufV1FormatEvent signals when supported buffer format
+// ZwpLinuxDmabufV1FormatEvent signals when supported buffer format
 //
 // This event advertises one buffer format that the server supports.
 // All the supported formats are advertised once when the client
@@ -1813,19 +1737,19 @@ var _ Message = LDUVZwpLinuxDmabufV1CreateParamsRequest{}
 // with the 'modifier' event introduced in zwp_linux_dmabuf_v1
 // version 3, described below. Please refrain from using the information
 // received from this event.
-type LDUVZwpLinuxDmabufV1FormatEvent struct {
+type ZwpLinuxDmabufV1FormatEvent struct {
 	// Format contains DRM_FORMAT code
 	Format uint32
 }
 
 // Opcode returns the event opcode for zwp_linux_dmabuf_v1.format in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxDmabufV1FormatEvent) Opcode() uint16 { return 0 }
+func (ZwpLinuxDmabufV1FormatEvent) Opcode() uint16 { return 0 }
 
-// Ensure LDUVZwpLinuxDmabufV1FormatEvent implements Message.
-var _ Message = LDUVZwpLinuxDmabufV1FormatEvent{}
+// Ensure ZwpLinuxDmabufV1FormatEvent implements Message.
+var _ Message = ZwpLinuxDmabufV1FormatEvent{}
 
 // Scan scans the event from the socket.
-func (e *LDUVZwpLinuxDmabufV1FormatEvent) Scan(s *EventScanner) error {
+func (e *ZwpLinuxDmabufV1FormatEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -1834,10 +1758,10 @@ func (e *LDUVZwpLinuxDmabufV1FormatEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure LDUVZwpLinuxDmabufV1FormatEvent implements Event.
-var _ Event = &LDUVZwpLinuxDmabufV1FormatEvent{}
+// Ensure ZwpLinuxDmabufV1FormatEvent implements Event.
+var _ Event = &ZwpLinuxDmabufV1FormatEvent{}
 
-// LDUVZwpLinuxDmabufV1ModifierEvent signals when supported buffer format modifier
+// ZwpLinuxDmabufV1ModifierEvent signals when supported buffer format modifier
 //
 // This event advertises the formats that the server supports, along with
 // the modifiers supported for each format. All the supported modifiers
@@ -1858,7 +1782,7 @@ var _ Event = &LDUVZwpLinuxDmabufV1FormatEvent{}
 // For the definition of the format and modifier codes, see the
 // zwp_linux_buffer_params_v1::create and zwp_linux_buffer_params_v1::add
 // requests.
-type LDUVZwpLinuxDmabufV1ModifierEvent struct {
+type ZwpLinuxDmabufV1ModifierEvent struct {
 	// Format contains DRM_FORMAT code
 	Format uint32
 
@@ -1870,13 +1794,13 @@ type LDUVZwpLinuxDmabufV1ModifierEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_linux_dmabuf_v1.modifier in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxDmabufV1ModifierEvent) Opcode() uint16 { return 1 }
+func (ZwpLinuxDmabufV1ModifierEvent) Opcode() uint16 { return 1 }
 
-// Ensure LDUVZwpLinuxDmabufV1ModifierEvent implements Message.
-var _ Message = LDUVZwpLinuxDmabufV1ModifierEvent{}
+// Ensure ZwpLinuxDmabufV1ModifierEvent implements Message.
+var _ Message = ZwpLinuxDmabufV1ModifierEvent{}
 
 // Scan scans the event from the socket.
-func (e *LDUVZwpLinuxDmabufV1ModifierEvent) Scan(s *EventScanner) error {
+func (e *ZwpLinuxDmabufV1ModifierEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -1895,69 +1819,69 @@ func (e *LDUVZwpLinuxDmabufV1ModifierEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure LDUVZwpLinuxDmabufV1ModifierEvent implements Event.
-var _ Event = &LDUVZwpLinuxDmabufV1ModifierEvent{}
+// Ensure ZwpLinuxDmabufV1ModifierEvent implements Event.
+var _ Event = &ZwpLinuxDmabufV1ModifierEvent{}
 
 // #endregion Interface linux_dmabuf_unstable_v1.zwp_linux_dmabuf_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface linux_dmabuf_unstable_v1.zwp_linux_buffer_params_v1
 
-type LDUVZwpLinuxBufferParamsV1Error int
+type ZwpLinuxBufferParamsV1Error int
 
 const (
-	// LDUVZwpLinuxBufferParamsV1ErrorAlreadyUsed corresponds to the dmabuf_batch object has already been used to create a wl_buffer
-	LDUVZwpLinuxBufferParamsV1ErrorAlreadyUsed LDUVZwpLinuxBufferParamsV1Error = 0
+	// ZwpLinuxBufferParamsV1ErrorAlreadyUsed corresponds to the dmabuf_batch object has already been used to create a wl_buffer
+	ZwpLinuxBufferParamsV1ErrorAlreadyUsed ZwpLinuxBufferParamsV1Error = 0
 
-	// LDUVZwpLinuxBufferParamsV1ErrorPlaneIdx corresponds to plane index out of bounds
-	LDUVZwpLinuxBufferParamsV1ErrorPlaneIdx LDUVZwpLinuxBufferParamsV1Error = 1
+	// ZwpLinuxBufferParamsV1ErrorPlaneIdx corresponds to plane index out of bounds
+	ZwpLinuxBufferParamsV1ErrorPlaneIdx ZwpLinuxBufferParamsV1Error = 1
 
-	// LDUVZwpLinuxBufferParamsV1ErrorPlaneSet corresponds to the plane index was already set
-	LDUVZwpLinuxBufferParamsV1ErrorPlaneSet LDUVZwpLinuxBufferParamsV1Error = 2
+	// ZwpLinuxBufferParamsV1ErrorPlaneSet corresponds to the plane index was already set
+	ZwpLinuxBufferParamsV1ErrorPlaneSet ZwpLinuxBufferParamsV1Error = 2
 
-	// LDUVZwpLinuxBufferParamsV1ErrorIncomplete corresponds to missing or too many planes to create a buffer
-	LDUVZwpLinuxBufferParamsV1ErrorIncomplete LDUVZwpLinuxBufferParamsV1Error = 3
+	// ZwpLinuxBufferParamsV1ErrorIncomplete corresponds to missing or too many planes to create a buffer
+	ZwpLinuxBufferParamsV1ErrorIncomplete ZwpLinuxBufferParamsV1Error = 3
 
-	// LDUVZwpLinuxBufferParamsV1ErrorInvalidFormat corresponds to format not supported
-	LDUVZwpLinuxBufferParamsV1ErrorInvalidFormat LDUVZwpLinuxBufferParamsV1Error = 4
+	// ZwpLinuxBufferParamsV1ErrorInvalidFormat corresponds to format not supported
+	ZwpLinuxBufferParamsV1ErrorInvalidFormat ZwpLinuxBufferParamsV1Error = 4
 
-	// LDUVZwpLinuxBufferParamsV1ErrorInvalidDimensions corresponds to invalid width or height
-	LDUVZwpLinuxBufferParamsV1ErrorInvalidDimensions LDUVZwpLinuxBufferParamsV1Error = 5
+	// ZwpLinuxBufferParamsV1ErrorInvalidDimensions corresponds to invalid width or height
+	ZwpLinuxBufferParamsV1ErrorInvalidDimensions ZwpLinuxBufferParamsV1Error = 5
 
-	// LDUVZwpLinuxBufferParamsV1ErrorOutOfBounds corresponds to offset + stride * height goes out of dmabuf bounds
-	LDUVZwpLinuxBufferParamsV1ErrorOutOfBounds LDUVZwpLinuxBufferParamsV1Error = 6
+	// ZwpLinuxBufferParamsV1ErrorOutOfBounds corresponds to offset + stride * height goes out of dmabuf bounds
+	ZwpLinuxBufferParamsV1ErrorOutOfBounds ZwpLinuxBufferParamsV1Error = 6
 
-	// LDUVZwpLinuxBufferParamsV1ErrorInvalidWlBuffer corresponds to invalid wl_buffer resulted from importing dmabufs via the create_immed request on given buffer_params
-	LDUVZwpLinuxBufferParamsV1ErrorInvalidWlBuffer LDUVZwpLinuxBufferParamsV1Error = 7
+	// ZwpLinuxBufferParamsV1ErrorInvalidWlBuffer corresponds to invalid wl_buffer resulted from importing dmabufs via the create_immed request on given buffer_params
+	ZwpLinuxBufferParamsV1ErrorInvalidWlBuffer ZwpLinuxBufferParamsV1Error = 7
 )
 
-type LDUVZwpLinuxBufferParamsV1Flags uint
+type ZwpLinuxBufferParamsV1Flags uint
 
 const (
-	// LDUVZwpLinuxBufferParamsV1FlagsYInvert corresponds to contents are y-inverted
-	LDUVZwpLinuxBufferParamsV1FlagsYInvert LDUVZwpLinuxBufferParamsV1Flags = 1
+	// ZwpLinuxBufferParamsV1FlagsYInvert corresponds to contents are y-inverted
+	ZwpLinuxBufferParamsV1FlagsYInvert ZwpLinuxBufferParamsV1Flags = 1
 
-	// LDUVZwpLinuxBufferParamsV1FlagsInterlaced corresponds to content is interlaced
-	LDUVZwpLinuxBufferParamsV1FlagsInterlaced LDUVZwpLinuxBufferParamsV1Flags = 2
+	// ZwpLinuxBufferParamsV1FlagsInterlaced corresponds to content is interlaced
+	ZwpLinuxBufferParamsV1FlagsInterlaced ZwpLinuxBufferParamsV1Flags = 2
 
-	// LDUVZwpLinuxBufferParamsV1FlagsBottomFirst corresponds to bottom field first
-	LDUVZwpLinuxBufferParamsV1FlagsBottomFirst LDUVZwpLinuxBufferParamsV1Flags = 4
+	// ZwpLinuxBufferParamsV1FlagsBottomFirst corresponds to bottom field first
+	ZwpLinuxBufferParamsV1FlagsBottomFirst ZwpLinuxBufferParamsV1Flags = 4
 )
 
-// LDUVZwpLinuxBufferParamsV1DestroyRequest requests to delete this object, used or not
+// ZwpLinuxBufferParamsV1DestroyRequest requests to delete this object, used or not
 //
 // Cleans up the temporary data sent to the server for dmabuf-based
 // wl_buffer creation.
-type LDUVZwpLinuxBufferParamsV1DestroyRequest struct {
+type ZwpLinuxBufferParamsV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.destroy in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxBufferParamsV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpLinuxBufferParamsV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1DestroyRequest implements Message.
-var _ Message = LDUVZwpLinuxBufferParamsV1DestroyRequest{}
+// Ensure ZwpLinuxBufferParamsV1DestroyRequest implements Message.
+var _ Message = ZwpLinuxBufferParamsV1DestroyRequest{}
 
-// LDUVZwpLinuxBufferParamsV1AddRequest requests to add a dmabuf to the temporary set
+// ZwpLinuxBufferParamsV1AddRequest requests to add a dmabuf to the temporary set
 //
 // This request adds one dmabuf to the set in this
 // zwp_linux_buffer_params_v1.
@@ -1977,7 +1901,7 @@ var _ Message = LDUVZwpLinuxBufferParamsV1DestroyRequest{}
 // This request raises the PLANE_IDX error if plane_idx is too large.
 // The error PLANE_SET is raised if attempting to set a plane that
 // was already set.
-type LDUVZwpLinuxBufferParamsV1AddRequest struct {
+type ZwpLinuxBufferParamsV1AddRequest struct {
 	// FD contains dmabuf fd
 	FD FD
 
@@ -1998,12 +1922,12 @@ type LDUVZwpLinuxBufferParamsV1AddRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.add in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxBufferParamsV1AddRequest) Opcode() uint16 { return 1 }
+func (ZwpLinuxBufferParamsV1AddRequest) Opcode() uint16 { return 1 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1AddRequest implements Message.
-var _ Message = LDUVZwpLinuxBufferParamsV1AddRequest{}
+// Ensure ZwpLinuxBufferParamsV1AddRequest implements Message.
+var _ Message = ZwpLinuxBufferParamsV1AddRequest{}
 
-// LDUVZwpLinuxBufferParamsV1CreateRequest requests to create a wl_buffer from the given dmabufs
+// ZwpLinuxBufferParamsV1CreateRequest requests to create a wl_buffer from the given dmabufs
 //
 // This asks for creation of a wl_buffer from the added dmabuf
 // buffers. The wl_buffer is not created immediately but returned via
@@ -2064,7 +1988,7 @@ var _ Message = LDUVZwpLinuxBufferParamsV1AddRequest{}
 //
 // It is not mandatory to issue 'create'. If a client wants to
 // cancel the buffer creation, it can just destroy this object.
-type LDUVZwpLinuxBufferParamsV1CreateRequest struct {
+type ZwpLinuxBufferParamsV1CreateRequest struct {
 	// Width contains base plane width in pixels
 	Width int32
 
@@ -2079,12 +2003,12 @@ type LDUVZwpLinuxBufferParamsV1CreateRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.create in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxBufferParamsV1CreateRequest) Opcode() uint16 { return 2 }
+func (ZwpLinuxBufferParamsV1CreateRequest) Opcode() uint16 { return 2 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1CreateRequest implements Message.
-var _ Message = LDUVZwpLinuxBufferParamsV1CreateRequest{}
+// Ensure ZwpLinuxBufferParamsV1CreateRequest implements Message.
+var _ Message = ZwpLinuxBufferParamsV1CreateRequest{}
 
-// LDUVZwpLinuxBufferParamsV1CreateImmedRequest requests to immediately create a wl_buffer from the given dmabufs
+// ZwpLinuxBufferParamsV1CreateImmedRequest requests to immediately create a wl_buffer from the given dmabufs
 //
 // This asks for immediate creation of a wl_buffer by importing the
 // added dmabufs.
@@ -2109,7 +2033,7 @@ var _ Message = LDUVZwpLinuxBufferParamsV1CreateRequest{}
 //
 // This takes the same arguments as a 'create' request, and obeys the
 // same restrictions.
-type LDUVZwpLinuxBufferParamsV1CreateImmedRequest struct {
+type ZwpLinuxBufferParamsV1CreateImmedRequest struct {
 	// BufferID contains id for the newly created wl_buffer
 	BufferID ObjectID
 
@@ -2127,31 +2051,31 @@ type LDUVZwpLinuxBufferParamsV1CreateImmedRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.create_immed in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxBufferParamsV1CreateImmedRequest) Opcode() uint16 { return 3 }
+func (ZwpLinuxBufferParamsV1CreateImmedRequest) Opcode() uint16 { return 3 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1CreateImmedRequest implements Message.
-var _ Message = LDUVZwpLinuxBufferParamsV1CreateImmedRequest{}
+// Ensure ZwpLinuxBufferParamsV1CreateImmedRequest implements Message.
+var _ Message = ZwpLinuxBufferParamsV1CreateImmedRequest{}
 
-// LDUVZwpLinuxBufferParamsV1CreatedEvent signals when buffer creation succeeded
+// ZwpLinuxBufferParamsV1CreatedEvent signals when buffer creation succeeded
 //
 // This event indicates that the attempted buffer creation was
 // successful. It provides the new wl_buffer referencing the dmabuf(s).
 //
 // Upon receiving this event, the client should destroy the
 // zlinux_dmabuf_params object.
-type LDUVZwpLinuxBufferParamsV1CreatedEvent struct {
+type ZwpLinuxBufferParamsV1CreatedEvent struct {
 	// Buffer contains the newly created wl_buffer
 	Buffer ObjectID
 }
 
 // Opcode returns the event opcode for zwp_linux_buffer_params_v1.created in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxBufferParamsV1CreatedEvent) Opcode() uint16 { return 0 }
+func (ZwpLinuxBufferParamsV1CreatedEvent) Opcode() uint16 { return 0 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1CreatedEvent implements Message.
-var _ Message = LDUVZwpLinuxBufferParamsV1CreatedEvent{}
+// Ensure ZwpLinuxBufferParamsV1CreatedEvent implements Message.
+var _ Message = ZwpLinuxBufferParamsV1CreatedEvent{}
 
 // Scan scans the event from the socket.
-func (e *LDUVZwpLinuxBufferParamsV1CreatedEvent) Scan(s *EventScanner) error {
+func (e *ZwpLinuxBufferParamsV1CreatedEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -2160,10 +2084,10 @@ func (e *LDUVZwpLinuxBufferParamsV1CreatedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1CreatedEvent implements Event.
-var _ Event = &LDUVZwpLinuxBufferParamsV1CreatedEvent{}
+// Ensure ZwpLinuxBufferParamsV1CreatedEvent implements Event.
+var _ Event = &ZwpLinuxBufferParamsV1CreatedEvent{}
 
-// LDUVZwpLinuxBufferParamsV1FailedEvent signals when buffer creation failed
+// ZwpLinuxBufferParamsV1FailedEvent signals when buffer creation failed
 //
 // This event indicates that the attempted buffer creation has
 // failed. It usually means that one of the dmabuf constraints
@@ -2171,22 +2095,22 @@ var _ Event = &LDUVZwpLinuxBufferParamsV1CreatedEvent{}
 //
 // Upon receiving this event, the client should destroy the
 // zlinux_buffer_params object.
-type LDUVZwpLinuxBufferParamsV1FailedEvent struct {
+type ZwpLinuxBufferParamsV1FailedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_linux_buffer_params_v1.failed in linux_dmabuf_unstable_v1
-func (LDUVZwpLinuxBufferParamsV1FailedEvent) Opcode() uint16 { return 1 }
+func (ZwpLinuxBufferParamsV1FailedEvent) Opcode() uint16 { return 1 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1FailedEvent implements Message.
-var _ Message = LDUVZwpLinuxBufferParamsV1FailedEvent{}
+// Ensure ZwpLinuxBufferParamsV1FailedEvent implements Message.
+var _ Message = ZwpLinuxBufferParamsV1FailedEvent{}
 
 // Scan scans the event from the socket.
-func (e *LDUVZwpLinuxBufferParamsV1FailedEvent) Scan(s *EventScanner) error {
+func (e *ZwpLinuxBufferParamsV1FailedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure LDUVZwpLinuxBufferParamsV1FailedEvent implements Event.
-var _ Event = &LDUVZwpLinuxBufferParamsV1FailedEvent{}
+// Ensure ZwpLinuxBufferParamsV1FailedEvent implements Event.
+var _ Event = &ZwpLinuxBufferParamsV1FailedEvent{}
 
 // #endregion Interface linux_dmabuf_unstable_v1.zwp_linux_buffer_params_v1
 
@@ -2199,44 +2123,44 @@ var _ Event = &LDUVZwpLinuxBufferParamsV1FailedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface pointer_constraints_unstable_v1.zwp_pointer_constraints_v1
 
-// PCUVZwpPointerConstraintsV1Error represents wp_pointer_constraints error values
+// ZwpPointerConstraintsV1Error represents wp_pointer_constraints error values
 //
 // These errors can be emitted in response to wp_pointer_constraints
 // requests.
-type PCUVZwpPointerConstraintsV1Error int
+type ZwpPointerConstraintsV1Error int
 
 const (
-	// PCUVZwpPointerConstraintsV1ErrorAlreadyConstrained corresponds to pointer constraint already requested on that surface
-	PCUVZwpPointerConstraintsV1ErrorAlreadyConstrained PCUVZwpPointerConstraintsV1Error = 1
+	// ZwpPointerConstraintsV1ErrorAlreadyConstrained corresponds to pointer constraint already requested on that surface
+	ZwpPointerConstraintsV1ErrorAlreadyConstrained ZwpPointerConstraintsV1Error = 1
 )
 
-// PCUVZwpPointerConstraintsV1Lifetime represents constraint lifetime
+// ZwpPointerConstraintsV1Lifetime represents constraint lifetime
 //
 // These values represent different lifetime semantics. They are passed
 // as arguments to the factory requests to specify how the constraint
 // lifetimes should be managed.
-type PCUVZwpPointerConstraintsV1Lifetime int
+type ZwpPointerConstraintsV1Lifetime int
 
 const (
-	PCUVZwpPointerConstraintsV1LifetimeOneshot PCUVZwpPointerConstraintsV1Lifetime = 1
+	ZwpPointerConstraintsV1LifetimeOneshot ZwpPointerConstraintsV1Lifetime = 1
 
-	PCUVZwpPointerConstraintsV1LifetimePersistent PCUVZwpPointerConstraintsV1Lifetime = 2
+	ZwpPointerConstraintsV1LifetimePersistent ZwpPointerConstraintsV1Lifetime = 2
 )
 
-// PCUVZwpPointerConstraintsV1DestroyRequest requests to destroy the pointer constraints manager object
+// ZwpPointerConstraintsV1DestroyRequest requests to destroy the pointer constraints manager object
 //
 // Used by the client to notify the server that it will no longer use this
 // pointer constraints object.
-type PCUVZwpPointerConstraintsV1DestroyRequest struct {
+type ZwpPointerConstraintsV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_pointer_constraints_v1.destroy in pointer_constraints_unstable_v1
-func (PCUVZwpPointerConstraintsV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpPointerConstraintsV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure PCUVZwpPointerConstraintsV1DestroyRequest implements Message.
-var _ Message = PCUVZwpPointerConstraintsV1DestroyRequest{}
+// Ensure ZwpPointerConstraintsV1DestroyRequest implements Message.
+var _ Message = ZwpPointerConstraintsV1DestroyRequest{}
 
-// PCUVZwpPointerConstraintsV1LockPointerRequest requests to lock pointer to a position
+// ZwpPointerConstraintsV1LockPointerRequest requests to lock pointer to a position
 //
 // The lock_pointer request lets the client request to disable movements of
 // the virtual pointer (i.e. the cursor), effectively locking the pointer
@@ -2272,7 +2196,7 @@ var _ Message = PCUVZwpPointerConstraintsV1DestroyRequest{}
 // relative motion events will still be emitted via wp_relative_pointer
 // objects of the same seat. wl_pointer.axis and wl_pointer.button events
 // are unaffected.
-type PCUVZwpPointerConstraintsV1LockPointerRequest struct {
+type ZwpPointerConstraintsV1LockPointerRequest struct {
 	ID ObjectID
 
 	// Surface contains surface to lock pointer to
@@ -2289,12 +2213,12 @@ type PCUVZwpPointerConstraintsV1LockPointerRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_pointer_constraints_v1.lock_pointer in pointer_constraints_unstable_v1
-func (PCUVZwpPointerConstraintsV1LockPointerRequest) Opcode() uint16 { return 1 }
+func (ZwpPointerConstraintsV1LockPointerRequest) Opcode() uint16 { return 1 }
 
-// Ensure PCUVZwpPointerConstraintsV1LockPointerRequest implements Message.
-var _ Message = PCUVZwpPointerConstraintsV1LockPointerRequest{}
+// Ensure ZwpPointerConstraintsV1LockPointerRequest implements Message.
+var _ Message = ZwpPointerConstraintsV1LockPointerRequest{}
 
-// PCUVZwpPointerConstraintsV1ConfinePointerRequest requests to confine pointer to a region
+// ZwpPointerConstraintsV1ConfinePointerRequest requests to confine pointer to a region
 //
 // The confine_pointer request lets the client request to confine the
 // pointer cursor to a given region. This request may not take effect
@@ -2313,7 +2237,7 @@ var _ Message = PCUVZwpPointerConstraintsV1LockPointerRequest{}
 // to interact with the confinement as well as receive updates about its
 // state. See the the description of wp_confined_pointer for further
 // information.
-type PCUVZwpPointerConstraintsV1ConfinePointerRequest struct {
+type ZwpPointerConstraintsV1ConfinePointerRequest struct {
 	ID ObjectID
 
 	// Surface contains surface to lock pointer to
@@ -2330,30 +2254,30 @@ type PCUVZwpPointerConstraintsV1ConfinePointerRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_pointer_constraints_v1.confine_pointer in pointer_constraints_unstable_v1
-func (PCUVZwpPointerConstraintsV1ConfinePointerRequest) Opcode() uint16 { return 2 }
+func (ZwpPointerConstraintsV1ConfinePointerRequest) Opcode() uint16 { return 2 }
 
-// Ensure PCUVZwpPointerConstraintsV1ConfinePointerRequest implements Message.
-var _ Message = PCUVZwpPointerConstraintsV1ConfinePointerRequest{}
+// Ensure ZwpPointerConstraintsV1ConfinePointerRequest implements Message.
+var _ Message = ZwpPointerConstraintsV1ConfinePointerRequest{}
 
 // #endregion Interface pointer_constraints_unstable_v1.zwp_pointer_constraints_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface pointer_constraints_unstable_v1.zwp_locked_pointer_v1
 
-// PCUVZwpLockedPointerV1DestroyRequest requests to destroy the locked pointer object
+// ZwpLockedPointerV1DestroyRequest requests to destroy the locked pointer object
 //
 // Destroy the locked pointer object. If applicable, the compositor will
 // unlock the pointer.
-type PCUVZwpLockedPointerV1DestroyRequest struct {
+type ZwpLockedPointerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_locked_pointer_v1.destroy in pointer_constraints_unstable_v1
-func (PCUVZwpLockedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpLockedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure PCUVZwpLockedPointerV1DestroyRequest implements Message.
-var _ Message = PCUVZwpLockedPointerV1DestroyRequest{}
+// Ensure ZwpLockedPointerV1DestroyRequest implements Message.
+var _ Message = ZwpLockedPointerV1DestroyRequest{}
 
-// PCUVZwpLockedPointerV1SetCursorPositionHintRequest requests to set the pointer cursor position hint
+// ZwpLockedPointerV1SetCursorPositionHintRequest requests to set the pointer cursor position hint
 //
 // Set the cursor position hint relative to the top left corner of the
 // surface.
@@ -2366,7 +2290,7 @@ var _ Message = PCUVZwpLockedPointerV1DestroyRequest{}
 // The cursor position hint is double buffered. The new hint will only take
 // effect when the associated surface gets it pending state applied. See
 // wl_surface.commit for details.
-type PCUVZwpLockedPointerV1SetCursorPositionHintRequest struct {
+type ZwpLockedPointerV1SetCursorPositionHintRequest struct {
 	// SurfaceX contains surface-local x coordinate
 	SurfaceX Fixed
 
@@ -2375,12 +2299,12 @@ type PCUVZwpLockedPointerV1SetCursorPositionHintRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_locked_pointer_v1.set_cursor_position_hint in pointer_constraints_unstable_v1
-func (PCUVZwpLockedPointerV1SetCursorPositionHintRequest) Opcode() uint16 { return 1 }
+func (ZwpLockedPointerV1SetCursorPositionHintRequest) Opcode() uint16 { return 1 }
 
-// Ensure PCUVZwpLockedPointerV1SetCursorPositionHintRequest implements Message.
-var _ Message = PCUVZwpLockedPointerV1SetCursorPositionHintRequest{}
+// Ensure ZwpLockedPointerV1SetCursorPositionHintRequest implements Message.
+var _ Message = ZwpLockedPointerV1SetCursorPositionHintRequest{}
 
-// PCUVZwpLockedPointerV1SetRegionRequest requests to set a new lock region
+// ZwpLockedPointerV1SetRegionRequest requests to set a new lock region
 //
 // Set a new region used to lock the pointer.
 //
@@ -2389,38 +2313,38 @@ var _ Message = PCUVZwpLockedPointerV1SetCursorPositionHintRequest{}
 // applied. See wl_surface.commit for details.
 //
 // For details about the lock region, see wp_locked_pointer.
-type PCUVZwpLockedPointerV1SetRegionRequest struct {
+type ZwpLockedPointerV1SetRegionRequest struct {
 	// Region contains region of surface
 	Region ObjectID
 }
 
 // Opcode returns the request opcode for zwp_locked_pointer_v1.set_region in pointer_constraints_unstable_v1
-func (PCUVZwpLockedPointerV1SetRegionRequest) Opcode() uint16 { return 2 }
+func (ZwpLockedPointerV1SetRegionRequest) Opcode() uint16 { return 2 }
 
-// Ensure PCUVZwpLockedPointerV1SetRegionRequest implements Message.
-var _ Message = PCUVZwpLockedPointerV1SetRegionRequest{}
+// Ensure ZwpLockedPointerV1SetRegionRequest implements Message.
+var _ Message = ZwpLockedPointerV1SetRegionRequest{}
 
-// PCUVZwpLockedPointerV1LockedEvent signals when lock activation event
+// ZwpLockedPointerV1LockedEvent signals when lock activation event
 //
 // Notification that the pointer lock of the seat's pointer is activated.
-type PCUVZwpLockedPointerV1LockedEvent struct {
+type ZwpLockedPointerV1LockedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_locked_pointer_v1.locked in pointer_constraints_unstable_v1
-func (PCUVZwpLockedPointerV1LockedEvent) Opcode() uint16 { return 0 }
+func (ZwpLockedPointerV1LockedEvent) Opcode() uint16 { return 0 }
 
-// Ensure PCUVZwpLockedPointerV1LockedEvent implements Message.
-var _ Message = PCUVZwpLockedPointerV1LockedEvent{}
+// Ensure ZwpLockedPointerV1LockedEvent implements Message.
+var _ Message = ZwpLockedPointerV1LockedEvent{}
 
 // Scan scans the event from the socket.
-func (e *PCUVZwpLockedPointerV1LockedEvent) Scan(s *EventScanner) error {
+func (e *ZwpLockedPointerV1LockedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PCUVZwpLockedPointerV1LockedEvent implements Event.
-var _ Event = &PCUVZwpLockedPointerV1LockedEvent{}
+// Ensure ZwpLockedPointerV1LockedEvent implements Event.
+var _ Event = &ZwpLockedPointerV1LockedEvent{}
 
-// PCUVZwpLockedPointerV1UnlockedEvent signals when lock deactivation event
+// ZwpLockedPointerV1UnlockedEvent signals when lock deactivation event
 //
 // Notification that the pointer lock of the seat's pointer is no longer
 // active. If this is a oneshot pointer lock (see
@@ -2428,42 +2352,42 @@ var _ Event = &PCUVZwpLockedPointerV1LockedEvent{}
 // be destroyed. If this is a persistent pointer lock (see
 // wp_pointer_constraints.lifetime) this pointer lock may again
 // reactivate in the future.
-type PCUVZwpLockedPointerV1UnlockedEvent struct {
+type ZwpLockedPointerV1UnlockedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_locked_pointer_v1.unlocked in pointer_constraints_unstable_v1
-func (PCUVZwpLockedPointerV1UnlockedEvent) Opcode() uint16 { return 1 }
+func (ZwpLockedPointerV1UnlockedEvent) Opcode() uint16 { return 1 }
 
-// Ensure PCUVZwpLockedPointerV1UnlockedEvent implements Message.
-var _ Message = PCUVZwpLockedPointerV1UnlockedEvent{}
+// Ensure ZwpLockedPointerV1UnlockedEvent implements Message.
+var _ Message = ZwpLockedPointerV1UnlockedEvent{}
 
 // Scan scans the event from the socket.
-func (e *PCUVZwpLockedPointerV1UnlockedEvent) Scan(s *EventScanner) error {
+func (e *ZwpLockedPointerV1UnlockedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PCUVZwpLockedPointerV1UnlockedEvent implements Event.
-var _ Event = &PCUVZwpLockedPointerV1UnlockedEvent{}
+// Ensure ZwpLockedPointerV1UnlockedEvent implements Event.
+var _ Event = &ZwpLockedPointerV1UnlockedEvent{}
 
 // #endregion Interface pointer_constraints_unstable_v1.zwp_locked_pointer_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface pointer_constraints_unstable_v1.zwp_confined_pointer_v1
 
-// PCUVZwpConfinedPointerV1DestroyRequest requests to destroy the confined pointer object
+// ZwpConfinedPointerV1DestroyRequest requests to destroy the confined pointer object
 //
 // Destroy the confined pointer object. If applicable, the compositor will
 // unconfine the pointer.
-type PCUVZwpConfinedPointerV1DestroyRequest struct {
+type ZwpConfinedPointerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_confined_pointer_v1.destroy in pointer_constraints_unstable_v1
-func (PCUVZwpConfinedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpConfinedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure PCUVZwpConfinedPointerV1DestroyRequest implements Message.
-var _ Message = PCUVZwpConfinedPointerV1DestroyRequest{}
+// Ensure ZwpConfinedPointerV1DestroyRequest implements Message.
+var _ Message = ZwpConfinedPointerV1DestroyRequest{}
 
-// PCUVZwpConfinedPointerV1SetRegionRequest requests to set a new confine region
+// ZwpConfinedPointerV1SetRegionRequest requests to set a new confine region
 //
 // Set a new region used to confine the pointer.
 //
@@ -2481,39 +2405,39 @@ var _ Message = PCUVZwpConfinedPointerV1DestroyRequest{}
 // pointer.
 //
 // For details about the confine region, see wp_confined_pointer.
-type PCUVZwpConfinedPointerV1SetRegionRequest struct {
+type ZwpConfinedPointerV1SetRegionRequest struct {
 	// Region contains region of surface
 	Region ObjectID
 }
 
 // Opcode returns the request opcode for zwp_confined_pointer_v1.set_region in pointer_constraints_unstable_v1
-func (PCUVZwpConfinedPointerV1SetRegionRequest) Opcode() uint16 { return 1 }
+func (ZwpConfinedPointerV1SetRegionRequest) Opcode() uint16 { return 1 }
 
-// Ensure PCUVZwpConfinedPointerV1SetRegionRequest implements Message.
-var _ Message = PCUVZwpConfinedPointerV1SetRegionRequest{}
+// Ensure ZwpConfinedPointerV1SetRegionRequest implements Message.
+var _ Message = ZwpConfinedPointerV1SetRegionRequest{}
 
-// PCUVZwpConfinedPointerV1ConfinedEvent signals when pointer confined
+// ZwpConfinedPointerV1ConfinedEvent signals when pointer confined
 //
 // Notification that the pointer confinement of the seat's pointer is
 // activated.
-type PCUVZwpConfinedPointerV1ConfinedEvent struct {
+type ZwpConfinedPointerV1ConfinedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_confined_pointer_v1.confined in pointer_constraints_unstable_v1
-func (PCUVZwpConfinedPointerV1ConfinedEvent) Opcode() uint16 { return 0 }
+func (ZwpConfinedPointerV1ConfinedEvent) Opcode() uint16 { return 0 }
 
-// Ensure PCUVZwpConfinedPointerV1ConfinedEvent implements Message.
-var _ Message = PCUVZwpConfinedPointerV1ConfinedEvent{}
+// Ensure ZwpConfinedPointerV1ConfinedEvent implements Message.
+var _ Message = ZwpConfinedPointerV1ConfinedEvent{}
 
 // Scan scans the event from the socket.
-func (e *PCUVZwpConfinedPointerV1ConfinedEvent) Scan(s *EventScanner) error {
+func (e *ZwpConfinedPointerV1ConfinedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PCUVZwpConfinedPointerV1ConfinedEvent implements Event.
-var _ Event = &PCUVZwpConfinedPointerV1ConfinedEvent{}
+// Ensure ZwpConfinedPointerV1ConfinedEvent implements Event.
+var _ Event = &ZwpConfinedPointerV1ConfinedEvent{}
 
-// PCUVZwpConfinedPointerV1UnconfinedEvent signals when pointer unconfined
+// ZwpConfinedPointerV1UnconfinedEvent signals when pointer unconfined
 //
 // Notification that the pointer confinement of the seat's pointer is no
 // longer active. If this is a oneshot pointer confinement (see
@@ -2521,22 +2445,22 @@ var _ Event = &PCUVZwpConfinedPointerV1ConfinedEvent{}
 // be destroyed. If this is a persistent pointer confinement (see
 // wp_pointer_constraints.lifetime) this pointer confinement may again
 // reactivate in the future.
-type PCUVZwpConfinedPointerV1UnconfinedEvent struct {
+type ZwpConfinedPointerV1UnconfinedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_confined_pointer_v1.unconfined in pointer_constraints_unstable_v1
-func (PCUVZwpConfinedPointerV1UnconfinedEvent) Opcode() uint16 { return 1 }
+func (ZwpConfinedPointerV1UnconfinedEvent) Opcode() uint16 { return 1 }
 
-// Ensure PCUVZwpConfinedPointerV1UnconfinedEvent implements Message.
-var _ Message = PCUVZwpConfinedPointerV1UnconfinedEvent{}
+// Ensure ZwpConfinedPointerV1UnconfinedEvent implements Message.
+var _ Message = ZwpConfinedPointerV1UnconfinedEvent{}
 
 // Scan scans the event from the socket.
-func (e *PCUVZwpConfinedPointerV1UnconfinedEvent) Scan(s *EventScanner) error {
+func (e *ZwpConfinedPointerV1UnconfinedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PCUVZwpConfinedPointerV1UnconfinedEvent implements Event.
-var _ Event = &PCUVZwpConfinedPointerV1UnconfinedEvent{}
+// Ensure ZwpConfinedPointerV1UnconfinedEvent implements Event.
+var _ Event = &ZwpConfinedPointerV1UnconfinedEvent{}
 
 // #endregion Interface pointer_constraints_unstable_v1.zwp_confined_pointer_v1
 
@@ -2549,87 +2473,87 @@ var _ Event = &PCUVZwpConfinedPointerV1UnconfinedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface pointer_gestures_unstable_v1.zwp_pointer_gestures_v1
 
-// PGUVZwpPointerGesturesV1GetSwipeGestureRequest requests to get swipe gesture
+// ZwpPointerGesturesV1GetSwipeGestureRequest requests to get swipe gesture
 //
 // Create a swipe gesture object. See the
 // wl_pointer_gesture_swipe interface for details.
-type PGUVZwpPointerGesturesV1GetSwipeGestureRequest struct {
+type ZwpPointerGesturesV1GetSwipeGestureRequest struct {
 	ID ObjectID
 
 	Pointer ObjectID
 }
 
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.get_swipe_gesture in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturesV1GetSwipeGestureRequest) Opcode() uint16 { return 0 }
+func (ZwpPointerGesturesV1GetSwipeGestureRequest) Opcode() uint16 { return 0 }
 
-// Ensure PGUVZwpPointerGesturesV1GetSwipeGestureRequest implements Message.
-var _ Message = PGUVZwpPointerGesturesV1GetSwipeGestureRequest{}
+// Ensure ZwpPointerGesturesV1GetSwipeGestureRequest implements Message.
+var _ Message = ZwpPointerGesturesV1GetSwipeGestureRequest{}
 
-// PGUVZwpPointerGesturesV1GetPinchGestureRequest requests to get pinch gesture
+// ZwpPointerGesturesV1GetPinchGestureRequest requests to get pinch gesture
 //
 // Create a pinch gesture object. See the
 // wl_pointer_gesture_pinch interface for details.
-type PGUVZwpPointerGesturesV1GetPinchGestureRequest struct {
+type ZwpPointerGesturesV1GetPinchGestureRequest struct {
 	ID ObjectID
 
 	Pointer ObjectID
 }
 
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.get_pinch_gesture in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturesV1GetPinchGestureRequest) Opcode() uint16 { return 1 }
+func (ZwpPointerGesturesV1GetPinchGestureRequest) Opcode() uint16 { return 1 }
 
-// Ensure PGUVZwpPointerGesturesV1GetPinchGestureRequest implements Message.
-var _ Message = PGUVZwpPointerGesturesV1GetPinchGestureRequest{}
+// Ensure ZwpPointerGesturesV1GetPinchGestureRequest implements Message.
+var _ Message = ZwpPointerGesturesV1GetPinchGestureRequest{}
 
-// PGUVZwpPointerGesturesV1ReleaseRequest requests to destroy the pointer gesture object
+// ZwpPointerGesturesV1ReleaseRequest requests to destroy the pointer gesture object
 //
 // Destroy the pointer gesture object. Swipe, pinch and hold objects
 // created via this gesture object remain valid.
-type PGUVZwpPointerGesturesV1ReleaseRequest struct {
+type ZwpPointerGesturesV1ReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.release in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturesV1ReleaseRequest) Opcode() uint16 { return 2 }
+func (ZwpPointerGesturesV1ReleaseRequest) Opcode() uint16 { return 2 }
 
-// Ensure PGUVZwpPointerGesturesV1ReleaseRequest implements Message.
-var _ Message = PGUVZwpPointerGesturesV1ReleaseRequest{}
+// Ensure ZwpPointerGesturesV1ReleaseRequest implements Message.
+var _ Message = ZwpPointerGesturesV1ReleaseRequest{}
 
-// PGUVZwpPointerGesturesV1GetHoldGestureRequest requests to get hold gesture
+// ZwpPointerGesturesV1GetHoldGestureRequest requests to get hold gesture
 //
 // Create a hold gesture object. See the
 // wl_pointer_gesture_hold interface for details.
-type PGUVZwpPointerGesturesV1GetHoldGestureRequest struct {
+type ZwpPointerGesturesV1GetHoldGestureRequest struct {
 	ID ObjectID
 
 	Pointer ObjectID
 }
 
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.get_hold_gesture in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturesV1GetHoldGestureRequest) Opcode() uint16 { return 3 }
+func (ZwpPointerGesturesV1GetHoldGestureRequest) Opcode() uint16 { return 3 }
 
-// Ensure PGUVZwpPointerGesturesV1GetHoldGestureRequest implements Message.
-var _ Message = PGUVZwpPointerGesturesV1GetHoldGestureRequest{}
+// Ensure ZwpPointerGesturesV1GetHoldGestureRequest implements Message.
+var _ Message = ZwpPointerGesturesV1GetHoldGestureRequest{}
 
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gestures_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_swipe_v1
 
-// PGUVZwpPointerGestureSwipeV1DestroyRequest requests to destroy the pointer swipe gesture object
-type PGUVZwpPointerGestureSwipeV1DestroyRequest struct {
+// ZwpPointerGestureSwipeV1DestroyRequest requests to destroy the pointer swipe gesture object
+type ZwpPointerGestureSwipeV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_pointer_gesture_swipe_v1.destroy in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGestureSwipeV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpPointerGestureSwipeV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure PGUVZwpPointerGestureSwipeV1DestroyRequest implements Message.
-var _ Message = PGUVZwpPointerGestureSwipeV1DestroyRequest{}
+// Ensure ZwpPointerGestureSwipeV1DestroyRequest implements Message.
+var _ Message = ZwpPointerGestureSwipeV1DestroyRequest{}
 
-// PGUVZwpPointerGestureSwipeV1BeginEvent signals when multi-finger swipe begin
+// ZwpPointerGestureSwipeV1BeginEvent signals when multi-finger swipe begin
 //
 // This event is sent when a multi-finger swipe gesture is detected
 // on the device.
-type PGUVZwpPointerGestureSwipeV1BeginEvent struct {
+type ZwpPointerGestureSwipeV1BeginEvent struct {
 	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
@@ -2642,13 +2566,13 @@ type PGUVZwpPointerGestureSwipeV1BeginEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_swipe_v1.begin in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGestureSwipeV1BeginEvent) Opcode() uint16 { return 0 }
+func (ZwpPointerGestureSwipeV1BeginEvent) Opcode() uint16 { return 0 }
 
-// Ensure PGUVZwpPointerGestureSwipeV1BeginEvent implements Message.
-var _ Message = PGUVZwpPointerGestureSwipeV1BeginEvent{}
+// Ensure ZwpPointerGestureSwipeV1BeginEvent implements Message.
+var _ Message = ZwpPointerGestureSwipeV1BeginEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGestureSwipeV1BeginEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGestureSwipeV1BeginEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -2672,17 +2596,17 @@ func (e *PGUVZwpPointerGestureSwipeV1BeginEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGestureSwipeV1BeginEvent implements Event.
-var _ Event = &PGUVZwpPointerGestureSwipeV1BeginEvent{}
+// Ensure ZwpPointerGestureSwipeV1BeginEvent implements Event.
+var _ Event = &ZwpPointerGestureSwipeV1BeginEvent{}
 
-// PGUVZwpPointerGestureSwipeV1UpdateEvent signals when multi-finger swipe motion
+// ZwpPointerGestureSwipeV1UpdateEvent signals when multi-finger swipe motion
 //
 // This event is sent when a multi-finger swipe gesture changes the
 // position of the logical center.
 //
 // The dx and dy coordinates are relative coordinates of the logical
 // center of the gesture compared to the previous event.
-type PGUVZwpPointerGestureSwipeV1UpdateEvent struct {
+type ZwpPointerGestureSwipeV1UpdateEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 
@@ -2694,13 +2618,13 @@ type PGUVZwpPointerGestureSwipeV1UpdateEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_swipe_v1.update in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGestureSwipeV1UpdateEvent) Opcode() uint16 { return 1 }
+func (ZwpPointerGestureSwipeV1UpdateEvent) Opcode() uint16 { return 1 }
 
-// Ensure PGUVZwpPointerGestureSwipeV1UpdateEvent implements Message.
-var _ Message = PGUVZwpPointerGestureSwipeV1UpdateEvent{}
+// Ensure ZwpPointerGestureSwipeV1UpdateEvent implements Message.
+var _ Message = ZwpPointerGestureSwipeV1UpdateEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGestureSwipeV1UpdateEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGestureSwipeV1UpdateEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -2719,10 +2643,10 @@ func (e *PGUVZwpPointerGestureSwipeV1UpdateEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGestureSwipeV1UpdateEvent implements Event.
-var _ Event = &PGUVZwpPointerGestureSwipeV1UpdateEvent{}
+// Ensure ZwpPointerGestureSwipeV1UpdateEvent implements Event.
+var _ Event = &ZwpPointerGestureSwipeV1UpdateEvent{}
 
-// PGUVZwpPointerGestureSwipeV1EndEvent signals when multi-finger swipe end
+// ZwpPointerGestureSwipeV1EndEvent signals when multi-finger swipe end
 //
 // This event is sent when a multi-finger swipe gesture ceases to
 // be valid. This may happen when one or more fingers are lifted or
@@ -2731,7 +2655,7 @@ var _ Event = &PGUVZwpPointerGestureSwipeV1UpdateEvent{}
 // When a gesture is cancelled, the client should undo state changes
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
-type PGUVZwpPointerGestureSwipeV1EndEvent struct {
+type ZwpPointerGestureSwipeV1EndEvent struct {
 	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
@@ -2742,13 +2666,13 @@ type PGUVZwpPointerGestureSwipeV1EndEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_swipe_v1.end in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGestureSwipeV1EndEvent) Opcode() uint16 { return 2 }
+func (ZwpPointerGestureSwipeV1EndEvent) Opcode() uint16 { return 2 }
 
-// Ensure PGUVZwpPointerGestureSwipeV1EndEvent implements Message.
-var _ Message = PGUVZwpPointerGestureSwipeV1EndEvent{}
+// Ensure ZwpPointerGestureSwipeV1EndEvent implements Message.
+var _ Message = ZwpPointerGestureSwipeV1EndEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGestureSwipeV1EndEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGestureSwipeV1EndEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -2767,29 +2691,29 @@ func (e *PGUVZwpPointerGestureSwipeV1EndEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGestureSwipeV1EndEvent implements Event.
-var _ Event = &PGUVZwpPointerGestureSwipeV1EndEvent{}
+// Ensure ZwpPointerGestureSwipeV1EndEvent implements Event.
+var _ Event = &ZwpPointerGestureSwipeV1EndEvent{}
 
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_swipe_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_pinch_v1
 
-// PGUVZwpPointerGesturePinchV1DestroyRequest requests to destroy the pinch gesture object
-type PGUVZwpPointerGesturePinchV1DestroyRequest struct {
+// ZwpPointerGesturePinchV1DestroyRequest requests to destroy the pinch gesture object
+type ZwpPointerGesturePinchV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_pointer_gesture_pinch_v1.destroy in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturePinchV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpPointerGesturePinchV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure PGUVZwpPointerGesturePinchV1DestroyRequest implements Message.
-var _ Message = PGUVZwpPointerGesturePinchV1DestroyRequest{}
+// Ensure ZwpPointerGesturePinchV1DestroyRequest implements Message.
+var _ Message = ZwpPointerGesturePinchV1DestroyRequest{}
 
-// PGUVZwpPointerGesturePinchV1BeginEvent signals when multi-finger pinch begin
+// ZwpPointerGesturePinchV1BeginEvent signals when multi-finger pinch begin
 //
 // This event is sent when a multi-finger pinch gesture is detected
 // on the device.
-type PGUVZwpPointerGesturePinchV1BeginEvent struct {
+type ZwpPointerGesturePinchV1BeginEvent struct {
 	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
@@ -2802,13 +2726,13 @@ type PGUVZwpPointerGesturePinchV1BeginEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_pinch_v1.begin in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturePinchV1BeginEvent) Opcode() uint16 { return 0 }
+func (ZwpPointerGesturePinchV1BeginEvent) Opcode() uint16 { return 0 }
 
-// Ensure PGUVZwpPointerGesturePinchV1BeginEvent implements Message.
-var _ Message = PGUVZwpPointerGesturePinchV1BeginEvent{}
+// Ensure ZwpPointerGesturePinchV1BeginEvent implements Message.
+var _ Message = ZwpPointerGesturePinchV1BeginEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGesturePinchV1BeginEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGesturePinchV1BeginEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -2832,10 +2756,10 @@ func (e *PGUVZwpPointerGesturePinchV1BeginEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGesturePinchV1BeginEvent implements Event.
-var _ Event = &PGUVZwpPointerGesturePinchV1BeginEvent{}
+// Ensure ZwpPointerGesturePinchV1BeginEvent implements Event.
+var _ Event = &ZwpPointerGesturePinchV1BeginEvent{}
 
-// PGUVZwpPointerGesturePinchV1UpdateEvent signals when multi-finger pinch motion
+// ZwpPointerGesturePinchV1UpdateEvent signals when multi-finger pinch motion
 //
 // This event is sent when a multi-finger pinch gesture changes the
 // position of the logical center, the rotation or the relative scale.
@@ -2849,7 +2773,7 @@ var _ Event = &PGUVZwpPointerGesturePinchV1BeginEvent{}
 //
 // The rotation is the relative angle in degrees clockwise compared to the previous
 // pointer_gesture_pinch.begin or pointer_gesture_pinch.update event.
-type PGUVZwpPointerGesturePinchV1UpdateEvent struct {
+type ZwpPointerGesturePinchV1UpdateEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 
@@ -2867,13 +2791,13 @@ type PGUVZwpPointerGesturePinchV1UpdateEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_pinch_v1.update in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturePinchV1UpdateEvent) Opcode() uint16 { return 1 }
+func (ZwpPointerGesturePinchV1UpdateEvent) Opcode() uint16 { return 1 }
 
-// Ensure PGUVZwpPointerGesturePinchV1UpdateEvent implements Message.
-var _ Message = PGUVZwpPointerGesturePinchV1UpdateEvent{}
+// Ensure ZwpPointerGesturePinchV1UpdateEvent implements Message.
+var _ Message = ZwpPointerGesturePinchV1UpdateEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGesturePinchV1UpdateEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGesturePinchV1UpdateEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -2902,10 +2826,10 @@ func (e *PGUVZwpPointerGesturePinchV1UpdateEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGesturePinchV1UpdateEvent implements Event.
-var _ Event = &PGUVZwpPointerGesturePinchV1UpdateEvent{}
+// Ensure ZwpPointerGesturePinchV1UpdateEvent implements Event.
+var _ Event = &ZwpPointerGesturePinchV1UpdateEvent{}
 
-// PGUVZwpPointerGesturePinchV1EndEvent signals when multi-finger pinch end
+// ZwpPointerGesturePinchV1EndEvent signals when multi-finger pinch end
 //
 // This event is sent when a multi-finger pinch gesture ceases to
 // be valid. This may happen when one or more fingers are lifted or
@@ -2914,7 +2838,7 @@ var _ Event = &PGUVZwpPointerGesturePinchV1UpdateEvent{}
 // When a gesture is cancelled, the client should undo state changes
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
-type PGUVZwpPointerGesturePinchV1EndEvent struct {
+type ZwpPointerGesturePinchV1EndEvent struct {
 	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
@@ -2925,13 +2849,13 @@ type PGUVZwpPointerGesturePinchV1EndEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_pinch_v1.end in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGesturePinchV1EndEvent) Opcode() uint16 { return 2 }
+func (ZwpPointerGesturePinchV1EndEvent) Opcode() uint16 { return 2 }
 
-// Ensure PGUVZwpPointerGesturePinchV1EndEvent implements Message.
-var _ Message = PGUVZwpPointerGesturePinchV1EndEvent{}
+// Ensure ZwpPointerGesturePinchV1EndEvent implements Message.
+var _ Message = ZwpPointerGesturePinchV1EndEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGesturePinchV1EndEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGesturePinchV1EndEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -2950,28 +2874,28 @@ func (e *PGUVZwpPointerGesturePinchV1EndEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGesturePinchV1EndEvent implements Event.
-var _ Event = &PGUVZwpPointerGesturePinchV1EndEvent{}
+// Ensure ZwpPointerGesturePinchV1EndEvent implements Event.
+var _ Event = &ZwpPointerGesturePinchV1EndEvent{}
 
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_pinch_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_hold_v1
 
-// PGUVZwpPointerGestureHoldV1DestroyRequest requests to destroy the hold gesture object
-type PGUVZwpPointerGestureHoldV1DestroyRequest struct {
+// ZwpPointerGestureHoldV1DestroyRequest requests to destroy the hold gesture object
+type ZwpPointerGestureHoldV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_pointer_gesture_hold_v1.destroy in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGestureHoldV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpPointerGestureHoldV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure PGUVZwpPointerGestureHoldV1DestroyRequest implements Message.
-var _ Message = PGUVZwpPointerGestureHoldV1DestroyRequest{}
+// Ensure ZwpPointerGestureHoldV1DestroyRequest implements Message.
+var _ Message = ZwpPointerGestureHoldV1DestroyRequest{}
 
-// PGUVZwpPointerGestureHoldV1BeginEvent signals when multi-finger hold begin
+// ZwpPointerGestureHoldV1BeginEvent signals when multi-finger hold begin
 //
 // This event is sent when a hold gesture is detected on the device.
-type PGUVZwpPointerGestureHoldV1BeginEvent struct {
+type ZwpPointerGestureHoldV1BeginEvent struct {
 	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
@@ -2984,13 +2908,13 @@ type PGUVZwpPointerGestureHoldV1BeginEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_hold_v1.begin in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGestureHoldV1BeginEvent) Opcode() uint16 { return 0 }
+func (ZwpPointerGestureHoldV1BeginEvent) Opcode() uint16 { return 0 }
 
-// Ensure PGUVZwpPointerGestureHoldV1BeginEvent implements Message.
-var _ Message = PGUVZwpPointerGestureHoldV1BeginEvent{}
+// Ensure ZwpPointerGestureHoldV1BeginEvent implements Message.
+var _ Message = ZwpPointerGestureHoldV1BeginEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGestureHoldV1BeginEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGestureHoldV1BeginEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3014,10 +2938,10 @@ func (e *PGUVZwpPointerGestureHoldV1BeginEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGestureHoldV1BeginEvent implements Event.
-var _ Event = &PGUVZwpPointerGestureHoldV1BeginEvent{}
+// Ensure ZwpPointerGestureHoldV1BeginEvent implements Event.
+var _ Event = &ZwpPointerGestureHoldV1BeginEvent{}
 
-// PGUVZwpPointerGestureHoldV1EndEvent signals when multi-finger hold end
+// ZwpPointerGestureHoldV1EndEvent signals when multi-finger hold end
 //
 // This event is sent when a hold gesture ceases to
 // be valid. This may happen when the holding fingers are lifted or
@@ -3028,7 +2952,7 @@ var _ Event = &PGUVZwpPointerGestureHoldV1BeginEvent{}
 // When a gesture is cancelled, the client may need to undo state changes
 // caused by this gesture. What causes a gesture to be cancelled is
 // implementation-dependent.
-type PGUVZwpPointerGestureHoldV1EndEvent struct {
+type ZwpPointerGestureHoldV1EndEvent struct {
 	Serial uint32
 
 	// Time contains timestamp with millisecond granularity
@@ -3039,13 +2963,13 @@ type PGUVZwpPointerGestureHoldV1EndEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_pointer_gesture_hold_v1.end in pointer_gestures_unstable_v1
-func (PGUVZwpPointerGestureHoldV1EndEvent) Opcode() uint16 { return 1 }
+func (ZwpPointerGestureHoldV1EndEvent) Opcode() uint16 { return 1 }
 
-// Ensure PGUVZwpPointerGestureHoldV1EndEvent implements Message.
-var _ Message = PGUVZwpPointerGestureHoldV1EndEvent{}
+// Ensure ZwpPointerGestureHoldV1EndEvent implements Message.
+var _ Message = ZwpPointerGestureHoldV1EndEvent{}
 
 // Scan scans the event from the socket.
-func (e *PGUVZwpPointerGestureHoldV1EndEvent) Scan(s *EventScanner) error {
+func (e *ZwpPointerGestureHoldV1EndEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3064,8 +2988,8 @@ func (e *PGUVZwpPointerGestureHoldV1EndEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PGUVZwpPointerGestureHoldV1EndEvent implements Event.
-var _ Event = &PGUVZwpPointerGestureHoldV1EndEvent{}
+// Ensure ZwpPointerGestureHoldV1EndEvent implements Event.
+var _ Event = &ZwpPointerGestureHoldV1EndEvent{}
 
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_hold_v1
 
@@ -3078,35 +3002,35 @@ var _ Event = &PGUVZwpPointerGestureHoldV1EndEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface presentation_time.wp_presentation
 
-// PTWpPresentationError represents fatal presentation errors
+// WpPresentationError represents fatal presentation errors
 //
 // These fatal protocol errors may be emitted in response to
 // illegal presentation requests.
-type PTWpPresentationError int
+type WpPresentationError int
 
 const (
-	// PTWpPresentationErrorInvalidTimestamp corresponds to invalid value in tv_nsec
-	PTWpPresentationErrorInvalidTimestamp PTWpPresentationError = 0
+	// WpPresentationErrorInvalidTimestamp corresponds to invalid value in tv_nsec
+	WpPresentationErrorInvalidTimestamp WpPresentationError = 0
 
-	// PTWpPresentationErrorInvalidFlag corresponds to invalid flag
-	PTWpPresentationErrorInvalidFlag PTWpPresentationError = 1
+	// WpPresentationErrorInvalidFlag corresponds to invalid flag
+	WpPresentationErrorInvalidFlag WpPresentationError = 1
 )
 
-// PTWpPresentationDestroyRequest requests to unbind from the presentation interface
+// WpPresentationDestroyRequest requests to unbind from the presentation interface
 //
 // Informs the server that the client will no longer be using
 // this protocol object. Existing objects created by this object
 // are not affected.
-type PTWpPresentationDestroyRequest struct {
+type WpPresentationDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wp_presentation.destroy in presentation_time
-func (PTWpPresentationDestroyRequest) Opcode() uint16 { return 0 }
+func (WpPresentationDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure PTWpPresentationDestroyRequest implements Message.
-var _ Message = PTWpPresentationDestroyRequest{}
+// Ensure WpPresentationDestroyRequest implements Message.
+var _ Message = WpPresentationDestroyRequest{}
 
-// PTWpPresentationFeedbackRequest requests to request presentation feedback information
+// WpPresentationFeedbackRequest requests to request presentation feedback information
 //
 // Request presentation feedback for the current content submission
 // on the given surface. This creates a new presentation_feedback
@@ -3116,7 +3040,7 @@ var _ Message = PTWpPresentationDestroyRequest{}
 //
 // For details on what information is returned, see the
 // presentation_feedback interface.
-type PTWpPresentationFeedbackRequest struct {
+type WpPresentationFeedbackRequest struct {
 	// Surface contains target surface
 	Surface ObjectID
 
@@ -3125,12 +3049,12 @@ type PTWpPresentationFeedbackRequest struct {
 }
 
 // Opcode returns the request opcode for wp_presentation.feedback in presentation_time
-func (PTWpPresentationFeedbackRequest) Opcode() uint16 { return 1 }
+func (WpPresentationFeedbackRequest) Opcode() uint16 { return 1 }
 
-// Ensure PTWpPresentationFeedbackRequest implements Message.
-var _ Message = PTWpPresentationFeedbackRequest{}
+// Ensure WpPresentationFeedbackRequest implements Message.
+var _ Message = WpPresentationFeedbackRequest{}
 
-// PTWpPresentationClockIDEvent signals when clock ID for timestamps
+// WpPresentationClockIDEvent signals when clock ID for timestamps
 //
 // This event tells the client in which clock domain the
 // compositor interprets the timestamps used by the presentation
@@ -3161,19 +3085,19 @@ var _ Message = PTWpPresentationFeedbackRequest{}
 // irrelevant. Precision of one millisecond or better is
 // recommended. Clients must be able to query the current clock
 // value directly, not by asking the compositor.
-type PTWpPresentationClockIDEvent struct {
+type WpPresentationClockIDEvent struct {
 	// ClkID contains platform clock identifier
 	ClkID uint32
 }
 
 // Opcode returns the event opcode for wp_presentation.clock_id in presentation_time
-func (PTWpPresentationClockIDEvent) Opcode() uint16 { return 0 }
+func (WpPresentationClockIDEvent) Opcode() uint16 { return 0 }
 
-// Ensure PTWpPresentationClockIDEvent implements Message.
-var _ Message = PTWpPresentationClockIDEvent{}
+// Ensure WpPresentationClockIDEvent implements Message.
+var _ Message = WpPresentationClockIDEvent{}
 
 // Scan scans the event from the socket.
-func (e *PTWpPresentationClockIDEvent) Scan(s *EventScanner) error {
+func (e *WpPresentationClockIDEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3182,33 +3106,33 @@ func (e *PTWpPresentationClockIDEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PTWpPresentationClockIDEvent implements Event.
-var _ Event = &PTWpPresentationClockIDEvent{}
+// Ensure WpPresentationClockIDEvent implements Event.
+var _ Event = &WpPresentationClockIDEvent{}
 
 // #endregion Interface presentation_time.wp_presentation
 
 // ----------------------------------------------------------------------------
 // #region Interface presentation_time.wp_presentation_feedback
 
-// PTWpPresentationFeedbackKind represents bitmask of flags in presented event
+// WpPresentationFeedbackKind represents bitmask of flags in presented event
 //
 // These flags provide information about how the presentation of
 // the related content update was done. The intent is to help
 // clients assess the reliability of the feedback and the visual
 // quality with respect to possible tearing and timings.
-type PTWpPresentationFeedbackKind uint
+type WpPresentationFeedbackKind uint
 
 const (
-	PTWpPresentationFeedbackKindVsync PTWpPresentationFeedbackKind = 0x1
+	WpPresentationFeedbackKindVsync WpPresentationFeedbackKind = 0x1
 
-	PTWpPresentationFeedbackKindHwClock PTWpPresentationFeedbackKind = 0x2
+	WpPresentationFeedbackKindHwClock WpPresentationFeedbackKind = 0x2
 
-	PTWpPresentationFeedbackKindHwCompletion PTWpPresentationFeedbackKind = 0x4
+	WpPresentationFeedbackKindHwCompletion WpPresentationFeedbackKind = 0x4
 
-	PTWpPresentationFeedbackKindZeroCopy PTWpPresentationFeedbackKind = 0x8
+	WpPresentationFeedbackKindZeroCopy WpPresentationFeedbackKind = 0x8
 )
 
-// PTWpPresentationFeedbackSyncOutputEvent signals when presentation synchronized to this output
+// WpPresentationFeedbackSyncOutputEvent signals when presentation synchronized to this output
 //
 // As presentation can be synchronized to only one output at a
 // time, this event tells which output it was. This event is only
@@ -3218,19 +3142,19 @@ const (
 // times, this event is sent for each bound instance that matches
 // the synchronized output. If a client has not bound to the
 // right wl_output global at all, this event is not sent.
-type PTWpPresentationFeedbackSyncOutputEvent struct {
+type WpPresentationFeedbackSyncOutputEvent struct {
 	// Output contains presentation output
 	Output ObjectID
 }
 
 // Opcode returns the event opcode for wp_presentation_feedback.sync_output in presentation_time
-func (PTWpPresentationFeedbackSyncOutputEvent) Opcode() uint16 { return 0 }
+func (WpPresentationFeedbackSyncOutputEvent) Opcode() uint16 { return 0 }
 
-// Ensure PTWpPresentationFeedbackSyncOutputEvent implements Message.
-var _ Message = PTWpPresentationFeedbackSyncOutputEvent{}
+// Ensure WpPresentationFeedbackSyncOutputEvent implements Message.
+var _ Message = WpPresentationFeedbackSyncOutputEvent{}
 
 // Scan scans the event from the socket.
-func (e *PTWpPresentationFeedbackSyncOutputEvent) Scan(s *EventScanner) error {
+func (e *WpPresentationFeedbackSyncOutputEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -3239,10 +3163,10 @@ func (e *PTWpPresentationFeedbackSyncOutputEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PTWpPresentationFeedbackSyncOutputEvent implements Event.
-var _ Event = &PTWpPresentationFeedbackSyncOutputEvent{}
+// Ensure WpPresentationFeedbackSyncOutputEvent implements Event.
+var _ Event = &WpPresentationFeedbackSyncOutputEvent{}
 
-// PTWpPresentationFeedbackPresentedEvent signals when the content update was displayed
+// WpPresentationFeedbackPresentedEvent signals when the content update was displayed
 //
 // The associated content update was displayed to the user at the
 // indicated time (tv_sec_hi/lo, tv_nsec). For the interpretation of
@@ -3285,7 +3209,7 @@ var _ Event = &PTWpPresentationFeedbackSyncOutputEvent{}
 // refresh cycle, or the output device is self-refreshing without
 // a way to query the refresh count, then the arguments seq_hi
 // and seq_lo must be zero.
-type PTWpPresentationFeedbackPresentedEvent struct {
+type WpPresentationFeedbackPresentedEvent struct {
 	// TvSecHi contains high 32 bits of the seconds part of the presentation timestamp
 	TvSecHi uint32
 
@@ -3309,13 +3233,13 @@ type PTWpPresentationFeedbackPresentedEvent struct {
 }
 
 // Opcode returns the event opcode for wp_presentation_feedback.presented in presentation_time
-func (PTWpPresentationFeedbackPresentedEvent) Opcode() uint16 { return 1 }
+func (WpPresentationFeedbackPresentedEvent) Opcode() uint16 { return 1 }
 
-// Ensure PTWpPresentationFeedbackPresentedEvent implements Message.
-var _ Message = PTWpPresentationFeedbackPresentedEvent{}
+// Ensure WpPresentationFeedbackPresentedEvent implements Message.
+var _ Message = WpPresentationFeedbackPresentedEvent{}
 
 // Scan scans the event from the socket.
-func (e *PTWpPresentationFeedbackPresentedEvent) Scan(s *EventScanner) error {
+func (e *WpPresentationFeedbackPresentedEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3354,28 +3278,28 @@ func (e *PTWpPresentationFeedbackPresentedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PTWpPresentationFeedbackPresentedEvent implements Event.
-var _ Event = &PTWpPresentationFeedbackPresentedEvent{}
+// Ensure WpPresentationFeedbackPresentedEvent implements Event.
+var _ Event = &WpPresentationFeedbackPresentedEvent{}
 
-// PTWpPresentationFeedbackDiscardedEvent signals when the content update was not displayed
+// WpPresentationFeedbackDiscardedEvent signals when the content update was not displayed
 //
 // The content update was never displayed to the user.
-type PTWpPresentationFeedbackDiscardedEvent struct {
+type WpPresentationFeedbackDiscardedEvent struct {
 }
 
 // Opcode returns the event opcode for wp_presentation_feedback.discarded in presentation_time
-func (PTWpPresentationFeedbackDiscardedEvent) Opcode() uint16 { return 2 }
+func (WpPresentationFeedbackDiscardedEvent) Opcode() uint16 { return 2 }
 
-// Ensure PTWpPresentationFeedbackDiscardedEvent implements Message.
-var _ Message = PTWpPresentationFeedbackDiscardedEvent{}
+// Ensure WpPresentationFeedbackDiscardedEvent implements Message.
+var _ Message = WpPresentationFeedbackDiscardedEvent{}
 
 // Scan scans the event from the socket.
-func (e *PTWpPresentationFeedbackDiscardedEvent) Scan(s *EventScanner) error {
+func (e *WpPresentationFeedbackDiscardedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure PTWpPresentationFeedbackDiscardedEvent implements Event.
-var _ Event = &PTWpPresentationFeedbackDiscardedEvent{}
+// Ensure WpPresentationFeedbackDiscardedEvent implements Event.
+var _ Event = &WpPresentationFeedbackDiscardedEvent{}
 
 // #endregion Interface presentation_time.wp_presentation_feedback
 
@@ -3388,51 +3312,51 @@ var _ Event = &PTWpPresentationFeedbackDiscardedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface relative_pointer_unstable_v1.zwp_relative_pointer_manager_v1
 
-// RPUVZwpRelativePointerManagerV1DestroyRequest requests to destroy the relative pointer manager object
+// ZwpRelativePointerManagerV1DestroyRequest requests to destroy the relative pointer manager object
 //
 // Used by the client to notify the server that it will no longer use this
 // relative pointer manager object.
-type RPUVZwpRelativePointerManagerV1DestroyRequest struct {
+type ZwpRelativePointerManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_relative_pointer_manager_v1.destroy in relative_pointer_unstable_v1
-func (RPUVZwpRelativePointerManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpRelativePointerManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure RPUVZwpRelativePointerManagerV1DestroyRequest implements Message.
-var _ Message = RPUVZwpRelativePointerManagerV1DestroyRequest{}
+// Ensure ZwpRelativePointerManagerV1DestroyRequest implements Message.
+var _ Message = ZwpRelativePointerManagerV1DestroyRequest{}
 
-// RPUVZwpRelativePointerManagerV1GetRelativePointerRequest requests to get a relative pointer object
+// ZwpRelativePointerManagerV1GetRelativePointerRequest requests to get a relative pointer object
 //
 // Create a relative pointer interface given a wl_pointer object. See the
 // wp_relative_pointer interface for more details.
-type RPUVZwpRelativePointerManagerV1GetRelativePointerRequest struct {
+type ZwpRelativePointerManagerV1GetRelativePointerRequest struct {
 	ID ObjectID
 
 	Pointer ObjectID
 }
 
 // Opcode returns the request opcode for zwp_relative_pointer_manager_v1.get_relative_pointer in relative_pointer_unstable_v1
-func (RPUVZwpRelativePointerManagerV1GetRelativePointerRequest) Opcode() uint16 { return 1 }
+func (ZwpRelativePointerManagerV1GetRelativePointerRequest) Opcode() uint16 { return 1 }
 
-// Ensure RPUVZwpRelativePointerManagerV1GetRelativePointerRequest implements Message.
-var _ Message = RPUVZwpRelativePointerManagerV1GetRelativePointerRequest{}
+// Ensure ZwpRelativePointerManagerV1GetRelativePointerRequest implements Message.
+var _ Message = ZwpRelativePointerManagerV1GetRelativePointerRequest{}
 
 // #endregion Interface relative_pointer_unstable_v1.zwp_relative_pointer_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface relative_pointer_unstable_v1.zwp_relative_pointer_v1
 
-// RPUVZwpRelativePointerV1DestroyRequest requests to release the relative pointer object
-type RPUVZwpRelativePointerV1DestroyRequest struct {
+// ZwpRelativePointerV1DestroyRequest requests to release the relative pointer object
+type ZwpRelativePointerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_relative_pointer_v1.destroy in relative_pointer_unstable_v1
-func (RPUVZwpRelativePointerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpRelativePointerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure RPUVZwpRelativePointerV1DestroyRequest implements Message.
-var _ Message = RPUVZwpRelativePointerV1DestroyRequest{}
+// Ensure ZwpRelativePointerV1DestroyRequest implements Message.
+var _ Message = ZwpRelativePointerV1DestroyRequest{}
 
-// RPUVZwpRelativePointerV1RelativeMotionEvent signals when relative pointer motion
+// ZwpRelativePointerV1RelativeMotionEvent signals when relative pointer motion
 //
 // Relative x/y pointer motion from the pointer of the seat associated with
 // this object.
@@ -3464,7 +3388,7 @@ var _ Message = RPUVZwpRelativePointerV1DestroyRequest{}
 // If the client needs button events or focus state, it can receive them
 // from a wl_pointer object of the same seat that the wp_relative_pointer
 // object is associated with.
-type RPUVZwpRelativePointerV1RelativeMotionEvent struct {
+type ZwpRelativePointerV1RelativeMotionEvent struct {
 	// UtimeHi contains high 32 bits of a 64 bit timestamp with microsecond granularity
 	UtimeHi uint32
 
@@ -3485,13 +3409,13 @@ type RPUVZwpRelativePointerV1RelativeMotionEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_relative_pointer_v1.relative_motion in relative_pointer_unstable_v1
-func (RPUVZwpRelativePointerV1RelativeMotionEvent) Opcode() uint16 { return 0 }
+func (ZwpRelativePointerV1RelativeMotionEvent) Opcode() uint16 { return 0 }
 
-// Ensure RPUVZwpRelativePointerV1RelativeMotionEvent implements Message.
-var _ Message = RPUVZwpRelativePointerV1RelativeMotionEvent{}
+// Ensure ZwpRelativePointerV1RelativeMotionEvent implements Message.
+var _ Message = ZwpRelativePointerV1RelativeMotionEvent{}
 
 // Scan scans the event from the socket.
-func (e *RPUVZwpRelativePointerV1RelativeMotionEvent) Scan(s *EventScanner) error {
+func (e *ZwpRelativePointerV1RelativeMotionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3525,8 +3449,8 @@ func (e *RPUVZwpRelativePointerV1RelativeMotionEvent) Scan(s *EventScanner) erro
 	return nil
 }
 
-// Ensure RPUVZwpRelativePointerV1RelativeMotionEvent implements Event.
-var _ Event = &RPUVZwpRelativePointerV1RelativeMotionEvent{}
+// Ensure ZwpRelativePointerV1RelativeMotionEvent implements Event.
+var _ Event = &ZwpRelativePointerV1RelativeMotionEvent{}
 
 // #endregion Interface relative_pointer_unstable_v1.zwp_relative_pointer_v1
 
@@ -3539,11 +3463,11 @@ var _ Event = &RPUVZwpRelativePointerV1RelativeMotionEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v1.zwp_tablet_manager_v1
 
-// TUVZwpTabletManagerV1GetTabletSeatRequest requests to get the tablet seat
+// ZwpTabletManagerV1GetTabletSeatRequest requests to get the tablet seat
 //
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
-type TUVZwpTabletManagerV1GetTabletSeatRequest struct {
+type ZwpTabletManagerV1GetTabletSeatRequest struct {
 	TabletSeat ObjectID
 
 	// Seat contains The wl_seat object to retrieve the tablets for
@@ -3551,61 +3475,61 @@ type TUVZwpTabletManagerV1GetTabletSeatRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_manager_v1.get_tablet_seat in tablet_unstable_v1
-func (TUVZwpTabletManagerV1GetTabletSeatRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletManagerV1GetTabletSeatRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletManagerV1GetTabletSeatRequest implements Message.
-var _ Message = TUVZwpTabletManagerV1GetTabletSeatRequest{}
+// Ensure ZwpTabletManagerV1GetTabletSeatRequest implements Message.
+var _ Message = ZwpTabletManagerV1GetTabletSeatRequest{}
 
-// TUVZwpTabletManagerV1DestroyRequest requests to release the memory for the tablet manager object
+// ZwpTabletManagerV1DestroyRequest requests to release the memory for the tablet manager object
 //
 // Destroy the wp_tablet_manager object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletManagerV1DestroyRequest struct {
+type ZwpTabletManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_manager_v1.destroy in tablet_unstable_v1
-func (TUVZwpTabletManagerV1DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpTabletManagerV1DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletManagerV1DestroyRequest implements Message.
-var _ Message = TUVZwpTabletManagerV1DestroyRequest{}
+// Ensure ZwpTabletManagerV1DestroyRequest implements Message.
+var _ Message = ZwpTabletManagerV1DestroyRequest{}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v1.zwp_tablet_seat_v1
 
-// TUVZwpTabletSeatV1DestroyRequest requests to release the memory for the tablet seat object
+// ZwpTabletSeatV1DestroyRequest requests to release the memory for the tablet seat object
 //
 // Destroy the wp_tablet_seat object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletSeatV1DestroyRequest struct {
+type ZwpTabletSeatV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_seat_v1.destroy in tablet_unstable_v1
-func (TUVZwpTabletSeatV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletSeatV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletSeatV1DestroyRequest implements Message.
-var _ Message = TUVZwpTabletSeatV1DestroyRequest{}
+// Ensure ZwpTabletSeatV1DestroyRequest implements Message.
+var _ Message = ZwpTabletSeatV1DestroyRequest{}
 
-// TUVZwpTabletSeatV1TabletAddedEvent signals when new device notification
+// ZwpTabletSeatV1TabletAddedEvent signals when new device notification
 //
 // This event is sent whenever a new tablet becomes available on this
 // seat. This event only provides the object id of the tablet, any
 // static information about the tablet (device name, vid/pid, etc.) is
 // sent through the wp_tablet interface.
-type TUVZwpTabletSeatV1TabletAddedEvent struct {
+type ZwpTabletSeatV1TabletAddedEvent struct {
 	// ID contains the newly added graphics tablet
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_seat_v1.tablet_added in tablet_unstable_v1
-func (TUVZwpTabletSeatV1TabletAddedEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletSeatV1TabletAddedEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletSeatV1TabletAddedEvent implements Message.
-var _ Message = TUVZwpTabletSeatV1TabletAddedEvent{}
+// Ensure ZwpTabletSeatV1TabletAddedEvent implements Message.
+var _ Message = ZwpTabletSeatV1TabletAddedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletSeatV1TabletAddedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletSeatV1TabletAddedEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -3614,28 +3538,28 @@ func (e *TUVZwpTabletSeatV1TabletAddedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletSeatV1TabletAddedEvent implements Event.
-var _ Event = &TUVZwpTabletSeatV1TabletAddedEvent{}
+// Ensure ZwpTabletSeatV1TabletAddedEvent implements Event.
+var _ Event = &ZwpTabletSeatV1TabletAddedEvent{}
 
-// TUVZwpTabletSeatV1ToolAddedEvent signals when a new tool has been used with a tablet
+// ZwpTabletSeatV1ToolAddedEvent signals when a new tool has been used with a tablet
 //
 // This event is sent whenever a tool that has not previously been used
 // with a tablet comes into use. This event only provides the object id
 // of the tool; any static information about the tool (capabilities,
 // type, etc.) is sent through the wp_tablet_tool interface.
-type TUVZwpTabletSeatV1ToolAddedEvent struct {
+type ZwpTabletSeatV1ToolAddedEvent struct {
 	// ID contains the newly added tablet tool
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_seat_v1.tool_added in tablet_unstable_v1
-func (TUVZwpTabletSeatV1ToolAddedEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletSeatV1ToolAddedEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletSeatV1ToolAddedEvent implements Message.
-var _ Message = TUVZwpTabletSeatV1ToolAddedEvent{}
+// Ensure ZwpTabletSeatV1ToolAddedEvent implements Message.
+var _ Message = ZwpTabletSeatV1ToolAddedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletSeatV1ToolAddedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletSeatV1ToolAddedEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -3644,15 +3568,15 @@ func (e *TUVZwpTabletSeatV1ToolAddedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletSeatV1ToolAddedEvent implements Event.
-var _ Event = &TUVZwpTabletSeatV1ToolAddedEvent{}
+// Ensure ZwpTabletSeatV1ToolAddedEvent implements Event.
+var _ Event = &ZwpTabletSeatV1ToolAddedEvent{}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_seat_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v1.zwp_tablet_tool_v1
 
-// TUVZwpTabletToolV1Type represents a physical tool type
+// ZwpTabletToolV1Type represents a physical tool type
 //
 // Describes the physical type of a tool. The physical type of a tool
 // generally defines its base usage.
@@ -3663,83 +3587,83 @@ var _ Event = &TUVZwpTabletSeatV1ToolAddedEvent{}
 //
 // The lens tool is a mouse-shaped tool with an attached lens to
 // provide precision focus.
-type TUVZwpTabletToolV1Type int
+type ZwpTabletToolV1Type int
 
 const (
-	// TUVZwpTabletToolV1TypePen corresponds to Pen
-	TUVZwpTabletToolV1TypePen TUVZwpTabletToolV1Type = 0x140
+	// ZwpTabletToolV1TypePen corresponds to Pen
+	ZwpTabletToolV1TypePen ZwpTabletToolV1Type = 0x140
 
-	// TUVZwpTabletToolV1TypeEraser corresponds to Eraser
-	TUVZwpTabletToolV1TypeEraser TUVZwpTabletToolV1Type = 0x141
+	// ZwpTabletToolV1TypeEraser corresponds to Eraser
+	ZwpTabletToolV1TypeEraser ZwpTabletToolV1Type = 0x141
 
-	// TUVZwpTabletToolV1TypeBrush corresponds to Brush
-	TUVZwpTabletToolV1TypeBrush TUVZwpTabletToolV1Type = 0x142
+	// ZwpTabletToolV1TypeBrush corresponds to Brush
+	ZwpTabletToolV1TypeBrush ZwpTabletToolV1Type = 0x142
 
-	// TUVZwpTabletToolV1TypePencil corresponds to Pencil
-	TUVZwpTabletToolV1TypePencil TUVZwpTabletToolV1Type = 0x143
+	// ZwpTabletToolV1TypePencil corresponds to Pencil
+	ZwpTabletToolV1TypePencil ZwpTabletToolV1Type = 0x143
 
-	// TUVZwpTabletToolV1TypeAirbrush corresponds to Airbrush
-	TUVZwpTabletToolV1TypeAirbrush TUVZwpTabletToolV1Type = 0x144
+	// ZwpTabletToolV1TypeAirbrush corresponds to Airbrush
+	ZwpTabletToolV1TypeAirbrush ZwpTabletToolV1Type = 0x144
 
-	// TUVZwpTabletToolV1TypeFinger corresponds to Finger
-	TUVZwpTabletToolV1TypeFinger TUVZwpTabletToolV1Type = 0x145
+	// ZwpTabletToolV1TypeFinger corresponds to Finger
+	ZwpTabletToolV1TypeFinger ZwpTabletToolV1Type = 0x145
 
-	// TUVZwpTabletToolV1TypeMouse corresponds to Mouse
-	TUVZwpTabletToolV1TypeMouse TUVZwpTabletToolV1Type = 0x146
+	// ZwpTabletToolV1TypeMouse corresponds to Mouse
+	ZwpTabletToolV1TypeMouse ZwpTabletToolV1Type = 0x146
 
-	// TUVZwpTabletToolV1TypeLens corresponds to Lens
-	TUVZwpTabletToolV1TypeLens TUVZwpTabletToolV1Type = 0x147
+	// ZwpTabletToolV1TypeLens corresponds to Lens
+	ZwpTabletToolV1TypeLens ZwpTabletToolV1Type = 0x147
 )
 
-// TUVZwpTabletToolV1Capability represents capability flags for a tool
+// ZwpTabletToolV1Capability represents capability flags for a tool
 //
 // Describes extra capabilities on a tablet.
 //
 // Any tool must provide x and y values, extra axes are
 // device-specific.
-type TUVZwpTabletToolV1Capability int
+type ZwpTabletToolV1Capability int
 
 const (
-	// TUVZwpTabletToolV1CapabilityTilt corresponds to Tilt axes
-	TUVZwpTabletToolV1CapabilityTilt TUVZwpTabletToolV1Capability = 1
+	// ZwpTabletToolV1CapabilityTilt corresponds to Tilt axes
+	ZwpTabletToolV1CapabilityTilt ZwpTabletToolV1Capability = 1
 
-	// TUVZwpTabletToolV1CapabilityPressure corresponds to Pressure axis
-	TUVZwpTabletToolV1CapabilityPressure TUVZwpTabletToolV1Capability = 2
+	// ZwpTabletToolV1CapabilityPressure corresponds to Pressure axis
+	ZwpTabletToolV1CapabilityPressure ZwpTabletToolV1Capability = 2
 
-	// TUVZwpTabletToolV1CapabilityDistance corresponds to Distance axis
-	TUVZwpTabletToolV1CapabilityDistance TUVZwpTabletToolV1Capability = 3
+	// ZwpTabletToolV1CapabilityDistance corresponds to Distance axis
+	ZwpTabletToolV1CapabilityDistance ZwpTabletToolV1Capability = 3
 
-	// TUVZwpTabletToolV1CapabilityRotation corresponds to Z-rotation axis
-	TUVZwpTabletToolV1CapabilityRotation TUVZwpTabletToolV1Capability = 4
+	// ZwpTabletToolV1CapabilityRotation corresponds to Z-rotation axis
+	ZwpTabletToolV1CapabilityRotation ZwpTabletToolV1Capability = 4
 
-	// TUVZwpTabletToolV1CapabilitySlider corresponds to Slider axis
-	TUVZwpTabletToolV1CapabilitySlider TUVZwpTabletToolV1Capability = 5
+	// ZwpTabletToolV1CapabilitySlider corresponds to Slider axis
+	ZwpTabletToolV1CapabilitySlider ZwpTabletToolV1Capability = 5
 
-	// TUVZwpTabletToolV1CapabilityWheel corresponds to Wheel axis
-	TUVZwpTabletToolV1CapabilityWheel TUVZwpTabletToolV1Capability = 6
+	// ZwpTabletToolV1CapabilityWheel corresponds to Wheel axis
+	ZwpTabletToolV1CapabilityWheel ZwpTabletToolV1Capability = 6
 )
 
-// TUVZwpTabletToolV1ButtonState represents physical button state
+// ZwpTabletToolV1ButtonState represents physical button state
 //
 // Describes the physical state of a button that produced the button event.
-type TUVZwpTabletToolV1ButtonState int
+type ZwpTabletToolV1ButtonState int
 
 const (
-	// TUVZwpTabletToolV1ButtonStateReleased corresponds to button is not pressed
-	TUVZwpTabletToolV1ButtonStateReleased TUVZwpTabletToolV1ButtonState = 0
+	// ZwpTabletToolV1ButtonStateReleased corresponds to button is not pressed
+	ZwpTabletToolV1ButtonStateReleased ZwpTabletToolV1ButtonState = 0
 
-	// TUVZwpTabletToolV1ButtonStatePressed corresponds to button is pressed
-	TUVZwpTabletToolV1ButtonStatePressed TUVZwpTabletToolV1ButtonState = 1
+	// ZwpTabletToolV1ButtonStatePressed corresponds to button is pressed
+	ZwpTabletToolV1ButtonStatePressed ZwpTabletToolV1ButtonState = 1
 )
 
-type TUVZwpTabletToolV1Error int
+type ZwpTabletToolV1Error int
 
 const (
-	// TUVZwpTabletToolV1ErrorRole corresponds to given wl_surface has another role
-	TUVZwpTabletToolV1ErrorRole TUVZwpTabletToolV1Error = 0
+	// ZwpTabletToolV1ErrorRole corresponds to given wl_surface has another role
+	ZwpTabletToolV1ErrorRole ZwpTabletToolV1Error = 0
 )
 
-// TUVZwpTabletToolV1SetCursorRequest requests to set the tablet tool's surface
+// ZwpTabletToolV1SetCursorRequest requests to set the tablet tool's surface
 //
 // Sets the surface of the cursor used for this tool on the given
 // tablet. This request only takes effect if the tool is in proximity
@@ -3773,7 +3697,7 @@ const (
 // surface already has another role, it raises a protocol error.
 // The surface may be used on multiple tablets and across multiple
 // seats.
-type TUVZwpTabletToolV1SetCursorRequest struct {
+type ZwpTabletToolV1SetCursorRequest struct {
 	// Serial contains serial of the enter event
 	Serial uint32
 
@@ -3787,43 +3711,43 @@ type TUVZwpTabletToolV1SetCursorRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_tool_v1.set_cursor in tablet_unstable_v1
-func (TUVZwpTabletToolV1SetCursorRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletToolV1SetCursorRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletToolV1SetCursorRequest implements Message.
-var _ Message = TUVZwpTabletToolV1SetCursorRequest{}
+// Ensure ZwpTabletToolV1SetCursorRequest implements Message.
+var _ Message = ZwpTabletToolV1SetCursorRequest{}
 
-// TUVZwpTabletToolV1DestroyRequest requests to destroy the tool object
+// ZwpTabletToolV1DestroyRequest requests to destroy the tool object
 //
 // This destroys the client's resource for this tool object.
-type TUVZwpTabletToolV1DestroyRequest struct {
+type ZwpTabletToolV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_tool_v1.destroy in tablet_unstable_v1
-func (TUVZwpTabletToolV1DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpTabletToolV1DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletToolV1DestroyRequest implements Message.
-var _ Message = TUVZwpTabletToolV1DestroyRequest{}
+// Ensure ZwpTabletToolV1DestroyRequest implements Message.
+var _ Message = ZwpTabletToolV1DestroyRequest{}
 
-// TUVZwpTabletToolV1TypeEvent signals when tool type
+// ZwpTabletToolV1TypeEvent signals when tool type
 //
 // The tool type is the high-level type of the tool and usually decides
 // the interaction expected from this tool.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1TypeEvent struct {
+type ZwpTabletToolV1TypeEvent struct {
 	// ToolType contains the physical tool type
 	ToolType uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.type in tablet_unstable_v1
-func (TUVZwpTabletToolV1TypeEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletToolV1TypeEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletToolV1TypeEvent implements Message.
-var _ Message = TUVZwpTabletToolV1TypeEvent{}
+// Ensure ZwpTabletToolV1TypeEvent implements Message.
+var _ Message = ZwpTabletToolV1TypeEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1TypeEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1TypeEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3832,10 +3756,10 @@ func (e *TUVZwpTabletToolV1TypeEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1TypeEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1TypeEvent{}
+// Ensure ZwpTabletToolV1TypeEvent implements Event.
+var _ Event = &ZwpTabletToolV1TypeEvent{}
 
-// TUVZwpTabletToolV1HardwareSerialEvent signals when unique hardware serial number of the tool
+// ZwpTabletToolV1HardwareSerialEvent signals when unique hardware serial number of the tool
 //
 // If the physical tool can be identified by a unique 64-bit serial
 // number, this event notifies the client of this serial number.
@@ -3852,7 +3776,7 @@ var _ Event = &TUVZwpTabletToolV1TypeEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1HardwareSerialEvent struct {
+type ZwpTabletToolV1HardwareSerialEvent struct {
 	// HardwareSerialHi contains the unique serial number of the tool, most significant bits
 	HardwareSerialHi uint32
 
@@ -3861,13 +3785,13 @@ type TUVZwpTabletToolV1HardwareSerialEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.hardware_serial in tablet_unstable_v1
-func (TUVZwpTabletToolV1HardwareSerialEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletToolV1HardwareSerialEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletToolV1HardwareSerialEvent implements Message.
-var _ Message = TUVZwpTabletToolV1HardwareSerialEvent{}
+// Ensure ZwpTabletToolV1HardwareSerialEvent implements Message.
+var _ Message = ZwpTabletToolV1HardwareSerialEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1HardwareSerialEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1HardwareSerialEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3881,10 +3805,10 @@ func (e *TUVZwpTabletToolV1HardwareSerialEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1HardwareSerialEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1HardwareSerialEvent{}
+// Ensure ZwpTabletToolV1HardwareSerialEvent implements Event.
+var _ Event = &ZwpTabletToolV1HardwareSerialEvent{}
 
-// TUVZwpTabletToolV1HardwareIDWacomEvent signals when hardware id notification in Wacom's format
+// ZwpTabletToolV1HardwareIDWacomEvent signals when hardware id notification in Wacom's format
 //
 // This event notifies the client of a hardware id available on this tool.
 //
@@ -3896,7 +3820,7 @@ var _ Event = &TUVZwpTabletToolV1HardwareSerialEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1HardwareIDWacomEvent struct {
+type ZwpTabletToolV1HardwareIDWacomEvent struct {
 	// HardwareIDHi contains the hardware id, most significant bits
 	HardwareIDHi uint32
 
@@ -3905,13 +3829,13 @@ type TUVZwpTabletToolV1HardwareIDWacomEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.hardware_id_wacom in tablet_unstable_v1
-func (TUVZwpTabletToolV1HardwareIDWacomEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletToolV1HardwareIDWacomEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletToolV1HardwareIDWacomEvent implements Message.
-var _ Message = TUVZwpTabletToolV1HardwareIDWacomEvent{}
+// Ensure ZwpTabletToolV1HardwareIDWacomEvent implements Message.
+var _ Message = ZwpTabletToolV1HardwareIDWacomEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1HardwareIDWacomEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1HardwareIDWacomEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3925,10 +3849,10 @@ func (e *TUVZwpTabletToolV1HardwareIDWacomEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1HardwareIDWacomEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1HardwareIDWacomEvent{}
+// Ensure ZwpTabletToolV1HardwareIDWacomEvent implements Event.
+var _ Event = &ZwpTabletToolV1HardwareIDWacomEvent{}
 
-// TUVZwpTabletToolV1CapabilityEvent signals when tool capability notification
+// ZwpTabletToolV1CapabilityEvent signals when tool capability notification
 //
 // This event notifies the client of any capabilities of this tool,
 // beyond the main set of x/y axes and tip up/down detection.
@@ -3937,19 +3861,19 @@ var _ Event = &TUVZwpTabletToolV1HardwareIDWacomEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV1CapabilityEvent struct {
+type ZwpTabletToolV1CapabilityEvent struct {
 	// Capability contains the capability
 	Capability uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.capability in tablet_unstable_v1
-func (TUVZwpTabletToolV1CapabilityEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletToolV1CapabilityEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletToolV1CapabilityEvent implements Message.
-var _ Message = TUVZwpTabletToolV1CapabilityEvent{}
+// Ensure ZwpTabletToolV1CapabilityEvent implements Message.
+var _ Message = ZwpTabletToolV1CapabilityEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1CapabilityEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1CapabilityEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -3958,32 +3882,32 @@ func (e *TUVZwpTabletToolV1CapabilityEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1CapabilityEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1CapabilityEvent{}
+// Ensure ZwpTabletToolV1CapabilityEvent implements Event.
+var _ Event = &ZwpTabletToolV1CapabilityEvent{}
 
-// TUVZwpTabletToolV1DoneEvent signals when tool description events sequence complete
+// ZwpTabletToolV1DoneEvent signals when tool description events sequence complete
 //
 // This event signals the end of the initial burst of descriptive
 // events. A client may consider the static description of the tool to
 // be complete and finalize initialization of the tool.
-type TUVZwpTabletToolV1DoneEvent struct {
+type ZwpTabletToolV1DoneEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.done in tablet_unstable_v1
-func (TUVZwpTabletToolV1DoneEvent) Opcode() uint16 { return 4 }
+func (ZwpTabletToolV1DoneEvent) Opcode() uint16 { return 4 }
 
-// Ensure TUVZwpTabletToolV1DoneEvent implements Message.
-var _ Message = TUVZwpTabletToolV1DoneEvent{}
+// Ensure ZwpTabletToolV1DoneEvent implements Message.
+var _ Message = ZwpTabletToolV1DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1DoneEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1DoneEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1DoneEvent{}
+// Ensure ZwpTabletToolV1DoneEvent implements Event.
+var _ Event = &ZwpTabletToolV1DoneEvent{}
 
-// TUVZwpTabletToolV1RemovedEvent signals when tool removed
+// ZwpTabletToolV1RemovedEvent signals when tool removed
 //
 // This event is sent when the tool is removed from the system and will
 // send no further events. Should the physical tool come back into
@@ -3999,24 +3923,24 @@ var _ Event = &TUVZwpTabletToolV1DoneEvent{}
 //
 // When this event is received, the client must wp_tablet_tool.destroy
 // the object.
-type TUVZwpTabletToolV1RemovedEvent struct {
+type ZwpTabletToolV1RemovedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.removed in tablet_unstable_v1
-func (TUVZwpTabletToolV1RemovedEvent) Opcode() uint16 { return 5 }
+func (ZwpTabletToolV1RemovedEvent) Opcode() uint16 { return 5 }
 
-// Ensure TUVZwpTabletToolV1RemovedEvent implements Message.
-var _ Message = TUVZwpTabletToolV1RemovedEvent{}
+// Ensure ZwpTabletToolV1RemovedEvent implements Message.
+var _ Message = ZwpTabletToolV1RemovedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1RemovedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1RemovedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1RemovedEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1RemovedEvent{}
+// Ensure ZwpTabletToolV1RemovedEvent implements Event.
+var _ Event = &ZwpTabletToolV1RemovedEvent{}
 
-// TUVZwpTabletToolV1ProximityInEvent signals when proximity in event
+// ZwpTabletToolV1ProximityInEvent signals when proximity in event
 //
 // Notification that this tool is focused on a certain surface.
 //
@@ -4027,7 +3951,7 @@ var _ Event = &TUVZwpTabletToolV1RemovedEvent{}
 // If any button is logically down when the tool comes into proximity,
 // the respective button event is sent after the proximity_in event but
 // within the same frame as the proximity_in event.
-type TUVZwpTabletToolV1ProximityInEvent struct {
+type ZwpTabletToolV1ProximityInEvent struct {
 	Serial uint32
 
 	// Tablet contains The tablet the tool is in proximity of
@@ -4038,13 +3962,13 @@ type TUVZwpTabletToolV1ProximityInEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.proximity_in in tablet_unstable_v1
-func (TUVZwpTabletToolV1ProximityInEvent) Opcode() uint16 { return 6 }
+func (ZwpTabletToolV1ProximityInEvent) Opcode() uint16 { return 6 }
 
-// Ensure TUVZwpTabletToolV1ProximityInEvent implements Message.
-var _ Message = TUVZwpTabletToolV1ProximityInEvent{}
+// Ensure ZwpTabletToolV1ProximityInEvent implements Message.
+var _ Message = ZwpTabletToolV1ProximityInEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1ProximityInEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1ProximityInEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4063,10 +3987,10 @@ func (e *TUVZwpTabletToolV1ProximityInEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1ProximityInEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1ProximityInEvent{}
+// Ensure ZwpTabletToolV1ProximityInEvent implements Event.
+var _ Event = &ZwpTabletToolV1ProximityInEvent{}
 
-// TUVZwpTabletToolV1ProximityOutEvent signals when proximity out event
+// ZwpTabletToolV1ProximityOutEvent signals when proximity out event
 //
 // Notification that this tool has either left proximity, or is no
 // longer focused on a certain surface.
@@ -4080,24 +4004,24 @@ var _ Event = &TUVZwpTabletToolV1ProximityInEvent{}
 // changes from one surface to another, a button release event may not
 // be sent until the button is actually released or the tool leaves the
 // proximity of the tablet.
-type TUVZwpTabletToolV1ProximityOutEvent struct {
+type ZwpTabletToolV1ProximityOutEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.proximity_out in tablet_unstable_v1
-func (TUVZwpTabletToolV1ProximityOutEvent) Opcode() uint16 { return 7 }
+func (ZwpTabletToolV1ProximityOutEvent) Opcode() uint16 { return 7 }
 
-// Ensure TUVZwpTabletToolV1ProximityOutEvent implements Message.
-var _ Message = TUVZwpTabletToolV1ProximityOutEvent{}
+// Ensure ZwpTabletToolV1ProximityOutEvent implements Message.
+var _ Message = ZwpTabletToolV1ProximityOutEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1ProximityOutEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1ProximityOutEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1ProximityOutEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1ProximityOutEvent{}
+// Ensure ZwpTabletToolV1ProximityOutEvent implements Event.
+var _ Event = &ZwpTabletToolV1ProximityOutEvent{}
 
-// TUVZwpTabletToolV1DownEvent signals when tablet tool is making contact
+// ZwpTabletToolV1DownEvent signals when tablet tool is making contact
 //
 // Sent whenever the tablet tool comes in contact with the surface of the
 // tablet.
@@ -4111,18 +4035,18 @@ var _ Event = &TUVZwpTabletToolV1ProximityOutEvent{}
 // contact. On some devices, a compositor may not consider a tool in
 // logical contact until a minimum physical pressure threshold is
 // exceeded.
-type TUVZwpTabletToolV1DownEvent struct {
+type ZwpTabletToolV1DownEvent struct {
 	Serial uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.down in tablet_unstable_v1
-func (TUVZwpTabletToolV1DownEvent) Opcode() uint16 { return 8 }
+func (ZwpTabletToolV1DownEvent) Opcode() uint16 { return 8 }
 
-// Ensure TUVZwpTabletToolV1DownEvent implements Message.
-var _ Message = TUVZwpTabletToolV1DownEvent{}
+// Ensure ZwpTabletToolV1DownEvent implements Message.
+var _ Message = ZwpTabletToolV1DownEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1DownEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1DownEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4131,10 +4055,10 @@ func (e *TUVZwpTabletToolV1DownEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1DownEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1DownEvent{}
+// Ensure ZwpTabletToolV1DownEvent implements Event.
+var _ Event = &ZwpTabletToolV1DownEvent{}
 
-// TUVZwpTabletToolV1UpEvent signals when tablet tool is no longer making contact
+// ZwpTabletToolV1UpEvent signals when tablet tool is no longer making contact
 //
 // Sent whenever the tablet tool stops making contact with the surface of
 // the tablet, or when the tablet tool moves out of the input region
@@ -4152,27 +4076,27 @@ var _ Event = &TUVZwpTabletToolV1DownEvent{}
 // contact. On some devices, a compositor may not consider a tool out
 // of logical contact until physical pressure falls below a specific
 // threshold.
-type TUVZwpTabletToolV1UpEvent struct {
+type ZwpTabletToolV1UpEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.up in tablet_unstable_v1
-func (TUVZwpTabletToolV1UpEvent) Opcode() uint16 { return 9 }
+func (ZwpTabletToolV1UpEvent) Opcode() uint16 { return 9 }
 
-// Ensure TUVZwpTabletToolV1UpEvent implements Message.
-var _ Message = TUVZwpTabletToolV1UpEvent{}
+// Ensure ZwpTabletToolV1UpEvent implements Message.
+var _ Message = ZwpTabletToolV1UpEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1UpEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1UpEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1UpEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1UpEvent{}
+// Ensure ZwpTabletToolV1UpEvent implements Event.
+var _ Event = &ZwpTabletToolV1UpEvent{}
 
-// TUVZwpTabletToolV1MotionEvent signals when motion event
+// ZwpTabletToolV1MotionEvent signals when motion event
 //
 // Sent whenever a tablet tool moves.
-type TUVZwpTabletToolV1MotionEvent struct {
+type ZwpTabletToolV1MotionEvent struct {
 	// X contains surface-local x coordinate
 	X Fixed
 
@@ -4181,13 +4105,13 @@ type TUVZwpTabletToolV1MotionEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.motion in tablet_unstable_v1
-func (TUVZwpTabletToolV1MotionEvent) Opcode() uint16 { return 10 }
+func (ZwpTabletToolV1MotionEvent) Opcode() uint16 { return 10 }
 
-// Ensure TUVZwpTabletToolV1MotionEvent implements Message.
-var _ Message = TUVZwpTabletToolV1MotionEvent{}
+// Ensure ZwpTabletToolV1MotionEvent implements Message.
+var _ Message = ZwpTabletToolV1MotionEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1MotionEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1MotionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Fixed(); err != nil {
 		return err
 	} else {
@@ -4201,29 +4125,29 @@ func (e *TUVZwpTabletToolV1MotionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1MotionEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1MotionEvent{}
+// Ensure ZwpTabletToolV1MotionEvent implements Event.
+var _ Event = &ZwpTabletToolV1MotionEvent{}
 
-// TUVZwpTabletToolV1PressureEvent signals when pressure change event
+// ZwpTabletToolV1PressureEvent signals when pressure change event
 //
 // Sent whenever the pressure axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that pressure may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV1PressureEvent struct {
+type ZwpTabletToolV1PressureEvent struct {
 	// Pressure contains The current pressure value
 	Pressure uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.pressure in tablet_unstable_v1
-func (TUVZwpTabletToolV1PressureEvent) Opcode() uint16 { return 11 }
+func (ZwpTabletToolV1PressureEvent) Opcode() uint16 { return 11 }
 
-// Ensure TUVZwpTabletToolV1PressureEvent implements Message.
-var _ Message = TUVZwpTabletToolV1PressureEvent{}
+// Ensure ZwpTabletToolV1PressureEvent implements Message.
+var _ Message = ZwpTabletToolV1PressureEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1PressureEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1PressureEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4232,29 +4156,29 @@ func (e *TUVZwpTabletToolV1PressureEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1PressureEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1PressureEvent{}
+// Ensure ZwpTabletToolV1PressureEvent implements Event.
+var _ Event = &ZwpTabletToolV1PressureEvent{}
 
-// TUVZwpTabletToolV1DistanceEvent signals when distance change event
+// ZwpTabletToolV1DistanceEvent signals when distance change event
 //
 // Sent whenever the distance axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that distance may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV1DistanceEvent struct {
+type ZwpTabletToolV1DistanceEvent struct {
 	// Distance contains The current distance value
 	Distance uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.distance in tablet_unstable_v1
-func (TUVZwpTabletToolV1DistanceEvent) Opcode() uint16 { return 12 }
+func (ZwpTabletToolV1DistanceEvent) Opcode() uint16 { return 12 }
 
-// Ensure TUVZwpTabletToolV1DistanceEvent implements Message.
-var _ Message = TUVZwpTabletToolV1DistanceEvent{}
+// Ensure ZwpTabletToolV1DistanceEvent implements Message.
+var _ Message = ZwpTabletToolV1DistanceEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1DistanceEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1DistanceEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4263,16 +4187,16 @@ func (e *TUVZwpTabletToolV1DistanceEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1DistanceEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1DistanceEvent{}
+// Ensure ZwpTabletToolV1DistanceEvent implements Event.
+var _ Event = &ZwpTabletToolV1DistanceEvent{}
 
-// TUVZwpTabletToolV1TiltEvent signals when tilt change event
+// ZwpTabletToolV1TiltEvent signals when tilt change event
 //
 // Sent whenever one or both of the tilt axes on a tool change. Each tilt
 // value is in 0.01 of a degree, relative to the z-axis of the tablet.
 // The angle is positive when the top of a tool tilts along the
 // positive x or y axis.
-type TUVZwpTabletToolV1TiltEvent struct {
+type ZwpTabletToolV1TiltEvent struct {
 	// TiltX contains The current value of the X tilt axis
 	TiltX int32
 
@@ -4281,13 +4205,13 @@ type TUVZwpTabletToolV1TiltEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.tilt in tablet_unstable_v1
-func (TUVZwpTabletToolV1TiltEvent) Opcode() uint16 { return 13 }
+func (ZwpTabletToolV1TiltEvent) Opcode() uint16 { return 13 }
 
-// Ensure TUVZwpTabletToolV1TiltEvent implements Message.
-var _ Message = TUVZwpTabletToolV1TiltEvent{}
+// Ensure ZwpTabletToolV1TiltEvent implements Message.
+var _ Message = ZwpTabletToolV1TiltEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1TiltEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1TiltEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -4301,27 +4225,27 @@ func (e *TUVZwpTabletToolV1TiltEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1TiltEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1TiltEvent{}
+// Ensure ZwpTabletToolV1TiltEvent implements Event.
+var _ Event = &ZwpTabletToolV1TiltEvent{}
 
-// TUVZwpTabletToolV1RotationEvent signals when z-rotation change event
+// ZwpTabletToolV1RotationEvent signals when z-rotation change event
 //
 // Sent whenever the z-rotation axis on the tool changes. The
 // rotation value is in 0.01 of a degree clockwise from the tool's
 // logical neutral position.
-type TUVZwpTabletToolV1RotationEvent struct {
+type ZwpTabletToolV1RotationEvent struct {
 	// Degrees contains The current rotation of the Z axis
 	Degrees int32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.rotation in tablet_unstable_v1
-func (TUVZwpTabletToolV1RotationEvent) Opcode() uint16 { return 14 }
+func (ZwpTabletToolV1RotationEvent) Opcode() uint16 { return 14 }
 
-// Ensure TUVZwpTabletToolV1RotationEvent implements Message.
-var _ Message = TUVZwpTabletToolV1RotationEvent{}
+// Ensure ZwpTabletToolV1RotationEvent implements Message.
+var _ Message = ZwpTabletToolV1RotationEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1RotationEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1RotationEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -4330,29 +4254,29 @@ func (e *TUVZwpTabletToolV1RotationEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1RotationEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1RotationEvent{}
+// Ensure ZwpTabletToolV1RotationEvent implements Event.
+var _ Event = &ZwpTabletToolV1RotationEvent{}
 
-// TUVZwpTabletToolV1SliderEvent signals when Slider position change event
+// ZwpTabletToolV1SliderEvent signals when Slider position change event
 //
 // Sent whenever the slider position on the tool changes. The
 // value is normalized between -65535 and 65535, with 0 as the logical
 // neutral position of the slider.
 //
 // The slider is available on e.g. the Wacom Airbrush tool.
-type TUVZwpTabletToolV1SliderEvent struct {
+type ZwpTabletToolV1SliderEvent struct {
 	// Position contains The current position of slider
 	Position int32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.slider in tablet_unstable_v1
-func (TUVZwpTabletToolV1SliderEvent) Opcode() uint16 { return 15 }
+func (ZwpTabletToolV1SliderEvent) Opcode() uint16 { return 15 }
 
-// Ensure TUVZwpTabletToolV1SliderEvent implements Message.
-var _ Message = TUVZwpTabletToolV1SliderEvent{}
+// Ensure ZwpTabletToolV1SliderEvent implements Message.
+var _ Message = ZwpTabletToolV1SliderEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1SliderEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1SliderEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -4361,10 +4285,10 @@ func (e *TUVZwpTabletToolV1SliderEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1SliderEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1SliderEvent{}
+// Ensure ZwpTabletToolV1SliderEvent implements Event.
+var _ Event = &ZwpTabletToolV1SliderEvent{}
 
-// TUVZwpTabletToolV1WheelEvent signals when Wheel delta event
+// ZwpTabletToolV1WheelEvent signals when Wheel delta event
 //
 // Sent whenever the wheel on the tool emits an event. This event
 // contains two values for the same axis change. The degrees value is
@@ -4378,7 +4302,7 @@ var _ Event = &TUVZwpTabletToolV1SliderEvent{}
 // click and emulate click events when a certain threshold is met.
 // Thus, wl_tablet_tool.wheel events with non-zero clicks values may
 // have different degrees values.
-type TUVZwpTabletToolV1WheelEvent struct {
+type ZwpTabletToolV1WheelEvent struct {
 	// Degrees contains The wheel delta in 0.01 of a degree
 	Degrees int32
 
@@ -4387,13 +4311,13 @@ type TUVZwpTabletToolV1WheelEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.wheel in tablet_unstable_v1
-func (TUVZwpTabletToolV1WheelEvent) Opcode() uint16 { return 16 }
+func (ZwpTabletToolV1WheelEvent) Opcode() uint16 { return 16 }
 
-// Ensure TUVZwpTabletToolV1WheelEvent implements Message.
-var _ Message = TUVZwpTabletToolV1WheelEvent{}
+// Ensure ZwpTabletToolV1WheelEvent implements Message.
+var _ Message = ZwpTabletToolV1WheelEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1WheelEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1WheelEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -4407,10 +4331,10 @@ func (e *TUVZwpTabletToolV1WheelEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1WheelEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1WheelEvent{}
+// Ensure ZwpTabletToolV1WheelEvent implements Event.
+var _ Event = &ZwpTabletToolV1WheelEvent{}
 
-// TUVZwpTabletToolV1ButtonEvent signals when button event
+// ZwpTabletToolV1ButtonEvent signals when button event
 //
 // Sent whenever a button on the tool is pressed or released.
 //
@@ -4418,7 +4342,7 @@ var _ Event = &TUVZwpTabletToolV1WheelEvent{}
 // button events are generated by the compositor. See
 // wp_tablet_tool.proximity_in and wp_tablet_tool.proximity_out for
 // details.
-type TUVZwpTabletToolV1ButtonEvent struct {
+type ZwpTabletToolV1ButtonEvent struct {
 	Serial uint32
 
 	// Button contains The button whose state has changed
@@ -4429,13 +4353,13 @@ type TUVZwpTabletToolV1ButtonEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.button in tablet_unstable_v1
-func (TUVZwpTabletToolV1ButtonEvent) Opcode() uint16 { return 17 }
+func (ZwpTabletToolV1ButtonEvent) Opcode() uint16 { return 17 }
 
-// Ensure TUVZwpTabletToolV1ButtonEvent implements Message.
-var _ Message = TUVZwpTabletToolV1ButtonEvent{}
+// Ensure ZwpTabletToolV1ButtonEvent implements Message.
+var _ Message = ZwpTabletToolV1ButtonEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1ButtonEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1ButtonEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4454,28 +4378,28 @@ func (e *TUVZwpTabletToolV1ButtonEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1ButtonEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1ButtonEvent{}
+// Ensure ZwpTabletToolV1ButtonEvent implements Event.
+var _ Event = &ZwpTabletToolV1ButtonEvent{}
 
-// TUVZwpTabletToolV1FrameEvent signals when frame event
+// ZwpTabletToolV1FrameEvent signals when frame event
 //
 // Marks the end of a series of axis and/or button updates from the
 // tablet. The Wayland protocol requires axis updates to be sent
 // sequentially, however all events within a frame should be considered
 // one hardware event.
-type TUVZwpTabletToolV1FrameEvent struct {
+type ZwpTabletToolV1FrameEvent struct {
 	// Time contains The time of the event with millisecond granularity
 	Time uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.frame in tablet_unstable_v1
-func (TUVZwpTabletToolV1FrameEvent) Opcode() uint16 { return 18 }
+func (ZwpTabletToolV1FrameEvent) Opcode() uint16 { return 18 }
 
-// Ensure TUVZwpTabletToolV1FrameEvent implements Message.
-var _ Message = TUVZwpTabletToolV1FrameEvent{}
+// Ensure ZwpTabletToolV1FrameEvent implements Message.
+var _ Message = ZwpTabletToolV1FrameEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV1FrameEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV1FrameEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4484,43 +4408,43 @@ func (e *TUVZwpTabletToolV1FrameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV1FrameEvent implements Event.
-var _ Event = &TUVZwpTabletToolV1FrameEvent{}
+// Ensure ZwpTabletToolV1FrameEvent implements Event.
+var _ Event = &ZwpTabletToolV1FrameEvent{}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_tool_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v1.zwp_tablet_v1
 
-// TUVZwpTabletV1DestroyRequest requests to destroy the tablet object
+// ZwpTabletV1DestroyRequest requests to destroy the tablet object
 //
 // This destroys the client's resource for this tablet object.
-type TUVZwpTabletV1DestroyRequest struct {
+type ZwpTabletV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_v1.destroy in tablet_unstable_v1
-func (TUVZwpTabletV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletV1DestroyRequest implements Message.
-var _ Message = TUVZwpTabletV1DestroyRequest{}
+// Ensure ZwpTabletV1DestroyRequest implements Message.
+var _ Message = ZwpTabletV1DestroyRequest{}
 
-// TUVZwpTabletV1NameEvent signals when tablet device name
+// ZwpTabletV1NameEvent signals when tablet device name
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV1NameEvent struct {
+type ZwpTabletV1NameEvent struct {
 	// Name contains the device name
 	Name string
 }
 
 // Opcode returns the event opcode for zwp_tablet_v1.name in tablet_unstable_v1
-func (TUVZwpTabletV1NameEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletV1NameEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletV1NameEvent implements Message.
-var _ Message = TUVZwpTabletV1NameEvent{}
+// Ensure ZwpTabletV1NameEvent implements Message.
+var _ Message = ZwpTabletV1NameEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV1NameEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV1NameEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -4529,14 +4453,14 @@ func (e *TUVZwpTabletV1NameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV1NameEvent implements Event.
-var _ Event = &TUVZwpTabletV1NameEvent{}
+// Ensure ZwpTabletV1NameEvent implements Event.
+var _ Event = &ZwpTabletV1NameEvent{}
 
-// TUVZwpTabletV1IDEvent signals when tablet device USB vendor/product id
+// ZwpTabletV1IDEvent signals when tablet device USB vendor/product id
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV1IDEvent struct {
+type ZwpTabletV1IDEvent struct {
 	// Vid contains USB vendor id
 	Vid uint32
 
@@ -4545,13 +4469,13 @@ type TUVZwpTabletV1IDEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_v1.id in tablet_unstable_v1
-func (TUVZwpTabletV1IDEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletV1IDEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletV1IDEvent implements Message.
-var _ Message = TUVZwpTabletV1IDEvent{}
+// Ensure ZwpTabletV1IDEvent implements Message.
+var _ Message = ZwpTabletV1IDEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV1IDEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV1IDEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4565,10 +4489,10 @@ func (e *TUVZwpTabletV1IDEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV1IDEvent implements Event.
-var _ Event = &TUVZwpTabletV1IDEvent{}
+// Ensure ZwpTabletV1IDEvent implements Event.
+var _ Event = &ZwpTabletV1IDEvent{}
 
-// TUVZwpTabletV1PathEvent signals when path to the device
+// ZwpTabletV1PathEvent signals when path to the device
 //
 // A system-specific device path that indicates which device is behind
 // this wp_tablet. This information may be used to gather additional
@@ -4584,19 +4508,19 @@ var _ Event = &TUVZwpTabletV1IDEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV1PathEvent struct {
+type ZwpTabletV1PathEvent struct {
 	// Path contains path to local device
 	Path string
 }
 
 // Opcode returns the event opcode for zwp_tablet_v1.path in tablet_unstable_v1
-func (TUVZwpTabletV1PathEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletV1PathEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletV1PathEvent implements Message.
-var _ Message = TUVZwpTabletV1PathEvent{}
+// Ensure ZwpTabletV1PathEvent implements Message.
+var _ Message = ZwpTabletV1PathEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV1PathEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV1PathEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -4605,55 +4529,55 @@ func (e *TUVZwpTabletV1PathEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV1PathEvent implements Event.
-var _ Event = &TUVZwpTabletV1PathEvent{}
+// Ensure ZwpTabletV1PathEvent implements Event.
+var _ Event = &ZwpTabletV1PathEvent{}
 
-// TUVZwpTabletV1DoneEvent signals when tablet description events sequence complete
+// ZwpTabletV1DoneEvent signals when tablet description events sequence complete
 //
 // This event is sent immediately to signal the end of the initial
 // burst of descriptive events. A client may consider the static
 // description of the tablet to be complete and finalize initialization
 // of the tablet.
-type TUVZwpTabletV1DoneEvent struct {
+type ZwpTabletV1DoneEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_v1.done in tablet_unstable_v1
-func (TUVZwpTabletV1DoneEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletV1DoneEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletV1DoneEvent implements Message.
-var _ Message = TUVZwpTabletV1DoneEvent{}
+// Ensure ZwpTabletV1DoneEvent implements Message.
+var _ Message = ZwpTabletV1DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV1DoneEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV1DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV1DoneEvent implements Event.
-var _ Event = &TUVZwpTabletV1DoneEvent{}
+// Ensure ZwpTabletV1DoneEvent implements Event.
+var _ Event = &ZwpTabletV1DoneEvent{}
 
-// TUVZwpTabletV1RemovedEvent signals when tablet removed event
+// ZwpTabletV1RemovedEvent signals when tablet removed event
 //
 // Sent when the tablet has been removed from the system. When a tablet
 // is removed, some tools may be removed.
 //
 // When this event is received, the client must wp_tablet.destroy
 // the object.
-type TUVZwpTabletV1RemovedEvent struct {
+type ZwpTabletV1RemovedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_v1.removed in tablet_unstable_v1
-func (TUVZwpTabletV1RemovedEvent) Opcode() uint16 { return 4 }
+func (ZwpTabletV1RemovedEvent) Opcode() uint16 { return 4 }
 
-// Ensure TUVZwpTabletV1RemovedEvent implements Message.
-var _ Message = TUVZwpTabletV1RemovedEvent{}
+// Ensure ZwpTabletV1RemovedEvent implements Message.
+var _ Message = ZwpTabletV1RemovedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV1RemovedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV1RemovedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV1RemovedEvent implements Event.
-var _ Event = &TUVZwpTabletV1RemovedEvent{}
+// Ensure ZwpTabletV1RemovedEvent implements Event.
+var _ Event = &ZwpTabletV1RemovedEvent{}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_v1
 
@@ -4666,11 +4590,11 @@ var _ Event = &TUVZwpTabletV1RemovedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_manager_v2
 
-// TUVZwpTabletManagerV2GetTabletSeatRequest requests to get the tablet seat
+// ZwpTabletManagerV2GetTabletSeatRequest requests to get the tablet seat
 //
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
-type TUVZwpTabletManagerV2GetTabletSeatRequest struct {
+type ZwpTabletManagerV2GetTabletSeatRequest struct {
 	TabletSeat ObjectID
 
 	// Seat contains The wl_seat object to retrieve the tablets for
@@ -4678,61 +4602,61 @@ type TUVZwpTabletManagerV2GetTabletSeatRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_manager_v2.get_tablet_seat in tablet_unstable_v2
-func (TUVZwpTabletManagerV2GetTabletSeatRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletManagerV2GetTabletSeatRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletManagerV2GetTabletSeatRequest implements Message.
-var _ Message = TUVZwpTabletManagerV2GetTabletSeatRequest{}
+// Ensure ZwpTabletManagerV2GetTabletSeatRequest implements Message.
+var _ Message = ZwpTabletManagerV2GetTabletSeatRequest{}
 
-// TUVZwpTabletManagerV2DestroyRequest requests to release the memory for the tablet manager object
+// ZwpTabletManagerV2DestroyRequest requests to release the memory for the tablet manager object
 //
 // Destroy the wp_tablet_manager object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletManagerV2DestroyRequest struct {
+type ZwpTabletManagerV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_manager_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletManagerV2DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpTabletManagerV2DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletManagerV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletManagerV2DestroyRequest{}
+// Ensure ZwpTabletManagerV2DestroyRequest implements Message.
+var _ Message = ZwpTabletManagerV2DestroyRequest{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_manager_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_seat_v2
 
-// TUVZwpTabletSeatV2DestroyRequest requests to release the memory for the tablet seat object
+// ZwpTabletSeatV2DestroyRequest requests to release the memory for the tablet seat object
 //
 // Destroy the wp_tablet_seat object. Objects created from this
 // object are unaffected and should be destroyed separately.
-type TUVZwpTabletSeatV2DestroyRequest struct {
+type ZwpTabletSeatV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_seat_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletSeatV2DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletSeatV2DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletSeatV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletSeatV2DestroyRequest{}
+// Ensure ZwpTabletSeatV2DestroyRequest implements Message.
+var _ Message = ZwpTabletSeatV2DestroyRequest{}
 
-// TUVZwpTabletSeatV2TabletAddedEvent signals when new device notification
+// ZwpTabletSeatV2TabletAddedEvent signals when new device notification
 //
 // This event is sent whenever a new tablet becomes available on this
 // seat. This event only provides the object id of the tablet, any
 // static information about the tablet (device name, vid/pid, etc.) is
 // sent through the wp_tablet interface.
-type TUVZwpTabletSeatV2TabletAddedEvent struct {
+type ZwpTabletSeatV2TabletAddedEvent struct {
 	// ID contains the newly added graphics tablet
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_seat_v2.tablet_added in tablet_unstable_v2
-func (TUVZwpTabletSeatV2TabletAddedEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletSeatV2TabletAddedEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletSeatV2TabletAddedEvent implements Message.
-var _ Message = TUVZwpTabletSeatV2TabletAddedEvent{}
+// Ensure ZwpTabletSeatV2TabletAddedEvent implements Message.
+var _ Message = ZwpTabletSeatV2TabletAddedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletSeatV2TabletAddedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletSeatV2TabletAddedEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -4741,28 +4665,28 @@ func (e *TUVZwpTabletSeatV2TabletAddedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletSeatV2TabletAddedEvent implements Event.
-var _ Event = &TUVZwpTabletSeatV2TabletAddedEvent{}
+// Ensure ZwpTabletSeatV2TabletAddedEvent implements Event.
+var _ Event = &ZwpTabletSeatV2TabletAddedEvent{}
 
-// TUVZwpTabletSeatV2ToolAddedEvent signals when a new tool has been used with a tablet
+// ZwpTabletSeatV2ToolAddedEvent signals when a new tool has been used with a tablet
 //
 // This event is sent whenever a tool that has not previously been used
 // with a tablet comes into use. This event only provides the object id
 // of the tool; any static information about the tool (capabilities,
 // type, etc.) is sent through the wp_tablet_tool interface.
-type TUVZwpTabletSeatV2ToolAddedEvent struct {
+type ZwpTabletSeatV2ToolAddedEvent struct {
 	// ID contains the newly added tablet tool
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_seat_v2.tool_added in tablet_unstable_v2
-func (TUVZwpTabletSeatV2ToolAddedEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletSeatV2ToolAddedEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletSeatV2ToolAddedEvent implements Message.
-var _ Message = TUVZwpTabletSeatV2ToolAddedEvent{}
+// Ensure ZwpTabletSeatV2ToolAddedEvent implements Message.
+var _ Message = ZwpTabletSeatV2ToolAddedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletSeatV2ToolAddedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletSeatV2ToolAddedEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -4771,10 +4695,10 @@ func (e *TUVZwpTabletSeatV2ToolAddedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletSeatV2ToolAddedEvent implements Event.
-var _ Event = &TUVZwpTabletSeatV2ToolAddedEvent{}
+// Ensure ZwpTabletSeatV2ToolAddedEvent implements Event.
+var _ Event = &ZwpTabletSeatV2ToolAddedEvent{}
 
-// TUVZwpTabletSeatV2PadAddedEvent signals when new pad notification
+// ZwpTabletSeatV2PadAddedEvent signals when new pad notification
 //
 // This event is sent whenever a new pad is known to the system. Typically,
 // pads are physically attached to tablets and a pad_added event is
@@ -4786,19 +4710,19 @@ var _ Event = &TUVZwpTabletSeatV2ToolAddedEvent{}
 // This event only provides the object id of the pad. All further
 // features (buttons, strips, rings) are sent through the wp_tablet_pad
 // interface.
-type TUVZwpTabletSeatV2PadAddedEvent struct {
+type ZwpTabletSeatV2PadAddedEvent struct {
 	// ID contains the newly added pad
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_seat_v2.pad_added in tablet_unstable_v2
-func (TUVZwpTabletSeatV2PadAddedEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletSeatV2PadAddedEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletSeatV2PadAddedEvent implements Message.
-var _ Message = TUVZwpTabletSeatV2PadAddedEvent{}
+// Ensure ZwpTabletSeatV2PadAddedEvent implements Message.
+var _ Message = ZwpTabletSeatV2PadAddedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletSeatV2PadAddedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletSeatV2PadAddedEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -4807,15 +4731,15 @@ func (e *TUVZwpTabletSeatV2PadAddedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletSeatV2PadAddedEvent implements Event.
-var _ Event = &TUVZwpTabletSeatV2PadAddedEvent{}
+// Ensure ZwpTabletSeatV2PadAddedEvent implements Event.
+var _ Event = &ZwpTabletSeatV2PadAddedEvent{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_seat_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_tool_v2
 
-// TUVZwpTabletToolV2Type represents a physical tool type
+// ZwpTabletToolV2Type represents a physical tool type
 //
 // Describes the physical type of a tool. The physical type of a tool
 // generally defines its base usage.
@@ -4826,83 +4750,83 @@ var _ Event = &TUVZwpTabletSeatV2PadAddedEvent{}
 //
 // The lens tool is a mouse-shaped tool with an attached lens to
 // provide precision focus.
-type TUVZwpTabletToolV2Type int
+type ZwpTabletToolV2Type int
 
 const (
-	// TUVZwpTabletToolV2TypePen corresponds to Pen
-	TUVZwpTabletToolV2TypePen TUVZwpTabletToolV2Type = 0x140
+	// ZwpTabletToolV2TypePen corresponds to Pen
+	ZwpTabletToolV2TypePen ZwpTabletToolV2Type = 0x140
 
-	// TUVZwpTabletToolV2TypeEraser corresponds to Eraser
-	TUVZwpTabletToolV2TypeEraser TUVZwpTabletToolV2Type = 0x141
+	// ZwpTabletToolV2TypeEraser corresponds to Eraser
+	ZwpTabletToolV2TypeEraser ZwpTabletToolV2Type = 0x141
 
-	// TUVZwpTabletToolV2TypeBrush corresponds to Brush
-	TUVZwpTabletToolV2TypeBrush TUVZwpTabletToolV2Type = 0x142
+	// ZwpTabletToolV2TypeBrush corresponds to Brush
+	ZwpTabletToolV2TypeBrush ZwpTabletToolV2Type = 0x142
 
-	// TUVZwpTabletToolV2TypePencil corresponds to Pencil
-	TUVZwpTabletToolV2TypePencil TUVZwpTabletToolV2Type = 0x143
+	// ZwpTabletToolV2TypePencil corresponds to Pencil
+	ZwpTabletToolV2TypePencil ZwpTabletToolV2Type = 0x143
 
-	// TUVZwpTabletToolV2TypeAirbrush corresponds to Airbrush
-	TUVZwpTabletToolV2TypeAirbrush TUVZwpTabletToolV2Type = 0x144
+	// ZwpTabletToolV2TypeAirbrush corresponds to Airbrush
+	ZwpTabletToolV2TypeAirbrush ZwpTabletToolV2Type = 0x144
 
-	// TUVZwpTabletToolV2TypeFinger corresponds to Finger
-	TUVZwpTabletToolV2TypeFinger TUVZwpTabletToolV2Type = 0x145
+	// ZwpTabletToolV2TypeFinger corresponds to Finger
+	ZwpTabletToolV2TypeFinger ZwpTabletToolV2Type = 0x145
 
-	// TUVZwpTabletToolV2TypeMouse corresponds to Mouse
-	TUVZwpTabletToolV2TypeMouse TUVZwpTabletToolV2Type = 0x146
+	// ZwpTabletToolV2TypeMouse corresponds to Mouse
+	ZwpTabletToolV2TypeMouse ZwpTabletToolV2Type = 0x146
 
-	// TUVZwpTabletToolV2TypeLens corresponds to Lens
-	TUVZwpTabletToolV2TypeLens TUVZwpTabletToolV2Type = 0x147
+	// ZwpTabletToolV2TypeLens corresponds to Lens
+	ZwpTabletToolV2TypeLens ZwpTabletToolV2Type = 0x147
 )
 
-// TUVZwpTabletToolV2Capability represents capability flags for a tool
+// ZwpTabletToolV2Capability represents capability flags for a tool
 //
 // Describes extra capabilities on a tablet.
 //
 // Any tool must provide x and y values, extra axes are
 // device-specific.
-type TUVZwpTabletToolV2Capability int
+type ZwpTabletToolV2Capability int
 
 const (
-	// TUVZwpTabletToolV2CapabilityTilt corresponds to Tilt axes
-	TUVZwpTabletToolV2CapabilityTilt TUVZwpTabletToolV2Capability = 1
+	// ZwpTabletToolV2CapabilityTilt corresponds to Tilt axes
+	ZwpTabletToolV2CapabilityTilt ZwpTabletToolV2Capability = 1
 
-	// TUVZwpTabletToolV2CapabilityPressure corresponds to Pressure axis
-	TUVZwpTabletToolV2CapabilityPressure TUVZwpTabletToolV2Capability = 2
+	// ZwpTabletToolV2CapabilityPressure corresponds to Pressure axis
+	ZwpTabletToolV2CapabilityPressure ZwpTabletToolV2Capability = 2
 
-	// TUVZwpTabletToolV2CapabilityDistance corresponds to Distance axis
-	TUVZwpTabletToolV2CapabilityDistance TUVZwpTabletToolV2Capability = 3
+	// ZwpTabletToolV2CapabilityDistance corresponds to Distance axis
+	ZwpTabletToolV2CapabilityDistance ZwpTabletToolV2Capability = 3
 
-	// TUVZwpTabletToolV2CapabilityRotation corresponds to Z-rotation axis
-	TUVZwpTabletToolV2CapabilityRotation TUVZwpTabletToolV2Capability = 4
+	// ZwpTabletToolV2CapabilityRotation corresponds to Z-rotation axis
+	ZwpTabletToolV2CapabilityRotation ZwpTabletToolV2Capability = 4
 
-	// TUVZwpTabletToolV2CapabilitySlider corresponds to Slider axis
-	TUVZwpTabletToolV2CapabilitySlider TUVZwpTabletToolV2Capability = 5
+	// ZwpTabletToolV2CapabilitySlider corresponds to Slider axis
+	ZwpTabletToolV2CapabilitySlider ZwpTabletToolV2Capability = 5
 
-	// TUVZwpTabletToolV2CapabilityWheel corresponds to Wheel axis
-	TUVZwpTabletToolV2CapabilityWheel TUVZwpTabletToolV2Capability = 6
+	// ZwpTabletToolV2CapabilityWheel corresponds to Wheel axis
+	ZwpTabletToolV2CapabilityWheel ZwpTabletToolV2Capability = 6
 )
 
-// TUVZwpTabletToolV2ButtonState represents physical button state
+// ZwpTabletToolV2ButtonState represents physical button state
 //
 // Describes the physical state of a button that produced the button event.
-type TUVZwpTabletToolV2ButtonState int
+type ZwpTabletToolV2ButtonState int
 
 const (
-	// TUVZwpTabletToolV2ButtonStateReleased corresponds to button is not pressed
-	TUVZwpTabletToolV2ButtonStateReleased TUVZwpTabletToolV2ButtonState = 0
+	// ZwpTabletToolV2ButtonStateReleased corresponds to button is not pressed
+	ZwpTabletToolV2ButtonStateReleased ZwpTabletToolV2ButtonState = 0
 
-	// TUVZwpTabletToolV2ButtonStatePressed corresponds to button is pressed
-	TUVZwpTabletToolV2ButtonStatePressed TUVZwpTabletToolV2ButtonState = 1
+	// ZwpTabletToolV2ButtonStatePressed corresponds to button is pressed
+	ZwpTabletToolV2ButtonStatePressed ZwpTabletToolV2ButtonState = 1
 )
 
-type TUVZwpTabletToolV2Error int
+type ZwpTabletToolV2Error int
 
 const (
-	// TUVZwpTabletToolV2ErrorRole corresponds to given wl_surface has another role
-	TUVZwpTabletToolV2ErrorRole TUVZwpTabletToolV2Error = 0
+	// ZwpTabletToolV2ErrorRole corresponds to given wl_surface has another role
+	ZwpTabletToolV2ErrorRole ZwpTabletToolV2Error = 0
 )
 
-// TUVZwpTabletToolV2SetCursorRequest requests to set the tablet tool's surface
+// ZwpTabletToolV2SetCursorRequest requests to set the tablet tool's surface
 //
 // Sets the surface of the cursor used for this tool on the given
 // tablet. This request only takes effect if the tool is in proximity
@@ -4934,7 +4858,7 @@ const (
 // wp_tablet_tool. If the surface already has another role or has
 // previously been used as cursor surface for a different tool, a
 // protocol error is raised.
-type TUVZwpTabletToolV2SetCursorRequest struct {
+type ZwpTabletToolV2SetCursorRequest struct {
 	// Serial contains serial of the enter event
 	Serial uint32
 
@@ -4948,43 +4872,43 @@ type TUVZwpTabletToolV2SetCursorRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_tool_v2.set_cursor in tablet_unstable_v2
-func (TUVZwpTabletToolV2SetCursorRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletToolV2SetCursorRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletToolV2SetCursorRequest implements Message.
-var _ Message = TUVZwpTabletToolV2SetCursorRequest{}
+// Ensure ZwpTabletToolV2SetCursorRequest implements Message.
+var _ Message = ZwpTabletToolV2SetCursorRequest{}
 
-// TUVZwpTabletToolV2DestroyRequest requests to destroy the tool object
+// ZwpTabletToolV2DestroyRequest requests to destroy the tool object
 //
 // This destroys the client's resource for this tool object.
-type TUVZwpTabletToolV2DestroyRequest struct {
+type ZwpTabletToolV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_tool_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletToolV2DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpTabletToolV2DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletToolV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletToolV2DestroyRequest{}
+// Ensure ZwpTabletToolV2DestroyRequest implements Message.
+var _ Message = ZwpTabletToolV2DestroyRequest{}
 
-// TUVZwpTabletToolV2TypeEvent signals when tool type
+// ZwpTabletToolV2TypeEvent signals when tool type
 //
 // The tool type is the high-level type of the tool and usually decides
 // the interaction expected from this tool.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2TypeEvent struct {
+type ZwpTabletToolV2TypeEvent struct {
 	// ToolType contains the physical tool type
 	ToolType uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.type in tablet_unstable_v2
-func (TUVZwpTabletToolV2TypeEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletToolV2TypeEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletToolV2TypeEvent implements Message.
-var _ Message = TUVZwpTabletToolV2TypeEvent{}
+// Ensure ZwpTabletToolV2TypeEvent implements Message.
+var _ Message = ZwpTabletToolV2TypeEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2TypeEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2TypeEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -4993,10 +4917,10 @@ func (e *TUVZwpTabletToolV2TypeEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2TypeEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2TypeEvent{}
+// Ensure ZwpTabletToolV2TypeEvent implements Event.
+var _ Event = &ZwpTabletToolV2TypeEvent{}
 
-// TUVZwpTabletToolV2HardwareSerialEvent signals when unique hardware serial number of the tool
+// ZwpTabletToolV2HardwareSerialEvent signals when unique hardware serial number of the tool
 //
 // If the physical tool can be identified by a unique 64-bit serial
 // number, this event notifies the client of this serial number.
@@ -5013,7 +4937,7 @@ var _ Event = &TUVZwpTabletToolV2TypeEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2HardwareSerialEvent struct {
+type ZwpTabletToolV2HardwareSerialEvent struct {
 	// HardwareSerialHi contains the unique serial number of the tool, most significant bits
 	HardwareSerialHi uint32
 
@@ -5022,13 +4946,13 @@ type TUVZwpTabletToolV2HardwareSerialEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.hardware_serial in tablet_unstable_v2
-func (TUVZwpTabletToolV2HardwareSerialEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletToolV2HardwareSerialEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletToolV2HardwareSerialEvent implements Message.
-var _ Message = TUVZwpTabletToolV2HardwareSerialEvent{}
+// Ensure ZwpTabletToolV2HardwareSerialEvent implements Message.
+var _ Message = ZwpTabletToolV2HardwareSerialEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2HardwareSerialEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2HardwareSerialEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5042,10 +4966,10 @@ func (e *TUVZwpTabletToolV2HardwareSerialEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2HardwareSerialEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2HardwareSerialEvent{}
+// Ensure ZwpTabletToolV2HardwareSerialEvent implements Event.
+var _ Event = &ZwpTabletToolV2HardwareSerialEvent{}
 
-// TUVZwpTabletToolV2HardwareIDWacomEvent signals when hardware id notification in Wacom's format
+// ZwpTabletToolV2HardwareIDWacomEvent signals when hardware id notification in Wacom's format
 //
 // This event notifies the client of a hardware id available on this tool.
 //
@@ -5057,7 +4981,7 @@ var _ Event = &TUVZwpTabletToolV2HardwareSerialEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2HardwareIDWacomEvent struct {
+type ZwpTabletToolV2HardwareIDWacomEvent struct {
 	// HardwareIDHi contains the hardware id, most significant bits
 	HardwareIDHi uint32
 
@@ -5066,13 +4990,13 @@ type TUVZwpTabletToolV2HardwareIDWacomEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.hardware_id_wacom in tablet_unstable_v2
-func (TUVZwpTabletToolV2HardwareIDWacomEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletToolV2HardwareIDWacomEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletToolV2HardwareIDWacomEvent implements Message.
-var _ Message = TUVZwpTabletToolV2HardwareIDWacomEvent{}
+// Ensure ZwpTabletToolV2HardwareIDWacomEvent implements Message.
+var _ Message = ZwpTabletToolV2HardwareIDWacomEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2HardwareIDWacomEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2HardwareIDWacomEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5086,10 +5010,10 @@ func (e *TUVZwpTabletToolV2HardwareIDWacomEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2HardwareIDWacomEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2HardwareIDWacomEvent{}
+// Ensure ZwpTabletToolV2HardwareIDWacomEvent implements Event.
+var _ Event = &ZwpTabletToolV2HardwareIDWacomEvent{}
 
-// TUVZwpTabletToolV2CapabilityEvent signals when tool capability notification
+// ZwpTabletToolV2CapabilityEvent signals when tool capability notification
 //
 // This event notifies the client of any capabilities of this tool,
 // beyond the main set of x/y axes and tip up/down detection.
@@ -5098,19 +5022,19 @@ var _ Event = &TUVZwpTabletToolV2HardwareIDWacomEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_tool.done event.
-type TUVZwpTabletToolV2CapabilityEvent struct {
+type ZwpTabletToolV2CapabilityEvent struct {
 	// Capability contains the capability
 	Capability uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.capability in tablet_unstable_v2
-func (TUVZwpTabletToolV2CapabilityEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletToolV2CapabilityEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletToolV2CapabilityEvent implements Message.
-var _ Message = TUVZwpTabletToolV2CapabilityEvent{}
+// Ensure ZwpTabletToolV2CapabilityEvent implements Message.
+var _ Message = ZwpTabletToolV2CapabilityEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2CapabilityEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2CapabilityEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5119,32 +5043,32 @@ func (e *TUVZwpTabletToolV2CapabilityEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2CapabilityEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2CapabilityEvent{}
+// Ensure ZwpTabletToolV2CapabilityEvent implements Event.
+var _ Event = &ZwpTabletToolV2CapabilityEvent{}
 
-// TUVZwpTabletToolV2DoneEvent signals when tool description events sequence complete
+// ZwpTabletToolV2DoneEvent signals when tool description events sequence complete
 //
 // This event signals the end of the initial burst of descriptive
 // events. A client may consider the static description of the tool to
 // be complete and finalize initialization of the tool.
-type TUVZwpTabletToolV2DoneEvent struct {
+type ZwpTabletToolV2DoneEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.done in tablet_unstable_v2
-func (TUVZwpTabletToolV2DoneEvent) Opcode() uint16 { return 4 }
+func (ZwpTabletToolV2DoneEvent) Opcode() uint16 { return 4 }
 
-// Ensure TUVZwpTabletToolV2DoneEvent implements Message.
-var _ Message = TUVZwpTabletToolV2DoneEvent{}
+// Ensure ZwpTabletToolV2DoneEvent implements Message.
+var _ Message = ZwpTabletToolV2DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2DoneEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2DoneEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2DoneEvent{}
+// Ensure ZwpTabletToolV2DoneEvent implements Event.
+var _ Event = &ZwpTabletToolV2DoneEvent{}
 
-// TUVZwpTabletToolV2RemovedEvent signals when tool removed
+// ZwpTabletToolV2RemovedEvent signals when tool removed
 //
 // This event is sent when the tool is removed from the system and will
 // send no further events. Should the physical tool come back into
@@ -5160,24 +5084,24 @@ var _ Event = &TUVZwpTabletToolV2DoneEvent{}
 //
 // When this event is received, the client must wp_tablet_tool.destroy
 // the object.
-type TUVZwpTabletToolV2RemovedEvent struct {
+type ZwpTabletToolV2RemovedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.removed in tablet_unstable_v2
-func (TUVZwpTabletToolV2RemovedEvent) Opcode() uint16 { return 5 }
+func (ZwpTabletToolV2RemovedEvent) Opcode() uint16 { return 5 }
 
-// Ensure TUVZwpTabletToolV2RemovedEvent implements Message.
-var _ Message = TUVZwpTabletToolV2RemovedEvent{}
+// Ensure ZwpTabletToolV2RemovedEvent implements Message.
+var _ Message = ZwpTabletToolV2RemovedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2RemovedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2RemovedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2RemovedEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2RemovedEvent{}
+// Ensure ZwpTabletToolV2RemovedEvent implements Event.
+var _ Event = &ZwpTabletToolV2RemovedEvent{}
 
-// TUVZwpTabletToolV2ProximityInEvent signals when proximity in event
+// ZwpTabletToolV2ProximityInEvent signals when proximity in event
 //
 // Notification that this tool is focused on a certain surface.
 //
@@ -5188,7 +5112,7 @@ var _ Event = &TUVZwpTabletToolV2RemovedEvent{}
 // If any button is logically down when the tool comes into proximity,
 // the respective button event is sent after the proximity_in event but
 // within the same frame as the proximity_in event.
-type TUVZwpTabletToolV2ProximityInEvent struct {
+type ZwpTabletToolV2ProximityInEvent struct {
 	Serial uint32
 
 	// Tablet contains The tablet the tool is in proximity of
@@ -5199,13 +5123,13 @@ type TUVZwpTabletToolV2ProximityInEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.proximity_in in tablet_unstable_v2
-func (TUVZwpTabletToolV2ProximityInEvent) Opcode() uint16 { return 6 }
+func (ZwpTabletToolV2ProximityInEvent) Opcode() uint16 { return 6 }
 
-// Ensure TUVZwpTabletToolV2ProximityInEvent implements Message.
-var _ Message = TUVZwpTabletToolV2ProximityInEvent{}
+// Ensure ZwpTabletToolV2ProximityInEvent implements Message.
+var _ Message = ZwpTabletToolV2ProximityInEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2ProximityInEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2ProximityInEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5224,10 +5148,10 @@ func (e *TUVZwpTabletToolV2ProximityInEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2ProximityInEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2ProximityInEvent{}
+// Ensure ZwpTabletToolV2ProximityInEvent implements Event.
+var _ Event = &ZwpTabletToolV2ProximityInEvent{}
 
-// TUVZwpTabletToolV2ProximityOutEvent signals when proximity out event
+// ZwpTabletToolV2ProximityOutEvent signals when proximity out event
 //
 // Notification that this tool has either left proximity, or is no
 // longer focused on a certain surface.
@@ -5241,24 +5165,24 @@ var _ Event = &TUVZwpTabletToolV2ProximityInEvent{}
 // changes from one surface to another, a button release event may not
 // be sent until the button is actually released or the tool leaves the
 // proximity of the tablet.
-type TUVZwpTabletToolV2ProximityOutEvent struct {
+type ZwpTabletToolV2ProximityOutEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.proximity_out in tablet_unstable_v2
-func (TUVZwpTabletToolV2ProximityOutEvent) Opcode() uint16 { return 7 }
+func (ZwpTabletToolV2ProximityOutEvent) Opcode() uint16 { return 7 }
 
-// Ensure TUVZwpTabletToolV2ProximityOutEvent implements Message.
-var _ Message = TUVZwpTabletToolV2ProximityOutEvent{}
+// Ensure ZwpTabletToolV2ProximityOutEvent implements Message.
+var _ Message = ZwpTabletToolV2ProximityOutEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2ProximityOutEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2ProximityOutEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2ProximityOutEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2ProximityOutEvent{}
+// Ensure ZwpTabletToolV2ProximityOutEvent implements Event.
+var _ Event = &ZwpTabletToolV2ProximityOutEvent{}
 
-// TUVZwpTabletToolV2DownEvent signals when tablet tool is making contact
+// ZwpTabletToolV2DownEvent signals when tablet tool is making contact
 //
 // Sent whenever the tablet tool comes in contact with the surface of the
 // tablet.
@@ -5272,18 +5196,18 @@ var _ Event = &TUVZwpTabletToolV2ProximityOutEvent{}
 // contact. On some devices, a compositor may not consider a tool in
 // logical contact until a minimum physical pressure threshold is
 // exceeded.
-type TUVZwpTabletToolV2DownEvent struct {
+type ZwpTabletToolV2DownEvent struct {
 	Serial uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.down in tablet_unstable_v2
-func (TUVZwpTabletToolV2DownEvent) Opcode() uint16 { return 8 }
+func (ZwpTabletToolV2DownEvent) Opcode() uint16 { return 8 }
 
-// Ensure TUVZwpTabletToolV2DownEvent implements Message.
-var _ Message = TUVZwpTabletToolV2DownEvent{}
+// Ensure ZwpTabletToolV2DownEvent implements Message.
+var _ Message = ZwpTabletToolV2DownEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2DownEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2DownEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5292,10 +5216,10 @@ func (e *TUVZwpTabletToolV2DownEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2DownEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2DownEvent{}
+// Ensure ZwpTabletToolV2DownEvent implements Event.
+var _ Event = &ZwpTabletToolV2DownEvent{}
 
-// TUVZwpTabletToolV2UpEvent signals when tablet tool is no longer making contact
+// ZwpTabletToolV2UpEvent signals when tablet tool is no longer making contact
 //
 // Sent whenever the tablet tool stops making contact with the surface of
 // the tablet, or when the tablet tool moves out of the input region
@@ -5313,27 +5237,27 @@ var _ Event = &TUVZwpTabletToolV2DownEvent{}
 // contact. On some devices, a compositor may not consider a tool out
 // of logical contact until physical pressure falls below a specific
 // threshold.
-type TUVZwpTabletToolV2UpEvent struct {
+type ZwpTabletToolV2UpEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.up in tablet_unstable_v2
-func (TUVZwpTabletToolV2UpEvent) Opcode() uint16 { return 9 }
+func (ZwpTabletToolV2UpEvent) Opcode() uint16 { return 9 }
 
-// Ensure TUVZwpTabletToolV2UpEvent implements Message.
-var _ Message = TUVZwpTabletToolV2UpEvent{}
+// Ensure ZwpTabletToolV2UpEvent implements Message.
+var _ Message = ZwpTabletToolV2UpEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2UpEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2UpEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2UpEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2UpEvent{}
+// Ensure ZwpTabletToolV2UpEvent implements Event.
+var _ Event = &ZwpTabletToolV2UpEvent{}
 
-// TUVZwpTabletToolV2MotionEvent signals when motion event
+// ZwpTabletToolV2MotionEvent signals when motion event
 //
 // Sent whenever a tablet tool moves.
-type TUVZwpTabletToolV2MotionEvent struct {
+type ZwpTabletToolV2MotionEvent struct {
 	// X contains surface-local x coordinate
 	X Fixed
 
@@ -5342,13 +5266,13 @@ type TUVZwpTabletToolV2MotionEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.motion in tablet_unstable_v2
-func (TUVZwpTabletToolV2MotionEvent) Opcode() uint16 { return 10 }
+func (ZwpTabletToolV2MotionEvent) Opcode() uint16 { return 10 }
 
-// Ensure TUVZwpTabletToolV2MotionEvent implements Message.
-var _ Message = TUVZwpTabletToolV2MotionEvent{}
+// Ensure ZwpTabletToolV2MotionEvent implements Message.
+var _ Message = ZwpTabletToolV2MotionEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2MotionEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2MotionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Fixed(); err != nil {
 		return err
 	} else {
@@ -5362,29 +5286,29 @@ func (e *TUVZwpTabletToolV2MotionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2MotionEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2MotionEvent{}
+// Ensure ZwpTabletToolV2MotionEvent implements Event.
+var _ Event = &ZwpTabletToolV2MotionEvent{}
 
-// TUVZwpTabletToolV2PressureEvent signals when pressure change event
+// ZwpTabletToolV2PressureEvent signals when pressure change event
 //
 // Sent whenever the pressure axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that pressure may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV2PressureEvent struct {
+type ZwpTabletToolV2PressureEvent struct {
 	// Pressure contains The current pressure value
 	Pressure uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.pressure in tablet_unstable_v2
-func (TUVZwpTabletToolV2PressureEvent) Opcode() uint16 { return 11 }
+func (ZwpTabletToolV2PressureEvent) Opcode() uint16 { return 11 }
 
-// Ensure TUVZwpTabletToolV2PressureEvent implements Message.
-var _ Message = TUVZwpTabletToolV2PressureEvent{}
+// Ensure ZwpTabletToolV2PressureEvent implements Message.
+var _ Message = ZwpTabletToolV2PressureEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2PressureEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2PressureEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5393,29 +5317,29 @@ func (e *TUVZwpTabletToolV2PressureEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2PressureEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2PressureEvent{}
+// Ensure ZwpTabletToolV2PressureEvent implements Event.
+var _ Event = &ZwpTabletToolV2PressureEvent{}
 
-// TUVZwpTabletToolV2DistanceEvent signals when distance change event
+// ZwpTabletToolV2DistanceEvent signals when distance change event
 //
 // Sent whenever the distance axis on a tool changes. The value of this
 // event is normalized to a value between 0 and 65535.
 //
 // Note that distance may be nonzero even when a tool is not in logical
 // contact. See the down and up events for more details.
-type TUVZwpTabletToolV2DistanceEvent struct {
+type ZwpTabletToolV2DistanceEvent struct {
 	// Distance contains The current distance value
 	Distance uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.distance in tablet_unstable_v2
-func (TUVZwpTabletToolV2DistanceEvent) Opcode() uint16 { return 12 }
+func (ZwpTabletToolV2DistanceEvent) Opcode() uint16 { return 12 }
 
-// Ensure TUVZwpTabletToolV2DistanceEvent implements Message.
-var _ Message = TUVZwpTabletToolV2DistanceEvent{}
+// Ensure ZwpTabletToolV2DistanceEvent implements Message.
+var _ Message = ZwpTabletToolV2DistanceEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2DistanceEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2DistanceEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5424,16 +5348,16 @@ func (e *TUVZwpTabletToolV2DistanceEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2DistanceEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2DistanceEvent{}
+// Ensure ZwpTabletToolV2DistanceEvent implements Event.
+var _ Event = &ZwpTabletToolV2DistanceEvent{}
 
-// TUVZwpTabletToolV2TiltEvent signals when tilt change event
+// ZwpTabletToolV2TiltEvent signals when tilt change event
 //
 // Sent whenever one or both of the tilt axes on a tool change. Each tilt
 // value is in degrees, relative to the z-axis of the tablet.
 // The angle is positive when the top of a tool tilts along the
 // positive x or y axis.
-type TUVZwpTabletToolV2TiltEvent struct {
+type ZwpTabletToolV2TiltEvent struct {
 	// TiltX contains The current value of the X tilt axis
 	TiltX Fixed
 
@@ -5442,13 +5366,13 @@ type TUVZwpTabletToolV2TiltEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.tilt in tablet_unstable_v2
-func (TUVZwpTabletToolV2TiltEvent) Opcode() uint16 { return 13 }
+func (ZwpTabletToolV2TiltEvent) Opcode() uint16 { return 13 }
 
-// Ensure TUVZwpTabletToolV2TiltEvent implements Message.
-var _ Message = TUVZwpTabletToolV2TiltEvent{}
+// Ensure ZwpTabletToolV2TiltEvent implements Message.
+var _ Message = ZwpTabletToolV2TiltEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2TiltEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2TiltEvent) Scan(s *EventScanner) error {
 	if v, err := s.Fixed(); err != nil {
 		return err
 	} else {
@@ -5462,27 +5386,27 @@ func (e *TUVZwpTabletToolV2TiltEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2TiltEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2TiltEvent{}
+// Ensure ZwpTabletToolV2TiltEvent implements Event.
+var _ Event = &ZwpTabletToolV2TiltEvent{}
 
-// TUVZwpTabletToolV2RotationEvent signals when z-rotation change event
+// ZwpTabletToolV2RotationEvent signals when z-rotation change event
 //
 // Sent whenever the z-rotation axis on the tool changes. The
 // rotation value is in degrees clockwise from the tool's
 // logical neutral position.
-type TUVZwpTabletToolV2RotationEvent struct {
+type ZwpTabletToolV2RotationEvent struct {
 	// Degrees contains The current rotation of the Z axis
 	Degrees Fixed
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.rotation in tablet_unstable_v2
-func (TUVZwpTabletToolV2RotationEvent) Opcode() uint16 { return 14 }
+func (ZwpTabletToolV2RotationEvent) Opcode() uint16 { return 14 }
 
-// Ensure TUVZwpTabletToolV2RotationEvent implements Message.
-var _ Message = TUVZwpTabletToolV2RotationEvent{}
+// Ensure ZwpTabletToolV2RotationEvent implements Message.
+var _ Message = ZwpTabletToolV2RotationEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2RotationEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2RotationEvent) Scan(s *EventScanner) error {
 	if v, err := s.Fixed(); err != nil {
 		return err
 	} else {
@@ -5491,29 +5415,29 @@ func (e *TUVZwpTabletToolV2RotationEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2RotationEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2RotationEvent{}
+// Ensure ZwpTabletToolV2RotationEvent implements Event.
+var _ Event = &ZwpTabletToolV2RotationEvent{}
 
-// TUVZwpTabletToolV2SliderEvent signals when Slider position change event
+// ZwpTabletToolV2SliderEvent signals when Slider position change event
 //
 // Sent whenever the slider position on the tool changes. The
 // value is normalized between -65535 and 65535, with 0 as the logical
 // neutral position of the slider.
 //
 // The slider is available on e.g. the Wacom Airbrush tool.
-type TUVZwpTabletToolV2SliderEvent struct {
+type ZwpTabletToolV2SliderEvent struct {
 	// Position contains The current position of slider
 	Position int32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.slider in tablet_unstable_v2
-func (TUVZwpTabletToolV2SliderEvent) Opcode() uint16 { return 15 }
+func (ZwpTabletToolV2SliderEvent) Opcode() uint16 { return 15 }
 
-// Ensure TUVZwpTabletToolV2SliderEvent implements Message.
-var _ Message = TUVZwpTabletToolV2SliderEvent{}
+// Ensure ZwpTabletToolV2SliderEvent implements Message.
+var _ Message = ZwpTabletToolV2SliderEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2SliderEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2SliderEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -5522,10 +5446,10 @@ func (e *TUVZwpTabletToolV2SliderEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2SliderEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2SliderEvent{}
+// Ensure ZwpTabletToolV2SliderEvent implements Event.
+var _ Event = &ZwpTabletToolV2SliderEvent{}
 
-// TUVZwpTabletToolV2WheelEvent signals when Wheel delta event
+// ZwpTabletToolV2WheelEvent signals when Wheel delta event
 //
 // Sent whenever the wheel on the tool emits an event. This event
 // contains two values for the same axis change. The degrees value is
@@ -5539,7 +5463,7 @@ var _ Event = &TUVZwpTabletToolV2SliderEvent{}
 // click and emulate click events when a certain threshold is met.
 // Thus, wl_tablet_tool.wheel events with non-zero clicks values may
 // have different degrees values.
-type TUVZwpTabletToolV2WheelEvent struct {
+type ZwpTabletToolV2WheelEvent struct {
 	// Degrees contains The wheel delta in degrees
 	Degrees Fixed
 
@@ -5548,13 +5472,13 @@ type TUVZwpTabletToolV2WheelEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.wheel in tablet_unstable_v2
-func (TUVZwpTabletToolV2WheelEvent) Opcode() uint16 { return 16 }
+func (ZwpTabletToolV2WheelEvent) Opcode() uint16 { return 16 }
 
-// Ensure TUVZwpTabletToolV2WheelEvent implements Message.
-var _ Message = TUVZwpTabletToolV2WheelEvent{}
+// Ensure ZwpTabletToolV2WheelEvent implements Message.
+var _ Message = ZwpTabletToolV2WheelEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2WheelEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2WheelEvent) Scan(s *EventScanner) error {
 	if v, err := s.Fixed(); err != nil {
 		return err
 	} else {
@@ -5568,10 +5492,10 @@ func (e *TUVZwpTabletToolV2WheelEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2WheelEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2WheelEvent{}
+// Ensure ZwpTabletToolV2WheelEvent implements Event.
+var _ Event = &ZwpTabletToolV2WheelEvent{}
 
-// TUVZwpTabletToolV2ButtonEvent signals when button event
+// ZwpTabletToolV2ButtonEvent signals when button event
 //
 // Sent whenever a button on the tool is pressed or released.
 //
@@ -5579,7 +5503,7 @@ var _ Event = &TUVZwpTabletToolV2WheelEvent{}
 // button events are generated by the compositor. See
 // wp_tablet_tool.proximity_in and wp_tablet_tool.proximity_out for
 // details.
-type TUVZwpTabletToolV2ButtonEvent struct {
+type ZwpTabletToolV2ButtonEvent struct {
 	Serial uint32
 
 	// Button contains The button whose state has changed
@@ -5590,13 +5514,13 @@ type TUVZwpTabletToolV2ButtonEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.button in tablet_unstable_v2
-func (TUVZwpTabletToolV2ButtonEvent) Opcode() uint16 { return 17 }
+func (ZwpTabletToolV2ButtonEvent) Opcode() uint16 { return 17 }
 
-// Ensure TUVZwpTabletToolV2ButtonEvent implements Message.
-var _ Message = TUVZwpTabletToolV2ButtonEvent{}
+// Ensure ZwpTabletToolV2ButtonEvent implements Message.
+var _ Message = ZwpTabletToolV2ButtonEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2ButtonEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2ButtonEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5615,28 +5539,28 @@ func (e *TUVZwpTabletToolV2ButtonEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2ButtonEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2ButtonEvent{}
+// Ensure ZwpTabletToolV2ButtonEvent implements Event.
+var _ Event = &ZwpTabletToolV2ButtonEvent{}
 
-// TUVZwpTabletToolV2FrameEvent signals when frame event
+// ZwpTabletToolV2FrameEvent signals when frame event
 //
 // Marks the end of a series of axis and/or button updates from the
 // tablet. The Wayland protocol requires axis updates to be sent
 // sequentially, however all events within a frame should be considered
 // one hardware event.
-type TUVZwpTabletToolV2FrameEvent struct {
+type ZwpTabletToolV2FrameEvent struct {
 	// Time contains The time of the event with millisecond granularity
 	Time uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.frame in tablet_unstable_v2
-func (TUVZwpTabletToolV2FrameEvent) Opcode() uint16 { return 18 }
+func (ZwpTabletToolV2FrameEvent) Opcode() uint16 { return 18 }
 
-// Ensure TUVZwpTabletToolV2FrameEvent implements Message.
-var _ Message = TUVZwpTabletToolV2FrameEvent{}
+// Ensure ZwpTabletToolV2FrameEvent implements Message.
+var _ Message = ZwpTabletToolV2FrameEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletToolV2FrameEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletToolV2FrameEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5645,43 +5569,43 @@ func (e *TUVZwpTabletToolV2FrameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletToolV2FrameEvent implements Event.
-var _ Event = &TUVZwpTabletToolV2FrameEvent{}
+// Ensure ZwpTabletToolV2FrameEvent implements Event.
+var _ Event = &ZwpTabletToolV2FrameEvent{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_tool_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_v2
 
-// TUVZwpTabletV2DestroyRequest requests to destroy the tablet object
+// ZwpTabletV2DestroyRequest requests to destroy the tablet object
 //
 // This destroys the client's resource for this tablet object.
-type TUVZwpTabletV2DestroyRequest struct {
+type ZwpTabletV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletV2DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletV2DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletV2DestroyRequest{}
+// Ensure ZwpTabletV2DestroyRequest implements Message.
+var _ Message = ZwpTabletV2DestroyRequest{}
 
-// TUVZwpTabletV2NameEvent signals when tablet device name
+// ZwpTabletV2NameEvent signals when tablet device name
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV2NameEvent struct {
+type ZwpTabletV2NameEvent struct {
 	// Name contains the device name
 	Name string
 }
 
 // Opcode returns the event opcode for zwp_tablet_v2.name in tablet_unstable_v2
-func (TUVZwpTabletV2NameEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletV2NameEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletV2NameEvent implements Message.
-var _ Message = TUVZwpTabletV2NameEvent{}
+// Ensure ZwpTabletV2NameEvent implements Message.
+var _ Message = ZwpTabletV2NameEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV2NameEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV2NameEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -5690,14 +5614,14 @@ func (e *TUVZwpTabletV2NameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV2NameEvent implements Event.
-var _ Event = &TUVZwpTabletV2NameEvent{}
+// Ensure ZwpTabletV2NameEvent implements Event.
+var _ Event = &ZwpTabletV2NameEvent{}
 
-// TUVZwpTabletV2IDEvent signals when tablet device USB vendor/product id
+// ZwpTabletV2IDEvent signals when tablet device USB vendor/product id
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV2IDEvent struct {
+type ZwpTabletV2IDEvent struct {
 	// Vid contains USB vendor id
 	Vid uint32
 
@@ -5706,13 +5630,13 @@ type TUVZwpTabletV2IDEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_v2.id in tablet_unstable_v2
-func (TUVZwpTabletV2IDEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletV2IDEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletV2IDEvent implements Message.
-var _ Message = TUVZwpTabletV2IDEvent{}
+// Ensure ZwpTabletV2IDEvent implements Message.
+var _ Message = ZwpTabletV2IDEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV2IDEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV2IDEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5726,10 +5650,10 @@ func (e *TUVZwpTabletV2IDEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV2IDEvent implements Event.
-var _ Event = &TUVZwpTabletV2IDEvent{}
+// Ensure ZwpTabletV2IDEvent implements Event.
+var _ Event = &ZwpTabletV2IDEvent{}
 
-// TUVZwpTabletV2PathEvent signals when path to the device
+// ZwpTabletV2PathEvent signals when path to the device
 //
 // A system-specific device path that indicates which device is behind
 // this wp_tablet. This information may be used to gather additional
@@ -5745,19 +5669,19 @@ var _ Event = &TUVZwpTabletV2IDEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet.done event.
-type TUVZwpTabletV2PathEvent struct {
+type ZwpTabletV2PathEvent struct {
 	// Path contains path to local device
 	Path string
 }
 
 // Opcode returns the event opcode for zwp_tablet_v2.path in tablet_unstable_v2
-func (TUVZwpTabletV2PathEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletV2PathEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletV2PathEvent implements Message.
-var _ Message = TUVZwpTabletV2PathEvent{}
+// Ensure ZwpTabletV2PathEvent implements Message.
+var _ Message = ZwpTabletV2PathEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV2PathEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV2PathEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -5766,75 +5690,75 @@ func (e *TUVZwpTabletV2PathEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV2PathEvent implements Event.
-var _ Event = &TUVZwpTabletV2PathEvent{}
+// Ensure ZwpTabletV2PathEvent implements Event.
+var _ Event = &ZwpTabletV2PathEvent{}
 
-// TUVZwpTabletV2DoneEvent signals when tablet description events sequence complete
+// ZwpTabletV2DoneEvent signals when tablet description events sequence complete
 //
 // This event is sent immediately to signal the end of the initial
 // burst of descriptive events. A client may consider the static
 // description of the tablet to be complete and finalize initialization
 // of the tablet.
-type TUVZwpTabletV2DoneEvent struct {
+type ZwpTabletV2DoneEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_v2.done in tablet_unstable_v2
-func (TUVZwpTabletV2DoneEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletV2DoneEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletV2DoneEvent implements Message.
-var _ Message = TUVZwpTabletV2DoneEvent{}
+// Ensure ZwpTabletV2DoneEvent implements Message.
+var _ Message = ZwpTabletV2DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV2DoneEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV2DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV2DoneEvent implements Event.
-var _ Event = &TUVZwpTabletV2DoneEvent{}
+// Ensure ZwpTabletV2DoneEvent implements Event.
+var _ Event = &ZwpTabletV2DoneEvent{}
 
-// TUVZwpTabletV2RemovedEvent signals when tablet removed event
+// ZwpTabletV2RemovedEvent signals when tablet removed event
 //
 // Sent when the tablet has been removed from the system. When a tablet
 // is removed, some tools may be removed.
 //
 // When this event is received, the client must wp_tablet.destroy
 // the object.
-type TUVZwpTabletV2RemovedEvent struct {
+type ZwpTabletV2RemovedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_v2.removed in tablet_unstable_v2
-func (TUVZwpTabletV2RemovedEvent) Opcode() uint16 { return 4 }
+func (ZwpTabletV2RemovedEvent) Opcode() uint16 { return 4 }
 
-// Ensure TUVZwpTabletV2RemovedEvent implements Message.
-var _ Message = TUVZwpTabletV2RemovedEvent{}
+// Ensure ZwpTabletV2RemovedEvent implements Message.
+var _ Message = ZwpTabletV2RemovedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletV2RemovedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletV2RemovedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletV2RemovedEvent implements Event.
-var _ Event = &TUVZwpTabletV2RemovedEvent{}
+// Ensure ZwpTabletV2RemovedEvent implements Event.
+var _ Event = &ZwpTabletV2RemovedEvent{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_pad_ring_v2
 
-// TUVZwpTabletPadRingV2Source represents ring axis source
+// ZwpTabletPadRingV2Source represents ring axis source
 //
 // Describes the source types for ring events. This indicates to the
 // client how a ring event was physically generated; a client may
 // adjust the user interface accordingly. For example, events
 // from a "finger" source may trigger kinetic scrolling.
-type TUVZwpTabletPadRingV2Source int
+type ZwpTabletPadRingV2Source int
 
 const (
-	// TUVZwpTabletPadRingV2SourceFinger corresponds to finger
-	TUVZwpTabletPadRingV2SourceFinger TUVZwpTabletPadRingV2Source = 1
+	// ZwpTabletPadRingV2SourceFinger corresponds to finger
+	ZwpTabletPadRingV2SourceFinger ZwpTabletPadRingV2Source = 1
 )
 
-// TUVZwpTabletPadRingV2SetFeedbackRequest requests to set compositor feedback
+// ZwpTabletPadRingV2SetFeedbackRequest requests to set compositor feedback
 //
 // Request that the compositor use the provided feedback string
 // associated with this ring. This request should be issued immediately
@@ -5855,7 +5779,7 @@ const (
 // wp_tablet_pad_group.mode_switch event received for the group of this
 // ring. Requests providing other serials than the most recent one will be
 // ignored.
-type TUVZwpTabletPadRingV2SetFeedbackRequest struct {
+type ZwpTabletPadRingV2SetFeedbackRequest struct {
 	// Description contains ring description
 	Description string
 
@@ -5864,24 +5788,24 @@ type TUVZwpTabletPadRingV2SetFeedbackRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_pad_ring_v2.set_feedback in tablet_unstable_v2
-func (TUVZwpTabletPadRingV2SetFeedbackRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletPadRingV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadRingV2SetFeedbackRequest implements Message.
-var _ Message = TUVZwpTabletPadRingV2SetFeedbackRequest{}
+// Ensure ZwpTabletPadRingV2SetFeedbackRequest implements Message.
+var _ Message = ZwpTabletPadRingV2SetFeedbackRequest{}
 
-// TUVZwpTabletPadRingV2DestroyRequest requests to destroy the ring object
+// ZwpTabletPadRingV2DestroyRequest requests to destroy the ring object
 //
 // This destroys the client's resource for this ring object.
-type TUVZwpTabletPadRingV2DestroyRequest struct {
+type ZwpTabletPadRingV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_pad_ring_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletPadRingV2DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpTabletPadRingV2DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletPadRingV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletPadRingV2DestroyRequest{}
+// Ensure ZwpTabletPadRingV2DestroyRequest implements Message.
+var _ Message = ZwpTabletPadRingV2DestroyRequest{}
 
-// TUVZwpTabletPadRingV2SourceEvent signals when ring event source
+// ZwpTabletPadRingV2SourceEvent signals when ring event source
 //
 // Source information for ring events.
 //
@@ -5895,19 +5819,19 @@ var _ Message = TUVZwpTabletPadRingV2DestroyRequest{}
 //
 // This event is optional. If the source is unknown for an interaction,
 // no event is sent.
-type TUVZwpTabletPadRingV2SourceEvent struct {
+type ZwpTabletPadRingV2SourceEvent struct {
 	// Source contains the event source
 	Source uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.source in tablet_unstable_v2
-func (TUVZwpTabletPadRingV2SourceEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletPadRingV2SourceEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadRingV2SourceEvent implements Message.
-var _ Message = TUVZwpTabletPadRingV2SourceEvent{}
+// Ensure ZwpTabletPadRingV2SourceEvent implements Message.
+var _ Message = ZwpTabletPadRingV2SourceEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadRingV2SourceEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadRingV2SourceEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -5916,28 +5840,28 @@ func (e *TUVZwpTabletPadRingV2SourceEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadRingV2SourceEvent implements Event.
-var _ Event = &TUVZwpTabletPadRingV2SourceEvent{}
+// Ensure ZwpTabletPadRingV2SourceEvent implements Event.
+var _ Event = &ZwpTabletPadRingV2SourceEvent{}
 
-// TUVZwpTabletPadRingV2AngleEvent signals when angle changed
+// ZwpTabletPadRingV2AngleEvent signals when angle changed
 //
 // Sent whenever the angle on a ring changes.
 //
 // The angle is provided in degrees clockwise from the logical
 // north of the ring in the pad's current rotation.
-type TUVZwpTabletPadRingV2AngleEvent struct {
+type ZwpTabletPadRingV2AngleEvent struct {
 	// Degrees contains the current angle in degrees
 	Degrees Fixed
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.angle in tablet_unstable_v2
-func (TUVZwpTabletPadRingV2AngleEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletPadRingV2AngleEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletPadRingV2AngleEvent implements Message.
-var _ Message = TUVZwpTabletPadRingV2AngleEvent{}
+// Ensure ZwpTabletPadRingV2AngleEvent implements Message.
+var _ Message = ZwpTabletPadRingV2AngleEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadRingV2AngleEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadRingV2AngleEvent) Scan(s *EventScanner) error {
 	if v, err := s.Fixed(); err != nil {
 		return err
 	} else {
@@ -5946,10 +5870,10 @@ func (e *TUVZwpTabletPadRingV2AngleEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadRingV2AngleEvent implements Event.
-var _ Event = &TUVZwpTabletPadRingV2AngleEvent{}
+// Ensure ZwpTabletPadRingV2AngleEvent implements Event.
+var _ Event = &ZwpTabletPadRingV2AngleEvent{}
 
-// TUVZwpTabletPadRingV2StopEvent signals when interaction stopped
+// ZwpTabletPadRingV2StopEvent signals when interaction stopped
 //
 // Stop notification for ring events.
 //
@@ -5961,24 +5885,24 @@ var _ Event = &TUVZwpTabletPadRingV2AngleEvent{}
 //
 // Any wp_tablet_pad_ring.angle events with the same source after this
 // event should be considered as the start of a new interaction.
-type TUVZwpTabletPadRingV2StopEvent struct {
+type ZwpTabletPadRingV2StopEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.stop in tablet_unstable_v2
-func (TUVZwpTabletPadRingV2StopEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletPadRingV2StopEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletPadRingV2StopEvent implements Message.
-var _ Message = TUVZwpTabletPadRingV2StopEvent{}
+// Ensure ZwpTabletPadRingV2StopEvent implements Message.
+var _ Message = ZwpTabletPadRingV2StopEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadRingV2StopEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadRingV2StopEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadRingV2StopEvent implements Event.
-var _ Event = &TUVZwpTabletPadRingV2StopEvent{}
+// Ensure ZwpTabletPadRingV2StopEvent implements Event.
+var _ Event = &ZwpTabletPadRingV2StopEvent{}
 
-// TUVZwpTabletPadRingV2FrameEvent signals when end of a ring event sequence
+// ZwpTabletPadRingV2FrameEvent signals when end of a ring event sequence
 //
 // Indicates the end of a set of ring events that logically belong
 // together. A client is expected to accumulate the data in all events
@@ -5993,19 +5917,19 @@ var _ Event = &TUVZwpTabletPadRingV2StopEvent{}
 // group, even if the group only contains a single wp_tablet_pad_ring
 // event. Specifically, a client may get a sequence: angle, frame,
 // angle, frame, etc.
-type TUVZwpTabletPadRingV2FrameEvent struct {
+type ZwpTabletPadRingV2FrameEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.frame in tablet_unstable_v2
-func (TUVZwpTabletPadRingV2FrameEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletPadRingV2FrameEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletPadRingV2FrameEvent implements Message.
-var _ Message = TUVZwpTabletPadRingV2FrameEvent{}
+// Ensure ZwpTabletPadRingV2FrameEvent implements Message.
+var _ Message = ZwpTabletPadRingV2FrameEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadRingV2FrameEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadRingV2FrameEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6014,28 +5938,28 @@ func (e *TUVZwpTabletPadRingV2FrameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadRingV2FrameEvent implements Event.
-var _ Event = &TUVZwpTabletPadRingV2FrameEvent{}
+// Ensure ZwpTabletPadRingV2FrameEvent implements Event.
+var _ Event = &ZwpTabletPadRingV2FrameEvent{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_ring_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_pad_strip_v2
 
-// TUVZwpTabletPadStripV2Source represents strip axis source
+// ZwpTabletPadStripV2Source represents strip axis source
 //
 // Describes the source types for strip events. This indicates to the
 // client how a strip event was physically generated; a client may
 // adjust the user interface accordingly. For example, events
 // from a "finger" source may trigger kinetic scrolling.
-type TUVZwpTabletPadStripV2Source int
+type ZwpTabletPadStripV2Source int
 
 const (
-	// TUVZwpTabletPadStripV2SourceFinger corresponds to finger
-	TUVZwpTabletPadStripV2SourceFinger TUVZwpTabletPadStripV2Source = 1
+	// ZwpTabletPadStripV2SourceFinger corresponds to finger
+	ZwpTabletPadStripV2SourceFinger ZwpTabletPadStripV2Source = 1
 )
 
-// TUVZwpTabletPadStripV2SetFeedbackRequest requests to set compositor feedback
+// ZwpTabletPadStripV2SetFeedbackRequest requests to set compositor feedback
 //
 // Requests the compositor to use the provided feedback string
 // associated with this strip. This request should be issued immediately
@@ -6056,7 +5980,7 @@ const (
 // wp_tablet_pad_group.mode_switch event received for the group of this
 // strip. Requests providing other serials than the most recent one will be
 // ignored.
-type TUVZwpTabletPadStripV2SetFeedbackRequest struct {
+type ZwpTabletPadStripV2SetFeedbackRequest struct {
 	// Description contains strip description
 	Description string
 
@@ -6065,24 +5989,24 @@ type TUVZwpTabletPadStripV2SetFeedbackRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_pad_strip_v2.set_feedback in tablet_unstable_v2
-func (TUVZwpTabletPadStripV2SetFeedbackRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletPadStripV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadStripV2SetFeedbackRequest implements Message.
-var _ Message = TUVZwpTabletPadStripV2SetFeedbackRequest{}
+// Ensure ZwpTabletPadStripV2SetFeedbackRequest implements Message.
+var _ Message = ZwpTabletPadStripV2SetFeedbackRequest{}
 
-// TUVZwpTabletPadStripV2DestroyRequest requests to destroy the strip object
+// ZwpTabletPadStripV2DestroyRequest requests to destroy the strip object
 //
 // This destroys the client's resource for this strip object.
-type TUVZwpTabletPadStripV2DestroyRequest struct {
+type ZwpTabletPadStripV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_pad_strip_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletPadStripV2DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpTabletPadStripV2DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletPadStripV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletPadStripV2DestroyRequest{}
+// Ensure ZwpTabletPadStripV2DestroyRequest implements Message.
+var _ Message = ZwpTabletPadStripV2DestroyRequest{}
 
-// TUVZwpTabletPadStripV2SourceEvent signals when strip event source
+// ZwpTabletPadStripV2SourceEvent signals when strip event source
 //
 // Source information for strip events.
 //
@@ -6096,19 +6020,19 @@ var _ Message = TUVZwpTabletPadStripV2DestroyRequest{}
 //
 // This event is optional. If the source is unknown for an interaction,
 // no event is sent.
-type TUVZwpTabletPadStripV2SourceEvent struct {
+type ZwpTabletPadStripV2SourceEvent struct {
 	// Source contains the event source
 	Source uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.source in tablet_unstable_v2
-func (TUVZwpTabletPadStripV2SourceEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletPadStripV2SourceEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadStripV2SourceEvent implements Message.
-var _ Message = TUVZwpTabletPadStripV2SourceEvent{}
+// Ensure ZwpTabletPadStripV2SourceEvent implements Message.
+var _ Message = ZwpTabletPadStripV2SourceEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadStripV2SourceEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadStripV2SourceEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6117,29 +6041,29 @@ func (e *TUVZwpTabletPadStripV2SourceEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadStripV2SourceEvent implements Event.
-var _ Event = &TUVZwpTabletPadStripV2SourceEvent{}
+// Ensure ZwpTabletPadStripV2SourceEvent implements Event.
+var _ Event = &ZwpTabletPadStripV2SourceEvent{}
 
-// TUVZwpTabletPadStripV2PositionEvent signals when position changed
+// ZwpTabletPadStripV2PositionEvent signals when position changed
 //
 // Sent whenever the position on a strip changes.
 //
 // The position is normalized to a range of [0, 65535], the 0-value
 // represents the top-most and/or left-most position of the strip in
 // the pad's current rotation.
-type TUVZwpTabletPadStripV2PositionEvent struct {
+type ZwpTabletPadStripV2PositionEvent struct {
 	// Position contains the current position
 	Position uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.position in tablet_unstable_v2
-func (TUVZwpTabletPadStripV2PositionEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletPadStripV2PositionEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletPadStripV2PositionEvent implements Message.
-var _ Message = TUVZwpTabletPadStripV2PositionEvent{}
+// Ensure ZwpTabletPadStripV2PositionEvent implements Message.
+var _ Message = ZwpTabletPadStripV2PositionEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadStripV2PositionEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadStripV2PositionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6148,10 +6072,10 @@ func (e *TUVZwpTabletPadStripV2PositionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadStripV2PositionEvent implements Event.
-var _ Event = &TUVZwpTabletPadStripV2PositionEvent{}
+// Ensure ZwpTabletPadStripV2PositionEvent implements Event.
+var _ Event = &ZwpTabletPadStripV2PositionEvent{}
 
-// TUVZwpTabletPadStripV2StopEvent signals when interaction stopped
+// ZwpTabletPadStripV2StopEvent signals when interaction stopped
 //
 // Stop notification for strip events.
 //
@@ -6163,24 +6087,24 @@ var _ Event = &TUVZwpTabletPadStripV2PositionEvent{}
 //
 // Any wp_tablet_pad_strip.position events with the same source after this
 // event should be considered as the start of a new interaction.
-type TUVZwpTabletPadStripV2StopEvent struct {
+type ZwpTabletPadStripV2StopEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.stop in tablet_unstable_v2
-func (TUVZwpTabletPadStripV2StopEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletPadStripV2StopEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletPadStripV2StopEvent implements Message.
-var _ Message = TUVZwpTabletPadStripV2StopEvent{}
+// Ensure ZwpTabletPadStripV2StopEvent implements Message.
+var _ Message = ZwpTabletPadStripV2StopEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadStripV2StopEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadStripV2StopEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadStripV2StopEvent implements Event.
-var _ Event = &TUVZwpTabletPadStripV2StopEvent{}
+// Ensure ZwpTabletPadStripV2StopEvent implements Event.
+var _ Event = &ZwpTabletPadStripV2StopEvent{}
 
-// TUVZwpTabletPadStripV2FrameEvent signals when end of a strip event sequence
+// ZwpTabletPadStripV2FrameEvent signals when end of a strip event sequence
 //
 // Indicates the end of a set of events that represent one logical
 // hardware strip event. A client is expected to accumulate the data
@@ -6196,19 +6120,19 @@ var _ Event = &TUVZwpTabletPadStripV2StopEvent{}
 // group, even if the group only contains a single wp_tablet_pad_strip
 // event. Specifically, a client may get a sequence: position, frame,
 // position, frame, etc.
-type TUVZwpTabletPadStripV2FrameEvent struct {
+type ZwpTabletPadStripV2FrameEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.frame in tablet_unstable_v2
-func (TUVZwpTabletPadStripV2FrameEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletPadStripV2FrameEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletPadStripV2FrameEvent implements Message.
-var _ Message = TUVZwpTabletPadStripV2FrameEvent{}
+// Ensure ZwpTabletPadStripV2FrameEvent implements Message.
+var _ Message = ZwpTabletPadStripV2FrameEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadStripV2FrameEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadStripV2FrameEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6217,28 +6141,28 @@ func (e *TUVZwpTabletPadStripV2FrameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadStripV2FrameEvent implements Event.
-var _ Event = &TUVZwpTabletPadStripV2FrameEvent{}
+// Ensure ZwpTabletPadStripV2FrameEvent implements Event.
+var _ Event = &ZwpTabletPadStripV2FrameEvent{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_strip_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_pad_group_v2
 
-// TUVZwpTabletPadGroupV2DestroyRequest requests to destroy the pad object
+// ZwpTabletPadGroupV2DestroyRequest requests to destroy the pad object
 //
 // Destroy the wp_tablet_pad_group object. Objects created from this object
 // are unaffected and should be destroyed separately.
-type TUVZwpTabletPadGroupV2DestroyRequest struct {
+type ZwpTabletPadGroupV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_pad_group_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletPadGroupV2DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletPadGroupV2DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadGroupV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletPadGroupV2DestroyRequest{}
+// Ensure ZwpTabletPadGroupV2DestroyRequest implements Message.
+var _ Message = ZwpTabletPadGroupV2DestroyRequest{}
 
-// TUVZwpTabletPadGroupV2ButtonsEvent signals when buttons announced
+// ZwpTabletPadGroupV2ButtonsEvent signals when buttons announced
 //
 // Sent on wp_tablet_pad_group initialization to announce the available
 // buttons in the group. Button indices start at 0, a button may only be
@@ -6252,19 +6176,19 @@ var _ Message = TUVZwpTabletPadGroupV2DestroyRequest{}
 // event in the case of changes to the mapping of these reserved buttons.
 // If the compositor happens to reserve all buttons in a group, this event
 // will be sent with an empty array.
-type TUVZwpTabletPadGroupV2ButtonsEvent struct {
+type ZwpTabletPadGroupV2ButtonsEvent struct {
 	// Buttons contains buttons in this group
 	Buttons []byte
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.buttons in tablet_unstable_v2
-func (TUVZwpTabletPadGroupV2ButtonsEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletPadGroupV2ButtonsEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadGroupV2ButtonsEvent implements Message.
-var _ Message = TUVZwpTabletPadGroupV2ButtonsEvent{}
+// Ensure ZwpTabletPadGroupV2ButtonsEvent implements Message.
+var _ Message = ZwpTabletPadGroupV2ButtonsEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadGroupV2ButtonsEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadGroupV2ButtonsEvent) Scan(s *EventScanner) error {
 	if v, err := s.Array(); err != nil {
 		return err
 	} else {
@@ -6273,28 +6197,28 @@ func (e *TUVZwpTabletPadGroupV2ButtonsEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadGroupV2ButtonsEvent implements Event.
-var _ Event = &TUVZwpTabletPadGroupV2ButtonsEvent{}
+// Ensure ZwpTabletPadGroupV2ButtonsEvent implements Event.
+var _ Event = &ZwpTabletPadGroupV2ButtonsEvent{}
 
-// TUVZwpTabletPadGroupV2RingEvent signals when ring announced
+// ZwpTabletPadGroupV2RingEvent signals when ring announced
 //
 // Sent on wp_tablet_pad_group initialization to announce available rings.
 // One event is sent for each ring available on this pad group.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event.
-type TUVZwpTabletPadGroupV2RingEvent struct {
+type ZwpTabletPadGroupV2RingEvent struct {
 	Ring ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.ring in tablet_unstable_v2
-func (TUVZwpTabletPadGroupV2RingEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletPadGroupV2RingEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletPadGroupV2RingEvent implements Message.
-var _ Message = TUVZwpTabletPadGroupV2RingEvent{}
+// Ensure ZwpTabletPadGroupV2RingEvent implements Message.
+var _ Message = ZwpTabletPadGroupV2RingEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadGroupV2RingEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadGroupV2RingEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -6303,28 +6227,28 @@ func (e *TUVZwpTabletPadGroupV2RingEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadGroupV2RingEvent implements Event.
-var _ Event = &TUVZwpTabletPadGroupV2RingEvent{}
+// Ensure ZwpTabletPadGroupV2RingEvent implements Event.
+var _ Event = &ZwpTabletPadGroupV2RingEvent{}
 
-// TUVZwpTabletPadGroupV2StripEvent signals when strip announced
+// ZwpTabletPadGroupV2StripEvent signals when strip announced
 //
 // Sent on wp_tablet_pad initialization to announce available strips.
 // One event is sent for each strip available on this pad group.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event.
-type TUVZwpTabletPadGroupV2StripEvent struct {
+type ZwpTabletPadGroupV2StripEvent struct {
 	Strip ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.strip in tablet_unstable_v2
-func (TUVZwpTabletPadGroupV2StripEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletPadGroupV2StripEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletPadGroupV2StripEvent implements Message.
-var _ Message = TUVZwpTabletPadGroupV2StripEvent{}
+// Ensure ZwpTabletPadGroupV2StripEvent implements Message.
+var _ Message = ZwpTabletPadGroupV2StripEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadGroupV2StripEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadGroupV2StripEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -6333,10 +6257,10 @@ func (e *TUVZwpTabletPadGroupV2StripEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadGroupV2StripEvent implements Event.
-var _ Event = &TUVZwpTabletPadGroupV2StripEvent{}
+// Ensure ZwpTabletPadGroupV2StripEvent implements Event.
+var _ Event = &ZwpTabletPadGroupV2StripEvent{}
 
-// TUVZwpTabletPadGroupV2ModesEvent signals when mode-switch ability announced
+// ZwpTabletPadGroupV2ModesEvent signals when mode-switch ability announced
 //
 // Sent on wp_tablet_pad_group initialization to announce that the pad
 // group may switch between modes. A client may use a mode to store a
@@ -6350,19 +6274,19 @@ var _ Event = &TUVZwpTabletPadGroupV2StripEvent{}
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad_group.done event. This event is only sent when more than
 // more than one mode is available.
-type TUVZwpTabletPadGroupV2ModesEvent struct {
+type ZwpTabletPadGroupV2ModesEvent struct {
 	// Modes contains the number of modes
 	Modes uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.modes in tablet_unstable_v2
-func (TUVZwpTabletPadGroupV2ModesEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletPadGroupV2ModesEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletPadGroupV2ModesEvent implements Message.
-var _ Message = TUVZwpTabletPadGroupV2ModesEvent{}
+// Ensure ZwpTabletPadGroupV2ModesEvent implements Message.
+var _ Message = ZwpTabletPadGroupV2ModesEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadGroupV2ModesEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadGroupV2ModesEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6371,33 +6295,33 @@ func (e *TUVZwpTabletPadGroupV2ModesEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadGroupV2ModesEvent implements Event.
-var _ Event = &TUVZwpTabletPadGroupV2ModesEvent{}
+// Ensure ZwpTabletPadGroupV2ModesEvent implements Event.
+var _ Event = &ZwpTabletPadGroupV2ModesEvent{}
 
-// TUVZwpTabletPadGroupV2DoneEvent signals when tablet group description events sequence complete
+// ZwpTabletPadGroupV2DoneEvent signals when tablet group description events sequence complete
 //
 // This event is sent immediately to signal the end of the initial
 // burst of descriptive events. A client may consider the static
 // description of the tablet to be complete and finalize initialization
 // of the tablet group.
-type TUVZwpTabletPadGroupV2DoneEvent struct {
+type ZwpTabletPadGroupV2DoneEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.done in tablet_unstable_v2
-func (TUVZwpTabletPadGroupV2DoneEvent) Opcode() uint16 { return 4 }
+func (ZwpTabletPadGroupV2DoneEvent) Opcode() uint16 { return 4 }
 
-// Ensure TUVZwpTabletPadGroupV2DoneEvent implements Message.
-var _ Message = TUVZwpTabletPadGroupV2DoneEvent{}
+// Ensure ZwpTabletPadGroupV2DoneEvent implements Message.
+var _ Message = ZwpTabletPadGroupV2DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadGroupV2DoneEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadGroupV2DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadGroupV2DoneEvent implements Event.
-var _ Event = &TUVZwpTabletPadGroupV2DoneEvent{}
+// Ensure ZwpTabletPadGroupV2DoneEvent implements Event.
+var _ Event = &ZwpTabletPadGroupV2DoneEvent{}
 
-// TUVZwpTabletPadGroupV2ModeSwitchEvent signals when mode switch event
+// ZwpTabletPadGroupV2ModeSwitchEvent signals when mode switch event
 //
 // Notification that the mode was switched.
 //
@@ -6426,7 +6350,7 @@ var _ Event = &TUVZwpTabletPadGroupV2DoneEvent{}
 // in the previous mode, the client should immediately issue a
 // wp_tablet_ring.set_feedback or wp_tablet_strip.set_feedback request
 // for each changed ring or strip.
-type TUVZwpTabletPadGroupV2ModeSwitchEvent struct {
+type ZwpTabletPadGroupV2ModeSwitchEvent struct {
 	// Time contains the time of the event with millisecond granularity
 	Time uint32
 
@@ -6437,13 +6361,13 @@ type TUVZwpTabletPadGroupV2ModeSwitchEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.mode_switch in tablet_unstable_v2
-func (TUVZwpTabletPadGroupV2ModeSwitchEvent) Opcode() uint16 { return 5 }
+func (ZwpTabletPadGroupV2ModeSwitchEvent) Opcode() uint16 { return 5 }
 
-// Ensure TUVZwpTabletPadGroupV2ModeSwitchEvent implements Message.
-var _ Message = TUVZwpTabletPadGroupV2ModeSwitchEvent{}
+// Ensure ZwpTabletPadGroupV2ModeSwitchEvent implements Message.
+var _ Message = ZwpTabletPadGroupV2ModeSwitchEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadGroupV2ModeSwitchEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadGroupV2ModeSwitchEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6462,29 +6386,29 @@ func (e *TUVZwpTabletPadGroupV2ModeSwitchEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadGroupV2ModeSwitchEvent implements Event.
-var _ Event = &TUVZwpTabletPadGroupV2ModeSwitchEvent{}
+// Ensure ZwpTabletPadGroupV2ModeSwitchEvent implements Event.
+var _ Event = &ZwpTabletPadGroupV2ModeSwitchEvent{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_group_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface tablet_unstable_v2.zwp_tablet_pad_v2
 
-// TUVZwpTabletPadV2ButtonState represents physical button state
+// ZwpTabletPadV2ButtonState represents physical button state
 //
 // Describes the physical state of a button that caused the button
 // event.
-type TUVZwpTabletPadV2ButtonState int
+type ZwpTabletPadV2ButtonState int
 
 const (
-	// TUVZwpTabletPadV2ButtonStateReleased corresponds to the button is not pressed
-	TUVZwpTabletPadV2ButtonStateReleased TUVZwpTabletPadV2ButtonState = 0
+	// ZwpTabletPadV2ButtonStateReleased corresponds to the button is not pressed
+	ZwpTabletPadV2ButtonStateReleased ZwpTabletPadV2ButtonState = 0
 
-	// TUVZwpTabletPadV2ButtonStatePressed corresponds to the button is pressed
-	TUVZwpTabletPadV2ButtonStatePressed TUVZwpTabletPadV2ButtonState = 1
+	// ZwpTabletPadV2ButtonStatePressed corresponds to the button is pressed
+	ZwpTabletPadV2ButtonStatePressed ZwpTabletPadV2ButtonState = 1
 )
 
-// TUVZwpTabletPadV2SetFeedbackRequest requests to set compositor feedback
+// ZwpTabletPadV2SetFeedbackRequest requests to set compositor feedback
 //
 // Requests the compositor to use the provided feedback string
 // associated with this button. This request should be issued immediately
@@ -6510,7 +6434,7 @@ const (
 // wp_tablet_pad_group.mode_switch event received for the group of this
 // button. Requests providing other serials than the most recent one will
 // be ignored.
-type TUVZwpTabletPadV2SetFeedbackRequest struct {
+type ZwpTabletPadV2SetFeedbackRequest struct {
 	// Button contains button index
 	Button uint32
 
@@ -6522,43 +6446,43 @@ type TUVZwpTabletPadV2SetFeedbackRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_pad_v2.set_feedback in tablet_unstable_v2
-func (TUVZwpTabletPadV2SetFeedbackRequest) Opcode() uint16 { return 0 }
+func (ZwpTabletPadV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadV2SetFeedbackRequest implements Message.
-var _ Message = TUVZwpTabletPadV2SetFeedbackRequest{}
+// Ensure ZwpTabletPadV2SetFeedbackRequest implements Message.
+var _ Message = ZwpTabletPadV2SetFeedbackRequest{}
 
-// TUVZwpTabletPadV2DestroyRequest requests to destroy the pad object
+// ZwpTabletPadV2DestroyRequest requests to destroy the pad object
 //
 // Destroy the wp_tablet_pad object. Objects created from this object
 // are unaffected and should be destroyed separately.
-type TUVZwpTabletPadV2DestroyRequest struct {
+type ZwpTabletPadV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_tablet_pad_v2.destroy in tablet_unstable_v2
-func (TUVZwpTabletPadV2DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpTabletPadV2DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletPadV2DestroyRequest implements Message.
-var _ Message = TUVZwpTabletPadV2DestroyRequest{}
+// Ensure ZwpTabletPadV2DestroyRequest implements Message.
+var _ Message = ZwpTabletPadV2DestroyRequest{}
 
-// TUVZwpTabletPadV2GroupEvent signals when group announced
+// ZwpTabletPadV2GroupEvent signals when group announced
 //
 // Sent on wp_tablet_pad initialization to announce available groups.
 // One event is sent for each pad group available.
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad.done event. At least one group will be announced.
-type TUVZwpTabletPadV2GroupEvent struct {
+type ZwpTabletPadV2GroupEvent struct {
 	PadGroup ObjectID
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.group in tablet_unstable_v2
-func (TUVZwpTabletPadV2GroupEvent) Opcode() uint16 { return 0 }
+func (ZwpTabletPadV2GroupEvent) Opcode() uint16 { return 0 }
 
-// Ensure TUVZwpTabletPadV2GroupEvent implements Message.
-var _ Message = TUVZwpTabletPadV2GroupEvent{}
+// Ensure ZwpTabletPadV2GroupEvent implements Message.
+var _ Message = ZwpTabletPadV2GroupEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2GroupEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2GroupEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -6567,10 +6491,10 @@ func (e *TUVZwpTabletPadV2GroupEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2GroupEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2GroupEvent{}
+// Ensure ZwpTabletPadV2GroupEvent implements Event.
+var _ Event = &ZwpTabletPadV2GroupEvent{}
 
-// TUVZwpTabletPadV2PathEvent signals when path to the device
+// ZwpTabletPadV2PathEvent signals when path to the device
 //
 // A system-specific device path that indicates which device is behind
 // this wp_tablet_pad. This information may be used to gather additional
@@ -6582,19 +6506,19 @@ var _ Event = &TUVZwpTabletPadV2GroupEvent{}
 //
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad.done event.
-type TUVZwpTabletPadV2PathEvent struct {
+type ZwpTabletPadV2PathEvent struct {
 	// Path contains path to local device
 	Path string
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.path in tablet_unstable_v2
-func (TUVZwpTabletPadV2PathEvent) Opcode() uint16 { return 1 }
+func (ZwpTabletPadV2PathEvent) Opcode() uint16 { return 1 }
 
-// Ensure TUVZwpTabletPadV2PathEvent implements Message.
-var _ Message = TUVZwpTabletPadV2PathEvent{}
+// Ensure ZwpTabletPadV2PathEvent implements Message.
+var _ Message = ZwpTabletPadV2PathEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2PathEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2PathEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -6603,10 +6527,10 @@ func (e *TUVZwpTabletPadV2PathEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2PathEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2PathEvent{}
+// Ensure ZwpTabletPadV2PathEvent implements Event.
+var _ Event = &ZwpTabletPadV2PathEvent{}
 
-// TUVZwpTabletPadV2ButtonsEvent signals when buttons announced
+// ZwpTabletPadV2ButtonsEvent signals when buttons announced
 //
 // Sent on wp_tablet_pad initialization to announce the available
 // buttons.
@@ -6614,19 +6538,19 @@ var _ Event = &TUVZwpTabletPadV2PathEvent{}
 // This event is sent in the initial burst of events before the
 // wp_tablet_pad.done event. This event is only sent when at least one
 // button is available.
-type TUVZwpTabletPadV2ButtonsEvent struct {
+type ZwpTabletPadV2ButtonsEvent struct {
 	// Buttons contains the number of buttons
 	Buttons uint32
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.buttons in tablet_unstable_v2
-func (TUVZwpTabletPadV2ButtonsEvent) Opcode() uint16 { return 2 }
+func (ZwpTabletPadV2ButtonsEvent) Opcode() uint16 { return 2 }
 
-// Ensure TUVZwpTabletPadV2ButtonsEvent implements Message.
-var _ Message = TUVZwpTabletPadV2ButtonsEvent{}
+// Ensure ZwpTabletPadV2ButtonsEvent implements Message.
+var _ Message = ZwpTabletPadV2ButtonsEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2ButtonsEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2ButtonsEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6635,35 +6559,35 @@ func (e *TUVZwpTabletPadV2ButtonsEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2ButtonsEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2ButtonsEvent{}
+// Ensure ZwpTabletPadV2ButtonsEvent implements Event.
+var _ Event = &ZwpTabletPadV2ButtonsEvent{}
 
-// TUVZwpTabletPadV2DoneEvent signals when pad description event sequence complete
+// ZwpTabletPadV2DoneEvent signals when pad description event sequence complete
 //
 // This event signals the end of the initial burst of descriptive
 // events. A client may consider the static description of the pad to
 // be complete and finalize initialization of the pad.
-type TUVZwpTabletPadV2DoneEvent struct {
+type ZwpTabletPadV2DoneEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.done in tablet_unstable_v2
-func (TUVZwpTabletPadV2DoneEvent) Opcode() uint16 { return 3 }
+func (ZwpTabletPadV2DoneEvent) Opcode() uint16 { return 3 }
 
-// Ensure TUVZwpTabletPadV2DoneEvent implements Message.
-var _ Message = TUVZwpTabletPadV2DoneEvent{}
+// Ensure ZwpTabletPadV2DoneEvent implements Message.
+var _ Message = ZwpTabletPadV2DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2DoneEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2DoneEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2DoneEvent{}
+// Ensure ZwpTabletPadV2DoneEvent implements Event.
+var _ Event = &ZwpTabletPadV2DoneEvent{}
 
-// TUVZwpTabletPadV2ButtonEvent signals when physical button state
+// ZwpTabletPadV2ButtonEvent signals when physical button state
 //
 // Sent whenever the physical state of a button changes.
-type TUVZwpTabletPadV2ButtonEvent struct {
+type ZwpTabletPadV2ButtonEvent struct {
 	// Time contains the time of the event with millisecond granularity
 	Time uint32
 
@@ -6674,13 +6598,13 @@ type TUVZwpTabletPadV2ButtonEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.button in tablet_unstable_v2
-func (TUVZwpTabletPadV2ButtonEvent) Opcode() uint16 { return 4 }
+func (ZwpTabletPadV2ButtonEvent) Opcode() uint16 { return 4 }
 
-// Ensure TUVZwpTabletPadV2ButtonEvent implements Message.
-var _ Message = TUVZwpTabletPadV2ButtonEvent{}
+// Ensure ZwpTabletPadV2ButtonEvent implements Message.
+var _ Message = ZwpTabletPadV2ButtonEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2ButtonEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2ButtonEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6699,13 +6623,13 @@ func (e *TUVZwpTabletPadV2ButtonEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2ButtonEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2ButtonEvent{}
+// Ensure ZwpTabletPadV2ButtonEvent implements Event.
+var _ Event = &ZwpTabletPadV2ButtonEvent{}
 
-// TUVZwpTabletPadV2EnterEvent signals when enter event
+// ZwpTabletPadV2EnterEvent signals when enter event
 //
 // Notification that this pad is focused on the specified surface.
-type TUVZwpTabletPadV2EnterEvent struct {
+type ZwpTabletPadV2EnterEvent struct {
 	// Serial contains serial number of the enter event
 	Serial uint32
 
@@ -6717,13 +6641,13 @@ type TUVZwpTabletPadV2EnterEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.enter in tablet_unstable_v2
-func (TUVZwpTabletPadV2EnterEvent) Opcode() uint16 { return 5 }
+func (ZwpTabletPadV2EnterEvent) Opcode() uint16 { return 5 }
 
-// Ensure TUVZwpTabletPadV2EnterEvent implements Message.
-var _ Message = TUVZwpTabletPadV2EnterEvent{}
+// Ensure ZwpTabletPadV2EnterEvent implements Message.
+var _ Message = ZwpTabletPadV2EnterEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2EnterEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2EnterEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6742,14 +6666,14 @@ func (e *TUVZwpTabletPadV2EnterEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2EnterEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2EnterEvent{}
+// Ensure ZwpTabletPadV2EnterEvent implements Event.
+var _ Event = &ZwpTabletPadV2EnterEvent{}
 
-// TUVZwpTabletPadV2LeaveEvent signals when enter event
+// ZwpTabletPadV2LeaveEvent signals when enter event
 //
 // Notification that this pad is no longer focused on the specified
 // surface.
-type TUVZwpTabletPadV2LeaveEvent struct {
+type ZwpTabletPadV2LeaveEvent struct {
 	// Serial contains serial number of the leave event
 	Serial uint32
 
@@ -6758,13 +6682,13 @@ type TUVZwpTabletPadV2LeaveEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.leave in tablet_unstable_v2
-func (TUVZwpTabletPadV2LeaveEvent) Opcode() uint16 { return 6 }
+func (ZwpTabletPadV2LeaveEvent) Opcode() uint16 { return 6 }
 
-// Ensure TUVZwpTabletPadV2LeaveEvent implements Message.
-var _ Message = TUVZwpTabletPadV2LeaveEvent{}
+// Ensure ZwpTabletPadV2LeaveEvent implements Message.
+var _ Message = ZwpTabletPadV2LeaveEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2LeaveEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2LeaveEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -6778,10 +6702,10 @@ func (e *TUVZwpTabletPadV2LeaveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2LeaveEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2LeaveEvent{}
+// Ensure ZwpTabletPadV2LeaveEvent implements Event.
+var _ Event = &ZwpTabletPadV2LeaveEvent{}
 
-// TUVZwpTabletPadV2RemovedEvent signals when pad removed event
+// ZwpTabletPadV2RemovedEvent signals when pad removed event
 //
 // Sent when the pad has been removed from the system. When a tablet
 // is removed its pad(s) will be removed too.
@@ -6789,22 +6713,22 @@ var _ Event = &TUVZwpTabletPadV2LeaveEvent{}
 // When this event is received, the client must destroy all rings, strips
 // and groups that were offered by this pad, and issue wp_tablet_pad.destroy
 // the pad itself.
-type TUVZwpTabletPadV2RemovedEvent struct {
+type ZwpTabletPadV2RemovedEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.removed in tablet_unstable_v2
-func (TUVZwpTabletPadV2RemovedEvent) Opcode() uint16 { return 7 }
+func (ZwpTabletPadV2RemovedEvent) Opcode() uint16 { return 7 }
 
-// Ensure TUVZwpTabletPadV2RemovedEvent implements Message.
-var _ Message = TUVZwpTabletPadV2RemovedEvent{}
+// Ensure ZwpTabletPadV2RemovedEvent implements Message.
+var _ Message = ZwpTabletPadV2RemovedEvent{}
 
 // Scan scans the event from the socket.
-func (e *TUVZwpTabletPadV2RemovedEvent) Scan(s *EventScanner) error {
+func (e *ZwpTabletPadV2RemovedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TUVZwpTabletPadV2RemovedEvent implements Event.
-var _ Event = &TUVZwpTabletPadV2RemovedEvent{}
+// Ensure ZwpTabletPadV2RemovedEvent implements Event.
+var _ Event = &ZwpTabletPadV2RemovedEvent{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_v2
 
@@ -6817,139 +6741,139 @@ var _ Event = &TUVZwpTabletPadV2RemovedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface text_input_unstable_v1.zwp_text_input_v1
 
-// TIUVZwpTextInputV1ContentHint represents content hint
+// ZwpTextInputV1ContentHint represents content hint
 //
 // Content hint is a bitmask to allow to modify the behavior of the text
 // input.
-type TIUVZwpTextInputV1ContentHint uint
+type ZwpTextInputV1ContentHint uint
 
 const (
-	// TIUVZwpTextInputV1ContentHintNone corresponds to no special behaviour
-	TIUVZwpTextInputV1ContentHintNone TIUVZwpTextInputV1ContentHint = 0x0
+	// ZwpTextInputV1ContentHintNone corresponds to no special behaviour
+	ZwpTextInputV1ContentHintNone ZwpTextInputV1ContentHint = 0x0
 
-	// TIUVZwpTextInputV1ContentHintDefault corresponds to auto completion, correction and capitalization
-	TIUVZwpTextInputV1ContentHintDefault TIUVZwpTextInputV1ContentHint = 0x7
+	// ZwpTextInputV1ContentHintDefault corresponds to auto completion, correction and capitalization
+	ZwpTextInputV1ContentHintDefault ZwpTextInputV1ContentHint = 0x7
 
-	// TIUVZwpTextInputV1ContentHintPassword corresponds to hidden and sensitive text
-	TIUVZwpTextInputV1ContentHintPassword TIUVZwpTextInputV1ContentHint = 0xc0
+	// ZwpTextInputV1ContentHintPassword corresponds to hidden and sensitive text
+	ZwpTextInputV1ContentHintPassword ZwpTextInputV1ContentHint = 0xc0
 
-	// TIUVZwpTextInputV1ContentHintAutoCompletion corresponds to suggest word completions
-	TIUVZwpTextInputV1ContentHintAutoCompletion TIUVZwpTextInputV1ContentHint = 0x1
+	// ZwpTextInputV1ContentHintAutoCompletion corresponds to suggest word completions
+	ZwpTextInputV1ContentHintAutoCompletion ZwpTextInputV1ContentHint = 0x1
 
-	// TIUVZwpTextInputV1ContentHintAutoCorrection corresponds to suggest word corrections
-	TIUVZwpTextInputV1ContentHintAutoCorrection TIUVZwpTextInputV1ContentHint = 0x2
+	// ZwpTextInputV1ContentHintAutoCorrection corresponds to suggest word corrections
+	ZwpTextInputV1ContentHintAutoCorrection ZwpTextInputV1ContentHint = 0x2
 
-	// TIUVZwpTextInputV1ContentHintAutoCapitalization corresponds to switch to uppercase letters at the start of a sentence
-	TIUVZwpTextInputV1ContentHintAutoCapitalization TIUVZwpTextInputV1ContentHint = 0x4
+	// ZwpTextInputV1ContentHintAutoCapitalization corresponds to switch to uppercase letters at the start of a sentence
+	ZwpTextInputV1ContentHintAutoCapitalization ZwpTextInputV1ContentHint = 0x4
 
-	// TIUVZwpTextInputV1ContentHintLowercase corresponds to prefer lowercase letters
-	TIUVZwpTextInputV1ContentHintLowercase TIUVZwpTextInputV1ContentHint = 0x8
+	// ZwpTextInputV1ContentHintLowercase corresponds to prefer lowercase letters
+	ZwpTextInputV1ContentHintLowercase ZwpTextInputV1ContentHint = 0x8
 
-	// TIUVZwpTextInputV1ContentHintUppercase corresponds to prefer uppercase letters
-	TIUVZwpTextInputV1ContentHintUppercase TIUVZwpTextInputV1ContentHint = 0x10
+	// ZwpTextInputV1ContentHintUppercase corresponds to prefer uppercase letters
+	ZwpTextInputV1ContentHintUppercase ZwpTextInputV1ContentHint = 0x10
 
-	// TIUVZwpTextInputV1ContentHintTitlecase corresponds to prefer casing for titles and headings (can be language dependent)
-	TIUVZwpTextInputV1ContentHintTitlecase TIUVZwpTextInputV1ContentHint = 0x20
+	// ZwpTextInputV1ContentHintTitlecase corresponds to prefer casing for titles and headings (can be language dependent)
+	ZwpTextInputV1ContentHintTitlecase ZwpTextInputV1ContentHint = 0x20
 
-	// TIUVZwpTextInputV1ContentHintHiddenText corresponds to characters should be hidden
-	TIUVZwpTextInputV1ContentHintHiddenText TIUVZwpTextInputV1ContentHint = 0x40
+	// ZwpTextInputV1ContentHintHiddenText corresponds to characters should be hidden
+	ZwpTextInputV1ContentHintHiddenText ZwpTextInputV1ContentHint = 0x40
 
-	// TIUVZwpTextInputV1ContentHintSensitiveData corresponds to typed text should not be stored
-	TIUVZwpTextInputV1ContentHintSensitiveData TIUVZwpTextInputV1ContentHint = 0x80
+	// ZwpTextInputV1ContentHintSensitiveData corresponds to typed text should not be stored
+	ZwpTextInputV1ContentHintSensitiveData ZwpTextInputV1ContentHint = 0x80
 
-	// TIUVZwpTextInputV1ContentHintLatin corresponds to just latin characters should be entered
-	TIUVZwpTextInputV1ContentHintLatin TIUVZwpTextInputV1ContentHint = 0x100
+	// ZwpTextInputV1ContentHintLatin corresponds to just latin characters should be entered
+	ZwpTextInputV1ContentHintLatin ZwpTextInputV1ContentHint = 0x100
 
-	// TIUVZwpTextInputV1ContentHintMultiline corresponds to the text input is multiline
-	TIUVZwpTextInputV1ContentHintMultiline TIUVZwpTextInputV1ContentHint = 0x200
+	// ZwpTextInputV1ContentHintMultiline corresponds to the text input is multiline
+	ZwpTextInputV1ContentHintMultiline ZwpTextInputV1ContentHint = 0x200
 )
 
-// TIUVZwpTextInputV1ContentPurpose represents content purpose
+// ZwpTextInputV1ContentPurpose represents content purpose
 //
 // The content purpose allows to specify the primary purpose of a text
 // input.
 //
 // This allows an input method to show special purpose input panels with
 // extra characters or to disallow some characters.
-type TIUVZwpTextInputV1ContentPurpose int
+type ZwpTextInputV1ContentPurpose int
 
 const (
-	// TIUVZwpTextInputV1ContentPurposeNormal corresponds to default input, allowing all characters
-	TIUVZwpTextInputV1ContentPurposeNormal TIUVZwpTextInputV1ContentPurpose = 0
+	// ZwpTextInputV1ContentPurposeNormal corresponds to default input, allowing all characters
+	ZwpTextInputV1ContentPurposeNormal ZwpTextInputV1ContentPurpose = 0
 
-	// TIUVZwpTextInputV1ContentPurposeAlpha corresponds to allow only alphabetic characters
-	TIUVZwpTextInputV1ContentPurposeAlpha TIUVZwpTextInputV1ContentPurpose = 1
+	// ZwpTextInputV1ContentPurposeAlpha corresponds to allow only alphabetic characters
+	ZwpTextInputV1ContentPurposeAlpha ZwpTextInputV1ContentPurpose = 1
 
-	// TIUVZwpTextInputV1ContentPurposeDigits corresponds to allow only digits
-	TIUVZwpTextInputV1ContentPurposeDigits TIUVZwpTextInputV1ContentPurpose = 2
+	// ZwpTextInputV1ContentPurposeDigits corresponds to allow only digits
+	ZwpTextInputV1ContentPurposeDigits ZwpTextInputV1ContentPurpose = 2
 
-	// TIUVZwpTextInputV1ContentPurposeNumber corresponds to input a number (including decimal separator and sign)
-	TIUVZwpTextInputV1ContentPurposeNumber TIUVZwpTextInputV1ContentPurpose = 3
+	// ZwpTextInputV1ContentPurposeNumber corresponds to input a number (including decimal separator and sign)
+	ZwpTextInputV1ContentPurposeNumber ZwpTextInputV1ContentPurpose = 3
 
-	// TIUVZwpTextInputV1ContentPurposePhone corresponds to input a phone number
-	TIUVZwpTextInputV1ContentPurposePhone TIUVZwpTextInputV1ContentPurpose = 4
+	// ZwpTextInputV1ContentPurposePhone corresponds to input a phone number
+	ZwpTextInputV1ContentPurposePhone ZwpTextInputV1ContentPurpose = 4
 
-	// TIUVZwpTextInputV1ContentPurposeUrl corresponds to input an URL
-	TIUVZwpTextInputV1ContentPurposeUrl TIUVZwpTextInputV1ContentPurpose = 5
+	// ZwpTextInputV1ContentPurposeUrl corresponds to input an URL
+	ZwpTextInputV1ContentPurposeUrl ZwpTextInputV1ContentPurpose = 5
 
-	// TIUVZwpTextInputV1ContentPurposeEmail corresponds to input an email address
-	TIUVZwpTextInputV1ContentPurposeEmail TIUVZwpTextInputV1ContentPurpose = 6
+	// ZwpTextInputV1ContentPurposeEmail corresponds to input an email address
+	ZwpTextInputV1ContentPurposeEmail ZwpTextInputV1ContentPurpose = 6
 
-	// TIUVZwpTextInputV1ContentPurposeName corresponds to input a name of a person
-	TIUVZwpTextInputV1ContentPurposeName TIUVZwpTextInputV1ContentPurpose = 7
+	// ZwpTextInputV1ContentPurposeName corresponds to input a name of a person
+	ZwpTextInputV1ContentPurposeName ZwpTextInputV1ContentPurpose = 7
 
-	// TIUVZwpTextInputV1ContentPurposePassword corresponds to input a password (combine with password or sensitive_data hint)
-	TIUVZwpTextInputV1ContentPurposePassword TIUVZwpTextInputV1ContentPurpose = 8
+	// ZwpTextInputV1ContentPurposePassword corresponds to input a password (combine with password or sensitive_data hint)
+	ZwpTextInputV1ContentPurposePassword ZwpTextInputV1ContentPurpose = 8
 
-	// TIUVZwpTextInputV1ContentPurposeDate corresponds to input a date
-	TIUVZwpTextInputV1ContentPurposeDate TIUVZwpTextInputV1ContentPurpose = 9
+	// ZwpTextInputV1ContentPurposeDate corresponds to input a date
+	ZwpTextInputV1ContentPurposeDate ZwpTextInputV1ContentPurpose = 9
 
-	// TIUVZwpTextInputV1ContentPurposeTime corresponds to input a time
-	TIUVZwpTextInputV1ContentPurposeTime TIUVZwpTextInputV1ContentPurpose = 10
+	// ZwpTextInputV1ContentPurposeTime corresponds to input a time
+	ZwpTextInputV1ContentPurposeTime ZwpTextInputV1ContentPurpose = 10
 
-	// TIUVZwpTextInputV1ContentPurposeDatetime corresponds to input a date and time
-	TIUVZwpTextInputV1ContentPurposeDatetime TIUVZwpTextInputV1ContentPurpose = 11
+	// ZwpTextInputV1ContentPurposeDatetime corresponds to input a date and time
+	ZwpTextInputV1ContentPurposeDatetime ZwpTextInputV1ContentPurpose = 11
 
-	// TIUVZwpTextInputV1ContentPurposeTerminal corresponds to input for a terminal
-	TIUVZwpTextInputV1ContentPurposeTerminal TIUVZwpTextInputV1ContentPurpose = 12
+	// ZwpTextInputV1ContentPurposeTerminal corresponds to input for a terminal
+	ZwpTextInputV1ContentPurposeTerminal ZwpTextInputV1ContentPurpose = 12
 )
 
-type TIUVZwpTextInputV1PreeditStyle int
+type ZwpTextInputV1PreeditStyle int
 
 const (
-	// TIUVZwpTextInputV1PreeditStyleDefault corresponds to default style for composing text
-	TIUVZwpTextInputV1PreeditStyleDefault TIUVZwpTextInputV1PreeditStyle = 0
+	// ZwpTextInputV1PreeditStyleDefault corresponds to default style for composing text
+	ZwpTextInputV1PreeditStyleDefault ZwpTextInputV1PreeditStyle = 0
 
-	// TIUVZwpTextInputV1PreeditStyleNone corresponds to style should be the same as in non-composing text
-	TIUVZwpTextInputV1PreeditStyleNone TIUVZwpTextInputV1PreeditStyle = 1
+	// ZwpTextInputV1PreeditStyleNone corresponds to style should be the same as in non-composing text
+	ZwpTextInputV1PreeditStyleNone ZwpTextInputV1PreeditStyle = 1
 
-	TIUVZwpTextInputV1PreeditStyleActive TIUVZwpTextInputV1PreeditStyle = 2
+	ZwpTextInputV1PreeditStyleActive ZwpTextInputV1PreeditStyle = 2
 
-	TIUVZwpTextInputV1PreeditStyleInactive TIUVZwpTextInputV1PreeditStyle = 3
+	ZwpTextInputV1PreeditStyleInactive ZwpTextInputV1PreeditStyle = 3
 
-	TIUVZwpTextInputV1PreeditStyleHighlight TIUVZwpTextInputV1PreeditStyle = 4
+	ZwpTextInputV1PreeditStyleHighlight ZwpTextInputV1PreeditStyle = 4
 
-	TIUVZwpTextInputV1PreeditStyleUnderline TIUVZwpTextInputV1PreeditStyle = 5
+	ZwpTextInputV1PreeditStyleUnderline ZwpTextInputV1PreeditStyle = 5
 
-	TIUVZwpTextInputV1PreeditStyleSelection TIUVZwpTextInputV1PreeditStyle = 6
+	ZwpTextInputV1PreeditStyleSelection ZwpTextInputV1PreeditStyle = 6
 
-	TIUVZwpTextInputV1PreeditStyleIncorrect TIUVZwpTextInputV1PreeditStyle = 7
+	ZwpTextInputV1PreeditStyleIncorrect ZwpTextInputV1PreeditStyle = 7
 )
 
-type TIUVZwpTextInputV1TextDirection int
+type ZwpTextInputV1TextDirection int
 
 const (
-	// TIUVZwpTextInputV1TextDirectionAuto corresponds to automatic text direction based on text and language
-	TIUVZwpTextInputV1TextDirectionAuto TIUVZwpTextInputV1TextDirection = 0
+	// ZwpTextInputV1TextDirectionAuto corresponds to automatic text direction based on text and language
+	ZwpTextInputV1TextDirectionAuto ZwpTextInputV1TextDirection = 0
 
-	// TIUVZwpTextInputV1TextDirectionLtr corresponds to left-to-right
-	TIUVZwpTextInputV1TextDirectionLtr TIUVZwpTextInputV1TextDirection = 1
+	// ZwpTextInputV1TextDirectionLtr corresponds to left-to-right
+	ZwpTextInputV1TextDirectionLtr ZwpTextInputV1TextDirection = 1
 
-	// TIUVZwpTextInputV1TextDirectionRtl corresponds to right-to-left
-	TIUVZwpTextInputV1TextDirectionRtl TIUVZwpTextInputV1TextDirection = 2
+	// ZwpTextInputV1TextDirectionRtl corresponds to right-to-left
+	ZwpTextInputV1TextDirectionRtl ZwpTextInputV1TextDirection = 2
 )
 
-// TIUVZwpTextInputV1ActivateRequest requests to request activation
+// ZwpTextInputV1ActivateRequest requests to request activation
 //
 // Requests the text_input object to be activated (typically when the
 // text entry gets focus).
@@ -6958,79 +6882,79 @@ const (
 // activation. The surface argument is a wl_surface assigned to the
 // text_input object and tracked for focus lost. The enter event
 // is emitted on successful activation.
-type TIUVZwpTextInputV1ActivateRequest struct {
+type ZwpTextInputV1ActivateRequest struct {
 	Seat ObjectID
 
 	Surface ObjectID
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.activate in text_input_unstable_v1
-func (TIUVZwpTextInputV1ActivateRequest) Opcode() uint16 { return 0 }
+func (ZwpTextInputV1ActivateRequest) Opcode() uint16 { return 0 }
 
-// Ensure TIUVZwpTextInputV1ActivateRequest implements Message.
-var _ Message = TIUVZwpTextInputV1ActivateRequest{}
+// Ensure ZwpTextInputV1ActivateRequest implements Message.
+var _ Message = ZwpTextInputV1ActivateRequest{}
 
-// TIUVZwpTextInputV1DeactivateRequest requests to request deactivation
+// ZwpTextInputV1DeactivateRequest requests to request deactivation
 //
 // Requests the text_input object to be deactivated (typically when the
 // text entry lost focus). The seat argument is a wl_seat which was used
 // for activation.
-type TIUVZwpTextInputV1DeactivateRequest struct {
+type ZwpTextInputV1DeactivateRequest struct {
 	Seat ObjectID
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.deactivate in text_input_unstable_v1
-func (TIUVZwpTextInputV1DeactivateRequest) Opcode() uint16 { return 1 }
+func (ZwpTextInputV1DeactivateRequest) Opcode() uint16 { return 1 }
 
-// Ensure TIUVZwpTextInputV1DeactivateRequest implements Message.
-var _ Message = TIUVZwpTextInputV1DeactivateRequest{}
+// Ensure ZwpTextInputV1DeactivateRequest implements Message.
+var _ Message = ZwpTextInputV1DeactivateRequest{}
 
-// TIUVZwpTextInputV1ShowInputPanelRequest requests to show input panels
+// ZwpTextInputV1ShowInputPanelRequest requests to show input panels
 //
 // Requests input panels (virtual keyboard) to show.
-type TIUVZwpTextInputV1ShowInputPanelRequest struct {
+type ZwpTextInputV1ShowInputPanelRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.show_input_panel in text_input_unstable_v1
-func (TIUVZwpTextInputV1ShowInputPanelRequest) Opcode() uint16 { return 2 }
+func (ZwpTextInputV1ShowInputPanelRequest) Opcode() uint16 { return 2 }
 
-// Ensure TIUVZwpTextInputV1ShowInputPanelRequest implements Message.
-var _ Message = TIUVZwpTextInputV1ShowInputPanelRequest{}
+// Ensure ZwpTextInputV1ShowInputPanelRequest implements Message.
+var _ Message = ZwpTextInputV1ShowInputPanelRequest{}
 
-// TIUVZwpTextInputV1HideInputPanelRequest requests to hide input panels
+// ZwpTextInputV1HideInputPanelRequest requests to hide input panels
 //
 // Requests input panels (virtual keyboard) to hide.
-type TIUVZwpTextInputV1HideInputPanelRequest struct {
+type ZwpTextInputV1HideInputPanelRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.hide_input_panel in text_input_unstable_v1
-func (TIUVZwpTextInputV1HideInputPanelRequest) Opcode() uint16 { return 3 }
+func (ZwpTextInputV1HideInputPanelRequest) Opcode() uint16 { return 3 }
 
-// Ensure TIUVZwpTextInputV1HideInputPanelRequest implements Message.
-var _ Message = TIUVZwpTextInputV1HideInputPanelRequest{}
+// Ensure ZwpTextInputV1HideInputPanelRequest implements Message.
+var _ Message = ZwpTextInputV1HideInputPanelRequest{}
 
-// TIUVZwpTextInputV1ResetRequest requests to reset
+// ZwpTextInputV1ResetRequest requests to reset
 //
 // Should be called by an editor widget when the input state should be
 // reset, for example after the text was changed outside of the normal
 // input method flow.
-type TIUVZwpTextInputV1ResetRequest struct {
+type ZwpTextInputV1ResetRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.reset in text_input_unstable_v1
-func (TIUVZwpTextInputV1ResetRequest) Opcode() uint16 { return 4 }
+func (ZwpTextInputV1ResetRequest) Opcode() uint16 { return 4 }
 
-// Ensure TIUVZwpTextInputV1ResetRequest implements Message.
-var _ Message = TIUVZwpTextInputV1ResetRequest{}
+// Ensure ZwpTextInputV1ResetRequest implements Message.
+var _ Message = ZwpTextInputV1ResetRequest{}
 
-// TIUVZwpTextInputV1SetSurroundingTextRequest requests to sets the surrounding text
+// ZwpTextInputV1SetSurroundingTextRequest requests to sets the surrounding text
 //
 // Sets the plain surrounding text around the input position. Text is
 // UTF-8 encoded. Cursor is the byte offset within the
 // surrounding text. Anchor is the byte offset of the
 // selection anchor within the surrounding text. If there is no selected
 // text anchor, then it is the same as cursor.
-type TIUVZwpTextInputV1SetSurroundingTextRequest struct {
+type ZwpTextInputV1SetSurroundingTextRequest struct {
 	Text string
 
 	Cursor uint32
@@ -7039,12 +6963,12 @@ type TIUVZwpTextInputV1SetSurroundingTextRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.set_surrounding_text in text_input_unstable_v1
-func (TIUVZwpTextInputV1SetSurroundingTextRequest) Opcode() uint16 { return 5 }
+func (ZwpTextInputV1SetSurroundingTextRequest) Opcode() uint16 { return 5 }
 
-// Ensure TIUVZwpTextInputV1SetSurroundingTextRequest implements Message.
-var _ Message = TIUVZwpTextInputV1SetSurroundingTextRequest{}
+// Ensure ZwpTextInputV1SetSurroundingTextRequest implements Message.
+var _ Message = ZwpTextInputV1SetSurroundingTextRequest{}
 
-// TIUVZwpTextInputV1SetContentTypeRequest requests to set content purpose and hint
+// ZwpTextInputV1SetContentTypeRequest requests to set content purpose and hint
 //
 // Sets the content purpose and content hint. While the purpose is the
 // basic purpose of an input field, the hint flags allow to modify some
@@ -7053,19 +6977,19 @@ var _ Message = TIUVZwpTextInputV1SetSurroundingTextRequest{}
 // When no content type is explicitly set, a normal content purpose with
 // default hints (auto completion, auto correction, auto capitalization)
 // should be assumed.
-type TIUVZwpTextInputV1SetContentTypeRequest struct {
+type ZwpTextInputV1SetContentTypeRequest struct {
 	Hint uint32
 
 	Purpose uint32
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.set_content_type in text_input_unstable_v1
-func (TIUVZwpTextInputV1SetContentTypeRequest) Opcode() uint16 { return 6 }
+func (ZwpTextInputV1SetContentTypeRequest) Opcode() uint16 { return 6 }
 
-// Ensure TIUVZwpTextInputV1SetContentTypeRequest implements Message.
-var _ Message = TIUVZwpTextInputV1SetContentTypeRequest{}
+// Ensure ZwpTextInputV1SetContentTypeRequest implements Message.
+var _ Message = ZwpTextInputV1SetContentTypeRequest{}
 
-type TIUVZwpTextInputV1SetCursorRectangleRequest struct {
+type ZwpTextInputV1SetCursorRectangleRequest struct {
 	X int32
 
 	Y int32
@@ -7076,12 +7000,12 @@ type TIUVZwpTextInputV1SetCursorRectangleRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.set_cursor_rectangle in text_input_unstable_v1
-func (TIUVZwpTextInputV1SetCursorRectangleRequest) Opcode() uint16 { return 7 }
+func (ZwpTextInputV1SetCursorRectangleRequest) Opcode() uint16 { return 7 }
 
-// Ensure TIUVZwpTextInputV1SetCursorRectangleRequest implements Message.
-var _ Message = TIUVZwpTextInputV1SetCursorRectangleRequest{}
+// Ensure ZwpTextInputV1SetCursorRectangleRequest implements Message.
+var _ Message = ZwpTextInputV1SetCursorRectangleRequest{}
 
-// TIUVZwpTextInputV1SetPreferredLanguageRequest requests to sets preferred language
+// ZwpTextInputV1SetPreferredLanguageRequest requests to sets preferred language
 //
 // Sets a specific language. This allows for example a virtual keyboard to
 // show a language specific layout. The "language" argument is an RFC-3066
@@ -7090,55 +7014,55 @@ var _ Message = TIUVZwpTextInputV1SetCursorRectangleRequest{}
 // It could be used for example in a word processor to indicate the
 // language of the currently edited document or in an instant message
 // application which tracks languages of contacts.
-type TIUVZwpTextInputV1SetPreferredLanguageRequest struct {
+type ZwpTextInputV1SetPreferredLanguageRequest struct {
 	Language string
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.set_preferred_language in text_input_unstable_v1
-func (TIUVZwpTextInputV1SetPreferredLanguageRequest) Opcode() uint16 { return 8 }
+func (ZwpTextInputV1SetPreferredLanguageRequest) Opcode() uint16 { return 8 }
 
-// Ensure TIUVZwpTextInputV1SetPreferredLanguageRequest implements Message.
-var _ Message = TIUVZwpTextInputV1SetPreferredLanguageRequest{}
+// Ensure ZwpTextInputV1SetPreferredLanguageRequest implements Message.
+var _ Message = ZwpTextInputV1SetPreferredLanguageRequest{}
 
-type TIUVZwpTextInputV1CommitStateRequest struct {
+type ZwpTextInputV1CommitStateRequest struct {
 	// Serial contains used to identify the known state
 	Serial uint32
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.commit_state in text_input_unstable_v1
-func (TIUVZwpTextInputV1CommitStateRequest) Opcode() uint16 { return 9 }
+func (ZwpTextInputV1CommitStateRequest) Opcode() uint16 { return 9 }
 
-// Ensure TIUVZwpTextInputV1CommitStateRequest implements Message.
-var _ Message = TIUVZwpTextInputV1CommitStateRequest{}
+// Ensure ZwpTextInputV1CommitStateRequest implements Message.
+var _ Message = ZwpTextInputV1CommitStateRequest{}
 
-type TIUVZwpTextInputV1InvokeActionRequest struct {
+type ZwpTextInputV1InvokeActionRequest struct {
 	Button uint32
 
 	Index uint32
 }
 
 // Opcode returns the request opcode for zwp_text_input_v1.invoke_action in text_input_unstable_v1
-func (TIUVZwpTextInputV1InvokeActionRequest) Opcode() uint16 { return 10 }
+func (ZwpTextInputV1InvokeActionRequest) Opcode() uint16 { return 10 }
 
-// Ensure TIUVZwpTextInputV1InvokeActionRequest implements Message.
-var _ Message = TIUVZwpTextInputV1InvokeActionRequest{}
+// Ensure ZwpTextInputV1InvokeActionRequest implements Message.
+var _ Message = ZwpTextInputV1InvokeActionRequest{}
 
-// TIUVZwpTextInputV1EnterEvent signals when enter event
+// ZwpTextInputV1EnterEvent signals when enter event
 //
 // Notify the text_input object when it received focus. Typically in
 // response to an activate request.
-type TIUVZwpTextInputV1EnterEvent struct {
+type ZwpTextInputV1EnterEvent struct {
 	Surface ObjectID
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.enter in text_input_unstable_v1
-func (TIUVZwpTextInputV1EnterEvent) Opcode() uint16 { return 0 }
+func (ZwpTextInputV1EnterEvent) Opcode() uint16 { return 0 }
 
-// Ensure TIUVZwpTextInputV1EnterEvent implements Message.
-var _ Message = TIUVZwpTextInputV1EnterEvent{}
+// Ensure ZwpTextInputV1EnterEvent implements Message.
+var _ Message = ZwpTextInputV1EnterEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1EnterEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1EnterEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -7147,48 +7071,48 @@ func (e *TIUVZwpTextInputV1EnterEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1EnterEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1EnterEvent{}
+// Ensure ZwpTextInputV1EnterEvent implements Event.
+var _ Event = &ZwpTextInputV1EnterEvent{}
 
-// TIUVZwpTextInputV1LeaveEvent signals when leave event
+// ZwpTextInputV1LeaveEvent signals when leave event
 //
 // Notify the text_input object when it lost focus. Either in response
 // to a deactivate request or when the assigned surface lost focus or was
 // destroyed.
-type TIUVZwpTextInputV1LeaveEvent struct {
+type ZwpTextInputV1LeaveEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.leave in text_input_unstable_v1
-func (TIUVZwpTextInputV1LeaveEvent) Opcode() uint16 { return 1 }
+func (ZwpTextInputV1LeaveEvent) Opcode() uint16 { return 1 }
 
-// Ensure TIUVZwpTextInputV1LeaveEvent implements Message.
-var _ Message = TIUVZwpTextInputV1LeaveEvent{}
+// Ensure ZwpTextInputV1LeaveEvent implements Message.
+var _ Message = ZwpTextInputV1LeaveEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1LeaveEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1LeaveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1LeaveEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1LeaveEvent{}
+// Ensure ZwpTextInputV1LeaveEvent implements Event.
+var _ Event = &ZwpTextInputV1LeaveEvent{}
 
-// TIUVZwpTextInputV1ModifiersMapEvent signals when modifiers map
+// ZwpTextInputV1ModifiersMapEvent signals when modifiers map
 //
 // Transfer an array of 0-terminated modifier names. The position in
 // the array is the index of the modifier as used in the modifiers
 // bitmask in the keysym event.
-type TIUVZwpTextInputV1ModifiersMapEvent struct {
+type ZwpTextInputV1ModifiersMapEvent struct {
 	Map []byte
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.modifiers_map in text_input_unstable_v1
-func (TIUVZwpTextInputV1ModifiersMapEvent) Opcode() uint16 { return 2 }
+func (ZwpTextInputV1ModifiersMapEvent) Opcode() uint16 { return 2 }
 
-// Ensure TIUVZwpTextInputV1ModifiersMapEvent implements Message.
-var _ Message = TIUVZwpTextInputV1ModifiersMapEvent{}
+// Ensure ZwpTextInputV1ModifiersMapEvent implements Message.
+var _ Message = ZwpTextInputV1ModifiersMapEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1ModifiersMapEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1ModifiersMapEvent) Scan(s *EventScanner) error {
 	if v, err := s.Array(); err != nil {
 		return err
 	} else {
@@ -7197,24 +7121,24 @@ func (e *TIUVZwpTextInputV1ModifiersMapEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1ModifiersMapEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1ModifiersMapEvent{}
+// Ensure ZwpTextInputV1ModifiersMapEvent implements Event.
+var _ Event = &ZwpTextInputV1ModifiersMapEvent{}
 
-// TIUVZwpTextInputV1InputPanelStateEvent signals when state of the input panel
+// ZwpTextInputV1InputPanelStateEvent signals when state of the input panel
 //
 // Notify when the visibility state of the input panel changed.
-type TIUVZwpTextInputV1InputPanelStateEvent struct {
+type ZwpTextInputV1InputPanelStateEvent struct {
 	State uint32
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.input_panel_state in text_input_unstable_v1
-func (TIUVZwpTextInputV1InputPanelStateEvent) Opcode() uint16 { return 3 }
+func (ZwpTextInputV1InputPanelStateEvent) Opcode() uint16 { return 3 }
 
-// Ensure TIUVZwpTextInputV1InputPanelStateEvent implements Message.
-var _ Message = TIUVZwpTextInputV1InputPanelStateEvent{}
+// Ensure ZwpTextInputV1InputPanelStateEvent implements Message.
+var _ Message = ZwpTextInputV1InputPanelStateEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1InputPanelStateEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1InputPanelStateEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -7223,10 +7147,10 @@ func (e *TIUVZwpTextInputV1InputPanelStateEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1InputPanelStateEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1InputPanelStateEvent{}
+// Ensure ZwpTextInputV1InputPanelStateEvent implements Event.
+var _ Event = &ZwpTextInputV1InputPanelStateEvent{}
 
-// TIUVZwpTextInputV1PreeditStringEvent signals when pre-edit
+// ZwpTextInputV1PreeditStringEvent signals when pre-edit
 //
 // Notify when a new composing text (pre-edit) should be set around the
 // current cursor position. Any previously set composing text should
@@ -7237,7 +7161,7 @@ var _ Event = &TIUVZwpTextInputV1InputPanelStateEvent{}
 //
 // The text input should also handle all preedit_style and preedit_cursor
 // events occurring directly before preedit_string.
-type TIUVZwpTextInputV1PreeditStringEvent struct {
+type ZwpTextInputV1PreeditStringEvent struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -7247,13 +7171,13 @@ type TIUVZwpTextInputV1PreeditStringEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.preedit_string in text_input_unstable_v1
-func (TIUVZwpTextInputV1PreeditStringEvent) Opcode() uint16 { return 4 }
+func (ZwpTextInputV1PreeditStringEvent) Opcode() uint16 { return 4 }
 
-// Ensure TIUVZwpTextInputV1PreeditStringEvent implements Message.
-var _ Message = TIUVZwpTextInputV1PreeditStringEvent{}
+// Ensure ZwpTextInputV1PreeditStringEvent implements Message.
+var _ Message = ZwpTextInputV1PreeditStringEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1PreeditStringEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1PreeditStringEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -7272,10 +7196,10 @@ func (e *TIUVZwpTextInputV1PreeditStringEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1PreeditStringEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1PreeditStringEvent{}
+// Ensure ZwpTextInputV1PreeditStringEvent implements Event.
+var _ Event = &ZwpTextInputV1PreeditStringEvent{}
 
-// TIUVZwpTextInputV1PreeditStylingEvent signals when pre-edit styling
+// ZwpTextInputV1PreeditStylingEvent signals when pre-edit styling
 //
 // Sets styling information on composing text. The style is applied for
 // length bytes from index relative to the beginning of the composing
@@ -7284,7 +7208,7 @@ var _ Event = &TIUVZwpTextInputV1PreeditStringEvent{}
 // events.
 //
 // This event is handled as part of a following preedit_string event.
-type TIUVZwpTextInputV1PreeditStylingEvent struct {
+type ZwpTextInputV1PreeditStylingEvent struct {
 	Index uint32
 
 	Length uint32
@@ -7293,13 +7217,13 @@ type TIUVZwpTextInputV1PreeditStylingEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.preedit_styling in text_input_unstable_v1
-func (TIUVZwpTextInputV1PreeditStylingEvent) Opcode() uint16 { return 5 }
+func (ZwpTextInputV1PreeditStylingEvent) Opcode() uint16 { return 5 }
 
-// Ensure TIUVZwpTextInputV1PreeditStylingEvent implements Message.
-var _ Message = TIUVZwpTextInputV1PreeditStylingEvent{}
+// Ensure ZwpTextInputV1PreeditStylingEvent implements Message.
+var _ Message = ZwpTextInputV1PreeditStylingEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1PreeditStylingEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1PreeditStylingEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -7318,28 +7242,28 @@ func (e *TIUVZwpTextInputV1PreeditStylingEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1PreeditStylingEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1PreeditStylingEvent{}
+// Ensure ZwpTextInputV1PreeditStylingEvent implements Event.
+var _ Event = &ZwpTextInputV1PreeditStylingEvent{}
 
-// TIUVZwpTextInputV1PreeditCursorEvent signals when pre-edit cursor
+// ZwpTextInputV1PreeditCursorEvent signals when pre-edit cursor
 //
 // Sets the cursor position inside the composing text (as byte
 // offset) relative to the start of the composing text. When index is a
 // negative number no cursor is shown.
 //
 // This event is handled as part of a following preedit_string event.
-type TIUVZwpTextInputV1PreeditCursorEvent struct {
+type ZwpTextInputV1PreeditCursorEvent struct {
 	Index int32
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.preedit_cursor in text_input_unstable_v1
-func (TIUVZwpTextInputV1PreeditCursorEvent) Opcode() uint16 { return 6 }
+func (ZwpTextInputV1PreeditCursorEvent) Opcode() uint16 { return 6 }
 
-// Ensure TIUVZwpTextInputV1PreeditCursorEvent implements Message.
-var _ Message = TIUVZwpTextInputV1PreeditCursorEvent{}
+// Ensure ZwpTextInputV1PreeditCursorEvent implements Message.
+var _ Message = ZwpTextInputV1PreeditCursorEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1PreeditCursorEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1PreeditCursorEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -7348,10 +7272,10 @@ func (e *TIUVZwpTextInputV1PreeditCursorEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1PreeditCursorEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1PreeditCursorEvent{}
+// Ensure ZwpTextInputV1PreeditCursorEvent implements Event.
+var _ Event = &ZwpTextInputV1PreeditCursorEvent{}
 
-// TIUVZwpTextInputV1CommitStringEvent signals when commit
+// ZwpTextInputV1CommitStringEvent signals when commit
 //
 // Notify when text should be inserted into the editor widget. The text to
 // commit could be either just a single character after a key press or the
@@ -7360,7 +7284,7 @@ var _ Event = &TIUVZwpTextInputV1PreeditCursorEvent{}
 // the input cursor should be moved (see cursor_position).
 //
 // Any previously set composing text should be removed.
-type TIUVZwpTextInputV1CommitStringEvent struct {
+type ZwpTextInputV1CommitStringEvent struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -7368,13 +7292,13 @@ type TIUVZwpTextInputV1CommitStringEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.commit_string in text_input_unstable_v1
-func (TIUVZwpTextInputV1CommitStringEvent) Opcode() uint16 { return 7 }
+func (ZwpTextInputV1CommitStringEvent) Opcode() uint16 { return 7 }
 
-// Ensure TIUVZwpTextInputV1CommitStringEvent implements Message.
-var _ Message = TIUVZwpTextInputV1CommitStringEvent{}
+// Ensure ZwpTextInputV1CommitStringEvent implements Message.
+var _ Message = ZwpTextInputV1CommitStringEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1CommitStringEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1CommitStringEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -7388,29 +7312,29 @@ func (e *TIUVZwpTextInputV1CommitStringEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1CommitStringEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1CommitStringEvent{}
+// Ensure ZwpTextInputV1CommitStringEvent implements Event.
+var _ Event = &ZwpTextInputV1CommitStringEvent{}
 
-// TIUVZwpTextInputV1CursorPositionEvent signals when set cursor to new position
+// ZwpTextInputV1CursorPositionEvent signals when set cursor to new position
 //
 // Notify when the cursor or anchor position should be modified.
 //
 // This event should be handled as part of a following commit_string
 // event.
-type TIUVZwpTextInputV1CursorPositionEvent struct {
+type ZwpTextInputV1CursorPositionEvent struct {
 	Index int32
 
 	Anchor int32
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.cursor_position in text_input_unstable_v1
-func (TIUVZwpTextInputV1CursorPositionEvent) Opcode() uint16 { return 8 }
+func (ZwpTextInputV1CursorPositionEvent) Opcode() uint16 { return 8 }
 
-// Ensure TIUVZwpTextInputV1CursorPositionEvent implements Message.
-var _ Message = TIUVZwpTextInputV1CursorPositionEvent{}
+// Ensure ZwpTextInputV1CursorPositionEvent implements Message.
+var _ Message = ZwpTextInputV1CursorPositionEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1CursorPositionEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1CursorPositionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -7424,10 +7348,10 @@ func (e *TIUVZwpTextInputV1CursorPositionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1CursorPositionEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1CursorPositionEvent{}
+// Ensure ZwpTextInputV1CursorPositionEvent implements Event.
+var _ Event = &ZwpTextInputV1CursorPositionEvent{}
 
-// TIUVZwpTextInputV1DeleteSurroundingTextEvent signals when delete surrounding text
+// ZwpTextInputV1DeleteSurroundingTextEvent signals when delete surrounding text
 //
 // Notify when the text around the current cursor position should be
 // deleted.
@@ -7437,20 +7361,20 @@ var _ Event = &TIUVZwpTextInputV1CursorPositionEvent{}
 //
 // This event should be handled as part of a following commit_string
 // event.
-type TIUVZwpTextInputV1DeleteSurroundingTextEvent struct {
+type ZwpTextInputV1DeleteSurroundingTextEvent struct {
 	Index int32
 
 	Length uint32
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.delete_surrounding_text in text_input_unstable_v1
-func (TIUVZwpTextInputV1DeleteSurroundingTextEvent) Opcode() uint16 { return 9 }
+func (ZwpTextInputV1DeleteSurroundingTextEvent) Opcode() uint16 { return 9 }
 
-// Ensure TIUVZwpTextInputV1DeleteSurroundingTextEvent implements Message.
-var _ Message = TIUVZwpTextInputV1DeleteSurroundingTextEvent{}
+// Ensure ZwpTextInputV1DeleteSurroundingTextEvent implements Message.
+var _ Message = ZwpTextInputV1DeleteSurroundingTextEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1DeleteSurroundingTextEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1DeleteSurroundingTextEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -7464,10 +7388,10 @@ func (e *TIUVZwpTextInputV1DeleteSurroundingTextEvent) Scan(s *EventScanner) err
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1DeleteSurroundingTextEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1DeleteSurroundingTextEvent{}
+// Ensure ZwpTextInputV1DeleteSurroundingTextEvent implements Event.
+var _ Event = &ZwpTextInputV1DeleteSurroundingTextEvent{}
 
-// TIUVZwpTextInputV1KeysymEvent signals when keysym
+// ZwpTextInputV1KeysymEvent signals when keysym
 //
 // Notify when a key event was sent. Key events should not be used
 // for normal text input operations, which should be done with
@@ -7475,7 +7399,7 @@ var _ Event = &TIUVZwpTextInputV1DeleteSurroundingTextEvent{}
 // the wl_keyboard key event convention. Sym is an XKB keysym, state a
 // wl_keyboard key_state. Modifiers are a mask for effective modifiers
 // (where the modifier indices are set by the modifiers_map event)
-type TIUVZwpTextInputV1KeysymEvent struct {
+type ZwpTextInputV1KeysymEvent struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -7489,13 +7413,13 @@ type TIUVZwpTextInputV1KeysymEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.keysym in text_input_unstable_v1
-func (TIUVZwpTextInputV1KeysymEvent) Opcode() uint16 { return 10 }
+func (ZwpTextInputV1KeysymEvent) Opcode() uint16 { return 10 }
 
-// Ensure TIUVZwpTextInputV1KeysymEvent implements Message.
-var _ Message = TIUVZwpTextInputV1KeysymEvent{}
+// Ensure ZwpTextInputV1KeysymEvent implements Message.
+var _ Message = ZwpTextInputV1KeysymEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1KeysymEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1KeysymEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -7524,14 +7448,14 @@ func (e *TIUVZwpTextInputV1KeysymEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1KeysymEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1KeysymEvent{}
+// Ensure ZwpTextInputV1KeysymEvent implements Event.
+var _ Event = &ZwpTextInputV1KeysymEvent{}
 
-// TIUVZwpTextInputV1LanguageEvent signals when language
+// ZwpTextInputV1LanguageEvent signals when language
 //
 // Sets the language of the input text. The "language" argument is an
 // RFC-3066 format language tag.
-type TIUVZwpTextInputV1LanguageEvent struct {
+type ZwpTextInputV1LanguageEvent struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -7539,13 +7463,13 @@ type TIUVZwpTextInputV1LanguageEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.language in text_input_unstable_v1
-func (TIUVZwpTextInputV1LanguageEvent) Opcode() uint16 { return 11 }
+func (ZwpTextInputV1LanguageEvent) Opcode() uint16 { return 11 }
 
-// Ensure TIUVZwpTextInputV1LanguageEvent implements Message.
-var _ Message = TIUVZwpTextInputV1LanguageEvent{}
+// Ensure ZwpTextInputV1LanguageEvent implements Message.
+var _ Message = ZwpTextInputV1LanguageEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1LanguageEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1LanguageEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -7559,17 +7483,17 @@ func (e *TIUVZwpTextInputV1LanguageEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1LanguageEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1LanguageEvent{}
+// Ensure ZwpTextInputV1LanguageEvent implements Event.
+var _ Event = &ZwpTextInputV1LanguageEvent{}
 
-// TIUVZwpTextInputV1TextDirectionEvent signals when text direction
+// ZwpTextInputV1TextDirectionEvent signals when text direction
 //
 // Sets the text direction of input text.
 //
 // It is mainly needed for showing an input cursor on the correct side of
 // the editor when there is no input done yet and making sure neutral
 // direction text is laid out properly.
-type TIUVZwpTextInputV1TextDirectionEvent struct {
+type ZwpTextInputV1TextDirectionEvent struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
 
@@ -7577,13 +7501,13 @@ type TIUVZwpTextInputV1TextDirectionEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v1.text_direction in text_input_unstable_v1
-func (TIUVZwpTextInputV1TextDirectionEvent) Opcode() uint16 { return 12 }
+func (ZwpTextInputV1TextDirectionEvent) Opcode() uint16 { return 12 }
 
-// Ensure TIUVZwpTextInputV1TextDirectionEvent implements Message.
-var _ Message = TIUVZwpTextInputV1TextDirectionEvent{}
+// Ensure ZwpTextInputV1TextDirectionEvent implements Message.
+var _ Message = ZwpTextInputV1TextDirectionEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV1TextDirectionEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV1TextDirectionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -7597,26 +7521,26 @@ func (e *TIUVZwpTextInputV1TextDirectionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV1TextDirectionEvent implements Event.
-var _ Event = &TIUVZwpTextInputV1TextDirectionEvent{}
+// Ensure ZwpTextInputV1TextDirectionEvent implements Event.
+var _ Event = &ZwpTextInputV1TextDirectionEvent{}
 
 // #endregion Interface text_input_unstable_v1.zwp_text_input_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface text_input_unstable_v1.zwp_text_input_manager_v1
 
-// TIUVZwpTextInputManagerV1CreateTextInputRequest requests to create text input
+// ZwpTextInputManagerV1CreateTextInputRequest requests to create text input
 //
 // Creates a new text_input object.
-type TIUVZwpTextInputManagerV1CreateTextInputRequest struct {
+type ZwpTextInputManagerV1CreateTextInputRequest struct {
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for zwp_text_input_manager_v1.create_text_input in text_input_unstable_v1
-func (TIUVZwpTextInputManagerV1CreateTextInputRequest) Opcode() uint16 { return 0 }
+func (ZwpTextInputManagerV1CreateTextInputRequest) Opcode() uint16 { return 0 }
 
-// Ensure TIUVZwpTextInputManagerV1CreateTextInputRequest implements Message.
-var _ Message = TIUVZwpTextInputManagerV1CreateTextInputRequest{}
+// Ensure ZwpTextInputManagerV1CreateTextInputRequest implements Message.
+var _ Message = ZwpTextInputManagerV1CreateTextInputRequest{}
 
 // #endregion Interface text_input_unstable_v1.zwp_text_input_manager_v1
 
@@ -7629,127 +7553,127 @@ var _ Message = TIUVZwpTextInputManagerV1CreateTextInputRequest{}
 // ----------------------------------------------------------------------------
 // #region Interface text_input_unstable_v3.zwp_text_input_v3
 
-// TIUVZwpTextInputV3ChangeCause represents text change reason
+// ZwpTextInputV3ChangeCause represents text change reason
 //
 // Reason for the change of surrounding text or cursor posision.
-type TIUVZwpTextInputV3ChangeCause int
+type ZwpTextInputV3ChangeCause int
 
 const (
-	// TIUVZwpTextInputV3ChangeCauseInputMethod corresponds to input method caused the change
-	TIUVZwpTextInputV3ChangeCauseInputMethod TIUVZwpTextInputV3ChangeCause = 0
+	// ZwpTextInputV3ChangeCauseInputMethod corresponds to input method caused the change
+	ZwpTextInputV3ChangeCauseInputMethod ZwpTextInputV3ChangeCause = 0
 
-	// TIUVZwpTextInputV3ChangeCauseOther corresponds to something else than the input method caused the change
-	TIUVZwpTextInputV3ChangeCauseOther TIUVZwpTextInputV3ChangeCause = 1
+	// ZwpTextInputV3ChangeCauseOther corresponds to something else than the input method caused the change
+	ZwpTextInputV3ChangeCauseOther ZwpTextInputV3ChangeCause = 1
 )
 
-// TIUVZwpTextInputV3ContentHint represents content hint
+// ZwpTextInputV3ContentHint represents content hint
 //
 // Content hint is a bitmask to allow to modify the behavior of the text
 // input.
-type TIUVZwpTextInputV3ContentHint uint
+type ZwpTextInputV3ContentHint uint
 
 const (
-	// TIUVZwpTextInputV3ContentHintNone corresponds to no special behavior
-	TIUVZwpTextInputV3ContentHintNone TIUVZwpTextInputV3ContentHint = 0x0
+	// ZwpTextInputV3ContentHintNone corresponds to no special behavior
+	ZwpTextInputV3ContentHintNone ZwpTextInputV3ContentHint = 0x0
 
-	// TIUVZwpTextInputV3ContentHintCompletion corresponds to suggest word completions
-	TIUVZwpTextInputV3ContentHintCompletion TIUVZwpTextInputV3ContentHint = 0x1
+	// ZwpTextInputV3ContentHintCompletion corresponds to suggest word completions
+	ZwpTextInputV3ContentHintCompletion ZwpTextInputV3ContentHint = 0x1
 
-	// TIUVZwpTextInputV3ContentHintSpellcheck corresponds to suggest word corrections
-	TIUVZwpTextInputV3ContentHintSpellcheck TIUVZwpTextInputV3ContentHint = 0x2
+	// ZwpTextInputV3ContentHintSpellcheck corresponds to suggest word corrections
+	ZwpTextInputV3ContentHintSpellcheck ZwpTextInputV3ContentHint = 0x2
 
-	// TIUVZwpTextInputV3ContentHintAutoCapitalization corresponds to switch to uppercase letters at the start of a sentence
-	TIUVZwpTextInputV3ContentHintAutoCapitalization TIUVZwpTextInputV3ContentHint = 0x4
+	// ZwpTextInputV3ContentHintAutoCapitalization corresponds to switch to uppercase letters at the start of a sentence
+	ZwpTextInputV3ContentHintAutoCapitalization ZwpTextInputV3ContentHint = 0x4
 
-	// TIUVZwpTextInputV3ContentHintLowercase corresponds to prefer lowercase letters
-	TIUVZwpTextInputV3ContentHintLowercase TIUVZwpTextInputV3ContentHint = 0x8
+	// ZwpTextInputV3ContentHintLowercase corresponds to prefer lowercase letters
+	ZwpTextInputV3ContentHintLowercase ZwpTextInputV3ContentHint = 0x8
 
-	// TIUVZwpTextInputV3ContentHintUppercase corresponds to prefer uppercase letters
-	TIUVZwpTextInputV3ContentHintUppercase TIUVZwpTextInputV3ContentHint = 0x10
+	// ZwpTextInputV3ContentHintUppercase corresponds to prefer uppercase letters
+	ZwpTextInputV3ContentHintUppercase ZwpTextInputV3ContentHint = 0x10
 
-	// TIUVZwpTextInputV3ContentHintTitlecase corresponds to prefer casing for titles and headings (can be language dependent)
-	TIUVZwpTextInputV3ContentHintTitlecase TIUVZwpTextInputV3ContentHint = 0x20
+	// ZwpTextInputV3ContentHintTitlecase corresponds to prefer casing for titles and headings (can be language dependent)
+	ZwpTextInputV3ContentHintTitlecase ZwpTextInputV3ContentHint = 0x20
 
-	// TIUVZwpTextInputV3ContentHintHiddenText corresponds to characters should be hidden
-	TIUVZwpTextInputV3ContentHintHiddenText TIUVZwpTextInputV3ContentHint = 0x40
+	// ZwpTextInputV3ContentHintHiddenText corresponds to characters should be hidden
+	ZwpTextInputV3ContentHintHiddenText ZwpTextInputV3ContentHint = 0x40
 
-	// TIUVZwpTextInputV3ContentHintSensitiveData corresponds to typed text should not be stored
-	TIUVZwpTextInputV3ContentHintSensitiveData TIUVZwpTextInputV3ContentHint = 0x80
+	// ZwpTextInputV3ContentHintSensitiveData corresponds to typed text should not be stored
+	ZwpTextInputV3ContentHintSensitiveData ZwpTextInputV3ContentHint = 0x80
 
-	// TIUVZwpTextInputV3ContentHintLatin corresponds to just Latin characters should be entered
-	TIUVZwpTextInputV3ContentHintLatin TIUVZwpTextInputV3ContentHint = 0x100
+	// ZwpTextInputV3ContentHintLatin corresponds to just Latin characters should be entered
+	ZwpTextInputV3ContentHintLatin ZwpTextInputV3ContentHint = 0x100
 
-	// TIUVZwpTextInputV3ContentHintMultiline corresponds to the text input is multiline
-	TIUVZwpTextInputV3ContentHintMultiline TIUVZwpTextInputV3ContentHint = 0x200
+	// ZwpTextInputV3ContentHintMultiline corresponds to the text input is multiline
+	ZwpTextInputV3ContentHintMultiline ZwpTextInputV3ContentHint = 0x200
 )
 
-// TIUVZwpTextInputV3ContentPurpose represents content purpose
+// ZwpTextInputV3ContentPurpose represents content purpose
 //
 // The content purpose allows to specify the primary purpose of a text
 // input.
 //
 // This allows an input method to show special purpose input panels with
 // extra characters or to disallow some characters.
-type TIUVZwpTextInputV3ContentPurpose int
+type ZwpTextInputV3ContentPurpose int
 
 const (
-	// TIUVZwpTextInputV3ContentPurposeNormal corresponds to default input, allowing all characters
-	TIUVZwpTextInputV3ContentPurposeNormal TIUVZwpTextInputV3ContentPurpose = 0
+	// ZwpTextInputV3ContentPurposeNormal corresponds to default input, allowing all characters
+	ZwpTextInputV3ContentPurposeNormal ZwpTextInputV3ContentPurpose = 0
 
-	// TIUVZwpTextInputV3ContentPurposeAlpha corresponds to allow only alphabetic characters
-	TIUVZwpTextInputV3ContentPurposeAlpha TIUVZwpTextInputV3ContentPurpose = 1
+	// ZwpTextInputV3ContentPurposeAlpha corresponds to allow only alphabetic characters
+	ZwpTextInputV3ContentPurposeAlpha ZwpTextInputV3ContentPurpose = 1
 
-	// TIUVZwpTextInputV3ContentPurposeDigits corresponds to allow only digits
-	TIUVZwpTextInputV3ContentPurposeDigits TIUVZwpTextInputV3ContentPurpose = 2
+	// ZwpTextInputV3ContentPurposeDigits corresponds to allow only digits
+	ZwpTextInputV3ContentPurposeDigits ZwpTextInputV3ContentPurpose = 2
 
-	// TIUVZwpTextInputV3ContentPurposeNumber corresponds to input a number (including decimal separator and sign)
-	TIUVZwpTextInputV3ContentPurposeNumber TIUVZwpTextInputV3ContentPurpose = 3
+	// ZwpTextInputV3ContentPurposeNumber corresponds to input a number (including decimal separator and sign)
+	ZwpTextInputV3ContentPurposeNumber ZwpTextInputV3ContentPurpose = 3
 
-	// TIUVZwpTextInputV3ContentPurposePhone corresponds to input a phone number
-	TIUVZwpTextInputV3ContentPurposePhone TIUVZwpTextInputV3ContentPurpose = 4
+	// ZwpTextInputV3ContentPurposePhone corresponds to input a phone number
+	ZwpTextInputV3ContentPurposePhone ZwpTextInputV3ContentPurpose = 4
 
-	// TIUVZwpTextInputV3ContentPurposeUrl corresponds to input an URL
-	TIUVZwpTextInputV3ContentPurposeUrl TIUVZwpTextInputV3ContentPurpose = 5
+	// ZwpTextInputV3ContentPurposeUrl corresponds to input an URL
+	ZwpTextInputV3ContentPurposeUrl ZwpTextInputV3ContentPurpose = 5
 
-	// TIUVZwpTextInputV3ContentPurposeEmail corresponds to input an email address
-	TIUVZwpTextInputV3ContentPurposeEmail TIUVZwpTextInputV3ContentPurpose = 6
+	// ZwpTextInputV3ContentPurposeEmail corresponds to input an email address
+	ZwpTextInputV3ContentPurposeEmail ZwpTextInputV3ContentPurpose = 6
 
-	// TIUVZwpTextInputV3ContentPurposeName corresponds to input a name of a person
-	TIUVZwpTextInputV3ContentPurposeName TIUVZwpTextInputV3ContentPurpose = 7
+	// ZwpTextInputV3ContentPurposeName corresponds to input a name of a person
+	ZwpTextInputV3ContentPurposeName ZwpTextInputV3ContentPurpose = 7
 
-	// TIUVZwpTextInputV3ContentPurposePassword corresponds to input a password (combine with sensitive_data hint)
-	TIUVZwpTextInputV3ContentPurposePassword TIUVZwpTextInputV3ContentPurpose = 8
+	// ZwpTextInputV3ContentPurposePassword corresponds to input a password (combine with sensitive_data hint)
+	ZwpTextInputV3ContentPurposePassword ZwpTextInputV3ContentPurpose = 8
 
-	// TIUVZwpTextInputV3ContentPurposePin corresponds to input is a numeric password (combine with sensitive_data hint)
-	TIUVZwpTextInputV3ContentPurposePin TIUVZwpTextInputV3ContentPurpose = 9
+	// ZwpTextInputV3ContentPurposePin corresponds to input is a numeric password (combine with sensitive_data hint)
+	ZwpTextInputV3ContentPurposePin ZwpTextInputV3ContentPurpose = 9
 
-	// TIUVZwpTextInputV3ContentPurposeDate corresponds to input a date
-	TIUVZwpTextInputV3ContentPurposeDate TIUVZwpTextInputV3ContentPurpose = 10
+	// ZwpTextInputV3ContentPurposeDate corresponds to input a date
+	ZwpTextInputV3ContentPurposeDate ZwpTextInputV3ContentPurpose = 10
 
-	// TIUVZwpTextInputV3ContentPurposeTime corresponds to input a time
-	TIUVZwpTextInputV3ContentPurposeTime TIUVZwpTextInputV3ContentPurpose = 11
+	// ZwpTextInputV3ContentPurposeTime corresponds to input a time
+	ZwpTextInputV3ContentPurposeTime ZwpTextInputV3ContentPurpose = 11
 
-	// TIUVZwpTextInputV3ContentPurposeDatetime corresponds to input a date and time
-	TIUVZwpTextInputV3ContentPurposeDatetime TIUVZwpTextInputV3ContentPurpose = 12
+	// ZwpTextInputV3ContentPurposeDatetime corresponds to input a date and time
+	ZwpTextInputV3ContentPurposeDatetime ZwpTextInputV3ContentPurpose = 12
 
-	// TIUVZwpTextInputV3ContentPurposeTerminal corresponds to input for a terminal
-	TIUVZwpTextInputV3ContentPurposeTerminal TIUVZwpTextInputV3ContentPurpose = 13
+	// ZwpTextInputV3ContentPurposeTerminal corresponds to input for a terminal
+	ZwpTextInputV3ContentPurposeTerminal ZwpTextInputV3ContentPurpose = 13
 )
 
-// TIUVZwpTextInputV3DestroyRequest requests to Destroy the wp_text_input
+// ZwpTextInputV3DestroyRequest requests to Destroy the wp_text_input
 //
 // Destroy the wp_text_input object. Also disables all surfaces enabled
 // through this wp_text_input object.
-type TIUVZwpTextInputV3DestroyRequest struct {
+type ZwpTextInputV3DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.destroy in text_input_unstable_v3
-func (TIUVZwpTextInputV3DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpTextInputV3DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure TIUVZwpTextInputV3DestroyRequest implements Message.
-var _ Message = TIUVZwpTextInputV3DestroyRequest{}
+// Ensure ZwpTextInputV3DestroyRequest implements Message.
+var _ Message = ZwpTextInputV3DestroyRequest{}
 
-// TIUVZwpTextInputV3EnableRequest requests to Request text input to be enabled
+// ZwpTextInputV3EnableRequest requests to Request text input to be enabled
 //
 // Requests text input on the surface previously obtained from the enter
 // event.
@@ -7780,32 +7704,32 @@ var _ Message = TIUVZwpTextInputV3DestroyRequest{}
 //
 // The changes must be applied by the compositor after issuing a
 // zwp_text_input_v3.commit request.
-type TIUVZwpTextInputV3EnableRequest struct {
+type ZwpTextInputV3EnableRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.enable in text_input_unstable_v3
-func (TIUVZwpTextInputV3EnableRequest) Opcode() uint16 { return 1 }
+func (ZwpTextInputV3EnableRequest) Opcode() uint16 { return 1 }
 
-// Ensure TIUVZwpTextInputV3EnableRequest implements Message.
-var _ Message = TIUVZwpTextInputV3EnableRequest{}
+// Ensure ZwpTextInputV3EnableRequest implements Message.
+var _ Message = ZwpTextInputV3EnableRequest{}
 
-// TIUVZwpTextInputV3DisableRequest requests to Disable text input on a surface
+// ZwpTextInputV3DisableRequest requests to Disable text input on a surface
 //
 // Explicitly disable text input on the current surface (typically when
 // there is no focus on any text entry inside the surface).
 //
 // State set with this request is double-buffered. It will get applied on
 // the next zwp_text_input_v3.commit request.
-type TIUVZwpTextInputV3DisableRequest struct {
+type ZwpTextInputV3DisableRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.disable in text_input_unstable_v3
-func (TIUVZwpTextInputV3DisableRequest) Opcode() uint16 { return 2 }
+func (ZwpTextInputV3DisableRequest) Opcode() uint16 { return 2 }
 
-// Ensure TIUVZwpTextInputV3DisableRequest implements Message.
-var _ Message = TIUVZwpTextInputV3DisableRequest{}
+// Ensure ZwpTextInputV3DisableRequest implements Message.
+var _ Message = ZwpTextInputV3DisableRequest{}
 
-// TIUVZwpTextInputV3SetSurroundingTextRequest requests to sets the surrounding text
+// ZwpTextInputV3SetSurroundingTextRequest requests to sets the surrounding text
 //
 // Sets the surrounding plain text around the input, excluding the preedit
 // text.
@@ -7838,7 +7762,7 @@ var _ Message = TIUVZwpTextInputV3DisableRequest{}
 // The initial state for affected fields is empty, meaning that the text
 // input does not support sending surrounding text. If the empty values
 // get applied, subsequent attempts to change them may have no effect.
-type TIUVZwpTextInputV3SetSurroundingTextRequest struct {
+type ZwpTextInputV3SetSurroundingTextRequest struct {
 	Text string
 
 	Cursor int32
@@ -7847,12 +7771,12 @@ type TIUVZwpTextInputV3SetSurroundingTextRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.set_surrounding_text in text_input_unstable_v3
-func (TIUVZwpTextInputV3SetSurroundingTextRequest) Opcode() uint16 { return 3 }
+func (ZwpTextInputV3SetSurroundingTextRequest) Opcode() uint16 { return 3 }
 
-// Ensure TIUVZwpTextInputV3SetSurroundingTextRequest implements Message.
-var _ Message = TIUVZwpTextInputV3SetSurroundingTextRequest{}
+// Ensure ZwpTextInputV3SetSurroundingTextRequest implements Message.
+var _ Message = ZwpTextInputV3SetSurroundingTextRequest{}
 
-// TIUVZwpTextInputV3SetTextChangeCauseRequest requests to indicates the cause of surrounding text change
+// ZwpTextInputV3SetTextChangeCauseRequest requests to indicates the cause of surrounding text change
 //
 // Tells the compositor why the text surrounding the cursor changed.
 //
@@ -7868,17 +7792,17 @@ var _ Message = TIUVZwpTextInputV3SetSurroundingTextRequest{}
 // and reset to initial at the next zwp_text_input_v3.commit request.
 //
 // The initial value of cause is input_method.
-type TIUVZwpTextInputV3SetTextChangeCauseRequest struct {
+type ZwpTextInputV3SetTextChangeCauseRequest struct {
 	Cause uint32
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.set_text_change_cause in text_input_unstable_v3
-func (TIUVZwpTextInputV3SetTextChangeCauseRequest) Opcode() uint16 { return 4 }
+func (ZwpTextInputV3SetTextChangeCauseRequest) Opcode() uint16 { return 4 }
 
-// Ensure TIUVZwpTextInputV3SetTextChangeCauseRequest implements Message.
-var _ Message = TIUVZwpTextInputV3SetTextChangeCauseRequest{}
+// Ensure ZwpTextInputV3SetTextChangeCauseRequest implements Message.
+var _ Message = ZwpTextInputV3SetTextChangeCauseRequest{}
 
-// TIUVZwpTextInputV3SetContentTypeRequest requests to set content purpose and hint
+// ZwpTextInputV3SetContentTypeRequest requests to set content purpose and hint
 //
 // Sets the content purpose and content hint. While the purpose is the
 // basic purpose of an input field, the hint flags allow to modify some of
@@ -7891,19 +7815,19 @@ var _ Message = TIUVZwpTextInputV3SetTextChangeCauseRequest{}
 //
 // The initial value for hint is none, and the initial value for purpose
 // is normal.
-type TIUVZwpTextInputV3SetContentTypeRequest struct {
+type ZwpTextInputV3SetContentTypeRequest struct {
 	Hint uint32
 
 	Purpose uint32
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.set_content_type in text_input_unstable_v3
-func (TIUVZwpTextInputV3SetContentTypeRequest) Opcode() uint16 { return 5 }
+func (ZwpTextInputV3SetContentTypeRequest) Opcode() uint16 { return 5 }
 
-// Ensure TIUVZwpTextInputV3SetContentTypeRequest implements Message.
-var _ Message = TIUVZwpTextInputV3SetContentTypeRequest{}
+// Ensure ZwpTextInputV3SetContentTypeRequest implements Message.
+var _ Message = ZwpTextInputV3SetContentTypeRequest{}
 
-// TIUVZwpTextInputV3SetCursorRectangleRequest requests to set cursor position
+// ZwpTextInputV3SetCursorRectangleRequest requests to set cursor position
 //
 // Marks an area around the cursor as a x, y, width, height rectangle in
 // surface local coordinates.
@@ -7922,7 +7846,7 @@ var _ Message = TIUVZwpTextInputV3SetContentTypeRequest{}
 // the text input does not support describing the cursor area. If the
 // empty values get applied, subsequent attempts to change them may have
 // no effect.
-type TIUVZwpTextInputV3SetCursorRectangleRequest struct {
+type ZwpTextInputV3SetCursorRectangleRequest struct {
 	X int32
 
 	Y int32
@@ -7933,12 +7857,12 @@ type TIUVZwpTextInputV3SetCursorRectangleRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.set_cursor_rectangle in text_input_unstable_v3
-func (TIUVZwpTextInputV3SetCursorRectangleRequest) Opcode() uint16 { return 6 }
+func (ZwpTextInputV3SetCursorRectangleRequest) Opcode() uint16 { return 6 }
 
-// Ensure TIUVZwpTextInputV3SetCursorRectangleRequest implements Message.
-var _ Message = TIUVZwpTextInputV3SetCursorRectangleRequest{}
+// Ensure ZwpTextInputV3SetCursorRectangleRequest implements Message.
+var _ Message = ZwpTextInputV3SetCursorRectangleRequest{}
 
-// TIUVZwpTextInputV3CommitRequest requests to commit state
+// ZwpTextInputV3CommitRequest requests to commit state
 //
 // Atomically applies state changes recently sent to the compositor.
 //
@@ -7963,16 +7887,16 @@ var _ Message = TIUVZwpTextInputV3SetCursorRectangleRequest{}
 // The compositor must count the number of commit requests coming from
 // each zwp_text_input_v3 object and use the count as the serial in done
 // events.
-type TIUVZwpTextInputV3CommitRequest struct {
+type ZwpTextInputV3CommitRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_v3.commit in text_input_unstable_v3
-func (TIUVZwpTextInputV3CommitRequest) Opcode() uint16 { return 7 }
+func (ZwpTextInputV3CommitRequest) Opcode() uint16 { return 7 }
 
-// Ensure TIUVZwpTextInputV3CommitRequest implements Message.
-var _ Message = TIUVZwpTextInputV3CommitRequest{}
+// Ensure ZwpTextInputV3CommitRequest implements Message.
+var _ Message = ZwpTextInputV3CommitRequest{}
 
-// TIUVZwpTextInputV3EnterEvent signals when enter event
+// ZwpTextInputV3EnterEvent signals when enter event
 //
 // Notification that this seat's text-input focus is on a certain surface.
 //
@@ -7982,18 +7906,18 @@ var _ Message = TIUVZwpTextInputV3CommitRequest{}
 // When the seat has the keyboard capability the text-input focus follows
 // the keyboard focus. This event sets the current surface for the
 // text-input object.
-type TIUVZwpTextInputV3EnterEvent struct {
+type ZwpTextInputV3EnterEvent struct {
 	Surface ObjectID
 }
 
 // Opcode returns the event opcode for zwp_text_input_v3.enter in text_input_unstable_v3
-func (TIUVZwpTextInputV3EnterEvent) Opcode() uint16 { return 0 }
+func (ZwpTextInputV3EnterEvent) Opcode() uint16 { return 0 }
 
-// Ensure TIUVZwpTextInputV3EnterEvent implements Message.
-var _ Message = TIUVZwpTextInputV3EnterEvent{}
+// Ensure ZwpTextInputV3EnterEvent implements Message.
+var _ Message = ZwpTextInputV3EnterEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV3EnterEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV3EnterEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -8002,10 +7926,10 @@ func (e *TIUVZwpTextInputV3EnterEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV3EnterEvent implements Event.
-var _ Event = &TIUVZwpTextInputV3EnterEvent{}
+// Ensure ZwpTextInputV3EnterEvent implements Event.
+var _ Event = &ZwpTextInputV3EnterEvent{}
 
-// TIUVZwpTextInputV3LeaveEvent signals when leave event
+// ZwpTextInputV3LeaveEvent signals when leave event
 //
 // Notification that this seat's text-input focus is no longer on a
 // certain surface. The client should reset any preedit string previously
@@ -8018,18 +7942,18 @@ var _ Event = &TIUVZwpTextInputV3EnterEvent{}
 //
 // When the seat has the keyboard capability the text-input focus follows
 // the keyboard focus.
-type TIUVZwpTextInputV3LeaveEvent struct {
+type ZwpTextInputV3LeaveEvent struct {
 	Surface ObjectID
 }
 
 // Opcode returns the event opcode for zwp_text_input_v3.leave in text_input_unstable_v3
-func (TIUVZwpTextInputV3LeaveEvent) Opcode() uint16 { return 1 }
+func (ZwpTextInputV3LeaveEvent) Opcode() uint16 { return 1 }
 
-// Ensure TIUVZwpTextInputV3LeaveEvent implements Message.
-var _ Message = TIUVZwpTextInputV3LeaveEvent{}
+// Ensure ZwpTextInputV3LeaveEvent implements Message.
+var _ Message = ZwpTextInputV3LeaveEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV3LeaveEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV3LeaveEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -8038,10 +7962,10 @@ func (e *TIUVZwpTextInputV3LeaveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV3LeaveEvent implements Event.
-var _ Event = &TIUVZwpTextInputV3LeaveEvent{}
+// Ensure ZwpTextInputV3LeaveEvent implements Event.
+var _ Event = &ZwpTextInputV3LeaveEvent{}
 
-// TIUVZwpTextInputV3PreeditStringEvent signals when pre-edit
+// ZwpTextInputV3PreeditStringEvent signals when pre-edit
 //
 // Notify when a new composing text (pre-edit) should be set at the
 // current cursor position. Any previously set composing text must be
@@ -8061,7 +7985,7 @@ var _ Event = &TIUVZwpTextInputV3LeaveEvent{}
 //
 // The initial value of text is an empty string, and cursor_begin,
 // cursor_end and cursor_hidden are all 0.
-type TIUVZwpTextInputV3PreeditStringEvent struct {
+type ZwpTextInputV3PreeditStringEvent struct {
 	Text string
 
 	CursorBegin int32
@@ -8070,13 +7994,13 @@ type TIUVZwpTextInputV3PreeditStringEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v3.preedit_string in text_input_unstable_v3
-func (TIUVZwpTextInputV3PreeditStringEvent) Opcode() uint16 { return 2 }
+func (ZwpTextInputV3PreeditStringEvent) Opcode() uint16 { return 2 }
 
-// Ensure TIUVZwpTextInputV3PreeditStringEvent implements Message.
-var _ Message = TIUVZwpTextInputV3PreeditStringEvent{}
+// Ensure ZwpTextInputV3PreeditStringEvent implements Message.
+var _ Message = ZwpTextInputV3PreeditStringEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV3PreeditStringEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV3PreeditStringEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -8095,10 +8019,10 @@ func (e *TIUVZwpTextInputV3PreeditStringEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV3PreeditStringEvent implements Event.
-var _ Event = &TIUVZwpTextInputV3PreeditStringEvent{}
+// Ensure ZwpTextInputV3PreeditStringEvent implements Event.
+var _ Event = &ZwpTextInputV3PreeditStringEvent{}
 
-// TIUVZwpTextInputV3CommitStringEvent signals when text commit
+// ZwpTextInputV3CommitStringEvent signals when text commit
 //
 // Notify when text should be inserted into the editor widget. The text to
 // commit could be either just a single character after a key press or the
@@ -8108,18 +8032,18 @@ var _ Event = &TIUVZwpTextInputV3PreeditStringEvent{}
 // and reset to initial on the next zwp_text_input_v3.done event.
 //
 // The initial value of text is an empty string.
-type TIUVZwpTextInputV3CommitStringEvent struct {
+type ZwpTextInputV3CommitStringEvent struct {
 	Text string
 }
 
 // Opcode returns the event opcode for zwp_text_input_v3.commit_string in text_input_unstable_v3
-func (TIUVZwpTextInputV3CommitStringEvent) Opcode() uint16 { return 3 }
+func (ZwpTextInputV3CommitStringEvent) Opcode() uint16 { return 3 }
 
-// Ensure TIUVZwpTextInputV3CommitStringEvent implements Message.
-var _ Message = TIUVZwpTextInputV3CommitStringEvent{}
+// Ensure ZwpTextInputV3CommitStringEvent implements Message.
+var _ Message = ZwpTextInputV3CommitStringEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV3CommitStringEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV3CommitStringEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -8128,10 +8052,10 @@ func (e *TIUVZwpTextInputV3CommitStringEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV3CommitStringEvent implements Event.
-var _ Event = &TIUVZwpTextInputV3CommitStringEvent{}
+// Ensure ZwpTextInputV3CommitStringEvent implements Event.
+var _ Event = &ZwpTextInputV3CommitStringEvent{}
 
-// TIUVZwpTextInputV3DeleteSurroundingTextEvent signals when delete surrounding text
+// ZwpTextInputV3DeleteSurroundingTextEvent signals when delete surrounding text
 //
 // Notify when the text around the current cursor position should be
 // deleted.
@@ -8147,7 +8071,7 @@ var _ Event = &TIUVZwpTextInputV3CommitStringEvent{}
 // and reset to initial on the next zwp_text_input_v3.done event.
 //
 // The initial values of both before_length and after_length are 0.
-type TIUVZwpTextInputV3DeleteSurroundingTextEvent struct {
+type ZwpTextInputV3DeleteSurroundingTextEvent struct {
 	// BeforeLength contains length of text before current cursor position
 	BeforeLength uint32
 
@@ -8156,13 +8080,13 @@ type TIUVZwpTextInputV3DeleteSurroundingTextEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_text_input_v3.delete_surrounding_text in text_input_unstable_v3
-func (TIUVZwpTextInputV3DeleteSurroundingTextEvent) Opcode() uint16 { return 4 }
+func (ZwpTextInputV3DeleteSurroundingTextEvent) Opcode() uint16 { return 4 }
 
-// Ensure TIUVZwpTextInputV3DeleteSurroundingTextEvent implements Message.
-var _ Message = TIUVZwpTextInputV3DeleteSurroundingTextEvent{}
+// Ensure ZwpTextInputV3DeleteSurroundingTextEvent implements Message.
+var _ Message = ZwpTextInputV3DeleteSurroundingTextEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV3DeleteSurroundingTextEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV3DeleteSurroundingTextEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -8176,10 +8100,10 @@ func (e *TIUVZwpTextInputV3DeleteSurroundingTextEvent) Scan(s *EventScanner) err
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV3DeleteSurroundingTextEvent implements Event.
-var _ Event = &TIUVZwpTextInputV3DeleteSurroundingTextEvent{}
+// Ensure ZwpTextInputV3DeleteSurroundingTextEvent implements Event.
+var _ Event = &ZwpTextInputV3DeleteSurroundingTextEvent{}
 
-// TIUVZwpTextInputV3DoneEvent signals when apply changes
+// ZwpTextInputV3DoneEvent signals when apply changes
 //
 // Instruct the application to apply changes to state requested by the
 // preedit_string, commit_string and delete_surrounding_text events. The
@@ -8203,18 +8127,18 @@ var _ Event = &TIUVZwpTextInputV3DeleteSurroundingTextEvent{}
 // When the client receives a done event with a serial different than the
 // number of past commit requests, it must proceed as normal, except it
 // should not change the current state of the zwp_text_input_v3 object.
-type TIUVZwpTextInputV3DoneEvent struct {
+type ZwpTextInputV3DoneEvent struct {
 	Serial uint32
 }
 
 // Opcode returns the event opcode for zwp_text_input_v3.done in text_input_unstable_v3
-func (TIUVZwpTextInputV3DoneEvent) Opcode() uint16 { return 5 }
+func (ZwpTextInputV3DoneEvent) Opcode() uint16 { return 5 }
 
-// Ensure TIUVZwpTextInputV3DoneEvent implements Message.
-var _ Message = TIUVZwpTextInputV3DoneEvent{}
+// Ensure ZwpTextInputV3DoneEvent implements Message.
+var _ Message = ZwpTextInputV3DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *TIUVZwpTextInputV3DoneEvent) Scan(s *EventScanner) error {
+func (e *ZwpTextInputV3DoneEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -8223,40 +8147,40 @@ func (e *TIUVZwpTextInputV3DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure TIUVZwpTextInputV3DoneEvent implements Event.
-var _ Event = &TIUVZwpTextInputV3DoneEvent{}
+// Ensure ZwpTextInputV3DoneEvent implements Event.
+var _ Event = &ZwpTextInputV3DoneEvent{}
 
 // #endregion Interface text_input_unstable_v3.zwp_text_input_v3
 
 // ----------------------------------------------------------------------------
 // #region Interface text_input_unstable_v3.zwp_text_input_manager_v3
 
-// TIUVZwpTextInputManagerV3DestroyRequest requests to Destroy the wp_text_input_manager
+// ZwpTextInputManagerV3DestroyRequest requests to Destroy the wp_text_input_manager
 //
 // Destroy the wp_text_input_manager object.
-type TIUVZwpTextInputManagerV3DestroyRequest struct {
+type ZwpTextInputManagerV3DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_text_input_manager_v3.destroy in text_input_unstable_v3
-func (TIUVZwpTextInputManagerV3DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpTextInputManagerV3DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure TIUVZwpTextInputManagerV3DestroyRequest implements Message.
-var _ Message = TIUVZwpTextInputManagerV3DestroyRequest{}
+// Ensure ZwpTextInputManagerV3DestroyRequest implements Message.
+var _ Message = ZwpTextInputManagerV3DestroyRequest{}
 
-// TIUVZwpTextInputManagerV3GetTextInputRequest requests to create a new text input object
+// ZwpTextInputManagerV3GetTextInputRequest requests to create a new text input object
 //
 // Creates a new text-input object for a given seat.
-type TIUVZwpTextInputManagerV3GetTextInputRequest struct {
+type ZwpTextInputManagerV3GetTextInputRequest struct {
 	ID ObjectID
 
 	Seat ObjectID
 }
 
 // Opcode returns the request opcode for zwp_text_input_manager_v3.get_text_input in text_input_unstable_v3
-func (TIUVZwpTextInputManagerV3GetTextInputRequest) Opcode() uint16 { return 1 }
+func (ZwpTextInputManagerV3GetTextInputRequest) Opcode() uint16 { return 1 }
 
-// Ensure TIUVZwpTextInputManagerV3GetTextInputRequest implements Message.
-var _ Message = TIUVZwpTextInputManagerV3GetTextInputRequest{}
+// Ensure ZwpTextInputManagerV3GetTextInputRequest implements Message.
+var _ Message = ZwpTextInputManagerV3GetTextInputRequest{}
 
 // #endregion Interface text_input_unstable_v3.zwp_text_input_manager_v3
 
@@ -8269,34 +8193,34 @@ var _ Message = TIUVZwpTextInputManagerV3GetTextInputRequest{}
 // ----------------------------------------------------------------------------
 // #region Interface viewporter.wp_viewporter
 
-type VWpViewporterError int
+type WpViewporterError int
 
 const (
-	// VWpViewporterErrorViewportExists corresponds to the surface already has a viewport object associated
-	VWpViewporterErrorViewportExists VWpViewporterError = 0
+	// WpViewporterErrorViewportExists corresponds to the surface already has a viewport object associated
+	WpViewporterErrorViewportExists WpViewporterError = 0
 )
 
-// VWpViewporterDestroyRequest requests to unbind from the cropping and scaling interface
+// WpViewporterDestroyRequest requests to unbind from the cropping and scaling interface
 //
 // Informs the server that the client will not be using this
 // protocol object anymore. This does not affect any other objects,
 // wp_viewport objects included.
-type VWpViewporterDestroyRequest struct {
+type WpViewporterDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wp_viewporter.destroy in viewporter
-func (VWpViewporterDestroyRequest) Opcode() uint16 { return 0 }
+func (WpViewporterDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure VWpViewporterDestroyRequest implements Message.
-var _ Message = VWpViewporterDestroyRequest{}
+// Ensure WpViewporterDestroyRequest implements Message.
+var _ Message = WpViewporterDestroyRequest{}
 
-// VWpViewporterGetViewportRequest requests to extend surface interface for crop and scale
+// WpViewporterGetViewportRequest requests to extend surface interface for crop and scale
 //
 // Instantiate an interface extension for the given wl_surface to
 // crop and scale its content. If the given wl_surface already has
 // a wp_viewport object associated, the viewport_exists
 // protocol error is raised.
-type VWpViewporterGetViewportRequest struct {
+type WpViewporterGetViewportRequest struct {
 	// ID contains the new viewport interface id
 	ID ObjectID
 
@@ -8305,46 +8229,46 @@ type VWpViewporterGetViewportRequest struct {
 }
 
 // Opcode returns the request opcode for wp_viewporter.get_viewport in viewporter
-func (VWpViewporterGetViewportRequest) Opcode() uint16 { return 1 }
+func (WpViewporterGetViewportRequest) Opcode() uint16 { return 1 }
 
-// Ensure VWpViewporterGetViewportRequest implements Message.
-var _ Message = VWpViewporterGetViewportRequest{}
+// Ensure WpViewporterGetViewportRequest implements Message.
+var _ Message = WpViewporterGetViewportRequest{}
 
 // #endregion Interface viewporter.wp_viewporter
 
 // ----------------------------------------------------------------------------
 // #region Interface viewporter.wp_viewport
 
-type VWpViewportError int
+type WpViewportError int
 
 const (
-	// VWpViewportErrorBadValue corresponds to negative or zero values in width or height
-	VWpViewportErrorBadValue VWpViewportError = 0
+	// WpViewportErrorBadValue corresponds to negative or zero values in width or height
+	WpViewportErrorBadValue WpViewportError = 0
 
-	// VWpViewportErrorBadSize corresponds to destination size is not integer
-	VWpViewportErrorBadSize VWpViewportError = 1
+	// WpViewportErrorBadSize corresponds to destination size is not integer
+	WpViewportErrorBadSize WpViewportError = 1
 
-	// VWpViewportErrorOutOfBuffer corresponds to source rectangle extends outside of the content area
-	VWpViewportErrorOutOfBuffer VWpViewportError = 2
+	// WpViewportErrorOutOfBuffer corresponds to source rectangle extends outside of the content area
+	WpViewportErrorOutOfBuffer WpViewportError = 2
 
-	// VWpViewportErrorNoSurface corresponds to the wl_surface was destroyed
-	VWpViewportErrorNoSurface VWpViewportError = 3
+	// WpViewportErrorNoSurface corresponds to the wl_surface was destroyed
+	WpViewportErrorNoSurface WpViewportError = 3
 )
 
-// VWpViewportDestroyRequest requests to remove scaling and cropping from the surface
+// WpViewportDestroyRequest requests to remove scaling and cropping from the surface
 //
 // The associated wl_surface's crop and scale state is removed.
 // The change is applied on the next wl_surface.commit.
-type VWpViewportDestroyRequest struct {
+type WpViewportDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wp_viewport.destroy in viewporter
-func (VWpViewportDestroyRequest) Opcode() uint16 { return 0 }
+func (WpViewportDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure VWpViewportDestroyRequest implements Message.
-var _ Message = VWpViewportDestroyRequest{}
+// Ensure WpViewportDestroyRequest implements Message.
+var _ Message = WpViewportDestroyRequest{}
 
-// VWpViewportSetSourceRequest requests to set the source rectangle for cropping
+// WpViewportSetSourceRequest requests to set the source rectangle for cropping
 //
 // Set the source rectangle of the associated wl_surface. See
 // wp_viewport for the description, and relation to the wl_buffer
@@ -8357,7 +8281,7 @@ var _ Message = VWpViewportDestroyRequest{}
 //
 // The crop and scale state is double-buffered state, and will be
 // applied on the next wl_surface.commit.
-type VWpViewportSetSourceRequest struct {
+type WpViewportSetSourceRequest struct {
 	// X contains source rectangle x
 	X Fixed
 
@@ -8372,12 +8296,12 @@ type VWpViewportSetSourceRequest struct {
 }
 
 // Opcode returns the request opcode for wp_viewport.set_source in viewporter
-func (VWpViewportSetSourceRequest) Opcode() uint16 { return 1 }
+func (WpViewportSetSourceRequest) Opcode() uint16 { return 1 }
 
-// Ensure VWpViewportSetSourceRequest implements Message.
-var _ Message = VWpViewportSetSourceRequest{}
+// Ensure WpViewportSetSourceRequest implements Message.
+var _ Message = WpViewportSetSourceRequest{}
 
-// VWpViewportSetDestinationRequest requests to set the surface size for scaling
+// WpViewportSetDestinationRequest requests to set the surface size for scaling
 //
 // Set the destination size of the associated wl_surface. See
 // wp_viewport for the description, and relation to the wl_buffer
@@ -8390,7 +8314,7 @@ var _ Message = VWpViewportSetSourceRequest{}
 //
 // The crop and scale state is double-buffered state, and will be
 // applied on the next wl_surface.commit.
-type VWpViewportSetDestinationRequest struct {
+type WpViewportSetDestinationRequest struct {
 	// Width contains surface width
 	Width int32
 
@@ -8399,10 +8323,10 @@ type VWpViewportSetDestinationRequest struct {
 }
 
 // Opcode returns the request opcode for wp_viewport.set_destination in viewporter
-func (VWpViewportSetDestinationRequest) Opcode() uint16 { return 2 }
+func (WpViewportSetDestinationRequest) Opcode() uint16 { return 2 }
 
-// Ensure VWpViewportSetDestinationRequest implements Message.
-var _ Message = VWpViewportSetDestinationRequest{}
+// Ensure WpViewportSetDestinationRequest implements Message.
+var _ Message = WpViewportSetDestinationRequest{}
 
 // #endregion Interface viewporter.wp_viewport
 
@@ -8415,27 +8339,27 @@ var _ Message = VWpViewportSetDestinationRequest{}
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_display
 
-// WWlDisplayError represents global error values
+// WlDisplayError represents global error values
 //
 // These errors are global and can be emitted in response to any
 // server request.
-type WWlDisplayError int
+type WlDisplayError int
 
 const (
-	// WWlDisplayErrorInvalidObject corresponds to server couldn't find object
-	WWlDisplayErrorInvalidObject WWlDisplayError = 0
+	// WlDisplayErrorInvalidObject corresponds to server couldn't find object
+	WlDisplayErrorInvalidObject WlDisplayError = 0
 
-	// WWlDisplayErrorInvalidMethod corresponds to method doesn't exist on the specified interface or malformed request
-	WWlDisplayErrorInvalidMethod WWlDisplayError = 1
+	// WlDisplayErrorInvalidMethod corresponds to method doesn't exist on the specified interface or malformed request
+	WlDisplayErrorInvalidMethod WlDisplayError = 1
 
-	// WWlDisplayErrorNoMemory corresponds to server is out of memory
-	WWlDisplayErrorNoMemory WWlDisplayError = 2
+	// WlDisplayErrorNoMemory corresponds to server is out of memory
+	WlDisplayErrorNoMemory WlDisplayError = 2
 
-	// WWlDisplayErrorImplementation corresponds to implementation error in compositor
-	WWlDisplayErrorImplementation WWlDisplayError = 3
+	// WlDisplayErrorImplementation corresponds to implementation error in compositor
+	WlDisplayErrorImplementation WlDisplayError = 3
 )
 
-// WWlDisplaySyncRequest requests to asynchronous roundtrip
+// WlDisplaySyncRequest requests to asynchronous roundtrip
 //
 // The sync request asks the server to emit the 'done' event
 // on the returned wl_callback object.  Since requests are
@@ -8448,18 +8372,18 @@ const (
 // attempt to use it after that point.
 //
 // The callback_data passed in the callback is the event serial.
-type WWlDisplaySyncRequest struct {
+type WlDisplaySyncRequest struct {
 	// Callback contains callback object for the sync request
 	Callback ObjectID
 }
 
 // Opcode returns the request opcode for wl_display.sync in wayland
-func (WWlDisplaySyncRequest) Opcode() uint16 { return 0 }
+func (WlDisplaySyncRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlDisplaySyncRequest implements Message.
-var _ Message = WWlDisplaySyncRequest{}
+// Ensure WlDisplaySyncRequest implements Message.
+var _ Message = WlDisplaySyncRequest{}
 
-// WWlDisplayGetRegistryRequest requests to get global registry object
+// WlDisplayGetRegistryRequest requests to get global registry object
 //
 // This request creates a registry object that allows the client
 // to list and bind the global objects available from the
@@ -8470,18 +8394,18 @@ var _ Message = WWlDisplaySyncRequest{}
 // client disconnects, not when the client side proxy is destroyed.
 // Therefore, clients should invoke get_registry as infrequently as
 // possible to avoid wasting memory.
-type WWlDisplayGetRegistryRequest struct {
+type WlDisplayGetRegistryRequest struct {
 	// Registry contains global registry object
 	Registry ObjectID
 }
 
 // Opcode returns the request opcode for wl_display.get_registry in wayland
-func (WWlDisplayGetRegistryRequest) Opcode() uint16 { return 1 }
+func (WlDisplayGetRegistryRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlDisplayGetRegistryRequest implements Message.
-var _ Message = WWlDisplayGetRegistryRequest{}
+// Ensure WlDisplayGetRegistryRequest implements Message.
+var _ Message = WlDisplayGetRegistryRequest{}
 
-// WWlDisplayErrorEvent signals when fatal error event
+// WlDisplayErrorEvent signals when fatal error event
 //
 // The error event is sent out when a fatal (non-recoverable)
 // error has occurred.  The object_id argument is the object
@@ -8490,7 +8414,7 @@ var _ Message = WWlDisplayGetRegistryRequest{}
 // by the object interface.  As such, each interface defines its
 // own set of error codes.  The message is a brief description
 // of the error, for (debugging) convenience.
-type WWlDisplayErrorEvent struct {
+type WlDisplayErrorEvent struct {
 	// ObjectID contains object where the error occurred
 	ObjectID ObjectID
 
@@ -8502,13 +8426,13 @@ type WWlDisplayErrorEvent struct {
 }
 
 // Opcode returns the event opcode for wl_display.error in wayland
-func (WWlDisplayErrorEvent) Opcode() uint16 { return 0 }
+func (WlDisplayErrorEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlDisplayErrorEvent implements Message.
-var _ Message = WWlDisplayErrorEvent{}
+// Ensure WlDisplayErrorEvent implements Message.
+var _ Message = WlDisplayErrorEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDisplayErrorEvent) Scan(s *EventScanner) error {
+func (e *WlDisplayErrorEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -8527,29 +8451,29 @@ func (e *WWlDisplayErrorEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDisplayErrorEvent implements Event.
-var _ Event = &WWlDisplayErrorEvent{}
+// Ensure WlDisplayErrorEvent implements Event.
+var _ Event = &WlDisplayErrorEvent{}
 
-// WWlDisplayDeleteIDEvent signals when acknowledge object ID deletion
+// WlDisplayDeleteIDEvent signals when acknowledge object ID deletion
 //
 // This event is used internally by the object ID management
 // logic. When a client deletes an object that it had created,
 // the server will send this event to acknowledge that it has
 // seen the delete request. When the client receives this event,
 // it will know that it can safely reuse the object ID.
-type WWlDisplayDeleteIDEvent struct {
+type WlDisplayDeleteIDEvent struct {
 	// ID contains deleted object ID
 	ID uint32
 }
 
 // Opcode returns the event opcode for wl_display.delete_id in wayland
-func (WWlDisplayDeleteIDEvent) Opcode() uint16 { return 1 }
+func (WlDisplayDeleteIDEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlDisplayDeleteIDEvent implements Message.
-var _ Message = WWlDisplayDeleteIDEvent{}
+// Ensure WlDisplayDeleteIDEvent implements Message.
+var _ Message = WlDisplayDeleteIDEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDisplayDeleteIDEvent) Scan(s *EventScanner) error {
+func (e *WlDisplayDeleteIDEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -8558,19 +8482,19 @@ func (e *WWlDisplayDeleteIDEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDisplayDeleteIDEvent implements Event.
-var _ Event = &WWlDisplayDeleteIDEvent{}
+// Ensure WlDisplayDeleteIDEvent implements Event.
+var _ Event = &WlDisplayDeleteIDEvent{}
 
 // #endregion Interface wayland.wl_display
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_registry
 
-// WWlRegistryBindRequest requests to bind an object to the display
+// WlRegistryBindRequest requests to bind an object to the display
 //
 // Binds a new, client-created object to the server using the
 // specified name as the identifier.
-type WWlRegistryBindRequest struct {
+type WlRegistryBindRequest struct {
 	// Name contains unique numeric name of the object
 	Name uint32
 
@@ -8579,19 +8503,19 @@ type WWlRegistryBindRequest struct {
 }
 
 // Opcode returns the request opcode for wl_registry.bind in wayland
-func (WWlRegistryBindRequest) Opcode() uint16 { return 0 }
+func (WlRegistryBindRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlRegistryBindRequest implements Message.
-var _ Message = WWlRegistryBindRequest{}
+// Ensure WlRegistryBindRequest implements Message.
+var _ Message = WlRegistryBindRequest{}
 
-// WWlRegistryGlobalEvent signals when announce global object
+// WlRegistryGlobalEvent signals when announce global object
 //
 // Notify the client of global objects.
 //
 // The event notifies the client that a global object with
 // the given name is now available, and it implements the
 // given version of the given interface.
-type WWlRegistryGlobalEvent struct {
+type WlRegistryGlobalEvent struct {
 	// Name contains numeric name of the global object
 	Name uint32
 
@@ -8603,13 +8527,13 @@ type WWlRegistryGlobalEvent struct {
 }
 
 // Opcode returns the event opcode for wl_registry.global in wayland
-func (WWlRegistryGlobalEvent) Opcode() uint16 { return 0 }
+func (WlRegistryGlobalEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlRegistryGlobalEvent implements Message.
-var _ Message = WWlRegistryGlobalEvent{}
+// Ensure WlRegistryGlobalEvent implements Message.
+var _ Message = WlRegistryGlobalEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlRegistryGlobalEvent) Scan(s *EventScanner) error {
+func (e *WlRegistryGlobalEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -8628,10 +8552,10 @@ func (e *WWlRegistryGlobalEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlRegistryGlobalEvent implements Event.
-var _ Event = &WWlRegistryGlobalEvent{}
+// Ensure WlRegistryGlobalEvent implements Event.
+var _ Event = &WlRegistryGlobalEvent{}
 
-// WWlRegistryGlobalRemoveEvent signals when announce removal of global object
+// WlRegistryGlobalRemoveEvent signals when announce removal of global object
 //
 // Notify the client of removed global objects.
 //
@@ -8643,19 +8567,19 @@ var _ Event = &WWlRegistryGlobalEvent{}
 // The object remains valid and requests to the object will be
 // ignored until the client destroys it, to avoid races between
 // the global going away and a client sending a request to it.
-type WWlRegistryGlobalRemoveEvent struct {
+type WlRegistryGlobalRemoveEvent struct {
 	// Name contains numeric name of the global object
 	Name uint32
 }
 
 // Opcode returns the event opcode for wl_registry.global_remove in wayland
-func (WWlRegistryGlobalRemoveEvent) Opcode() uint16 { return 1 }
+func (WlRegistryGlobalRemoveEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlRegistryGlobalRemoveEvent implements Message.
-var _ Message = WWlRegistryGlobalRemoveEvent{}
+// Ensure WlRegistryGlobalRemoveEvent implements Message.
+var _ Message = WlRegistryGlobalRemoveEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlRegistryGlobalRemoveEvent) Scan(s *EventScanner) error {
+func (e *WlRegistryGlobalRemoveEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -8664,30 +8588,30 @@ func (e *WWlRegistryGlobalRemoveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlRegistryGlobalRemoveEvent implements Event.
-var _ Event = &WWlRegistryGlobalRemoveEvent{}
+// Ensure WlRegistryGlobalRemoveEvent implements Event.
+var _ Event = &WlRegistryGlobalRemoveEvent{}
 
 // #endregion Interface wayland.wl_registry
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_callback
 
-// WWlCallbackDoneEvent signals when done event
+// WlCallbackDoneEvent signals when done event
 //
 // Notify the client when the related request is done.
-type WWlCallbackDoneEvent struct {
+type WlCallbackDoneEvent struct {
 	// CallbackData contains request-specific data for the callback
 	CallbackData uint32
 }
 
 // Opcode returns the event opcode for wl_callback.done in wayland
-func (WWlCallbackDoneEvent) Opcode() uint16 { return 0 }
+func (WlCallbackDoneEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlCallbackDoneEvent implements Message.
-var _ Message = WWlCallbackDoneEvent{}
+// Ensure WlCallbackDoneEvent implements Message.
+var _ Message = WlCallbackDoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlCallbackDoneEvent) Scan(s *EventScanner) error {
+func (e *WlCallbackDoneEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -8696,48 +8620,48 @@ func (e *WWlCallbackDoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlCallbackDoneEvent implements Event.
-var _ Event = &WWlCallbackDoneEvent{}
+// Ensure WlCallbackDoneEvent implements Event.
+var _ Event = &WlCallbackDoneEvent{}
 
 // #endregion Interface wayland.wl_callback
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_compositor
 
-// WWlCompositorCreateSurfaceRequest requests to create new surface
+// WlCompositorCreateSurfaceRequest requests to create new surface
 //
 // Ask the compositor to create a new surface.
-type WWlCompositorCreateSurfaceRequest struct {
+type WlCompositorCreateSurfaceRequest struct {
 	// ID contains the new surface
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wl_compositor.create_surface in wayland
-func (WWlCompositorCreateSurfaceRequest) Opcode() uint16 { return 0 }
+func (WlCompositorCreateSurfaceRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlCompositorCreateSurfaceRequest implements Message.
-var _ Message = WWlCompositorCreateSurfaceRequest{}
+// Ensure WlCompositorCreateSurfaceRequest implements Message.
+var _ Message = WlCompositorCreateSurfaceRequest{}
 
-// WWlCompositorCreateRegionRequest requests to create new region
+// WlCompositorCreateRegionRequest requests to create new region
 //
 // Ask the compositor to create a new region.
-type WWlCompositorCreateRegionRequest struct {
+type WlCompositorCreateRegionRequest struct {
 	// ID contains the new region
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wl_compositor.create_region in wayland
-func (WWlCompositorCreateRegionRequest) Opcode() uint16 { return 1 }
+func (WlCompositorCreateRegionRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlCompositorCreateRegionRequest implements Message.
-var _ Message = WWlCompositorCreateRegionRequest{}
+// Ensure WlCompositorCreateRegionRequest implements Message.
+var _ Message = WlCompositorCreateRegionRequest{}
 
 // #endregion Interface wayland.wl_compositor
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_shm_pool
 
-// WWlShmPoolCreateBufferRequest requests to create a buffer from the pool
+// WlShmPoolCreateBufferRequest requests to create a buffer from the pool
 //
 // Create a wl_buffer object from the pool.
 //
@@ -8750,7 +8674,7 @@ var _ Message = WWlCompositorCreateRegionRequest{}
 // A buffer will keep a reference to the pool it was created from
 // so it is valid to destroy the pool immediately after creating
 // a buffer from it.
-type WWlShmPoolCreateBufferRequest struct {
+type WlShmPoolCreateBufferRequest struct {
 	// ID contains buffer to create
 	ID ObjectID
 
@@ -8771,66 +8695,66 @@ type WWlShmPoolCreateBufferRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shm_pool.create_buffer in wayland
-func (WWlShmPoolCreateBufferRequest) Opcode() uint16 { return 0 }
+func (WlShmPoolCreateBufferRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlShmPoolCreateBufferRequest implements Message.
-var _ Message = WWlShmPoolCreateBufferRequest{}
+// Ensure WlShmPoolCreateBufferRequest implements Message.
+var _ Message = WlShmPoolCreateBufferRequest{}
 
-// WWlShmPoolDestroyRequest requests to destroy the pool
+// WlShmPoolDestroyRequest requests to destroy the pool
 //
 // Destroy the shared memory pool.
 //
 // The mmapped memory will be released when all
 // buffers that have been created from this pool
 // are gone.
-type WWlShmPoolDestroyRequest struct {
+type WlShmPoolDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shm_pool.destroy in wayland
-func (WWlShmPoolDestroyRequest) Opcode() uint16 { return 1 }
+func (WlShmPoolDestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlShmPoolDestroyRequest implements Message.
-var _ Message = WWlShmPoolDestroyRequest{}
+// Ensure WlShmPoolDestroyRequest implements Message.
+var _ Message = WlShmPoolDestroyRequest{}
 
-// WWlShmPoolResizeRequest requests to change the size of the pool mapping
+// WlShmPoolResizeRequest requests to change the size of the pool mapping
 //
 // This request will cause the server to remap the backing memory
 // for the pool from the file descriptor passed when the pool was
 // created, but using the new size.  This request can only be
 // used to make the pool bigger.
-type WWlShmPoolResizeRequest struct {
+type WlShmPoolResizeRequest struct {
 	// Size contains new size of the pool, in bytes
 	Size int32
 }
 
 // Opcode returns the request opcode for wl_shm_pool.resize in wayland
-func (WWlShmPoolResizeRequest) Opcode() uint16 { return 2 }
+func (WlShmPoolResizeRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlShmPoolResizeRequest implements Message.
-var _ Message = WWlShmPoolResizeRequest{}
+// Ensure WlShmPoolResizeRequest implements Message.
+var _ Message = WlShmPoolResizeRequest{}
 
 // #endregion Interface wayland.wl_shm_pool
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_shm
 
-// WWlShmError represents wl_shm error values
+// WlShmError represents wl_shm error values
 //
 // These errors can be emitted in response to wl_shm requests.
-type WWlShmError int
+type WlShmError int
 
 const (
-	// WWlShmErrorInvalidFormat corresponds to buffer format is not known
-	WWlShmErrorInvalidFormat WWlShmError = 0
+	// WlShmErrorInvalidFormat corresponds to buffer format is not known
+	WlShmErrorInvalidFormat WlShmError = 0
 
-	// WWlShmErrorInvalidStride corresponds to invalid size or stride during pool or buffer creation
-	WWlShmErrorInvalidStride WWlShmError = 1
+	// WlShmErrorInvalidStride corresponds to invalid size or stride during pool or buffer creation
+	WlShmErrorInvalidStride WlShmError = 1
 
-	// WWlShmErrorInvalidFD corresponds to mmapping the file descriptor failed
-	WWlShmErrorInvalidFD WWlShmError = 2
+	// WlShmErrorInvalidFD corresponds to mmapping the file descriptor failed
+	WlShmErrorInvalidFD WlShmError = 2
 )
 
-// WWlShmFormat represents pixel formats
+// WlShmFormat represents pixel formats
 //
 // This describes the memory layout of an individual pixel.
 //
@@ -8841,318 +8765,318 @@ const (
 // The drm format codes match the macros defined in drm_fourcc.h, except
 // argb8888 and xrgb8888. The formats actually supported by the compositor
 // will be reported by the format event.
-type WWlShmFormat int
+type WlShmFormat int
 
 const (
-	// WWlShmFormatArgb8888 corresponds to 32-bit ARGB format, [31:0] A:R:G:B 8:8:8:8 little endian
-	WWlShmFormatArgb8888 WWlShmFormat = 0
+	// WlShmFormatArgb8888 corresponds to 32-bit ARGB format, [31:0] A:R:G:B 8:8:8:8 little endian
+	WlShmFormatArgb8888 WlShmFormat = 0
 
-	// WWlShmFormatXrgb8888 corresponds to 32-bit RGB format, [31:0] x:R:G:B 8:8:8:8 little endian
-	WWlShmFormatXrgb8888 WWlShmFormat = 1
+	// WlShmFormatXrgb8888 corresponds to 32-bit RGB format, [31:0] x:R:G:B 8:8:8:8 little endian
+	WlShmFormatXrgb8888 WlShmFormat = 1
 
-	// WWlShmFormatC8 corresponds to 8-bit color index format, [7:0] C
-	WWlShmFormatC8 WWlShmFormat = 0x20203843
+	// WlShmFormatC8 corresponds to 8-bit color index format, [7:0] C
+	WlShmFormatC8 WlShmFormat = 0x20203843
 
-	// WWlShmFormatRgb332 corresponds to 8-bit RGB format, [7:0] R:G:B 3:3:2
-	WWlShmFormatRgb332 WWlShmFormat = 0x38424752
+	// WlShmFormatRgb332 corresponds to 8-bit RGB format, [7:0] R:G:B 3:3:2
+	WlShmFormatRgb332 WlShmFormat = 0x38424752
 
-	// WWlShmFormatBgr233 corresponds to 8-bit BGR format, [7:0] B:G:R 2:3:3
-	WWlShmFormatBgr233 WWlShmFormat = 0x38524742
+	// WlShmFormatBgr233 corresponds to 8-bit BGR format, [7:0] B:G:R 2:3:3
+	WlShmFormatBgr233 WlShmFormat = 0x38524742
 
-	// WWlShmFormatXrgb4444 corresponds to 16-bit xRGB format, [15:0] x:R:G:B 4:4:4:4 little endian
-	WWlShmFormatXrgb4444 WWlShmFormat = 0x32315258
+	// WlShmFormatXrgb4444 corresponds to 16-bit xRGB format, [15:0] x:R:G:B 4:4:4:4 little endian
+	WlShmFormatXrgb4444 WlShmFormat = 0x32315258
 
-	// WWlShmFormatXbgr4444 corresponds to 16-bit xBGR format, [15:0] x:B:G:R 4:4:4:4 little endian
-	WWlShmFormatXbgr4444 WWlShmFormat = 0x32314258
+	// WlShmFormatXbgr4444 corresponds to 16-bit xBGR format, [15:0] x:B:G:R 4:4:4:4 little endian
+	WlShmFormatXbgr4444 WlShmFormat = 0x32314258
 
-	// WWlShmFormatRgbx4444 corresponds to 16-bit RGBx format, [15:0] R:G:B:x 4:4:4:4 little endian
-	WWlShmFormatRgbx4444 WWlShmFormat = 0x32315852
+	// WlShmFormatRgbx4444 corresponds to 16-bit RGBx format, [15:0] R:G:B:x 4:4:4:4 little endian
+	WlShmFormatRgbx4444 WlShmFormat = 0x32315852
 
-	// WWlShmFormatBgrx4444 corresponds to 16-bit BGRx format, [15:0] B:G:R:x 4:4:4:4 little endian
-	WWlShmFormatBgrx4444 WWlShmFormat = 0x32315842
+	// WlShmFormatBgrx4444 corresponds to 16-bit BGRx format, [15:0] B:G:R:x 4:4:4:4 little endian
+	WlShmFormatBgrx4444 WlShmFormat = 0x32315842
 
-	// WWlShmFormatArgb4444 corresponds to 16-bit ARGB format, [15:0] A:R:G:B 4:4:4:4 little endian
-	WWlShmFormatArgb4444 WWlShmFormat = 0x32315241
+	// WlShmFormatArgb4444 corresponds to 16-bit ARGB format, [15:0] A:R:G:B 4:4:4:4 little endian
+	WlShmFormatArgb4444 WlShmFormat = 0x32315241
 
-	// WWlShmFormatAbgr4444 corresponds to 16-bit ABGR format, [15:0] A:B:G:R 4:4:4:4 little endian
-	WWlShmFormatAbgr4444 WWlShmFormat = 0x32314241
+	// WlShmFormatAbgr4444 corresponds to 16-bit ABGR format, [15:0] A:B:G:R 4:4:4:4 little endian
+	WlShmFormatAbgr4444 WlShmFormat = 0x32314241
 
-	// WWlShmFormatRgba4444 corresponds to 16-bit RBGA format, [15:0] R:G:B:A 4:4:4:4 little endian
-	WWlShmFormatRgba4444 WWlShmFormat = 0x32314152
+	// WlShmFormatRgba4444 corresponds to 16-bit RBGA format, [15:0] R:G:B:A 4:4:4:4 little endian
+	WlShmFormatRgba4444 WlShmFormat = 0x32314152
 
-	// WWlShmFormatBgra4444 corresponds to 16-bit BGRA format, [15:0] B:G:R:A 4:4:4:4 little endian
-	WWlShmFormatBgra4444 WWlShmFormat = 0x32314142
+	// WlShmFormatBgra4444 corresponds to 16-bit BGRA format, [15:0] B:G:R:A 4:4:4:4 little endian
+	WlShmFormatBgra4444 WlShmFormat = 0x32314142
 
-	// WWlShmFormatXrgb1555 corresponds to 16-bit xRGB format, [15:0] x:R:G:B 1:5:5:5 little endian
-	WWlShmFormatXrgb1555 WWlShmFormat = 0x35315258
+	// WlShmFormatXrgb1555 corresponds to 16-bit xRGB format, [15:0] x:R:G:B 1:5:5:5 little endian
+	WlShmFormatXrgb1555 WlShmFormat = 0x35315258
 
-	// WWlShmFormatXbgr1555 corresponds to 16-bit xBGR 1555 format, [15:0] x:B:G:R 1:5:5:5 little endian
-	WWlShmFormatXbgr1555 WWlShmFormat = 0x35314258
+	// WlShmFormatXbgr1555 corresponds to 16-bit xBGR 1555 format, [15:0] x:B:G:R 1:5:5:5 little endian
+	WlShmFormatXbgr1555 WlShmFormat = 0x35314258
 
-	// WWlShmFormatRgbx5551 corresponds to 16-bit RGBx 5551 format, [15:0] R:G:B:x 5:5:5:1 little endian
-	WWlShmFormatRgbx5551 WWlShmFormat = 0x35315852
+	// WlShmFormatRgbx5551 corresponds to 16-bit RGBx 5551 format, [15:0] R:G:B:x 5:5:5:1 little endian
+	WlShmFormatRgbx5551 WlShmFormat = 0x35315852
 
-	// WWlShmFormatBgrx5551 corresponds to 16-bit BGRx 5551 format, [15:0] B:G:R:x 5:5:5:1 little endian
-	WWlShmFormatBgrx5551 WWlShmFormat = 0x35315842
+	// WlShmFormatBgrx5551 corresponds to 16-bit BGRx 5551 format, [15:0] B:G:R:x 5:5:5:1 little endian
+	WlShmFormatBgrx5551 WlShmFormat = 0x35315842
 
-	// WWlShmFormatArgb1555 corresponds to 16-bit ARGB 1555 format, [15:0] A:R:G:B 1:5:5:5 little endian
-	WWlShmFormatArgb1555 WWlShmFormat = 0x35315241
+	// WlShmFormatArgb1555 corresponds to 16-bit ARGB 1555 format, [15:0] A:R:G:B 1:5:5:5 little endian
+	WlShmFormatArgb1555 WlShmFormat = 0x35315241
 
-	// WWlShmFormatAbgr1555 corresponds to 16-bit ABGR 1555 format, [15:0] A:B:G:R 1:5:5:5 little endian
-	WWlShmFormatAbgr1555 WWlShmFormat = 0x35314241
+	// WlShmFormatAbgr1555 corresponds to 16-bit ABGR 1555 format, [15:0] A:B:G:R 1:5:5:5 little endian
+	WlShmFormatAbgr1555 WlShmFormat = 0x35314241
 
-	// WWlShmFormatRgba5551 corresponds to 16-bit RGBA 5551 format, [15:0] R:G:B:A 5:5:5:1 little endian
-	WWlShmFormatRgba5551 WWlShmFormat = 0x35314152
+	// WlShmFormatRgba5551 corresponds to 16-bit RGBA 5551 format, [15:0] R:G:B:A 5:5:5:1 little endian
+	WlShmFormatRgba5551 WlShmFormat = 0x35314152
 
-	// WWlShmFormatBgra5551 corresponds to 16-bit BGRA 5551 format, [15:0] B:G:R:A 5:5:5:1 little endian
-	WWlShmFormatBgra5551 WWlShmFormat = 0x35314142
+	// WlShmFormatBgra5551 corresponds to 16-bit BGRA 5551 format, [15:0] B:G:R:A 5:5:5:1 little endian
+	WlShmFormatBgra5551 WlShmFormat = 0x35314142
 
-	// WWlShmFormatRgb565 corresponds to 16-bit RGB 565 format, [15:0] R:G:B 5:6:5 little endian
-	WWlShmFormatRgb565 WWlShmFormat = 0x36314752
+	// WlShmFormatRgb565 corresponds to 16-bit RGB 565 format, [15:0] R:G:B 5:6:5 little endian
+	WlShmFormatRgb565 WlShmFormat = 0x36314752
 
-	// WWlShmFormatBgr565 corresponds to 16-bit BGR 565 format, [15:0] B:G:R 5:6:5 little endian
-	WWlShmFormatBgr565 WWlShmFormat = 0x36314742
+	// WlShmFormatBgr565 corresponds to 16-bit BGR 565 format, [15:0] B:G:R 5:6:5 little endian
+	WlShmFormatBgr565 WlShmFormat = 0x36314742
 
-	// WWlShmFormatRgb888 corresponds to 24-bit RGB format, [23:0] R:G:B little endian
-	WWlShmFormatRgb888 WWlShmFormat = 0x34324752
+	// WlShmFormatRgb888 corresponds to 24-bit RGB format, [23:0] R:G:B little endian
+	WlShmFormatRgb888 WlShmFormat = 0x34324752
 
-	// WWlShmFormatBgr888 corresponds to 24-bit BGR format, [23:0] B:G:R little endian
-	WWlShmFormatBgr888 WWlShmFormat = 0x34324742
+	// WlShmFormatBgr888 corresponds to 24-bit BGR format, [23:0] B:G:R little endian
+	WlShmFormatBgr888 WlShmFormat = 0x34324742
 
-	// WWlShmFormatXbgr8888 corresponds to 32-bit xBGR format, [31:0] x:B:G:R 8:8:8:8 little endian
-	WWlShmFormatXbgr8888 WWlShmFormat = 0x34324258
+	// WlShmFormatXbgr8888 corresponds to 32-bit xBGR format, [31:0] x:B:G:R 8:8:8:8 little endian
+	WlShmFormatXbgr8888 WlShmFormat = 0x34324258
 
-	// WWlShmFormatRgbx8888 corresponds to 32-bit RGBx format, [31:0] R:G:B:x 8:8:8:8 little endian
-	WWlShmFormatRgbx8888 WWlShmFormat = 0x34325852
+	// WlShmFormatRgbx8888 corresponds to 32-bit RGBx format, [31:0] R:G:B:x 8:8:8:8 little endian
+	WlShmFormatRgbx8888 WlShmFormat = 0x34325852
 
-	// WWlShmFormatBgrx8888 corresponds to 32-bit BGRx format, [31:0] B:G:R:x 8:8:8:8 little endian
-	WWlShmFormatBgrx8888 WWlShmFormat = 0x34325842
+	// WlShmFormatBgrx8888 corresponds to 32-bit BGRx format, [31:0] B:G:R:x 8:8:8:8 little endian
+	WlShmFormatBgrx8888 WlShmFormat = 0x34325842
 
-	// WWlShmFormatAbgr8888 corresponds to 32-bit ABGR format, [31:0] A:B:G:R 8:8:8:8 little endian
-	WWlShmFormatAbgr8888 WWlShmFormat = 0x34324241
+	// WlShmFormatAbgr8888 corresponds to 32-bit ABGR format, [31:0] A:B:G:R 8:8:8:8 little endian
+	WlShmFormatAbgr8888 WlShmFormat = 0x34324241
 
-	// WWlShmFormatRgba8888 corresponds to 32-bit RGBA format, [31:0] R:G:B:A 8:8:8:8 little endian
-	WWlShmFormatRgba8888 WWlShmFormat = 0x34324152
+	// WlShmFormatRgba8888 corresponds to 32-bit RGBA format, [31:0] R:G:B:A 8:8:8:8 little endian
+	WlShmFormatRgba8888 WlShmFormat = 0x34324152
 
-	// WWlShmFormatBgra8888 corresponds to 32-bit BGRA format, [31:0] B:G:R:A 8:8:8:8 little endian
-	WWlShmFormatBgra8888 WWlShmFormat = 0x34324142
+	// WlShmFormatBgra8888 corresponds to 32-bit BGRA format, [31:0] B:G:R:A 8:8:8:8 little endian
+	WlShmFormatBgra8888 WlShmFormat = 0x34324142
 
-	// WWlShmFormatXrgb2101010 corresponds to 32-bit xRGB format, [31:0] x:R:G:B 2:10:10:10 little endian
-	WWlShmFormatXrgb2101010 WWlShmFormat = 0x30335258
+	// WlShmFormatXrgb2101010 corresponds to 32-bit xRGB format, [31:0] x:R:G:B 2:10:10:10 little endian
+	WlShmFormatXrgb2101010 WlShmFormat = 0x30335258
 
-	// WWlShmFormatXbgr2101010 corresponds to 32-bit xBGR format, [31:0] x:B:G:R 2:10:10:10 little endian
-	WWlShmFormatXbgr2101010 WWlShmFormat = 0x30334258
+	// WlShmFormatXbgr2101010 corresponds to 32-bit xBGR format, [31:0] x:B:G:R 2:10:10:10 little endian
+	WlShmFormatXbgr2101010 WlShmFormat = 0x30334258
 
-	// WWlShmFormatRgbx1010102 corresponds to 32-bit RGBx format, [31:0] R:G:B:x 10:10:10:2 little endian
-	WWlShmFormatRgbx1010102 WWlShmFormat = 0x30335852
+	// WlShmFormatRgbx1010102 corresponds to 32-bit RGBx format, [31:0] R:G:B:x 10:10:10:2 little endian
+	WlShmFormatRgbx1010102 WlShmFormat = 0x30335852
 
-	// WWlShmFormatBgrx1010102 corresponds to 32-bit BGRx format, [31:0] B:G:R:x 10:10:10:2 little endian
-	WWlShmFormatBgrx1010102 WWlShmFormat = 0x30335842
+	// WlShmFormatBgrx1010102 corresponds to 32-bit BGRx format, [31:0] B:G:R:x 10:10:10:2 little endian
+	WlShmFormatBgrx1010102 WlShmFormat = 0x30335842
 
-	// WWlShmFormatArgb2101010 corresponds to 32-bit ARGB format, [31:0] A:R:G:B 2:10:10:10 little endian
-	WWlShmFormatArgb2101010 WWlShmFormat = 0x30335241
+	// WlShmFormatArgb2101010 corresponds to 32-bit ARGB format, [31:0] A:R:G:B 2:10:10:10 little endian
+	WlShmFormatArgb2101010 WlShmFormat = 0x30335241
 
-	// WWlShmFormatAbgr2101010 corresponds to 32-bit ABGR format, [31:0] A:B:G:R 2:10:10:10 little endian
-	WWlShmFormatAbgr2101010 WWlShmFormat = 0x30334241
+	// WlShmFormatAbgr2101010 corresponds to 32-bit ABGR format, [31:0] A:B:G:R 2:10:10:10 little endian
+	WlShmFormatAbgr2101010 WlShmFormat = 0x30334241
 
-	// WWlShmFormatRgba1010102 corresponds to 32-bit RGBA format, [31:0] R:G:B:A 10:10:10:2 little endian
-	WWlShmFormatRgba1010102 WWlShmFormat = 0x30334152
+	// WlShmFormatRgba1010102 corresponds to 32-bit RGBA format, [31:0] R:G:B:A 10:10:10:2 little endian
+	WlShmFormatRgba1010102 WlShmFormat = 0x30334152
 
-	// WWlShmFormatBgra1010102 corresponds to 32-bit BGRA format, [31:0] B:G:R:A 10:10:10:2 little endian
-	WWlShmFormatBgra1010102 WWlShmFormat = 0x30334142
+	// WlShmFormatBgra1010102 corresponds to 32-bit BGRA format, [31:0] B:G:R:A 10:10:10:2 little endian
+	WlShmFormatBgra1010102 WlShmFormat = 0x30334142
 
-	// WWlShmFormatYuyv corresponds to packed YCbCr format, [31:0] Cr0:Y1:Cb0:Y0 8:8:8:8 little endian
-	WWlShmFormatYuyv WWlShmFormat = 0x56595559
+	// WlShmFormatYuyv corresponds to packed YCbCr format, [31:0] Cr0:Y1:Cb0:Y0 8:8:8:8 little endian
+	WlShmFormatYuyv WlShmFormat = 0x56595559
 
-	// WWlShmFormatYvyu corresponds to packed YCbCr format, [31:0] Cb0:Y1:Cr0:Y0 8:8:8:8 little endian
-	WWlShmFormatYvyu WWlShmFormat = 0x55595659
+	// WlShmFormatYvyu corresponds to packed YCbCr format, [31:0] Cb0:Y1:Cr0:Y0 8:8:8:8 little endian
+	WlShmFormatYvyu WlShmFormat = 0x55595659
 
-	// WWlShmFormatUyvy corresponds to packed YCbCr format, [31:0] Y1:Cr0:Y0:Cb0 8:8:8:8 little endian
-	WWlShmFormatUyvy WWlShmFormat = 0x59565955
+	// WlShmFormatUyvy corresponds to packed YCbCr format, [31:0] Y1:Cr0:Y0:Cb0 8:8:8:8 little endian
+	WlShmFormatUyvy WlShmFormat = 0x59565955
 
-	// WWlShmFormatVyuy corresponds to packed YCbCr format, [31:0] Y1:Cb0:Y0:Cr0 8:8:8:8 little endian
-	WWlShmFormatVyuy WWlShmFormat = 0x59555956
+	// WlShmFormatVyuy corresponds to packed YCbCr format, [31:0] Y1:Cb0:Y0:Cr0 8:8:8:8 little endian
+	WlShmFormatVyuy WlShmFormat = 0x59555956
 
-	// WWlShmFormatAyuv corresponds to packed AYCbCr format, [31:0] A:Y:Cb:Cr 8:8:8:8 little endian
-	WWlShmFormatAyuv WWlShmFormat = 0x56555941
+	// WlShmFormatAyuv corresponds to packed AYCbCr format, [31:0] A:Y:Cb:Cr 8:8:8:8 little endian
+	WlShmFormatAyuv WlShmFormat = 0x56555941
 
-	// WWlShmFormatNv12 corresponds to 2 plane YCbCr Cr:Cb format, 2x2 subsampled Cr:Cb plane
-	WWlShmFormatNv12 WWlShmFormat = 0x3231564e
+	// WlShmFormatNv12 corresponds to 2 plane YCbCr Cr:Cb format, 2x2 subsampled Cr:Cb plane
+	WlShmFormatNv12 WlShmFormat = 0x3231564e
 
-	// WWlShmFormatNv21 corresponds to 2 plane YCbCr Cb:Cr format, 2x2 subsampled Cb:Cr plane
-	WWlShmFormatNv21 WWlShmFormat = 0x3132564e
+	// WlShmFormatNv21 corresponds to 2 plane YCbCr Cb:Cr format, 2x2 subsampled Cb:Cr plane
+	WlShmFormatNv21 WlShmFormat = 0x3132564e
 
-	// WWlShmFormatNv16 corresponds to 2 plane YCbCr Cr:Cb format, 2x1 subsampled Cr:Cb plane
-	WWlShmFormatNv16 WWlShmFormat = 0x3631564e
+	// WlShmFormatNv16 corresponds to 2 plane YCbCr Cr:Cb format, 2x1 subsampled Cr:Cb plane
+	WlShmFormatNv16 WlShmFormat = 0x3631564e
 
-	// WWlShmFormatNv61 corresponds to 2 plane YCbCr Cb:Cr format, 2x1 subsampled Cb:Cr plane
-	WWlShmFormatNv61 WWlShmFormat = 0x3136564e
+	// WlShmFormatNv61 corresponds to 2 plane YCbCr Cb:Cr format, 2x1 subsampled Cb:Cr plane
+	WlShmFormatNv61 WlShmFormat = 0x3136564e
 
-	// WWlShmFormatYuv410 corresponds to 3 plane YCbCr format, 4x4 subsampled Cb (1) and Cr (2) planes
-	WWlShmFormatYuv410 WWlShmFormat = 0x39565559
+	// WlShmFormatYuv410 corresponds to 3 plane YCbCr format, 4x4 subsampled Cb (1) and Cr (2) planes
+	WlShmFormatYuv410 WlShmFormat = 0x39565559
 
-	// WWlShmFormatYvu410 corresponds to 3 plane YCbCr format, 4x4 subsampled Cr (1) and Cb (2) planes
-	WWlShmFormatYvu410 WWlShmFormat = 0x39555659
+	// WlShmFormatYvu410 corresponds to 3 plane YCbCr format, 4x4 subsampled Cr (1) and Cb (2) planes
+	WlShmFormatYvu410 WlShmFormat = 0x39555659
 
-	// WWlShmFormatYuv411 corresponds to 3 plane YCbCr format, 4x1 subsampled Cb (1) and Cr (2) planes
-	WWlShmFormatYuv411 WWlShmFormat = 0x31315559
+	// WlShmFormatYuv411 corresponds to 3 plane YCbCr format, 4x1 subsampled Cb (1) and Cr (2) planes
+	WlShmFormatYuv411 WlShmFormat = 0x31315559
 
-	// WWlShmFormatYvu411 corresponds to 3 plane YCbCr format, 4x1 subsampled Cr (1) and Cb (2) planes
-	WWlShmFormatYvu411 WWlShmFormat = 0x31315659
+	// WlShmFormatYvu411 corresponds to 3 plane YCbCr format, 4x1 subsampled Cr (1) and Cb (2) planes
+	WlShmFormatYvu411 WlShmFormat = 0x31315659
 
-	// WWlShmFormatYuv420 corresponds to 3 plane YCbCr format, 2x2 subsampled Cb (1) and Cr (2) planes
-	WWlShmFormatYuv420 WWlShmFormat = 0x32315559
+	// WlShmFormatYuv420 corresponds to 3 plane YCbCr format, 2x2 subsampled Cb (1) and Cr (2) planes
+	WlShmFormatYuv420 WlShmFormat = 0x32315559
 
-	// WWlShmFormatYvu420 corresponds to 3 plane YCbCr format, 2x2 subsampled Cr (1) and Cb (2) planes
-	WWlShmFormatYvu420 WWlShmFormat = 0x32315659
+	// WlShmFormatYvu420 corresponds to 3 plane YCbCr format, 2x2 subsampled Cr (1) and Cb (2) planes
+	WlShmFormatYvu420 WlShmFormat = 0x32315659
 
-	// WWlShmFormatYuv422 corresponds to 3 plane YCbCr format, 2x1 subsampled Cb (1) and Cr (2) planes
-	WWlShmFormatYuv422 WWlShmFormat = 0x36315559
+	// WlShmFormatYuv422 corresponds to 3 plane YCbCr format, 2x1 subsampled Cb (1) and Cr (2) planes
+	WlShmFormatYuv422 WlShmFormat = 0x36315559
 
-	// WWlShmFormatYvu422 corresponds to 3 plane YCbCr format, 2x1 subsampled Cr (1) and Cb (2) planes
-	WWlShmFormatYvu422 WWlShmFormat = 0x36315659
+	// WlShmFormatYvu422 corresponds to 3 plane YCbCr format, 2x1 subsampled Cr (1) and Cb (2) planes
+	WlShmFormatYvu422 WlShmFormat = 0x36315659
 
-	// WWlShmFormatYuv444 corresponds to 3 plane YCbCr format, non-subsampled Cb (1) and Cr (2) planes
-	WWlShmFormatYuv444 WWlShmFormat = 0x34325559
+	// WlShmFormatYuv444 corresponds to 3 plane YCbCr format, non-subsampled Cb (1) and Cr (2) planes
+	WlShmFormatYuv444 WlShmFormat = 0x34325559
 
-	// WWlShmFormatYvu444 corresponds to 3 plane YCbCr format, non-subsampled Cr (1) and Cb (2) planes
-	WWlShmFormatYvu444 WWlShmFormat = 0x34325659
+	// WlShmFormatYvu444 corresponds to 3 plane YCbCr format, non-subsampled Cr (1) and Cb (2) planes
+	WlShmFormatYvu444 WlShmFormat = 0x34325659
 
-	// WWlShmFormatR8 corresponds to [7:0] R
-	WWlShmFormatR8 WWlShmFormat = 0x20203852
+	// WlShmFormatR8 corresponds to [7:0] R
+	WlShmFormatR8 WlShmFormat = 0x20203852
 
-	// WWlShmFormatR16 corresponds to [15:0] R little endian
-	WWlShmFormatR16 WWlShmFormat = 0x20363152
+	// WlShmFormatR16 corresponds to [15:0] R little endian
+	WlShmFormatR16 WlShmFormat = 0x20363152
 
-	// WWlShmFormatRg88 corresponds to [15:0] R:G 8:8 little endian
-	WWlShmFormatRg88 WWlShmFormat = 0x38384752
+	// WlShmFormatRg88 corresponds to [15:0] R:G 8:8 little endian
+	WlShmFormatRg88 WlShmFormat = 0x38384752
 
-	// WWlShmFormatGr88 corresponds to [15:0] G:R 8:8 little endian
-	WWlShmFormatGr88 WWlShmFormat = 0x38385247
+	// WlShmFormatGr88 corresponds to [15:0] G:R 8:8 little endian
+	WlShmFormatGr88 WlShmFormat = 0x38385247
 
-	// WWlShmFormatRg1616 corresponds to [31:0] R:G 16:16 little endian
-	WWlShmFormatRg1616 WWlShmFormat = 0x32334752
+	// WlShmFormatRg1616 corresponds to [31:0] R:G 16:16 little endian
+	WlShmFormatRg1616 WlShmFormat = 0x32334752
 
-	// WWlShmFormatGr1616 corresponds to [31:0] G:R 16:16 little endian
-	WWlShmFormatGr1616 WWlShmFormat = 0x32335247
+	// WlShmFormatGr1616 corresponds to [31:0] G:R 16:16 little endian
+	WlShmFormatGr1616 WlShmFormat = 0x32335247
 
-	// WWlShmFormatXrgb16161616f corresponds to [63:0] x:R:G:B 16:16:16:16 little endian
-	WWlShmFormatXrgb16161616f WWlShmFormat = 0x48345258
+	// WlShmFormatXrgb16161616f corresponds to [63:0] x:R:G:B 16:16:16:16 little endian
+	WlShmFormatXrgb16161616f WlShmFormat = 0x48345258
 
-	// WWlShmFormatXbgr16161616f corresponds to [63:0] x:B:G:R 16:16:16:16 little endian
-	WWlShmFormatXbgr16161616f WWlShmFormat = 0x48344258
+	// WlShmFormatXbgr16161616f corresponds to [63:0] x:B:G:R 16:16:16:16 little endian
+	WlShmFormatXbgr16161616f WlShmFormat = 0x48344258
 
-	// WWlShmFormatArgb16161616f corresponds to [63:0] A:R:G:B 16:16:16:16 little endian
-	WWlShmFormatArgb16161616f WWlShmFormat = 0x48345241
+	// WlShmFormatArgb16161616f corresponds to [63:0] A:R:G:B 16:16:16:16 little endian
+	WlShmFormatArgb16161616f WlShmFormat = 0x48345241
 
-	// WWlShmFormatAbgr16161616f corresponds to [63:0] A:B:G:R 16:16:16:16 little endian
-	WWlShmFormatAbgr16161616f WWlShmFormat = 0x48344241
+	// WlShmFormatAbgr16161616f corresponds to [63:0] A:B:G:R 16:16:16:16 little endian
+	WlShmFormatAbgr16161616f WlShmFormat = 0x48344241
 
-	// WWlShmFormatXyuv8888 corresponds to [31:0] X:Y:Cb:Cr 8:8:8:8 little endian
-	WWlShmFormatXyuv8888 WWlShmFormat = 0x56555958
+	// WlShmFormatXyuv8888 corresponds to [31:0] X:Y:Cb:Cr 8:8:8:8 little endian
+	WlShmFormatXyuv8888 WlShmFormat = 0x56555958
 
-	// WWlShmFormatVuy888 corresponds to [23:0] Cr:Cb:Y 8:8:8 little endian
-	WWlShmFormatVuy888 WWlShmFormat = 0x34325556
+	// WlShmFormatVuy888 corresponds to [23:0] Cr:Cb:Y 8:8:8 little endian
+	WlShmFormatVuy888 WlShmFormat = 0x34325556
 
-	// WWlShmFormatVuy101010 corresponds to Y followed by U then V, 10:10:10. Non-linear modifier only
-	WWlShmFormatVuy101010 WWlShmFormat = 0x30335556
+	// WlShmFormatVuy101010 corresponds to Y followed by U then V, 10:10:10. Non-linear modifier only
+	WlShmFormatVuy101010 WlShmFormat = 0x30335556
 
-	// WWlShmFormatY210 corresponds to [63:0] Cr0:0:Y1:0:Cb0:0:Y0:0 10:6:10:6:10:6:10:6 little endian per 2 Y pixels
-	WWlShmFormatY210 WWlShmFormat = 0x30313259
+	// WlShmFormatY210 corresponds to [63:0] Cr0:0:Y1:0:Cb0:0:Y0:0 10:6:10:6:10:6:10:6 little endian per 2 Y pixels
+	WlShmFormatY210 WlShmFormat = 0x30313259
 
-	// WWlShmFormatY212 corresponds to [63:0] Cr0:0:Y1:0:Cb0:0:Y0:0 12:4:12:4:12:4:12:4 little endian per 2 Y pixels
-	WWlShmFormatY212 WWlShmFormat = 0x32313259
+	// WlShmFormatY212 corresponds to [63:0] Cr0:0:Y1:0:Cb0:0:Y0:0 12:4:12:4:12:4:12:4 little endian per 2 Y pixels
+	WlShmFormatY212 WlShmFormat = 0x32313259
 
-	// WWlShmFormatY216 corresponds to [63:0] Cr0:Y1:Cb0:Y0 16:16:16:16 little endian per 2 Y pixels
-	WWlShmFormatY216 WWlShmFormat = 0x36313259
+	// WlShmFormatY216 corresponds to [63:0] Cr0:Y1:Cb0:Y0 16:16:16:16 little endian per 2 Y pixels
+	WlShmFormatY216 WlShmFormat = 0x36313259
 
-	// WWlShmFormatY410 corresponds to [31:0] A:Cr:Y:Cb 2:10:10:10 little endian
-	WWlShmFormatY410 WWlShmFormat = 0x30313459
+	// WlShmFormatY410 corresponds to [31:0] A:Cr:Y:Cb 2:10:10:10 little endian
+	WlShmFormatY410 WlShmFormat = 0x30313459
 
-	// WWlShmFormatY412 corresponds to [63:0] A:0:Cr:0:Y:0:Cb:0 12:4:12:4:12:4:12:4 little endian
-	WWlShmFormatY412 WWlShmFormat = 0x32313459
+	// WlShmFormatY412 corresponds to [63:0] A:0:Cr:0:Y:0:Cb:0 12:4:12:4:12:4:12:4 little endian
+	WlShmFormatY412 WlShmFormat = 0x32313459
 
-	// WWlShmFormatY416 corresponds to [63:0] A:Cr:Y:Cb 16:16:16:16 little endian
-	WWlShmFormatY416 WWlShmFormat = 0x36313459
+	// WlShmFormatY416 corresponds to [63:0] A:Cr:Y:Cb 16:16:16:16 little endian
+	WlShmFormatY416 WlShmFormat = 0x36313459
 
-	// WWlShmFormatXvyu2101010 corresponds to [31:0] X:Cr:Y:Cb 2:10:10:10 little endian
-	WWlShmFormatXvyu2101010 WWlShmFormat = 0x30335658
+	// WlShmFormatXvyu2101010 corresponds to [31:0] X:Cr:Y:Cb 2:10:10:10 little endian
+	WlShmFormatXvyu2101010 WlShmFormat = 0x30335658
 
-	// WWlShmFormatXvyu1216161616 corresponds to [63:0] X:0:Cr:0:Y:0:Cb:0 12:4:12:4:12:4:12:4 little endian
-	WWlShmFormatXvyu1216161616 WWlShmFormat = 0x36335658
+	// WlShmFormatXvyu1216161616 corresponds to [63:0] X:0:Cr:0:Y:0:Cb:0 12:4:12:4:12:4:12:4 little endian
+	WlShmFormatXvyu1216161616 WlShmFormat = 0x36335658
 
-	// WWlShmFormatXvyu16161616 corresponds to [63:0] X:Cr:Y:Cb 16:16:16:16 little endian
-	WWlShmFormatXvyu16161616 WWlShmFormat = 0x38345658
+	// WlShmFormatXvyu16161616 corresponds to [63:0] X:Cr:Y:Cb 16:16:16:16 little endian
+	WlShmFormatXvyu16161616 WlShmFormat = 0x38345658
 
-	// WWlShmFormatY0l0 corresponds to [63:0] A3:A2:Y3:0:Cr0:0:Y2:0:A1:A0:Y1:0:Cb0:0:Y0:0 1:1:8:2:8:2:8:2:1:1:8:2:8:2:8:2 little endian
-	WWlShmFormatY0l0 WWlShmFormat = 0x304c3059
+	// WlShmFormatY0l0 corresponds to [63:0] A3:A2:Y3:0:Cr0:0:Y2:0:A1:A0:Y1:0:Cb0:0:Y0:0 1:1:8:2:8:2:8:2:1:1:8:2:8:2:8:2 little endian
+	WlShmFormatY0l0 WlShmFormat = 0x304c3059
 
-	// WWlShmFormatX0l0 corresponds to [63:0] X3:X2:Y3:0:Cr0:0:Y2:0:X1:X0:Y1:0:Cb0:0:Y0:0 1:1:8:2:8:2:8:2:1:1:8:2:8:2:8:2 little endian
-	WWlShmFormatX0l0 WWlShmFormat = 0x304c3058
+	// WlShmFormatX0l0 corresponds to [63:0] X3:X2:Y3:0:Cr0:0:Y2:0:X1:X0:Y1:0:Cb0:0:Y0:0 1:1:8:2:8:2:8:2:1:1:8:2:8:2:8:2 little endian
+	WlShmFormatX0l0 WlShmFormat = 0x304c3058
 
-	// WWlShmFormatY0l2 corresponds to [63:0] A3:A2:Y3:Cr0:Y2:A1:A0:Y1:Cb0:Y0 1:1:10:10:10:1:1:10:10:10 little endian
-	WWlShmFormatY0l2 WWlShmFormat = 0x324c3059
+	// WlShmFormatY0l2 corresponds to [63:0] A3:A2:Y3:Cr0:Y2:A1:A0:Y1:Cb0:Y0 1:1:10:10:10:1:1:10:10:10 little endian
+	WlShmFormatY0l2 WlShmFormat = 0x324c3059
 
-	// WWlShmFormatX0l2 corresponds to [63:0] X3:X2:Y3:Cr0:Y2:X1:X0:Y1:Cb0:Y0 1:1:10:10:10:1:1:10:10:10 little endian
-	WWlShmFormatX0l2 WWlShmFormat = 0x324c3058
+	// WlShmFormatX0l2 corresponds to [63:0] X3:X2:Y3:Cr0:Y2:X1:X0:Y1:Cb0:Y0 1:1:10:10:10:1:1:10:10:10 little endian
+	WlShmFormatX0l2 WlShmFormat = 0x324c3058
 
-	WWlShmFormatYuv4208bit WWlShmFormat = 0x38305559
+	WlShmFormatYuv4208bit WlShmFormat = 0x38305559
 
-	WWlShmFormatYuv42010bit WWlShmFormat = 0x30315559
+	WlShmFormatYuv42010bit WlShmFormat = 0x30315559
 
-	WWlShmFormatXrgb8888A8 WWlShmFormat = 0x38415258
+	WlShmFormatXrgb8888A8 WlShmFormat = 0x38415258
 
-	WWlShmFormatXbgr8888A8 WWlShmFormat = 0x38414258
+	WlShmFormatXbgr8888A8 WlShmFormat = 0x38414258
 
-	WWlShmFormatRgbx8888A8 WWlShmFormat = 0x38415852
+	WlShmFormatRgbx8888A8 WlShmFormat = 0x38415852
 
-	WWlShmFormatBgrx8888A8 WWlShmFormat = 0x38415842
+	WlShmFormatBgrx8888A8 WlShmFormat = 0x38415842
 
-	WWlShmFormatRgb888A8 WWlShmFormat = 0x38413852
+	WlShmFormatRgb888A8 WlShmFormat = 0x38413852
 
-	WWlShmFormatBgr888A8 WWlShmFormat = 0x38413842
+	WlShmFormatBgr888A8 WlShmFormat = 0x38413842
 
-	WWlShmFormatRgb565A8 WWlShmFormat = 0x38413552
+	WlShmFormatRgb565A8 WlShmFormat = 0x38413552
 
-	WWlShmFormatBgr565A8 WWlShmFormat = 0x38413542
+	WlShmFormatBgr565A8 WlShmFormat = 0x38413542
 
-	// WWlShmFormatNv24 corresponds to non-subsampled Cr:Cb plane
-	WWlShmFormatNv24 WWlShmFormat = 0x3432564e
+	// WlShmFormatNv24 corresponds to non-subsampled Cr:Cb plane
+	WlShmFormatNv24 WlShmFormat = 0x3432564e
 
-	// WWlShmFormatNv42 corresponds to non-subsampled Cb:Cr plane
-	WWlShmFormatNv42 WWlShmFormat = 0x3234564e
+	// WlShmFormatNv42 corresponds to non-subsampled Cb:Cr plane
+	WlShmFormatNv42 WlShmFormat = 0x3234564e
 
-	// WWlShmFormatP210 corresponds to 2x1 subsampled Cr:Cb plane, 10 bit per channel
-	WWlShmFormatP210 WWlShmFormat = 0x30313250
+	// WlShmFormatP210 corresponds to 2x1 subsampled Cr:Cb plane, 10 bit per channel
+	WlShmFormatP210 WlShmFormat = 0x30313250
 
-	// WWlShmFormatP010 corresponds to 2x2 subsampled Cr:Cb plane 10 bits per channel
-	WWlShmFormatP010 WWlShmFormat = 0x30313050
+	// WlShmFormatP010 corresponds to 2x2 subsampled Cr:Cb plane 10 bits per channel
+	WlShmFormatP010 WlShmFormat = 0x30313050
 
-	// WWlShmFormatP012 corresponds to 2x2 subsampled Cr:Cb plane 12 bits per channel
-	WWlShmFormatP012 WWlShmFormat = 0x32313050
+	// WlShmFormatP012 corresponds to 2x2 subsampled Cr:Cb plane 12 bits per channel
+	WlShmFormatP012 WlShmFormat = 0x32313050
 
-	// WWlShmFormatP016 corresponds to 2x2 subsampled Cr:Cb plane 16 bits per channel
-	WWlShmFormatP016 WWlShmFormat = 0x36313050
+	// WlShmFormatP016 corresponds to 2x2 subsampled Cr:Cb plane 16 bits per channel
+	WlShmFormatP016 WlShmFormat = 0x36313050
 
-	// WWlShmFormatAxbxgxrx106106106106 corresponds to [63:0] A:x:B:x:G:x:R:x 10:6:10:6:10:6:10:6 little endian
-	WWlShmFormatAxbxgxrx106106106106 WWlShmFormat = 0x30314241
+	// WlShmFormatAxbxgxrx106106106106 corresponds to [63:0] A:x:B:x:G:x:R:x 10:6:10:6:10:6:10:6 little endian
+	WlShmFormatAxbxgxrx106106106106 WlShmFormat = 0x30314241
 
-	// WWlShmFormatNv15 corresponds to 2x2 subsampled Cr:Cb plane
-	WWlShmFormatNv15 WWlShmFormat = 0x3531564e
+	// WlShmFormatNv15 corresponds to 2x2 subsampled Cr:Cb plane
+	WlShmFormatNv15 WlShmFormat = 0x3531564e
 
-	WWlShmFormatQ410 WWlShmFormat = 0x30313451
+	WlShmFormatQ410 WlShmFormat = 0x30313451
 
-	WWlShmFormatQ401 WWlShmFormat = 0x31303451
+	WlShmFormatQ401 WlShmFormat = 0x31303451
 )
 
-// WWlShmCreatePoolRequest requests to create a shm pool
+// WlShmCreatePoolRequest requests to create a shm pool
 //
 // Create a new wl_shm_pool object.
 //
 // The pool can be used to create shared memory based buffer
 // objects.  The server will mmap size bytes of the passed file
 // descriptor, to use as backing memory for the pool.
-type WWlShmCreatePoolRequest struct {
+type WlShmCreatePoolRequest struct {
 	// ID contains pool to create
 	ID ObjectID
 
@@ -9164,29 +9088,29 @@ type WWlShmCreatePoolRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shm.create_pool in wayland
-func (WWlShmCreatePoolRequest) Opcode() uint16 { return 0 }
+func (WlShmCreatePoolRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlShmCreatePoolRequest implements Message.
-var _ Message = WWlShmCreatePoolRequest{}
+// Ensure WlShmCreatePoolRequest implements Message.
+var _ Message = WlShmCreatePoolRequest{}
 
-// WWlShmFormatEvent signals when pixel format description
+// WlShmFormatEvent signals when pixel format description
 //
 // Informs the client about a valid pixel format that
 // can be used for buffers. Known formats include
 // argb8888 and xrgb8888.
-type WWlShmFormatEvent struct {
+type WlShmFormatEvent struct {
 	// Format contains buffer pixel format
 	Format uint32
 }
 
 // Opcode returns the event opcode for wl_shm.format in wayland
-func (WWlShmFormatEvent) Opcode() uint16 { return 0 }
+func (WlShmFormatEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlShmFormatEvent implements Message.
-var _ Message = WWlShmFormatEvent{}
+// Ensure WlShmFormatEvent implements Message.
+var _ Message = WlShmFormatEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlShmFormatEvent) Scan(s *EventScanner) error {
+func (e *WlShmFormatEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -9195,30 +9119,30 @@ func (e *WWlShmFormatEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlShmFormatEvent implements Event.
-var _ Event = &WWlShmFormatEvent{}
+// Ensure WlShmFormatEvent implements Event.
+var _ Event = &WlShmFormatEvent{}
 
 // #endregion Interface wayland.wl_shm
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_buffer
 
-// WWlBufferDestroyRequest requests to destroy a buffer
+// WlBufferDestroyRequest requests to destroy a buffer
 //
 // Destroy a buffer. If and how you need to release the backing
 // storage is defined by the buffer factory interface.
 //
 // For possible side-effects to a surface, see wl_surface.attach.
-type WWlBufferDestroyRequest struct {
+type WlBufferDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_buffer.destroy in wayland
-func (WWlBufferDestroyRequest) Opcode() uint16 { return 0 }
+func (WlBufferDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlBufferDestroyRequest implements Message.
-var _ Message = WWlBufferDestroyRequest{}
+// Ensure WlBufferDestroyRequest implements Message.
+var _ Message = WlBufferDestroyRequest{}
 
-// WWlBufferReleaseEvent signals when compositor releases buffer
+// WlBufferReleaseEvent signals when compositor releases buffer
 //
 // Sent when this wl_buffer is no longer used by the compositor.
 // The client is now free to reuse or destroy this buffer and its
@@ -9232,45 +9156,45 @@ var _ Message = WWlBufferDestroyRequest{}
 // this is possible, when the compositor maintains a copy of the
 // wl_surface contents, e.g. as a GL texture. This is an important
 // optimization for GL(ES) compositors with wl_shm clients.
-type WWlBufferReleaseEvent struct {
+type WlBufferReleaseEvent struct {
 }
 
 // Opcode returns the event opcode for wl_buffer.release in wayland
-func (WWlBufferReleaseEvent) Opcode() uint16 { return 0 }
+func (WlBufferReleaseEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlBufferReleaseEvent implements Message.
-var _ Message = WWlBufferReleaseEvent{}
+// Ensure WlBufferReleaseEvent implements Message.
+var _ Message = WlBufferReleaseEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlBufferReleaseEvent) Scan(s *EventScanner) error {
+func (e *WlBufferReleaseEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlBufferReleaseEvent implements Event.
-var _ Event = &WWlBufferReleaseEvent{}
+// Ensure WlBufferReleaseEvent implements Event.
+var _ Event = &WlBufferReleaseEvent{}
 
 // #endregion Interface wayland.wl_buffer
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_data_offer
 
-type WWlDataOfferError int
+type WlDataOfferError int
 
 const (
-	// WWlDataOfferErrorInvalidFinish corresponds to finish request was called untimely
-	WWlDataOfferErrorInvalidFinish WWlDataOfferError = 0
+	// WlDataOfferErrorInvalidFinish corresponds to finish request was called untimely
+	WlDataOfferErrorInvalidFinish WlDataOfferError = 0
 
-	// WWlDataOfferErrorInvalidActionMask corresponds to action mask contains invalid values
-	WWlDataOfferErrorInvalidActionMask WWlDataOfferError = 1
+	// WlDataOfferErrorInvalidActionMask corresponds to action mask contains invalid values
+	WlDataOfferErrorInvalidActionMask WlDataOfferError = 1
 
-	// WWlDataOfferErrorInvalidAction corresponds to action argument has an invalid value
-	WWlDataOfferErrorInvalidAction WWlDataOfferError = 2
+	// WlDataOfferErrorInvalidAction corresponds to action argument has an invalid value
+	WlDataOfferErrorInvalidAction WlDataOfferError = 2
 
-	// WWlDataOfferErrorInvalidOffer corresponds to offer doesn't accept this request
-	WWlDataOfferErrorInvalidOffer WWlDataOfferError = 3
+	// WlDataOfferErrorInvalidOffer corresponds to offer doesn't accept this request
+	WlDataOfferErrorInvalidOffer WlDataOfferError = 3
 )
 
-// WWlDataOfferAcceptRequest requests to accept one of the offered mime types
+// WlDataOfferAcceptRequest requests to accept one of the offered mime types
 //
 // Indicate that the client can accept the given mime type, or
 // NULL for not accepted.
@@ -9286,7 +9210,7 @@ const (
 // will be cancelled and the corresponding drag source will receive
 // wl_data_source.cancelled. Clients may still use this event in
 // conjunction with wl_data_source.action for feedback.
-type WWlDataOfferAcceptRequest struct {
+type WlDataOfferAcceptRequest struct {
 	// Serial contains serial number of the accept request
 	Serial uint32
 
@@ -9295,12 +9219,12 @@ type WWlDataOfferAcceptRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_offer.accept in wayland
-func (WWlDataOfferAcceptRequest) Opcode() uint16 { return 0 }
+func (WlDataOfferAcceptRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlDataOfferAcceptRequest implements Message.
-var _ Message = WWlDataOfferAcceptRequest{}
+// Ensure WlDataOfferAcceptRequest implements Message.
+var _ Message = WlDataOfferAcceptRequest{}
 
-// WWlDataOfferReceiveRequest requests to request that the data is transferred
+// WlDataOfferReceiveRequest requests to request that the data is transferred
 //
 // To transfer the offered data, the client issues this request
 // and indicates the mime type it wants to receive.  The transfer
@@ -9317,7 +9241,7 @@ var _ Message = WWlDataOfferAcceptRequest{}
 // both before and after wl_data_device.drop. Drag-and-drop destination
 // clients may preemptively fetch data or examine it more closely to
 // determine acceptance.
-type WWlDataOfferReceiveRequest struct {
+type WlDataOfferReceiveRequest struct {
 	// MimeType contains mime type desired by receiver
 	MimeType string
 
@@ -9326,24 +9250,24 @@ type WWlDataOfferReceiveRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_offer.receive in wayland
-func (WWlDataOfferReceiveRequest) Opcode() uint16 { return 1 }
+func (WlDataOfferReceiveRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlDataOfferReceiveRequest implements Message.
-var _ Message = WWlDataOfferReceiveRequest{}
+// Ensure WlDataOfferReceiveRequest implements Message.
+var _ Message = WlDataOfferReceiveRequest{}
 
-// WWlDataOfferDestroyRequest requests to destroy data offer
+// WlDataOfferDestroyRequest requests to destroy data offer
 //
 // Destroy the data offer.
-type WWlDataOfferDestroyRequest struct {
+type WlDataOfferDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_offer.destroy in wayland
-func (WWlDataOfferDestroyRequest) Opcode() uint16 { return 2 }
+func (WlDataOfferDestroyRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlDataOfferDestroyRequest implements Message.
-var _ Message = WWlDataOfferDestroyRequest{}
+// Ensure WlDataOfferDestroyRequest implements Message.
+var _ Message = WlDataOfferDestroyRequest{}
 
-// WWlDataOfferFinishRequest requests to the offer will no longer be used
+// WlDataOfferFinishRequest requests to the offer will no longer be used
 //
 // Notifies the compositor that the drag destination successfully
 // finished the drag-and-drop operation.
@@ -9359,16 +9283,16 @@ var _ Message = WWlDataOfferDestroyRequest{}
 //
 // If wl_data_offer.finish request is received for a non drag and drop
 // operation, the invalid_finish protocol error is raised.
-type WWlDataOfferFinishRequest struct {
+type WlDataOfferFinishRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_offer.finish in wayland
-func (WWlDataOfferFinishRequest) Opcode() uint16 { return 3 }
+func (WlDataOfferFinishRequest) Opcode() uint16 { return 3 }
 
-// Ensure WWlDataOfferFinishRequest implements Message.
-var _ Message = WWlDataOfferFinishRequest{}
+// Ensure WlDataOfferFinishRequest implements Message.
+var _ Message = WlDataOfferFinishRequest{}
 
-// WWlDataOfferSetActionsRequest requests to set the available/preferred drag-and-drop actions
+// WlDataOfferSetActionsRequest requests to set the available/preferred drag-and-drop actions
 //
 // Sets the actions that the destination side client supports for
 // this operation. This request may trigger the emission of
@@ -9401,7 +9325,7 @@ var _ Message = WWlDataOfferFinishRequest{}
 //
 // This request can only be made on drag-and-drop offers, a protocol error
 // will be raised otherwise.
-type WWlDataOfferSetActionsRequest struct {
+type WlDataOfferSetActionsRequest struct {
 	// DndActions contains actions supported by the destination client
 	DndActions uint32
 
@@ -9410,28 +9334,28 @@ type WWlDataOfferSetActionsRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_offer.set_actions in wayland
-func (WWlDataOfferSetActionsRequest) Opcode() uint16 { return 4 }
+func (WlDataOfferSetActionsRequest) Opcode() uint16 { return 4 }
 
-// Ensure WWlDataOfferSetActionsRequest implements Message.
-var _ Message = WWlDataOfferSetActionsRequest{}
+// Ensure WlDataOfferSetActionsRequest implements Message.
+var _ Message = WlDataOfferSetActionsRequest{}
 
-// WWlDataOfferOfferEvent signals when advertise offered mime type
+// WlDataOfferOfferEvent signals when advertise offered mime type
 //
 // Sent immediately after creating the wl_data_offer object.  One
 // event per offered mime type.
-type WWlDataOfferOfferEvent struct {
+type WlDataOfferOfferEvent struct {
 	// MimeType contains offered mime type
 	MimeType string
 }
 
 // Opcode returns the event opcode for wl_data_offer.offer in wayland
-func (WWlDataOfferOfferEvent) Opcode() uint16 { return 0 }
+func (WlDataOfferOfferEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlDataOfferOfferEvent implements Message.
-var _ Message = WWlDataOfferOfferEvent{}
+// Ensure WlDataOfferOfferEvent implements Message.
+var _ Message = WlDataOfferOfferEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataOfferOfferEvent) Scan(s *EventScanner) error {
+func (e *WlDataOfferOfferEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -9440,27 +9364,27 @@ func (e *WWlDataOfferOfferEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataOfferOfferEvent implements Event.
-var _ Event = &WWlDataOfferOfferEvent{}
+// Ensure WlDataOfferOfferEvent implements Event.
+var _ Event = &WlDataOfferOfferEvent{}
 
-// WWlDataOfferSourceActionsEvent signals when notify the source-side available actions
+// WlDataOfferSourceActionsEvent signals when notify the source-side available actions
 //
 // This event indicates the actions offered by the data source. It
 // will be sent right after wl_data_device.enter, or anytime the source
 // side changes its offered actions through wl_data_source.set_actions.
-type WWlDataOfferSourceActionsEvent struct {
+type WlDataOfferSourceActionsEvent struct {
 	// SourceActions contains actions offered by the data source
 	SourceActions uint32
 }
 
 // Opcode returns the event opcode for wl_data_offer.source_actions in wayland
-func (WWlDataOfferSourceActionsEvent) Opcode() uint16 { return 1 }
+func (WlDataOfferSourceActionsEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlDataOfferSourceActionsEvent implements Message.
-var _ Message = WWlDataOfferSourceActionsEvent{}
+// Ensure WlDataOfferSourceActionsEvent implements Message.
+var _ Message = WlDataOfferSourceActionsEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataOfferSourceActionsEvent) Scan(s *EventScanner) error {
+func (e *WlDataOfferSourceActionsEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -9469,10 +9393,10 @@ func (e *WWlDataOfferSourceActionsEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataOfferSourceActionsEvent implements Event.
-var _ Event = &WWlDataOfferSourceActionsEvent{}
+// Ensure WlDataOfferSourceActionsEvent implements Event.
+var _ Event = &WlDataOfferSourceActionsEvent{}
 
-// WWlDataOfferActionEvent signals when notify the selected action
+// WlDataOfferActionEvent signals when notify the selected action
 //
 // This event indicates the action selected by the compositor after
 // matching the source/destination side actions. Only one action (or
@@ -9509,19 +9433,19 @@ var _ Event = &WWlDataOfferSourceActionsEvent{}
 // user (e.g. popping up a menu with the available options). The
 // final wl_data_offer.set_actions and wl_data_offer.accept requests
 // must happen before the call to wl_data_offer.finish.
-type WWlDataOfferActionEvent struct {
+type WlDataOfferActionEvent struct {
 	// DndAction contains action selected by the compositor
 	DndAction uint32
 }
 
 // Opcode returns the event opcode for wl_data_offer.action in wayland
-func (WWlDataOfferActionEvent) Opcode() uint16 { return 2 }
+func (WlDataOfferActionEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlDataOfferActionEvent implements Message.
-var _ Message = WWlDataOfferActionEvent{}
+// Ensure WlDataOfferActionEvent implements Message.
+var _ Message = WlDataOfferActionEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataOfferActionEvent) Scan(s *EventScanner) error {
+func (e *WlDataOfferActionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -9530,53 +9454,53 @@ func (e *WWlDataOfferActionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataOfferActionEvent implements Event.
-var _ Event = &WWlDataOfferActionEvent{}
+// Ensure WlDataOfferActionEvent implements Event.
+var _ Event = &WlDataOfferActionEvent{}
 
 // #endregion Interface wayland.wl_data_offer
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_data_source
 
-type WWlDataSourceError int
+type WlDataSourceError int
 
 const (
-	// WWlDataSourceErrorInvalidActionMask corresponds to action mask contains invalid values
-	WWlDataSourceErrorInvalidActionMask WWlDataSourceError = 0
+	// WlDataSourceErrorInvalidActionMask corresponds to action mask contains invalid values
+	WlDataSourceErrorInvalidActionMask WlDataSourceError = 0
 
-	// WWlDataSourceErrorInvalidSource corresponds to source doesn't accept this request
-	WWlDataSourceErrorInvalidSource WWlDataSourceError = 1
+	// WlDataSourceErrorInvalidSource corresponds to source doesn't accept this request
+	WlDataSourceErrorInvalidSource WlDataSourceError = 1
 )
 
-// WWlDataSourceOfferRequest requests to add an offered mime type
+// WlDataSourceOfferRequest requests to add an offered mime type
 //
 // This request adds a mime type to the set of mime types
 // advertised to targets.  Can be called several times to offer
 // multiple types.
-type WWlDataSourceOfferRequest struct {
+type WlDataSourceOfferRequest struct {
 	// MimeType contains mime type offered by the data source
 	MimeType string
 }
 
 // Opcode returns the request opcode for wl_data_source.offer in wayland
-func (WWlDataSourceOfferRequest) Opcode() uint16 { return 0 }
+func (WlDataSourceOfferRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlDataSourceOfferRequest implements Message.
-var _ Message = WWlDataSourceOfferRequest{}
+// Ensure WlDataSourceOfferRequest implements Message.
+var _ Message = WlDataSourceOfferRequest{}
 
-// WWlDataSourceDestroyRequest requests to destroy the data source
+// WlDataSourceDestroyRequest requests to destroy the data source
 //
 // Destroy the data source.
-type WWlDataSourceDestroyRequest struct {
+type WlDataSourceDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_source.destroy in wayland
-func (WWlDataSourceDestroyRequest) Opcode() uint16 { return 1 }
+func (WlDataSourceDestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlDataSourceDestroyRequest implements Message.
-var _ Message = WWlDataSourceDestroyRequest{}
+// Ensure WlDataSourceDestroyRequest implements Message.
+var _ Message = WlDataSourceDestroyRequest{}
 
-// WWlDataSourceSetActionsRequest requests to set the available drag-and-drop actions
+// WlDataSourceSetActionsRequest requests to set the available drag-and-drop actions
 //
 // Sets the actions that the source side client supports for this
 // operation. This request may trigger wl_data_source.action and
@@ -9591,36 +9515,36 @@ var _ Message = WWlDataSourceDestroyRequest{}
 // used in drag-and-drop, so it must be performed before
 // wl_data_device.start_drag. Attempting to use the source other than
 // for drag-and-drop will raise a protocol error.
-type WWlDataSourceSetActionsRequest struct {
+type WlDataSourceSetActionsRequest struct {
 	// DndActions contains actions supported by the data source
 	DndActions uint32
 }
 
 // Opcode returns the request opcode for wl_data_source.set_actions in wayland
-func (WWlDataSourceSetActionsRequest) Opcode() uint16 { return 2 }
+func (WlDataSourceSetActionsRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlDataSourceSetActionsRequest implements Message.
-var _ Message = WWlDataSourceSetActionsRequest{}
+// Ensure WlDataSourceSetActionsRequest implements Message.
+var _ Message = WlDataSourceSetActionsRequest{}
 
-// WWlDataSourceTargetEvent signals when a target accepts an offered mime type
+// WlDataSourceTargetEvent signals when a target accepts an offered mime type
 //
 // Sent when a target accepts pointer_focus or motion events.  If
 // a target does not accept any of the offered types, type is NULL.
 //
 // Used for feedback during drag-and-drop.
-type WWlDataSourceTargetEvent struct {
+type WlDataSourceTargetEvent struct {
 	// MimeType contains mime type accepted by the target
 	MimeType string
 }
 
 // Opcode returns the event opcode for wl_data_source.target in wayland
-func (WWlDataSourceTargetEvent) Opcode() uint16 { return 0 }
+func (WlDataSourceTargetEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlDataSourceTargetEvent implements Message.
-var _ Message = WWlDataSourceTargetEvent{}
+// Ensure WlDataSourceTargetEvent implements Message.
+var _ Message = WlDataSourceTargetEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataSourceTargetEvent) Scan(s *EventScanner) error {
+func (e *WlDataSourceTargetEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -9629,15 +9553,15 @@ func (e *WWlDataSourceTargetEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataSourceTargetEvent implements Event.
-var _ Event = &WWlDataSourceTargetEvent{}
+// Ensure WlDataSourceTargetEvent implements Event.
+var _ Event = &WlDataSourceTargetEvent{}
 
-// WWlDataSourceSendEvent signals when send the data
+// WlDataSourceSendEvent signals when send the data
 //
 // Request for data from the client.  Send the data as the
 // specified mime type over the passed file descriptor, then
 // close it.
-type WWlDataSourceSendEvent struct {
+type WlDataSourceSendEvent struct {
 	// MimeType contains mime type for the data
 	MimeType string
 
@@ -9646,13 +9570,13 @@ type WWlDataSourceSendEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_source.send in wayland
-func (WWlDataSourceSendEvent) Opcode() uint16 { return 1 }
+func (WlDataSourceSendEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlDataSourceSendEvent implements Message.
-var _ Message = WWlDataSourceSendEvent{}
+// Ensure WlDataSourceSendEvent implements Message.
+var _ Message = WlDataSourceSendEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataSourceSendEvent) Scan(s *EventScanner) error {
+func (e *WlDataSourceSendEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -9666,10 +9590,10 @@ func (e *WWlDataSourceSendEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataSourceSendEvent implements Event.
-var _ Event = &WWlDataSourceSendEvent{}
+// Ensure WlDataSourceSendEvent implements Event.
+var _ Event = &WlDataSourceSendEvent{}
 
-// WWlDataSourceCancelledEvent signals when selection was cancelled
+// WlDataSourceCancelledEvent signals when selection was cancelled
 //
 // This data source is no longer valid. There are several reasons why
 // this could happen:
@@ -9691,24 +9615,24 @@ var _ Event = &WWlDataSourceSendEvent{}
 // For objects of version 2 or older, wl_data_source.cancelled will
 // only be emitted if the data source was replaced by another data
 // source.
-type WWlDataSourceCancelledEvent struct {
+type WlDataSourceCancelledEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_source.cancelled in wayland
-func (WWlDataSourceCancelledEvent) Opcode() uint16 { return 2 }
+func (WlDataSourceCancelledEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlDataSourceCancelledEvent implements Message.
-var _ Message = WWlDataSourceCancelledEvent{}
+// Ensure WlDataSourceCancelledEvent implements Message.
+var _ Message = WlDataSourceCancelledEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataSourceCancelledEvent) Scan(s *EventScanner) error {
+func (e *WlDataSourceCancelledEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataSourceCancelledEvent implements Event.
-var _ Event = &WWlDataSourceCancelledEvent{}
+// Ensure WlDataSourceCancelledEvent implements Event.
+var _ Event = &WlDataSourceCancelledEvent{}
 
-// WWlDataSourceDndDropPerformedEvent signals when the drag-and-drop operation physically finished
+// WlDataSourceDndDropPerformedEvent signals when the drag-and-drop operation physically finished
 //
 // The user performed the drop action. This event does not indicate
 // acceptance, wl_data_source.cancelled may still be emitted afterwards
@@ -9719,24 +9643,24 @@ var _ Event = &WWlDataSourceCancelledEvent{}
 //
 // Note that the data_source may still be used in the future and should
 // not be destroyed here.
-type WWlDataSourceDndDropPerformedEvent struct {
+type WlDataSourceDndDropPerformedEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_source.dnd_drop_performed in wayland
-func (WWlDataSourceDndDropPerformedEvent) Opcode() uint16 { return 3 }
+func (WlDataSourceDndDropPerformedEvent) Opcode() uint16 { return 3 }
 
-// Ensure WWlDataSourceDndDropPerformedEvent implements Message.
-var _ Message = WWlDataSourceDndDropPerformedEvent{}
+// Ensure WlDataSourceDndDropPerformedEvent implements Message.
+var _ Message = WlDataSourceDndDropPerformedEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataSourceDndDropPerformedEvent) Scan(s *EventScanner) error {
+func (e *WlDataSourceDndDropPerformedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataSourceDndDropPerformedEvent implements Event.
-var _ Event = &WWlDataSourceDndDropPerformedEvent{}
+// Ensure WlDataSourceDndDropPerformedEvent implements Event.
+var _ Event = &WlDataSourceDndDropPerformedEvent{}
 
-// WWlDataSourceDndFinishedEvent signals when the drag-and-drop operation concluded
+// WlDataSourceDndFinishedEvent signals when the drag-and-drop operation concluded
 //
 // The drop destination finished interoperating with this data
 // source, so the client is now free to destroy this data source and
@@ -9744,24 +9668,24 @@ var _ Event = &WWlDataSourceDndDropPerformedEvent{}
 //
 // If the action used to perform the operation was "move", the
 // source can now delete the transferred data.
-type WWlDataSourceDndFinishedEvent struct {
+type WlDataSourceDndFinishedEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_source.dnd_finished in wayland
-func (WWlDataSourceDndFinishedEvent) Opcode() uint16 { return 4 }
+func (WlDataSourceDndFinishedEvent) Opcode() uint16 { return 4 }
 
-// Ensure WWlDataSourceDndFinishedEvent implements Message.
-var _ Message = WWlDataSourceDndFinishedEvent{}
+// Ensure WlDataSourceDndFinishedEvent implements Message.
+var _ Message = WlDataSourceDndFinishedEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataSourceDndFinishedEvent) Scan(s *EventScanner) error {
+func (e *WlDataSourceDndFinishedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataSourceDndFinishedEvent implements Event.
-var _ Event = &WWlDataSourceDndFinishedEvent{}
+// Ensure WlDataSourceDndFinishedEvent implements Event.
+var _ Event = &WlDataSourceDndFinishedEvent{}
 
-// WWlDataSourceActionEvent signals when notify the selected action
+// WlDataSourceActionEvent signals when notify the selected action
 //
 // This event indicates the action selected by the compositor after
 // matching the source/destination side actions. Only one action (or
@@ -9788,19 +9712,19 @@ var _ Event = &WWlDataSourceDndFinishedEvent{}
 //
 // Clients can trigger cursor surface changes from this point, so
 // they reflect the current action.
-type WWlDataSourceActionEvent struct {
+type WlDataSourceActionEvent struct {
 	// DndAction contains action selected by the compositor
 	DndAction uint32
 }
 
 // Opcode returns the event opcode for wl_data_source.action in wayland
-func (WWlDataSourceActionEvent) Opcode() uint16 { return 5 }
+func (WlDataSourceActionEvent) Opcode() uint16 { return 5 }
 
-// Ensure WWlDataSourceActionEvent implements Message.
-var _ Message = WWlDataSourceActionEvent{}
+// Ensure WlDataSourceActionEvent implements Message.
+var _ Message = WlDataSourceActionEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataSourceActionEvent) Scan(s *EventScanner) error {
+func (e *WlDataSourceActionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -9809,22 +9733,22 @@ func (e *WWlDataSourceActionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataSourceActionEvent implements Event.
-var _ Event = &WWlDataSourceActionEvent{}
+// Ensure WlDataSourceActionEvent implements Event.
+var _ Event = &WlDataSourceActionEvent{}
 
 // #endregion Interface wayland.wl_data_source
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_data_device
 
-type WWlDataDeviceError int
+type WlDataDeviceError int
 
 const (
-	// WWlDataDeviceErrorRole corresponds to given wl_surface has another role
-	WWlDataDeviceErrorRole WWlDataDeviceError = 0
+	// WlDataDeviceErrorRole corresponds to given wl_surface has another role
+	WlDataDeviceErrorRole WlDataDeviceError = 0
 )
 
-// WWlDataDeviceStartDragRequest requests to start drag-and-drop operation
+// WlDataDeviceStartDragRequest requests to start drag-and-drop operation
 //
 // This request asks the compositor to start a drag-and-drop
 // operation on behalf of the client.
@@ -9854,7 +9778,7 @@ const (
 // wl_surface is no longer used as the icon surface. When the use
 // as an icon ends, the current and pending input regions become
 // undefined, and the wl_surface is unmapped.
-type WWlDataDeviceStartDragRequest struct {
+type WlDataDeviceStartDragRequest struct {
 	// Source contains data source for the eventual transfer
 	Source ObjectID
 
@@ -9869,18 +9793,18 @@ type WWlDataDeviceStartDragRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_device.start_drag in wayland
-func (WWlDataDeviceStartDragRequest) Opcode() uint16 { return 0 }
+func (WlDataDeviceStartDragRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlDataDeviceStartDragRequest implements Message.
-var _ Message = WWlDataDeviceStartDragRequest{}
+// Ensure WlDataDeviceStartDragRequest implements Message.
+var _ Message = WlDataDeviceStartDragRequest{}
 
-// WWlDataDeviceSetSelectionRequest requests to copy data to the selection
+// WlDataDeviceSetSelectionRequest requests to copy data to the selection
 //
 // This request asks the compositor to set the selection
 // to the data from the source on behalf of the client.
 //
 // To unset the selection, set the source to NULL.
-type WWlDataDeviceSetSelectionRequest struct {
+type WlDataDeviceSetSelectionRequest struct {
 	// Source contains data source for the selection
 	Source ObjectID
 
@@ -9889,24 +9813,24 @@ type WWlDataDeviceSetSelectionRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_device.set_selection in wayland
-func (WWlDataDeviceSetSelectionRequest) Opcode() uint16 { return 1 }
+func (WlDataDeviceSetSelectionRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlDataDeviceSetSelectionRequest implements Message.
-var _ Message = WWlDataDeviceSetSelectionRequest{}
+// Ensure WlDataDeviceSetSelectionRequest implements Message.
+var _ Message = WlDataDeviceSetSelectionRequest{}
 
-// WWlDataDeviceReleaseRequest requests to destroy data device
+// WlDataDeviceReleaseRequest requests to destroy data device
 //
 // This request destroys the data device.
-type WWlDataDeviceReleaseRequest struct {
+type WlDataDeviceReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_device.release in wayland
-func (WWlDataDeviceReleaseRequest) Opcode() uint16 { return 2 }
+func (WlDataDeviceReleaseRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlDataDeviceReleaseRequest implements Message.
-var _ Message = WWlDataDeviceReleaseRequest{}
+// Ensure WlDataDeviceReleaseRequest implements Message.
+var _ Message = WlDataDeviceReleaseRequest{}
 
-// WWlDataDeviceDataOfferEvent signals when introduce a new wl_data_offer
+// WlDataDeviceDataOfferEvent signals when introduce a new wl_data_offer
 //
 // The data_offer event introduces a new wl_data_offer object,
 // which will subsequently be used in either the
@@ -9915,19 +9839,19 @@ var _ Message = WWlDataDeviceReleaseRequest{}
 // following the data_device_data_offer event, the new data_offer
 // object will send out data_offer.offer events to describe the
 // mime types it offers.
-type WWlDataDeviceDataOfferEvent struct {
+type WlDataDeviceDataOfferEvent struct {
 	// ID contains the new data_offer object
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for wl_data_device.data_offer in wayland
-func (WWlDataDeviceDataOfferEvent) Opcode() uint16 { return 0 }
+func (WlDataDeviceDataOfferEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlDataDeviceDataOfferEvent implements Message.
-var _ Message = WWlDataDeviceDataOfferEvent{}
+// Ensure WlDataDeviceDataOfferEvent implements Message.
+var _ Message = WlDataDeviceDataOfferEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataDeviceDataOfferEvent) Scan(s *EventScanner) error {
+func (e *WlDataDeviceDataOfferEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -9936,16 +9860,16 @@ func (e *WWlDataDeviceDataOfferEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataDeviceDataOfferEvent implements Event.
-var _ Event = &WWlDataDeviceDataOfferEvent{}
+// Ensure WlDataDeviceDataOfferEvent implements Event.
+var _ Event = &WlDataDeviceDataOfferEvent{}
 
-// WWlDataDeviceEnterEvent signals when initiate drag-and-drop session
+// WlDataDeviceEnterEvent signals when initiate drag-and-drop session
 //
 // This event is sent when an active drag-and-drop pointer enters
 // a surface owned by the client.  The position of the pointer at
 // enter time is provided by the x and y arguments, in surface-local
 // coordinates.
-type WWlDataDeviceEnterEvent struct {
+type WlDataDeviceEnterEvent struct {
 	// Serial contains serial number of the enter event
 	Serial uint32
 
@@ -9963,13 +9887,13 @@ type WWlDataDeviceEnterEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_device.enter in wayland
-func (WWlDataDeviceEnterEvent) Opcode() uint16 { return 1 }
+func (WlDataDeviceEnterEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlDataDeviceEnterEvent implements Message.
-var _ Message = WWlDataDeviceEnterEvent{}
+// Ensure WlDataDeviceEnterEvent implements Message.
+var _ Message = WlDataDeviceEnterEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataDeviceEnterEvent) Scan(s *EventScanner) error {
+func (e *WlDataDeviceEnterEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -9998,38 +9922,38 @@ func (e *WWlDataDeviceEnterEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataDeviceEnterEvent implements Event.
-var _ Event = &WWlDataDeviceEnterEvent{}
+// Ensure WlDataDeviceEnterEvent implements Event.
+var _ Event = &WlDataDeviceEnterEvent{}
 
-// WWlDataDeviceLeaveEvent signals when end drag-and-drop session
+// WlDataDeviceLeaveEvent signals when end drag-and-drop session
 //
 // This event is sent when the drag-and-drop pointer leaves the
 // surface and the session ends.  The client must destroy the
 // wl_data_offer introduced at enter time at this point.
-type WWlDataDeviceLeaveEvent struct {
+type WlDataDeviceLeaveEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_device.leave in wayland
-func (WWlDataDeviceLeaveEvent) Opcode() uint16 { return 2 }
+func (WlDataDeviceLeaveEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlDataDeviceLeaveEvent implements Message.
-var _ Message = WWlDataDeviceLeaveEvent{}
+// Ensure WlDataDeviceLeaveEvent implements Message.
+var _ Message = WlDataDeviceLeaveEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataDeviceLeaveEvent) Scan(s *EventScanner) error {
+func (e *WlDataDeviceLeaveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataDeviceLeaveEvent implements Event.
-var _ Event = &WWlDataDeviceLeaveEvent{}
+// Ensure WlDataDeviceLeaveEvent implements Event.
+var _ Event = &WlDataDeviceLeaveEvent{}
 
-// WWlDataDeviceMotionEvent signals when drag-and-drop session motion
+// WlDataDeviceMotionEvent signals when drag-and-drop session motion
 //
 // This event is sent when the drag-and-drop pointer moves within
 // the currently focused surface. The new position of the pointer
 // is provided by the x and y arguments, in surface-local
 // coordinates.
-type WWlDataDeviceMotionEvent struct {
+type WlDataDeviceMotionEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 
@@ -10041,13 +9965,13 @@ type WWlDataDeviceMotionEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_device.motion in wayland
-func (WWlDataDeviceMotionEvent) Opcode() uint16 { return 3 }
+func (WlDataDeviceMotionEvent) Opcode() uint16 { return 3 }
 
-// Ensure WWlDataDeviceMotionEvent implements Message.
-var _ Message = WWlDataDeviceMotionEvent{}
+// Ensure WlDataDeviceMotionEvent implements Message.
+var _ Message = WlDataDeviceMotionEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataDeviceMotionEvent) Scan(s *EventScanner) error {
+func (e *WlDataDeviceMotionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -10066,10 +9990,10 @@ func (e *WWlDataDeviceMotionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataDeviceMotionEvent implements Event.
-var _ Event = &WWlDataDeviceMotionEvent{}
+// Ensure WlDataDeviceMotionEvent implements Event.
+var _ Event = &WlDataDeviceMotionEvent{}
 
-// WWlDataDeviceDropEvent signals when end drag-and-drop session successfully
+// WlDataDeviceDropEvent signals when end drag-and-drop session successfully
 //
 // The event is sent when a drag-and-drop operation is ended
 // because the implicit grab is removed.
@@ -10084,24 +10008,24 @@ var _ Event = &WWlDataDeviceMotionEvent{}
 // final. The drag-and-drop destination is expected to perform one last
 // wl_data_offer.set_actions request, or wl_data_offer.destroy in order
 // to cancel the operation.
-type WWlDataDeviceDropEvent struct {
+type WlDataDeviceDropEvent struct {
 }
 
 // Opcode returns the event opcode for wl_data_device.drop in wayland
-func (WWlDataDeviceDropEvent) Opcode() uint16 { return 4 }
+func (WlDataDeviceDropEvent) Opcode() uint16 { return 4 }
 
-// Ensure WWlDataDeviceDropEvent implements Message.
-var _ Message = WWlDataDeviceDropEvent{}
+// Ensure WlDataDeviceDropEvent implements Message.
+var _ Message = WlDataDeviceDropEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataDeviceDropEvent) Scan(s *EventScanner) error {
+func (e *WlDataDeviceDropEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataDeviceDropEvent implements Event.
-var _ Event = &WWlDataDeviceDropEvent{}
+// Ensure WlDataDeviceDropEvent implements Event.
+var _ Event = &WlDataDeviceDropEvent{}
 
-// WWlDataDeviceSelectionEvent signals when advertise new selection
+// WlDataDeviceSelectionEvent signals when advertise new selection
 //
 // The selection event is sent out to notify the client of a new
 // wl_data_offer for the selection for this device.  The
@@ -10114,19 +10038,19 @@ var _ Event = &WWlDataDeviceDropEvent{}
 // or until the client loses keyboard focus.  The client must
 // destroy the previous selection data_offer, if any, upon receiving
 // this event.
-type WWlDataDeviceSelectionEvent struct {
+type WlDataDeviceSelectionEvent struct {
 	// ID contains selection data_offer object
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for wl_data_device.selection in wayland
-func (WWlDataDeviceSelectionEvent) Opcode() uint16 { return 5 }
+func (WlDataDeviceSelectionEvent) Opcode() uint16 { return 5 }
 
-// Ensure WWlDataDeviceSelectionEvent implements Message.
-var _ Message = WWlDataDeviceSelectionEvent{}
+// Ensure WlDataDeviceSelectionEvent implements Message.
+var _ Message = WlDataDeviceSelectionEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlDataDeviceSelectionEvent) Scan(s *EventScanner) error {
+func (e *WlDataDeviceSelectionEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -10135,15 +10059,15 @@ func (e *WWlDataDeviceSelectionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlDataDeviceSelectionEvent implements Event.
-var _ Event = &WWlDataDeviceSelectionEvent{}
+// Ensure WlDataDeviceSelectionEvent implements Event.
+var _ Event = &WlDataDeviceSelectionEvent{}
 
 // #endregion Interface wayland.wl_data_device
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_data_device_manager
 
-// WWlDataDeviceManagerDndAction represents drag and drop actions
+// WlDataDeviceManagerDndAction represents drag and drop actions
 //
 // This is a bitmask of the available/preferred actions in a
 // drag-and-drop operation.
@@ -10168,40 +10092,40 @@ var _ Event = &WWlDataDeviceSelectionEvent{}
 // Compositors may for example bind other modifiers (like Alt/Meta)
 // or drags initiated with other buttons than BTN_LEFT to specific
 // actions (e.g. "ask").
-type WWlDataDeviceManagerDndAction uint
+type WlDataDeviceManagerDndAction uint
 
 const (
-	// WWlDataDeviceManagerDndActionNone corresponds to no action
-	WWlDataDeviceManagerDndActionNone WWlDataDeviceManagerDndAction = 0
+	// WlDataDeviceManagerDndActionNone corresponds to no action
+	WlDataDeviceManagerDndActionNone WlDataDeviceManagerDndAction = 0
 
-	// WWlDataDeviceManagerDndActionCopy corresponds to copy action
-	WWlDataDeviceManagerDndActionCopy WWlDataDeviceManagerDndAction = 1
+	// WlDataDeviceManagerDndActionCopy corresponds to copy action
+	WlDataDeviceManagerDndActionCopy WlDataDeviceManagerDndAction = 1
 
-	// WWlDataDeviceManagerDndActionMove corresponds to move action
-	WWlDataDeviceManagerDndActionMove WWlDataDeviceManagerDndAction = 2
+	// WlDataDeviceManagerDndActionMove corresponds to move action
+	WlDataDeviceManagerDndActionMove WlDataDeviceManagerDndAction = 2
 
-	// WWlDataDeviceManagerDndActionAsk corresponds to ask action
-	WWlDataDeviceManagerDndActionAsk WWlDataDeviceManagerDndAction = 4
+	// WlDataDeviceManagerDndActionAsk corresponds to ask action
+	WlDataDeviceManagerDndActionAsk WlDataDeviceManagerDndAction = 4
 )
 
-// WWlDataDeviceManagerCreateDataSourceRequest requests to create a new data source
+// WlDataDeviceManagerCreateDataSourceRequest requests to create a new data source
 //
 // Create a new data source.
-type WWlDataDeviceManagerCreateDataSourceRequest struct {
+type WlDataDeviceManagerCreateDataSourceRequest struct {
 	// ID contains data source to create
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wl_data_device_manager.create_data_source in wayland
-func (WWlDataDeviceManagerCreateDataSourceRequest) Opcode() uint16 { return 0 }
+func (WlDataDeviceManagerCreateDataSourceRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlDataDeviceManagerCreateDataSourceRequest implements Message.
-var _ Message = WWlDataDeviceManagerCreateDataSourceRequest{}
+// Ensure WlDataDeviceManagerCreateDataSourceRequest implements Message.
+var _ Message = WlDataDeviceManagerCreateDataSourceRequest{}
 
-// WWlDataDeviceManagerGetDataDeviceRequest requests to create a new data device
+// WlDataDeviceManagerGetDataDeviceRequest requests to create a new data device
 //
 // Create a new data device for a given seat.
-type WWlDataDeviceManagerGetDataDeviceRequest struct {
+type WlDataDeviceManagerGetDataDeviceRequest struct {
 	// ID contains data device to create
 	ID ObjectID
 
@@ -10210,31 +10134,31 @@ type WWlDataDeviceManagerGetDataDeviceRequest struct {
 }
 
 // Opcode returns the request opcode for wl_data_device_manager.get_data_device in wayland
-func (WWlDataDeviceManagerGetDataDeviceRequest) Opcode() uint16 { return 1 }
+func (WlDataDeviceManagerGetDataDeviceRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlDataDeviceManagerGetDataDeviceRequest implements Message.
-var _ Message = WWlDataDeviceManagerGetDataDeviceRequest{}
+// Ensure WlDataDeviceManagerGetDataDeviceRequest implements Message.
+var _ Message = WlDataDeviceManagerGetDataDeviceRequest{}
 
 // #endregion Interface wayland.wl_data_device_manager
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_shell
 
-type WWlShellError int
+type WlShellError int
 
 const (
-	// WWlShellErrorRole corresponds to given wl_surface has another role
-	WWlShellErrorRole WWlShellError = 0
+	// WlShellErrorRole corresponds to given wl_surface has another role
+	WlShellErrorRole WlShellError = 0
 )
 
-// WWlShellGetShellSurfaceRequest requests to create a shell surface from a surface
+// WlShellGetShellSurfaceRequest requests to create a shell surface from a surface
 //
 // Create a shell surface for an existing surface. This gives
 // the wl_surface the role of a shell surface. If the wl_surface
 // already has another role, it raises a protocol error.
 //
 // Only one shell surface can be associated with a given surface.
-type WWlShellGetShellSurfaceRequest struct {
+type WlShellGetShellSurfaceRequest struct {
 	// ID contains shell surface to create
 	ID ObjectID
 
@@ -10243,108 +10167,108 @@ type WWlShellGetShellSurfaceRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shell.get_shell_surface in wayland
-func (WWlShellGetShellSurfaceRequest) Opcode() uint16 { return 0 }
+func (WlShellGetShellSurfaceRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlShellGetShellSurfaceRequest implements Message.
-var _ Message = WWlShellGetShellSurfaceRequest{}
+// Ensure WlShellGetShellSurfaceRequest implements Message.
+var _ Message = WlShellGetShellSurfaceRequest{}
 
 // #endregion Interface wayland.wl_shell
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_shell_surface
 
-// WWlShellSurfaceResize represents edge values for resizing
+// WlShellSurfaceResize represents edge values for resizing
 //
 // These values are used to indicate which edge of a surface
 // is being dragged in a resize operation. The server may
 // use this information to adapt its behavior, e.g. choose
 // an appropriate cursor image.
-type WWlShellSurfaceResize uint
+type WlShellSurfaceResize uint
 
 const (
-	// WWlShellSurfaceResizeNone corresponds to no edge
-	WWlShellSurfaceResizeNone WWlShellSurfaceResize = 0
+	// WlShellSurfaceResizeNone corresponds to no edge
+	WlShellSurfaceResizeNone WlShellSurfaceResize = 0
 
-	// WWlShellSurfaceResizeTop corresponds to top edge
-	WWlShellSurfaceResizeTop WWlShellSurfaceResize = 1
+	// WlShellSurfaceResizeTop corresponds to top edge
+	WlShellSurfaceResizeTop WlShellSurfaceResize = 1
 
-	// WWlShellSurfaceResizeBottom corresponds to bottom edge
-	WWlShellSurfaceResizeBottom WWlShellSurfaceResize = 2
+	// WlShellSurfaceResizeBottom corresponds to bottom edge
+	WlShellSurfaceResizeBottom WlShellSurfaceResize = 2
 
-	// WWlShellSurfaceResizeLeft corresponds to left edge
-	WWlShellSurfaceResizeLeft WWlShellSurfaceResize = 4
+	// WlShellSurfaceResizeLeft corresponds to left edge
+	WlShellSurfaceResizeLeft WlShellSurfaceResize = 4
 
-	// WWlShellSurfaceResizeTopLeft corresponds to top and left edges
-	WWlShellSurfaceResizeTopLeft WWlShellSurfaceResize = 5
+	// WlShellSurfaceResizeTopLeft corresponds to top and left edges
+	WlShellSurfaceResizeTopLeft WlShellSurfaceResize = 5
 
-	// WWlShellSurfaceResizeBottomLeft corresponds to bottom and left edges
-	WWlShellSurfaceResizeBottomLeft WWlShellSurfaceResize = 6
+	// WlShellSurfaceResizeBottomLeft corresponds to bottom and left edges
+	WlShellSurfaceResizeBottomLeft WlShellSurfaceResize = 6
 
-	// WWlShellSurfaceResizeRight corresponds to right edge
-	WWlShellSurfaceResizeRight WWlShellSurfaceResize = 8
+	// WlShellSurfaceResizeRight corresponds to right edge
+	WlShellSurfaceResizeRight WlShellSurfaceResize = 8
 
-	// WWlShellSurfaceResizeTopRight corresponds to top and right edges
-	WWlShellSurfaceResizeTopRight WWlShellSurfaceResize = 9
+	// WlShellSurfaceResizeTopRight corresponds to top and right edges
+	WlShellSurfaceResizeTopRight WlShellSurfaceResize = 9
 
-	// WWlShellSurfaceResizeBottomRight corresponds to bottom and right edges
-	WWlShellSurfaceResizeBottomRight WWlShellSurfaceResize = 10
+	// WlShellSurfaceResizeBottomRight corresponds to bottom and right edges
+	WlShellSurfaceResizeBottomRight WlShellSurfaceResize = 10
 )
 
-// WWlShellSurfaceTransient represents details of transient behaviour
+// WlShellSurfaceTransient represents details of transient behaviour
 //
 // These flags specify details of the expected behaviour
 // of transient surfaces. Used in the set_transient request.
-type WWlShellSurfaceTransient uint
+type WlShellSurfaceTransient uint
 
 const (
-	// WWlShellSurfaceTransientInactive corresponds to do not set keyboard focus
-	WWlShellSurfaceTransientInactive WWlShellSurfaceTransient = 0x1
+	// WlShellSurfaceTransientInactive corresponds to do not set keyboard focus
+	WlShellSurfaceTransientInactive WlShellSurfaceTransient = 0x1
 )
 
-// WWlShellSurfaceFullscreenMethod represents different method to set the surface fullscreen
+// WlShellSurfaceFullscreenMethod represents different method to set the surface fullscreen
 //
 // Hints to indicate to the compositor how to deal with a conflict
 // between the dimensions of the surface and the dimensions of the
 // output. The compositor is free to ignore this parameter.
-type WWlShellSurfaceFullscreenMethod int
+type WlShellSurfaceFullscreenMethod int
 
 const (
-	// WWlShellSurfaceFullscreenMethodDefault corresponds to no preference, apply default policy
-	WWlShellSurfaceFullscreenMethodDefault WWlShellSurfaceFullscreenMethod = 0
+	// WlShellSurfaceFullscreenMethodDefault corresponds to no preference, apply default policy
+	WlShellSurfaceFullscreenMethodDefault WlShellSurfaceFullscreenMethod = 0
 
-	// WWlShellSurfaceFullscreenMethodScale corresponds to scale, preserve the surface's aspect ratio and center on output
-	WWlShellSurfaceFullscreenMethodScale WWlShellSurfaceFullscreenMethod = 1
+	// WlShellSurfaceFullscreenMethodScale corresponds to scale, preserve the surface's aspect ratio and center on output
+	WlShellSurfaceFullscreenMethodScale WlShellSurfaceFullscreenMethod = 1
 
-	// WWlShellSurfaceFullscreenMethodDriver corresponds to switch output mode to the smallest mode that can fit the surface, add black borders to compensate size mismatch
-	WWlShellSurfaceFullscreenMethodDriver WWlShellSurfaceFullscreenMethod = 2
+	// WlShellSurfaceFullscreenMethodDriver corresponds to switch output mode to the smallest mode that can fit the surface, add black borders to compensate size mismatch
+	WlShellSurfaceFullscreenMethodDriver WlShellSurfaceFullscreenMethod = 2
 
-	// WWlShellSurfaceFullscreenMethodFill corresponds to no upscaling, center on output and add black borders to compensate size mismatch
-	WWlShellSurfaceFullscreenMethodFill WWlShellSurfaceFullscreenMethod = 3
+	// WlShellSurfaceFullscreenMethodFill corresponds to no upscaling, center on output and add black borders to compensate size mismatch
+	WlShellSurfaceFullscreenMethodFill WlShellSurfaceFullscreenMethod = 3
 )
 
-// WWlShellSurfacePongRequest requests to respond to a ping event
+// WlShellSurfacePongRequest requests to respond to a ping event
 //
 // A client must respond to a ping event with a pong request or
 // the client may be deemed unresponsive.
-type WWlShellSurfacePongRequest struct {
+type WlShellSurfacePongRequest struct {
 	// Serial contains serial number of the ping event
 	Serial uint32
 }
 
 // Opcode returns the request opcode for wl_shell_surface.pong in wayland
-func (WWlShellSurfacePongRequest) Opcode() uint16 { return 0 }
+func (WlShellSurfacePongRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlShellSurfacePongRequest implements Message.
-var _ Message = WWlShellSurfacePongRequest{}
+// Ensure WlShellSurfacePongRequest implements Message.
+var _ Message = WlShellSurfacePongRequest{}
 
-// WWlShellSurfaceMoveRequest requests to start an interactive move
+// WlShellSurfaceMoveRequest requests to start an interactive move
 //
 // Start a pointer-driven move of the surface.
 //
 // This request must be used in response to a button press event.
 // The server may ignore move requests depending on the state of
 // the surface (e.g. fullscreen or maximized).
-type WWlShellSurfaceMoveRequest struct {
+type WlShellSurfaceMoveRequest struct {
 	// Seat contains seat whose pointer is used
 	Seat ObjectID
 
@@ -10353,19 +10277,19 @@ type WWlShellSurfaceMoveRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shell_surface.move in wayland
-func (WWlShellSurfaceMoveRequest) Opcode() uint16 { return 1 }
+func (WlShellSurfaceMoveRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlShellSurfaceMoveRequest implements Message.
-var _ Message = WWlShellSurfaceMoveRequest{}
+// Ensure WlShellSurfaceMoveRequest implements Message.
+var _ Message = WlShellSurfaceMoveRequest{}
 
-// WWlShellSurfaceResizeRequest requests to start an interactive resize
+// WlShellSurfaceResizeRequest requests to start an interactive resize
 //
 // Start a pointer-driven resizing of the surface.
 //
 // This request must be used in response to a button press event.
 // The server may ignore resize requests depending on the state of
 // the surface (e.g. fullscreen or maximized).
-type WWlShellSurfaceResizeRequest struct {
+type WlShellSurfaceResizeRequest struct {
 	// Seat contains seat whose pointer is used
 	Seat ObjectID
 
@@ -10377,26 +10301,26 @@ type WWlShellSurfaceResizeRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shell_surface.resize in wayland
-func (WWlShellSurfaceResizeRequest) Opcode() uint16 { return 2 }
+func (WlShellSurfaceResizeRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlShellSurfaceResizeRequest implements Message.
-var _ Message = WWlShellSurfaceResizeRequest{}
+// Ensure WlShellSurfaceResizeRequest implements Message.
+var _ Message = WlShellSurfaceResizeRequest{}
 
-// WWlShellSurfaceSetToplevelRequest requests to make the surface a toplevel surface
+// WlShellSurfaceSetToplevelRequest requests to make the surface a toplevel surface
 //
 // Map the surface as a toplevel surface.
 //
 // A toplevel surface is not fullscreen, maximized or transient.
-type WWlShellSurfaceSetToplevelRequest struct {
+type WlShellSurfaceSetToplevelRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shell_surface.set_toplevel in wayland
-func (WWlShellSurfaceSetToplevelRequest) Opcode() uint16 { return 3 }
+func (WlShellSurfaceSetToplevelRequest) Opcode() uint16 { return 3 }
 
-// Ensure WWlShellSurfaceSetToplevelRequest implements Message.
-var _ Message = WWlShellSurfaceSetToplevelRequest{}
+// Ensure WlShellSurfaceSetToplevelRequest implements Message.
+var _ Message = WlShellSurfaceSetToplevelRequest{}
 
-// WWlShellSurfaceSetTransientRequest requests to make the surface a transient surface
+// WlShellSurfaceSetTransientRequest requests to make the surface a transient surface
 //
 // Map the surface relative to an existing surface.
 //
@@ -10405,7 +10329,7 @@ var _ Message = WWlShellSurfaceSetToplevelRequest{}
 // parent surface, in surface-local coordinates.
 //
 // The flags argument controls details of the transient behaviour.
-type WWlShellSurfaceSetTransientRequest struct {
+type WlShellSurfaceSetTransientRequest struct {
 	// Parent contains parent surface
 	Parent ObjectID
 
@@ -10420,12 +10344,12 @@ type WWlShellSurfaceSetTransientRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shell_surface.set_transient in wayland
-func (WWlShellSurfaceSetTransientRequest) Opcode() uint16 { return 4 }
+func (WlShellSurfaceSetTransientRequest) Opcode() uint16 { return 4 }
 
-// Ensure WWlShellSurfaceSetTransientRequest implements Message.
-var _ Message = WWlShellSurfaceSetTransientRequest{}
+// Ensure WlShellSurfaceSetTransientRequest implements Message.
+var _ Message = WlShellSurfaceSetTransientRequest{}
 
-// WWlShellSurfaceSetFullscreenRequest requests to make the surface a fullscreen surface
+// WlShellSurfaceSetFullscreenRequest requests to make the surface a fullscreen surface
 //
 // Map the surface as a fullscreen surface.
 //
@@ -10460,7 +10384,7 @@ var _ Message = WWlShellSurfaceSetTransientRequest{}
 // The compositor must reply to this request with a configure event
 // with the dimensions for the output on which the surface will
 // be made fullscreen.
-type WWlShellSurfaceSetFullscreenRequest struct {
+type WlShellSurfaceSetFullscreenRequest struct {
 	// Method contains method for resolving size conflict
 	Method uint32
 
@@ -10472,12 +10396,12 @@ type WWlShellSurfaceSetFullscreenRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shell_surface.set_fullscreen in wayland
-func (WWlShellSurfaceSetFullscreenRequest) Opcode() uint16 { return 5 }
+func (WlShellSurfaceSetFullscreenRequest) Opcode() uint16 { return 5 }
 
-// Ensure WWlShellSurfaceSetFullscreenRequest implements Message.
-var _ Message = WWlShellSurfaceSetFullscreenRequest{}
+// Ensure WlShellSurfaceSetFullscreenRequest implements Message.
+var _ Message = WlShellSurfaceSetFullscreenRequest{}
 
-// WWlShellSurfaceSetPopupRequest requests to make the surface a popup surface
+// WlShellSurfaceSetPopupRequest requests to make the surface a popup surface
 //
 // Map the surface as a popup.
 //
@@ -10498,7 +10422,7 @@ var _ Message = WWlShellSurfaceSetFullscreenRequest{}
 // The x and y arguments specify the location of the upper left
 // corner of the surface relative to the upper left corner of the
 // parent surface, in surface-local coordinates.
-type WWlShellSurfaceSetPopupRequest struct {
+type WlShellSurfaceSetPopupRequest struct {
 	// Seat contains seat whose pointer is used
 	Seat ObjectID
 
@@ -10519,12 +10443,12 @@ type WWlShellSurfaceSetPopupRequest struct {
 }
 
 // Opcode returns the request opcode for wl_shell_surface.set_popup in wayland
-func (WWlShellSurfaceSetPopupRequest) Opcode() uint16 { return 6 }
+func (WlShellSurfaceSetPopupRequest) Opcode() uint16 { return 6 }
 
-// Ensure WWlShellSurfaceSetPopupRequest implements Message.
-var _ Message = WWlShellSurfaceSetPopupRequest{}
+// Ensure WlShellSurfaceSetPopupRequest implements Message.
+var _ Message = WlShellSurfaceSetPopupRequest{}
 
-// WWlShellSurfaceSetMaximizedRequest requests to make the surface a maximized surface
+// WlShellSurfaceSetMaximizedRequest requests to make the surface a maximized surface
 //
 // Map the surface as a maximized surface.
 //
@@ -10544,18 +10468,18 @@ var _ Message = WWlShellSurfaceSetPopupRequest{}
 // fullscreen shell surface.
 //
 // The details depend on the compositor implementation.
-type WWlShellSurfaceSetMaximizedRequest struct {
+type WlShellSurfaceSetMaximizedRequest struct {
 	// Output contains output on which the surface is to be maximized
 	Output ObjectID
 }
 
 // Opcode returns the request opcode for wl_shell_surface.set_maximized in wayland
-func (WWlShellSurfaceSetMaximizedRequest) Opcode() uint16 { return 7 }
+func (WlShellSurfaceSetMaximizedRequest) Opcode() uint16 { return 7 }
 
-// Ensure WWlShellSurfaceSetMaximizedRequest implements Message.
-var _ Message = WWlShellSurfaceSetMaximizedRequest{}
+// Ensure WlShellSurfaceSetMaximizedRequest implements Message.
+var _ Message = WlShellSurfaceSetMaximizedRequest{}
 
-// WWlShellSurfaceSetTitleRequest requests to set surface title
+// WlShellSurfaceSetTitleRequest requests to set surface title
 //
 // Set a short title for the surface.
 //
@@ -10564,18 +10488,18 @@ var _ Message = WWlShellSurfaceSetMaximizedRequest{}
 // compositor.
 //
 // The string must be encoded in UTF-8.
-type WWlShellSurfaceSetTitleRequest struct {
+type WlShellSurfaceSetTitleRequest struct {
 	// Title contains surface title
 	Title string
 }
 
 // Opcode returns the request opcode for wl_shell_surface.set_title in wayland
-func (WWlShellSurfaceSetTitleRequest) Opcode() uint16 { return 8 }
+func (WlShellSurfaceSetTitleRequest) Opcode() uint16 { return 8 }
 
-// Ensure WWlShellSurfaceSetTitleRequest implements Message.
-var _ Message = WWlShellSurfaceSetTitleRequest{}
+// Ensure WlShellSurfaceSetTitleRequest implements Message.
+var _ Message = WlShellSurfaceSetTitleRequest{}
 
-// WWlShellSurfaceSetClassRequest requests to set surface class
+// WlShellSurfaceSetClassRequest requests to set surface class
 //
 // Set a class for the surface.
 //
@@ -10583,34 +10507,34 @@ var _ Message = WWlShellSurfaceSetTitleRequest{}
 // to which the surface belongs. A common convention is to use the
 // file name (or the full path if it is a non-standard location) of
 // the application's .desktop file as the class.
-type WWlShellSurfaceSetClassRequest struct {
+type WlShellSurfaceSetClassRequest struct {
 	// Class contains surface class
 	Class string
 }
 
 // Opcode returns the request opcode for wl_shell_surface.set_class in wayland
-func (WWlShellSurfaceSetClassRequest) Opcode() uint16 { return 9 }
+func (WlShellSurfaceSetClassRequest) Opcode() uint16 { return 9 }
 
-// Ensure WWlShellSurfaceSetClassRequest implements Message.
-var _ Message = WWlShellSurfaceSetClassRequest{}
+// Ensure WlShellSurfaceSetClassRequest implements Message.
+var _ Message = WlShellSurfaceSetClassRequest{}
 
-// WWlShellSurfacePingEvent signals when ping client
+// WlShellSurfacePingEvent signals when ping client
 //
 // Ping a client to check if it is receiving events and sending
 // requests. A client is expected to reply with a pong request.
-type WWlShellSurfacePingEvent struct {
+type WlShellSurfacePingEvent struct {
 	// Serial contains serial number of the ping
 	Serial uint32
 }
 
 // Opcode returns the event opcode for wl_shell_surface.ping in wayland
-func (WWlShellSurfacePingEvent) Opcode() uint16 { return 0 }
+func (WlShellSurfacePingEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlShellSurfacePingEvent implements Message.
-var _ Message = WWlShellSurfacePingEvent{}
+// Ensure WlShellSurfacePingEvent implements Message.
+var _ Message = WlShellSurfacePingEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlShellSurfacePingEvent) Scan(s *EventScanner) error {
+func (e *WlShellSurfacePingEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -10619,10 +10543,10 @@ func (e *WWlShellSurfacePingEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlShellSurfacePingEvent implements Event.
-var _ Event = &WWlShellSurfacePingEvent{}
+// Ensure WlShellSurfacePingEvent implements Event.
+var _ Event = &WlShellSurfacePingEvent{}
 
-// WWlShellSurfaceConfigureEvent signals when suggest resize
+// WlShellSurfaceConfigureEvent signals when suggest resize
 //
 // The configure event asks the client to resize its surface.
 //
@@ -10641,7 +10565,7 @@ var _ Event = &WWlShellSurfacePingEvent{}
 //
 // The width and height arguments specify the size of the window
 // in surface-local coordinates.
-type WWlShellSurfaceConfigureEvent struct {
+type WlShellSurfaceConfigureEvent struct {
 	// Edges contains how the surface was resized
 	Edges uint32
 
@@ -10653,13 +10577,13 @@ type WWlShellSurfaceConfigureEvent struct {
 }
 
 // Opcode returns the event opcode for wl_shell_surface.configure in wayland
-func (WWlShellSurfaceConfigureEvent) Opcode() uint16 { return 1 }
+func (WlShellSurfaceConfigureEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlShellSurfaceConfigureEvent implements Message.
-var _ Message = WWlShellSurfaceConfigureEvent{}
+// Ensure WlShellSurfaceConfigureEvent implements Message.
+var _ Message = WlShellSurfaceConfigureEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlShellSurfaceConfigureEvent) Scan(s *EventScanner) error {
+func (e *WlShellSurfaceConfigureEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -10678,65 +10602,65 @@ func (e *WWlShellSurfaceConfigureEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlShellSurfaceConfigureEvent implements Event.
-var _ Event = &WWlShellSurfaceConfigureEvent{}
+// Ensure WlShellSurfaceConfigureEvent implements Event.
+var _ Event = &WlShellSurfaceConfigureEvent{}
 
-// WWlShellSurfacePopupDoneEvent signals when popup interaction is done
+// WlShellSurfacePopupDoneEvent signals when popup interaction is done
 //
 // The popup_done event is sent out when a popup grab is broken,
 // that is, when the user clicks a surface that doesn't belong
 // to the client owning the popup surface.
-type WWlShellSurfacePopupDoneEvent struct {
+type WlShellSurfacePopupDoneEvent struct {
 }
 
 // Opcode returns the event opcode for wl_shell_surface.popup_done in wayland
-func (WWlShellSurfacePopupDoneEvent) Opcode() uint16 { return 2 }
+func (WlShellSurfacePopupDoneEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlShellSurfacePopupDoneEvent implements Message.
-var _ Message = WWlShellSurfacePopupDoneEvent{}
+// Ensure WlShellSurfacePopupDoneEvent implements Message.
+var _ Message = WlShellSurfacePopupDoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlShellSurfacePopupDoneEvent) Scan(s *EventScanner) error {
+func (e *WlShellSurfacePopupDoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlShellSurfacePopupDoneEvent implements Event.
-var _ Event = &WWlShellSurfacePopupDoneEvent{}
+// Ensure WlShellSurfacePopupDoneEvent implements Event.
+var _ Event = &WlShellSurfacePopupDoneEvent{}
 
 // #endregion Interface wayland.wl_shell_surface
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_surface
 
-// WWlSurfaceError represents wl_surface error values
+// WlSurfaceError represents wl_surface error values
 //
 // These errors can be emitted in response to wl_surface requests.
-type WWlSurfaceError int
+type WlSurfaceError int
 
 const (
-	// WWlSurfaceErrorInvalidScale corresponds to buffer scale value is invalid
-	WWlSurfaceErrorInvalidScale WWlSurfaceError = 0
+	// WlSurfaceErrorInvalidScale corresponds to buffer scale value is invalid
+	WlSurfaceErrorInvalidScale WlSurfaceError = 0
 
-	// WWlSurfaceErrorInvalidTransform corresponds to buffer transform value is invalid
-	WWlSurfaceErrorInvalidTransform WWlSurfaceError = 1
+	// WlSurfaceErrorInvalidTransform corresponds to buffer transform value is invalid
+	WlSurfaceErrorInvalidTransform WlSurfaceError = 1
 
-	// WWlSurfaceErrorInvalidSize corresponds to buffer size is invalid
-	WWlSurfaceErrorInvalidSize WWlSurfaceError = 2
+	// WlSurfaceErrorInvalidSize corresponds to buffer size is invalid
+	WlSurfaceErrorInvalidSize WlSurfaceError = 2
 )
 
-// WWlSurfaceDestroyRequest requests to delete surface
+// WlSurfaceDestroyRequest requests to delete surface
 //
 // Deletes the surface and invalidates its object ID.
-type WWlSurfaceDestroyRequest struct {
+type WlSurfaceDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_surface.destroy in wayland
-func (WWlSurfaceDestroyRequest) Opcode() uint16 { return 0 }
+func (WlSurfaceDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlSurfaceDestroyRequest implements Message.
-var _ Message = WWlSurfaceDestroyRequest{}
+// Ensure WlSurfaceDestroyRequest implements Message.
+var _ Message = WlSurfaceDestroyRequest{}
 
-// WWlSurfaceAttachRequest requests to set the surface contents
+// WlSurfaceAttachRequest requests to set the surface contents
 //
 // Set a buffer as the content of this surface.
 //
@@ -10787,7 +10711,7 @@ var _ Message = WWlSurfaceDestroyRequest{}
 //
 // If wl_surface.attach is sent with a NULL wl_buffer, the
 // following wl_surface.commit will remove the surface content.
-type WWlSurfaceAttachRequest struct {
+type WlSurfaceAttachRequest struct {
 	// Buffer contains buffer of surface contents
 	Buffer ObjectID
 
@@ -10799,12 +10723,12 @@ type WWlSurfaceAttachRequest struct {
 }
 
 // Opcode returns the request opcode for wl_surface.attach in wayland
-func (WWlSurfaceAttachRequest) Opcode() uint16 { return 1 }
+func (WlSurfaceAttachRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlSurfaceAttachRequest implements Message.
-var _ Message = WWlSurfaceAttachRequest{}
+// Ensure WlSurfaceAttachRequest implements Message.
+var _ Message = WlSurfaceAttachRequest{}
 
-// WWlSurfaceDamageRequest requests to mark part of the surface damaged
+// WlSurfaceDamageRequest requests to mark part of the surface damaged
 //
 // This request is used to describe the regions where the pending
 // buffer is different from the current surface contents, and where
@@ -10827,7 +10751,7 @@ var _ Message = WWlSurfaceAttachRequest{}
 // Note! New clients should not use this request. Instead damage can be
 // posted with wl_surface.damage_buffer which uses buffer coordinates
 // instead of surface coordinates.
-type WWlSurfaceDamageRequest struct {
+type WlSurfaceDamageRequest struct {
 	// X contains surface-local x coordinate
 	X int32
 
@@ -10842,12 +10766,12 @@ type WWlSurfaceDamageRequest struct {
 }
 
 // Opcode returns the request opcode for wl_surface.damage in wayland
-func (WWlSurfaceDamageRequest) Opcode() uint16 { return 2 }
+func (WlSurfaceDamageRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlSurfaceDamageRequest implements Message.
-var _ Message = WWlSurfaceDamageRequest{}
+// Ensure WlSurfaceDamageRequest implements Message.
+var _ Message = WlSurfaceDamageRequest{}
 
-// WWlSurfaceFrameRequest requests to request a frame throttling hint
+// WlSurfaceFrameRequest requests to request a frame throttling hint
 //
 // Request a notification when it is a good time to start drawing a new
 // frame, by creating a frame callback. This is useful for throttling
@@ -10881,18 +10805,18 @@ var _ Message = WWlSurfaceDamageRequest{}
 //
 // The callback_data passed in the callback is the current time, in
 // milliseconds, with an undefined base.
-type WWlSurfaceFrameRequest struct {
+type WlSurfaceFrameRequest struct {
 	// Callback contains callback object for the frame request
 	Callback ObjectID
 }
 
 // Opcode returns the request opcode for wl_surface.frame in wayland
-func (WWlSurfaceFrameRequest) Opcode() uint16 { return 3 }
+func (WlSurfaceFrameRequest) Opcode() uint16 { return 3 }
 
-// Ensure WWlSurfaceFrameRequest implements Message.
-var _ Message = WWlSurfaceFrameRequest{}
+// Ensure WlSurfaceFrameRequest implements Message.
+var _ Message = WlSurfaceFrameRequest{}
 
-// WWlSurfaceSetOpaqueRegionRequest requests to set opaque region
+// WlSurfaceSetOpaqueRegionRequest requests to set opaque region
 //
 // This request sets the region of the surface that contains
 // opaque content.
@@ -10918,18 +10842,18 @@ var _ Message = WWlSurfaceFrameRequest{}
 // opaque region has copy semantics, and the wl_region object can be
 // destroyed immediately. A NULL wl_region causes the pending opaque
 // region to be set to empty.
-type WWlSurfaceSetOpaqueRegionRequest struct {
+type WlSurfaceSetOpaqueRegionRequest struct {
 	// Region contains opaque region of the surface
 	Region ObjectID
 }
 
 // Opcode returns the request opcode for wl_surface.set_opaque_region in wayland
-func (WWlSurfaceSetOpaqueRegionRequest) Opcode() uint16 { return 4 }
+func (WlSurfaceSetOpaqueRegionRequest) Opcode() uint16 { return 4 }
 
-// Ensure WWlSurfaceSetOpaqueRegionRequest implements Message.
-var _ Message = WWlSurfaceSetOpaqueRegionRequest{}
+// Ensure WlSurfaceSetOpaqueRegionRequest implements Message.
+var _ Message = WlSurfaceSetOpaqueRegionRequest{}
 
-// WWlSurfaceSetInputRegionRequest requests to set input region
+// WlSurfaceSetInputRegionRequest requests to set input region
 //
 // This request sets the region of the surface that can receive
 // pointer and touch events.
@@ -10953,18 +10877,18 @@ var _ Message = WWlSurfaceSetOpaqueRegionRequest{}
 // has copy semantics, and the wl_region object can be destroyed
 // immediately. A NULL wl_region causes the input region to be set
 // to infinite.
-type WWlSurfaceSetInputRegionRequest struct {
+type WlSurfaceSetInputRegionRequest struct {
 	// Region contains input region of the surface
 	Region ObjectID
 }
 
 // Opcode returns the request opcode for wl_surface.set_input_region in wayland
-func (WWlSurfaceSetInputRegionRequest) Opcode() uint16 { return 5 }
+func (WlSurfaceSetInputRegionRequest) Opcode() uint16 { return 5 }
 
-// Ensure WWlSurfaceSetInputRegionRequest implements Message.
-var _ Message = WWlSurfaceSetInputRegionRequest{}
+// Ensure WlSurfaceSetInputRegionRequest implements Message.
+var _ Message = WlSurfaceSetInputRegionRequest{}
 
-// WWlSurfaceCommitRequest requests to commit pending surface state
+// WlSurfaceCommitRequest requests to commit pending surface state
 //
 // Surface state (input, opaque, and damage regions, attached buffers,
 // etc.) is double-buffered. Protocol requests modify the pending state,
@@ -10983,16 +10907,16 @@ var _ Message = WWlSurfaceSetInputRegionRequest{}
 // to affect double-buffered state.
 //
 // Other interfaces may add further double-buffered surface state.
-type WWlSurfaceCommitRequest struct {
+type WlSurfaceCommitRequest struct {
 }
 
 // Opcode returns the request opcode for wl_surface.commit in wayland
-func (WWlSurfaceCommitRequest) Opcode() uint16 { return 6 }
+func (WlSurfaceCommitRequest) Opcode() uint16 { return 6 }
 
-// Ensure WWlSurfaceCommitRequest implements Message.
-var _ Message = WWlSurfaceCommitRequest{}
+// Ensure WlSurfaceCommitRequest implements Message.
+var _ Message = WlSurfaceCommitRequest{}
 
-// WWlSurfaceSetBufferTransformRequest requests to sets the buffer transformation
+// WlSurfaceSetBufferTransformRequest requests to sets the buffer transformation
 //
 // This request sets an optional transformation on how the compositor
 // interprets the contents of the buffer attached to the surface. The
@@ -11023,18 +10947,18 @@ var _ Message = WWlSurfaceCommitRequest{}
 // If transform is not one of the values from the
 // wl_output.transform enum the invalid_transform protocol error
 // is raised.
-type WWlSurfaceSetBufferTransformRequest struct {
+type WlSurfaceSetBufferTransformRequest struct {
 	// Transform contains transform for interpreting buffer contents
 	Transform int32
 }
 
 // Opcode returns the request opcode for wl_surface.set_buffer_transform in wayland
-func (WWlSurfaceSetBufferTransformRequest) Opcode() uint16 { return 7 }
+func (WlSurfaceSetBufferTransformRequest) Opcode() uint16 { return 7 }
 
-// Ensure WWlSurfaceSetBufferTransformRequest implements Message.
-var _ Message = WWlSurfaceSetBufferTransformRequest{}
+// Ensure WlSurfaceSetBufferTransformRequest implements Message.
+var _ Message = WlSurfaceSetBufferTransformRequest{}
 
-// WWlSurfaceSetBufferScaleRequest requests to sets the buffer scaling factor
+// WlSurfaceSetBufferScaleRequest requests to sets the buffer scaling factor
 //
 // This request sets an optional scaling factor on how the compositor
 // interprets the contents of the buffer attached to the window.
@@ -11059,18 +10983,18 @@ var _ Message = WWlSurfaceSetBufferTransformRequest{}
 //
 // If scale is not positive the invalid_scale protocol error is
 // raised.
-type WWlSurfaceSetBufferScaleRequest struct {
+type WlSurfaceSetBufferScaleRequest struct {
 	// Scale contains positive scale for interpreting buffer contents
 	Scale int32
 }
 
 // Opcode returns the request opcode for wl_surface.set_buffer_scale in wayland
-func (WWlSurfaceSetBufferScaleRequest) Opcode() uint16 { return 8 }
+func (WlSurfaceSetBufferScaleRequest) Opcode() uint16 { return 8 }
 
-// Ensure WWlSurfaceSetBufferScaleRequest implements Message.
-var _ Message = WWlSurfaceSetBufferScaleRequest{}
+// Ensure WlSurfaceSetBufferScaleRequest implements Message.
+var _ Message = WlSurfaceSetBufferScaleRequest{}
 
-// WWlSurfaceDamageBufferRequest requests to mark part of the surface damaged using buffer coordinates
+// WlSurfaceDamageBufferRequest requests to mark part of the surface damaged using buffer coordinates
 //
 // This request is used to describe the regions where the pending
 // buffer is different from the current surface contents, and where
@@ -11104,7 +11028,7 @@ var _ Message = WWlSurfaceSetBufferScaleRequest{}
 // kinds of damage into account will have to accumulate damage from the
 // two requests separately and only transform from one to the other
 // after receiving the wl_surface.commit.
-type WWlSurfaceDamageBufferRequest struct {
+type WlSurfaceDamageBufferRequest struct {
 	// X contains buffer-local x coordinate
 	X int32
 
@@ -11119,31 +11043,31 @@ type WWlSurfaceDamageBufferRequest struct {
 }
 
 // Opcode returns the request opcode for wl_surface.damage_buffer in wayland
-func (WWlSurfaceDamageBufferRequest) Opcode() uint16 { return 9 }
+func (WlSurfaceDamageBufferRequest) Opcode() uint16 { return 9 }
 
-// Ensure WWlSurfaceDamageBufferRequest implements Message.
-var _ Message = WWlSurfaceDamageBufferRequest{}
+// Ensure WlSurfaceDamageBufferRequest implements Message.
+var _ Message = WlSurfaceDamageBufferRequest{}
 
-// WWlSurfaceEnterEvent signals when surface enters an output
+// WlSurfaceEnterEvent signals when surface enters an output
 //
 // This is emitted whenever a surface's creation, movement, or resizing
 // results in some part of it being within the scanout region of an
 // output.
 //
 // Note that a surface may be overlapping with zero or more outputs.
-type WWlSurfaceEnterEvent struct {
+type WlSurfaceEnterEvent struct {
 	// Output contains output entered by the surface
 	Output ObjectID
 }
 
 // Opcode returns the event opcode for wl_surface.enter in wayland
-func (WWlSurfaceEnterEvent) Opcode() uint16 { return 0 }
+func (WlSurfaceEnterEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlSurfaceEnterEvent implements Message.
-var _ Message = WWlSurfaceEnterEvent{}
+// Ensure WlSurfaceEnterEvent implements Message.
+var _ Message = WlSurfaceEnterEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlSurfaceEnterEvent) Scan(s *EventScanner) error {
+func (e *WlSurfaceEnterEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -11152,10 +11076,10 @@ func (e *WWlSurfaceEnterEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlSurfaceEnterEvent implements Event.
-var _ Event = &WWlSurfaceEnterEvent{}
+// Ensure WlSurfaceEnterEvent implements Event.
+var _ Event = &WlSurfaceEnterEvent{}
 
-// WWlSurfaceLeaveEvent signals when surface leaves an output
+// WlSurfaceLeaveEvent signals when surface leaves an output
 //
 // This is emitted whenever a surface's creation, movement, or resizing
 // results in it no longer having any part of it within the scanout region
@@ -11166,19 +11090,19 @@ var _ Event = &WWlSurfaceEnterEvent{}
 // has been sent, and the compositor might expect new surface content
 // updates even if no enter event has been sent. The frame event should be
 // used instead.
-type WWlSurfaceLeaveEvent struct {
+type WlSurfaceLeaveEvent struct {
 	// Output contains output left by the surface
 	Output ObjectID
 }
 
 // Opcode returns the event opcode for wl_surface.leave in wayland
-func (WWlSurfaceLeaveEvent) Opcode() uint16 { return 1 }
+func (WlSurfaceLeaveEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlSurfaceLeaveEvent implements Message.
-var _ Message = WWlSurfaceLeaveEvent{}
+// Ensure WlSurfaceLeaveEvent implements Message.
+var _ Message = WlSurfaceLeaveEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlSurfaceLeaveEvent) Scan(s *EventScanner) error {
+func (e *WlSurfaceLeaveEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -11187,42 +11111,42 @@ func (e *WWlSurfaceLeaveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlSurfaceLeaveEvent implements Event.
-var _ Event = &WWlSurfaceLeaveEvent{}
+// Ensure WlSurfaceLeaveEvent implements Event.
+var _ Event = &WlSurfaceLeaveEvent{}
 
 // #endregion Interface wayland.wl_surface
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_seat
 
-// WWlSeatCapability represents seat capability bitmask
+// WlSeatCapability represents seat capability bitmask
 //
 // This is a bitmask of capabilities this seat has; if a member is
 // set, then it is present on the seat.
-type WWlSeatCapability uint
+type WlSeatCapability uint
 
 const (
-	// WWlSeatCapabilityPointer corresponds to the seat has pointer devices
-	WWlSeatCapabilityPointer WWlSeatCapability = 1
+	// WlSeatCapabilityPointer corresponds to the seat has pointer devices
+	WlSeatCapabilityPointer WlSeatCapability = 1
 
-	// WWlSeatCapabilityKeyboard corresponds to the seat has one or more keyboards
-	WWlSeatCapabilityKeyboard WWlSeatCapability = 2
+	// WlSeatCapabilityKeyboard corresponds to the seat has one or more keyboards
+	WlSeatCapabilityKeyboard WlSeatCapability = 2
 
-	// WWlSeatCapabilityTouch corresponds to the seat has touch devices
-	WWlSeatCapabilityTouch WWlSeatCapability = 4
+	// WlSeatCapabilityTouch corresponds to the seat has touch devices
+	WlSeatCapabilityTouch WlSeatCapability = 4
 )
 
-// WWlSeatError represents wl_seat error values
+// WlSeatError represents wl_seat error values
 //
 // These errors can be emitted in response to wl_seat requests.
-type WWlSeatError int
+type WlSeatError int
 
 const (
-	// WWlSeatErrorMissingCapability corresponds to get_pointer, get_keyboard or get_touch called on seat without the matching capability
-	WWlSeatErrorMissingCapability WWlSeatError = 0
+	// WlSeatErrorMissingCapability corresponds to get_pointer, get_keyboard or get_touch called on seat without the matching capability
+	WlSeatErrorMissingCapability WlSeatError = 0
 )
 
-// WWlSeatGetPointerRequest requests to return pointer object
+// WlSeatGetPointerRequest requests to return pointer object
 //
 // The ID provided will be initialized to the wl_pointer interface
 // for this seat.
@@ -11232,18 +11156,18 @@ const (
 // It is a protocol violation to issue this request on a seat that has
 // never had the pointer capability. The missing_capability error will
 // be sent in this case.
-type WWlSeatGetPointerRequest struct {
+type WlSeatGetPointerRequest struct {
 	// ID contains seat pointer
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wl_seat.get_pointer in wayland
-func (WWlSeatGetPointerRequest) Opcode() uint16 { return 0 }
+func (WlSeatGetPointerRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlSeatGetPointerRequest implements Message.
-var _ Message = WWlSeatGetPointerRequest{}
+// Ensure WlSeatGetPointerRequest implements Message.
+var _ Message = WlSeatGetPointerRequest{}
 
-// WWlSeatGetKeyboardRequest requests to return keyboard object
+// WlSeatGetKeyboardRequest requests to return keyboard object
 //
 // The ID provided will be initialized to the wl_keyboard interface
 // for this seat.
@@ -11253,18 +11177,18 @@ var _ Message = WWlSeatGetPointerRequest{}
 // It is a protocol violation to issue this request on a seat that has
 // never had the keyboard capability. The missing_capability error will
 // be sent in this case.
-type WWlSeatGetKeyboardRequest struct {
+type WlSeatGetKeyboardRequest struct {
 	// ID contains seat keyboard
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wl_seat.get_keyboard in wayland
-func (WWlSeatGetKeyboardRequest) Opcode() uint16 { return 1 }
+func (WlSeatGetKeyboardRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlSeatGetKeyboardRequest implements Message.
-var _ Message = WWlSeatGetKeyboardRequest{}
+// Ensure WlSeatGetKeyboardRequest implements Message.
+var _ Message = WlSeatGetKeyboardRequest{}
 
-// WWlSeatGetTouchRequest requests to return touch object
+// WlSeatGetTouchRequest requests to return touch object
 //
 // The ID provided will be initialized to the wl_touch interface
 // for this seat.
@@ -11274,31 +11198,31 @@ var _ Message = WWlSeatGetKeyboardRequest{}
 // It is a protocol violation to issue this request on a seat that has
 // never had the touch capability. The missing_capability error will
 // be sent in this case.
-type WWlSeatGetTouchRequest struct {
+type WlSeatGetTouchRequest struct {
 	// ID contains seat touch interface
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for wl_seat.get_touch in wayland
-func (WWlSeatGetTouchRequest) Opcode() uint16 { return 2 }
+func (WlSeatGetTouchRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlSeatGetTouchRequest implements Message.
-var _ Message = WWlSeatGetTouchRequest{}
+// Ensure WlSeatGetTouchRequest implements Message.
+var _ Message = WlSeatGetTouchRequest{}
 
-// WWlSeatReleaseRequest requests to release the seat object
+// WlSeatReleaseRequest requests to release the seat object
 //
 // Using this request a client can tell the server that it is not going to
 // use the seat object anymore.
-type WWlSeatReleaseRequest struct {
+type WlSeatReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for wl_seat.release in wayland
-func (WWlSeatReleaseRequest) Opcode() uint16 { return 3 }
+func (WlSeatReleaseRequest) Opcode() uint16 { return 3 }
 
-// Ensure WWlSeatReleaseRequest implements Message.
-var _ Message = WWlSeatReleaseRequest{}
+// Ensure WlSeatReleaseRequest implements Message.
+var _ Message = WlSeatReleaseRequest{}
 
-// WWlSeatCapabilitiesEvent signals when seat capabilities changed
+// WlSeatCapabilitiesEvent signals when seat capabilities changed
 //
 // This is emitted whenever a seat gains or loses the pointer,
 // keyboard or touch capabilities.  The argument is a capability
@@ -11324,19 +11248,19 @@ var _ Message = WWlSeatReleaseRequest{}
 //
 // The above behavior also applies to wl_keyboard and wl_touch with the
 // keyboard and touch capabilities, respectively.
-type WWlSeatCapabilitiesEvent struct {
+type WlSeatCapabilitiesEvent struct {
 	// Capabilities contains capabilities of the seat
 	Capabilities uint32
 }
 
 // Opcode returns the event opcode for wl_seat.capabilities in wayland
-func (WWlSeatCapabilitiesEvent) Opcode() uint16 { return 0 }
+func (WlSeatCapabilitiesEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlSeatCapabilitiesEvent implements Message.
-var _ Message = WWlSeatCapabilitiesEvent{}
+// Ensure WlSeatCapabilitiesEvent implements Message.
+var _ Message = WlSeatCapabilitiesEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlSeatCapabilitiesEvent) Scan(s *EventScanner) error {
+func (e *WlSeatCapabilitiesEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11345,10 +11269,10 @@ func (e *WWlSeatCapabilitiesEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlSeatCapabilitiesEvent implements Event.
-var _ Event = &WWlSeatCapabilitiesEvent{}
+// Ensure WlSeatCapabilitiesEvent implements Event.
+var _ Event = &WlSeatCapabilitiesEvent{}
 
-// WWlSeatNameEvent signals when unique identifier for this seat
+// WlSeatNameEvent signals when unique identifier for this seat
 //
 // In a multi-seat configuration the seat name can be used by clients to
 // help identify which physical devices the seat represents.
@@ -11366,19 +11290,19 @@ var _ Event = &WWlSeatCapabilitiesEvent{}
 //
 // Compositors may re-use the same seat name if the wl_seat global is
 // destroyed and re-created later.
-type WWlSeatNameEvent struct {
+type WlSeatNameEvent struct {
 	// Name contains seat identifier
 	Name string
 }
 
 // Opcode returns the event opcode for wl_seat.name in wayland
-func (WWlSeatNameEvent) Opcode() uint16 { return 1 }
+func (WlSeatNameEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlSeatNameEvent implements Message.
-var _ Message = WWlSeatNameEvent{}
+// Ensure WlSeatNameEvent implements Message.
+var _ Message = WlSeatNameEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlSeatNameEvent) Scan(s *EventScanner) error {
+func (e *WlSeatNameEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -11387,49 +11311,49 @@ func (e *WWlSeatNameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlSeatNameEvent implements Event.
-var _ Event = &WWlSeatNameEvent{}
+// Ensure WlSeatNameEvent implements Event.
+var _ Event = &WlSeatNameEvent{}
 
 // #endregion Interface wayland.wl_seat
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_pointer
 
-type WWlPointerError int
+type WlPointerError int
 
 const (
-	// WWlPointerErrorRole corresponds to given wl_surface has another role
-	WWlPointerErrorRole WWlPointerError = 0
+	// WlPointerErrorRole corresponds to given wl_surface has another role
+	WlPointerErrorRole WlPointerError = 0
 )
 
-// WWlPointerButtonState represents physical button state
+// WlPointerButtonState represents physical button state
 //
 // Describes the physical state of a button that produced the button
 // event.
-type WWlPointerButtonState int
+type WlPointerButtonState int
 
 const (
-	// WWlPointerButtonStateReleased corresponds to the button is not pressed
-	WWlPointerButtonStateReleased WWlPointerButtonState = 0
+	// WlPointerButtonStateReleased corresponds to the button is not pressed
+	WlPointerButtonStateReleased WlPointerButtonState = 0
 
-	// WWlPointerButtonStatePressed corresponds to the button is pressed
-	WWlPointerButtonStatePressed WWlPointerButtonState = 1
+	// WlPointerButtonStatePressed corresponds to the button is pressed
+	WlPointerButtonStatePressed WlPointerButtonState = 1
 )
 
-// WWlPointerAxis represents axis types
+// WlPointerAxis represents axis types
 //
 // Describes the axis types of scroll events.
-type WWlPointerAxis int
+type WlPointerAxis int
 
 const (
-	// WWlPointerAxisVerticalScroll corresponds to vertical axis
-	WWlPointerAxisVerticalScroll WWlPointerAxis = 0
+	// WlPointerAxisVerticalScroll corresponds to vertical axis
+	WlPointerAxisVerticalScroll WlPointerAxis = 0
 
-	// WWlPointerAxisHorizontalScroll corresponds to horizontal axis
-	WWlPointerAxisHorizontalScroll WWlPointerAxis = 1
+	// WlPointerAxisHorizontalScroll corresponds to horizontal axis
+	WlPointerAxisHorizontalScroll WlPointerAxis = 1
 )
 
-// WWlPointerAxisSource represents axis source types
+// WlPointerAxisSource represents axis source types
 //
 // Describes the source types for axis events. This indicates to the
 // client how an axis event was physically generated; a client may
@@ -11447,23 +11371,23 @@ const (
 // The "wheel tilt" axis source indicates that the actual device is a
 // wheel but the scroll event is not caused by a rotation but a
 // (usually sideways) tilt of the wheel.
-type WWlPointerAxisSource int
+type WlPointerAxisSource int
 
 const (
-	// WWlPointerAxisSourceWheel corresponds to a physical wheel rotation
-	WWlPointerAxisSourceWheel WWlPointerAxisSource = 0
+	// WlPointerAxisSourceWheel corresponds to a physical wheel rotation
+	WlPointerAxisSourceWheel WlPointerAxisSource = 0
 
-	// WWlPointerAxisSourceFinger corresponds to finger on a touch surface
-	WWlPointerAxisSourceFinger WWlPointerAxisSource = 1
+	// WlPointerAxisSourceFinger corresponds to finger on a touch surface
+	WlPointerAxisSourceFinger WlPointerAxisSource = 1
 
-	// WWlPointerAxisSourceContinuous corresponds to continuous coordinate space
-	WWlPointerAxisSourceContinuous WWlPointerAxisSource = 2
+	// WlPointerAxisSourceContinuous corresponds to continuous coordinate space
+	WlPointerAxisSourceContinuous WlPointerAxisSource = 2
 
-	// WWlPointerAxisSourceWheelTilt corresponds to a physical wheel tilt
-	WWlPointerAxisSourceWheelTilt WWlPointerAxisSource = 3
+	// WlPointerAxisSourceWheelTilt corresponds to a physical wheel tilt
+	WlPointerAxisSourceWheelTilt WlPointerAxisSource = 3
 )
 
-// WWlPointerSetCursorRequest requests to set the pointer surface
+// WlPointerSetCursorRequest requests to set the pointer surface
 //
 // Set the pointer surface, i.e., the surface that contains the
 // pointer image (cursor). This request gives the surface the role
@@ -11500,7 +11424,7 @@ const (
 // The serial parameter must match the latest wl_pointer.enter
 // serial number sent to the client. Otherwise the request will be
 // ignored.
-type WWlPointerSetCursorRequest struct {
+type WlPointerSetCursorRequest struct {
 	// Serial contains serial number of the enter event
 	Serial uint32
 
@@ -11515,28 +11439,28 @@ type WWlPointerSetCursorRequest struct {
 }
 
 // Opcode returns the request opcode for wl_pointer.set_cursor in wayland
-func (WWlPointerSetCursorRequest) Opcode() uint16 { return 0 }
+func (WlPointerSetCursorRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlPointerSetCursorRequest implements Message.
-var _ Message = WWlPointerSetCursorRequest{}
+// Ensure WlPointerSetCursorRequest implements Message.
+var _ Message = WlPointerSetCursorRequest{}
 
-// WWlPointerReleaseRequest requests to release the pointer object
+// WlPointerReleaseRequest requests to release the pointer object
 //
 // Using this request a client can tell the server that it is not going to
 // use the pointer object anymore.
 //
 // This request destroys the pointer proxy object, so clients must not call
 // wl_pointer_destroy() after using this request.
-type WWlPointerReleaseRequest struct {
+type WlPointerReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for wl_pointer.release in wayland
-func (WWlPointerReleaseRequest) Opcode() uint16 { return 1 }
+func (WlPointerReleaseRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlPointerReleaseRequest implements Message.
-var _ Message = WWlPointerReleaseRequest{}
+// Ensure WlPointerReleaseRequest implements Message.
+var _ Message = WlPointerReleaseRequest{}
 
-// WWlPointerEnterEvent signals when enter event
+// WlPointerEnterEvent signals when enter event
 //
 // Notification that this seat's pointer is focused on a certain
 // surface.
@@ -11544,7 +11468,7 @@ var _ Message = WWlPointerReleaseRequest{}
 // When a seat's focus enters a surface, the pointer image
 // is undefined and a client should respond to this event by setting
 // an appropriate pointer image with the set_cursor request.
-type WWlPointerEnterEvent struct {
+type WlPointerEnterEvent struct {
 	// Serial contains serial number of the enter event
 	Serial uint32
 
@@ -11559,13 +11483,13 @@ type WWlPointerEnterEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.enter in wayland
-func (WWlPointerEnterEvent) Opcode() uint16 { return 0 }
+func (WlPointerEnterEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlPointerEnterEvent implements Message.
-var _ Message = WWlPointerEnterEvent{}
+// Ensure WlPointerEnterEvent implements Message.
+var _ Message = WlPointerEnterEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerEnterEvent) Scan(s *EventScanner) error {
+func (e *WlPointerEnterEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11589,17 +11513,17 @@ func (e *WWlPointerEnterEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerEnterEvent implements Event.
-var _ Event = &WWlPointerEnterEvent{}
+// Ensure WlPointerEnterEvent implements Event.
+var _ Event = &WlPointerEnterEvent{}
 
-// WWlPointerLeaveEvent signals when leave event
+// WlPointerLeaveEvent signals when leave event
 //
 // Notification that this seat's pointer is no longer focused on
 // a certain surface.
 //
 // The leave notification is sent before the enter notification
 // for the new focus.
-type WWlPointerLeaveEvent struct {
+type WlPointerLeaveEvent struct {
 	// Serial contains serial number of the leave event
 	Serial uint32
 
@@ -11608,13 +11532,13 @@ type WWlPointerLeaveEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.leave in wayland
-func (WWlPointerLeaveEvent) Opcode() uint16 { return 1 }
+func (WlPointerLeaveEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlPointerLeaveEvent implements Message.
-var _ Message = WWlPointerLeaveEvent{}
+// Ensure WlPointerLeaveEvent implements Message.
+var _ Message = WlPointerLeaveEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerLeaveEvent) Scan(s *EventScanner) error {
+func (e *WlPointerLeaveEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11628,15 +11552,15 @@ func (e *WWlPointerLeaveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerLeaveEvent implements Event.
-var _ Event = &WWlPointerLeaveEvent{}
+// Ensure WlPointerLeaveEvent implements Event.
+var _ Event = &WlPointerLeaveEvent{}
 
-// WWlPointerMotionEvent signals when pointer motion event
+// WlPointerMotionEvent signals when pointer motion event
 //
 // Notification of pointer location change. The arguments
 // surface_x and surface_y are the location relative to the
 // focused surface.
-type WWlPointerMotionEvent struct {
+type WlPointerMotionEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 
@@ -11648,13 +11572,13 @@ type WWlPointerMotionEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.motion in wayland
-func (WWlPointerMotionEvent) Opcode() uint16 { return 2 }
+func (WlPointerMotionEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlPointerMotionEvent implements Message.
-var _ Message = WWlPointerMotionEvent{}
+// Ensure WlPointerMotionEvent implements Message.
+var _ Message = WlPointerMotionEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerMotionEvent) Scan(s *EventScanner) error {
+func (e *WlPointerMotionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11673,10 +11597,10 @@ func (e *WWlPointerMotionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerMotionEvent implements Event.
-var _ Event = &WWlPointerMotionEvent{}
+// Ensure WlPointerMotionEvent implements Event.
+var _ Event = &WlPointerMotionEvent{}
 
-// WWlPointerButtonEvent signals when pointer button event
+// WlPointerButtonEvent signals when pointer button event
 //
 // Mouse button click and release notifications.
 //
@@ -11692,7 +11616,7 @@ var _ Event = &WWlPointerMotionEvent{}
 // kernel's event code list. All other button codes above 0xFFFF are
 // currently undefined but may be used in future versions of this
 // protocol.
-type WWlPointerButtonEvent struct {
+type WlPointerButtonEvent struct {
 	// Serial contains serial number of the button event
 	Serial uint32
 
@@ -11707,13 +11631,13 @@ type WWlPointerButtonEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.button in wayland
-func (WWlPointerButtonEvent) Opcode() uint16 { return 3 }
+func (WlPointerButtonEvent) Opcode() uint16 { return 3 }
 
-// Ensure WWlPointerButtonEvent implements Message.
-var _ Message = WWlPointerButtonEvent{}
+// Ensure WlPointerButtonEvent implements Message.
+var _ Message = WlPointerButtonEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerButtonEvent) Scan(s *EventScanner) error {
+func (e *WlPointerButtonEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11737,10 +11661,10 @@ func (e *WWlPointerButtonEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerButtonEvent implements Event.
-var _ Event = &WWlPointerButtonEvent{}
+// Ensure WlPointerButtonEvent implements Event.
+var _ Event = &WlPointerButtonEvent{}
 
-// WWlPointerAxisEvent signals when axis event
+// WlPointerAxisEvent signals when axis event
 //
 // Scroll and other axis notifications.
 //
@@ -11758,7 +11682,7 @@ var _ Event = &WWlPointerButtonEvent{}
 //
 // When applicable, a client can transform its content relative to the
 // scroll distance.
-type WWlPointerAxisEvent struct {
+type WlPointerAxisEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 
@@ -11770,13 +11694,13 @@ type WWlPointerAxisEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.axis in wayland
-func (WWlPointerAxisEvent) Opcode() uint16 { return 4 }
+func (WlPointerAxisEvent) Opcode() uint16 { return 4 }
 
-// Ensure WWlPointerAxisEvent implements Message.
-var _ Message = WWlPointerAxisEvent{}
+// Ensure WlPointerAxisEvent implements Message.
+var _ Message = WlPointerAxisEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerAxisEvent) Scan(s *EventScanner) error {
+func (e *WlPointerAxisEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11795,10 +11719,10 @@ func (e *WWlPointerAxisEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerAxisEvent implements Event.
-var _ Event = &WWlPointerAxisEvent{}
+// Ensure WlPointerAxisEvent implements Event.
+var _ Event = &WlPointerAxisEvent{}
 
-// WWlPointerFrameEvent signals when end of a pointer event sequence
+// WlPointerFrameEvent signals when end of a pointer event sequence
 //
 // Indicates the end of a set of events that logically belong together.
 // A client is expected to accumulate the data in all events within the
@@ -11834,24 +11758,24 @@ var _ Event = &WWlPointerAxisEvent{}
 // Compositor-specific policies may require the wl_pointer.leave and
 // wl_pointer.enter event being split across multiple wl_pointer.frame
 // groups.
-type WWlPointerFrameEvent struct {
+type WlPointerFrameEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.frame in wayland
-func (WWlPointerFrameEvent) Opcode() uint16 { return 5 }
+func (WlPointerFrameEvent) Opcode() uint16 { return 5 }
 
-// Ensure WWlPointerFrameEvent implements Message.
-var _ Message = WWlPointerFrameEvent{}
+// Ensure WlPointerFrameEvent implements Message.
+var _ Message = WlPointerFrameEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerFrameEvent) Scan(s *EventScanner) error {
+func (e *WlPointerFrameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerFrameEvent implements Event.
-var _ Event = &WWlPointerFrameEvent{}
+// Ensure WlPointerFrameEvent implements Event.
+var _ Event = &WlPointerFrameEvent{}
 
-// WWlPointerAxisSourceEvent signals when axis source event
+// WlPointerAxisSourceEvent signals when axis source event
 //
 // Source information for scroll and other axes.
 //
@@ -11878,19 +11802,19 @@ var _ Event = &WWlPointerFrameEvent{}
 //
 // The order of wl_pointer.axis_discrete and wl_pointer.axis_source is
 // not guaranteed.
-type WWlPointerAxisSourceEvent struct {
+type WlPointerAxisSourceEvent struct {
 	// AxisSource contains source of the axis event
 	AxisSource uint32
 }
 
 // Opcode returns the event opcode for wl_pointer.axis_source in wayland
-func (WWlPointerAxisSourceEvent) Opcode() uint16 { return 6 }
+func (WlPointerAxisSourceEvent) Opcode() uint16 { return 6 }
 
-// Ensure WWlPointerAxisSourceEvent implements Message.
-var _ Message = WWlPointerAxisSourceEvent{}
+// Ensure WlPointerAxisSourceEvent implements Message.
+var _ Message = WlPointerAxisSourceEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerAxisSourceEvent) Scan(s *EventScanner) error {
+func (e *WlPointerAxisSourceEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11899,10 +11823,10 @@ func (e *WWlPointerAxisSourceEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerAxisSourceEvent implements Event.
-var _ Event = &WWlPointerAxisSourceEvent{}
+// Ensure WlPointerAxisSourceEvent implements Event.
+var _ Event = &WlPointerAxisSourceEvent{}
 
-// WWlPointerAxisStopEvent signals when axis stop event
+// WlPointerAxisStopEvent signals when axis stop event
 //
 // Stop notification for scroll and other axes.
 //
@@ -11918,7 +11842,7 @@ var _ Event = &WWlPointerAxisSourceEvent{}
 // The timestamp is to be interpreted identical to the timestamp in the
 // wl_pointer.axis event. The timestamp value may be the same as a
 // preceding wl_pointer.axis event.
-type WWlPointerAxisStopEvent struct {
+type WlPointerAxisStopEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 
@@ -11927,13 +11851,13 @@ type WWlPointerAxisStopEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.axis_stop in wayland
-func (WWlPointerAxisStopEvent) Opcode() uint16 { return 7 }
+func (WlPointerAxisStopEvent) Opcode() uint16 { return 7 }
 
-// Ensure WWlPointerAxisStopEvent implements Message.
-var _ Message = WWlPointerAxisStopEvent{}
+// Ensure WlPointerAxisStopEvent implements Message.
+var _ Message = WlPointerAxisStopEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerAxisStopEvent) Scan(s *EventScanner) error {
+func (e *WlPointerAxisStopEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -11947,10 +11871,10 @@ func (e *WWlPointerAxisStopEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerAxisStopEvent implements Event.
-var _ Event = &WWlPointerAxisStopEvent{}
+// Ensure WlPointerAxisStopEvent implements Event.
+var _ Event = &WlPointerAxisStopEvent{}
 
-// WWlPointerAxisDiscreteEvent signals when axis click event
+// WlPointerAxisDiscreteEvent signals when axis click event
 //
 // Discrete step information for scroll and other axes.
 //
@@ -11978,7 +11902,7 @@ var _ Event = &WWlPointerAxisStopEvent{}
 //
 // The order of wl_pointer.axis_discrete and wl_pointer.axis_source is
 // not guaranteed.
-type WWlPointerAxisDiscreteEvent struct {
+type WlPointerAxisDiscreteEvent struct {
 	// Axis contains axis type
 	Axis uint32
 
@@ -11987,13 +11911,13 @@ type WWlPointerAxisDiscreteEvent struct {
 }
 
 // Opcode returns the event opcode for wl_pointer.axis_discrete in wayland
-func (WWlPointerAxisDiscreteEvent) Opcode() uint16 { return 8 }
+func (WlPointerAxisDiscreteEvent) Opcode() uint16 { return 8 }
 
-// Ensure WWlPointerAxisDiscreteEvent implements Message.
-var _ Message = WWlPointerAxisDiscreteEvent{}
+// Ensure WlPointerAxisDiscreteEvent implements Message.
+var _ Message = WlPointerAxisDiscreteEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlPointerAxisDiscreteEvent) Scan(s *EventScanner) error {
+func (e *WlPointerAxisDiscreteEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12007,52 +11931,52 @@ func (e *WWlPointerAxisDiscreteEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlPointerAxisDiscreteEvent implements Event.
-var _ Event = &WWlPointerAxisDiscreteEvent{}
+// Ensure WlPointerAxisDiscreteEvent implements Event.
+var _ Event = &WlPointerAxisDiscreteEvent{}
 
 // #endregion Interface wayland.wl_pointer
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_keyboard
 
-// WWlKeyboardKeymapFormat represents keyboard mapping format
+// WlKeyboardKeymapFormat represents keyboard mapping format
 //
 // This specifies the format of the keymap provided to the
 // client with the wl_keyboard.keymap event.
-type WWlKeyboardKeymapFormat int
+type WlKeyboardKeymapFormat int
 
 const (
-	// WWlKeyboardKeymapFormatNoKeymap corresponds to no keymap; client must understand how to interpret the raw keycode
-	WWlKeyboardKeymapFormatNoKeymap WWlKeyboardKeymapFormat = 0
+	// WlKeyboardKeymapFormatNoKeymap corresponds to no keymap; client must understand how to interpret the raw keycode
+	WlKeyboardKeymapFormatNoKeymap WlKeyboardKeymapFormat = 0
 
-	// WWlKeyboardKeymapFormatXkbV1 corresponds to libxkbcommon compatible; to determine the xkb keycode, clients must add 8 to the key event keycode
-	WWlKeyboardKeymapFormatXkbV1 WWlKeyboardKeymapFormat = 1
+	// WlKeyboardKeymapFormatXkbV1 corresponds to libxkbcommon compatible; to determine the xkb keycode, clients must add 8 to the key event keycode
+	WlKeyboardKeymapFormatXkbV1 WlKeyboardKeymapFormat = 1
 )
 
-// WWlKeyboardKeyState represents physical key state
+// WlKeyboardKeyState represents physical key state
 //
 // Describes the physical state of a key that produced the key event.
-type WWlKeyboardKeyState int
+type WlKeyboardKeyState int
 
 const (
-	// WWlKeyboardKeyStateReleased corresponds to key is not pressed
-	WWlKeyboardKeyStateReleased WWlKeyboardKeyState = 0
+	// WlKeyboardKeyStateReleased corresponds to key is not pressed
+	WlKeyboardKeyStateReleased WlKeyboardKeyState = 0
 
-	// WWlKeyboardKeyStatePressed corresponds to key is pressed
-	WWlKeyboardKeyStatePressed WWlKeyboardKeyState = 1
+	// WlKeyboardKeyStatePressed corresponds to key is pressed
+	WlKeyboardKeyStatePressed WlKeyboardKeyState = 1
 )
 
-// WWlKeyboardReleaseRequest requests to release the keyboard object
-type WWlKeyboardReleaseRequest struct {
+// WlKeyboardReleaseRequest requests to release the keyboard object
+type WlKeyboardReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for wl_keyboard.release in wayland
-func (WWlKeyboardReleaseRequest) Opcode() uint16 { return 0 }
+func (WlKeyboardReleaseRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlKeyboardReleaseRequest implements Message.
-var _ Message = WWlKeyboardReleaseRequest{}
+// Ensure WlKeyboardReleaseRequest implements Message.
+var _ Message = WlKeyboardReleaseRequest{}
 
-// WWlKeyboardKeymapEvent signals when keyboard mapping
+// WlKeyboardKeymapEvent signals when keyboard mapping
 //
 // This event provides a file descriptor to the client which can be
 // memory-mapped in read-only mode to provide a keyboard mapping
@@ -12060,7 +11984,7 @@ var _ Message = WWlKeyboardReleaseRequest{}
 //
 // From version 7 onwards, the fd must be mapped with MAP_PRIVATE by
 // the recipient, as MAP_SHARED may fail.
-type WWlKeyboardKeymapEvent struct {
+type WlKeyboardKeymapEvent struct {
 	// Format contains keymap format
 	Format uint32
 
@@ -12072,13 +11996,13 @@ type WWlKeyboardKeymapEvent struct {
 }
 
 // Opcode returns the event opcode for wl_keyboard.keymap in wayland
-func (WWlKeyboardKeymapEvent) Opcode() uint16 { return 0 }
+func (WlKeyboardKeymapEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlKeyboardKeymapEvent implements Message.
-var _ Message = WWlKeyboardKeymapEvent{}
+// Ensure WlKeyboardKeymapEvent implements Message.
+var _ Message = WlKeyboardKeymapEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlKeyboardKeymapEvent) Scan(s *EventScanner) error {
+func (e *WlKeyboardKeymapEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12097,17 +12021,17 @@ func (e *WWlKeyboardKeymapEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlKeyboardKeymapEvent implements Event.
-var _ Event = &WWlKeyboardKeymapEvent{}
+// Ensure WlKeyboardKeymapEvent implements Event.
+var _ Event = &WlKeyboardKeymapEvent{}
 
-// WWlKeyboardEnterEvent signals when enter event
+// WlKeyboardEnterEvent signals when enter event
 //
 // Notification that this seat's keyboard focus is on a certain
 // surface.
 //
 // The compositor must send the wl_keyboard.modifiers event after this
 // event.
-type WWlKeyboardEnterEvent struct {
+type WlKeyboardEnterEvent struct {
 	// Serial contains serial number of the enter event
 	Serial uint32
 
@@ -12119,13 +12043,13 @@ type WWlKeyboardEnterEvent struct {
 }
 
 // Opcode returns the event opcode for wl_keyboard.enter in wayland
-func (WWlKeyboardEnterEvent) Opcode() uint16 { return 1 }
+func (WlKeyboardEnterEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlKeyboardEnterEvent implements Message.
-var _ Message = WWlKeyboardEnterEvent{}
+// Ensure WlKeyboardEnterEvent implements Message.
+var _ Message = WlKeyboardEnterEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlKeyboardEnterEvent) Scan(s *EventScanner) error {
+func (e *WlKeyboardEnterEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12144,10 +12068,10 @@ func (e *WWlKeyboardEnterEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlKeyboardEnterEvent implements Event.
-var _ Event = &WWlKeyboardEnterEvent{}
+// Ensure WlKeyboardEnterEvent implements Event.
+var _ Event = &WlKeyboardEnterEvent{}
 
-// WWlKeyboardLeaveEvent signals when leave event
+// WlKeyboardLeaveEvent signals when leave event
 //
 // Notification that this seat's keyboard focus is no longer on
 // a certain surface.
@@ -12157,7 +12081,7 @@ var _ Event = &WWlKeyboardEnterEvent{}
 //
 // After this event client must assume that all keys, including modifiers,
 // are lifted and also it must stop key repeating if there's some going on.
-type WWlKeyboardLeaveEvent struct {
+type WlKeyboardLeaveEvent struct {
 	// Serial contains serial number of the leave event
 	Serial uint32
 
@@ -12166,13 +12090,13 @@ type WWlKeyboardLeaveEvent struct {
 }
 
 // Opcode returns the event opcode for wl_keyboard.leave in wayland
-func (WWlKeyboardLeaveEvent) Opcode() uint16 { return 2 }
+func (WlKeyboardLeaveEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlKeyboardLeaveEvent implements Message.
-var _ Message = WWlKeyboardLeaveEvent{}
+// Ensure WlKeyboardLeaveEvent implements Message.
+var _ Message = WlKeyboardLeaveEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlKeyboardLeaveEvent) Scan(s *EventScanner) error {
+func (e *WlKeyboardLeaveEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12186,10 +12110,10 @@ func (e *WWlKeyboardLeaveEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlKeyboardLeaveEvent implements Event.
-var _ Event = &WWlKeyboardLeaveEvent{}
+// Ensure WlKeyboardLeaveEvent implements Event.
+var _ Event = &WlKeyboardLeaveEvent{}
 
-// WWlKeyboardKeyEvent signals when key event
+// WlKeyboardKeyEvent signals when key event
 //
 // A key was pressed or released.
 // The time argument is a timestamp with millisecond
@@ -12200,7 +12124,7 @@ var _ Event = &WWlKeyboardLeaveEvent{}
 //
 // If this event produces a change in modifiers, then the resulting
 // wl_keyboard.modifiers event must be sent after this event.
-type WWlKeyboardKeyEvent struct {
+type WlKeyboardKeyEvent struct {
 	// Serial contains serial number of the key event
 	Serial uint32
 
@@ -12215,13 +12139,13 @@ type WWlKeyboardKeyEvent struct {
 }
 
 // Opcode returns the event opcode for wl_keyboard.key in wayland
-func (WWlKeyboardKeyEvent) Opcode() uint16 { return 3 }
+func (WlKeyboardKeyEvent) Opcode() uint16 { return 3 }
 
-// Ensure WWlKeyboardKeyEvent implements Message.
-var _ Message = WWlKeyboardKeyEvent{}
+// Ensure WlKeyboardKeyEvent implements Message.
+var _ Message = WlKeyboardKeyEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlKeyboardKeyEvent) Scan(s *EventScanner) error {
+func (e *WlKeyboardKeyEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12245,14 +12169,14 @@ func (e *WWlKeyboardKeyEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlKeyboardKeyEvent implements Event.
-var _ Event = &WWlKeyboardKeyEvent{}
+// Ensure WlKeyboardKeyEvent implements Event.
+var _ Event = &WlKeyboardKeyEvent{}
 
-// WWlKeyboardModifiersEvent signals when modifier and group state
+// WlKeyboardModifiersEvent signals when modifier and group state
 //
 // Notifies clients that the modifier and/or group state has
 // changed, and it should update its local state.
-type WWlKeyboardModifiersEvent struct {
+type WlKeyboardModifiersEvent struct {
 	// Serial contains serial number of the modifiers event
 	Serial uint32
 
@@ -12270,13 +12194,13 @@ type WWlKeyboardModifiersEvent struct {
 }
 
 // Opcode returns the event opcode for wl_keyboard.modifiers in wayland
-func (WWlKeyboardModifiersEvent) Opcode() uint16 { return 4 }
+func (WlKeyboardModifiersEvent) Opcode() uint16 { return 4 }
 
-// Ensure WWlKeyboardModifiersEvent implements Message.
-var _ Message = WWlKeyboardModifiersEvent{}
+// Ensure WlKeyboardModifiersEvent implements Message.
+var _ Message = WlKeyboardModifiersEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlKeyboardModifiersEvent) Scan(s *EventScanner) error {
+func (e *WlKeyboardModifiersEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12305,10 +12229,10 @@ func (e *WWlKeyboardModifiersEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlKeyboardModifiersEvent implements Event.
-var _ Event = &WWlKeyboardModifiersEvent{}
+// Ensure WlKeyboardModifiersEvent implements Event.
+var _ Event = &WlKeyboardModifiersEvent{}
 
-// WWlKeyboardRepeatInfoEvent signals when repeat rate and delay
+// WlKeyboardRepeatInfoEvent signals when repeat rate and delay
 //
 // Informs the client about the keyboard's repeat rate and delay.
 //
@@ -12322,7 +12246,7 @@ var _ Event = &WWlKeyboardModifiersEvent{}
 // This event can be sent later on as well with a new value if necessary,
 // so clients should continue listening for the event past the creation
 // of wl_keyboard.
-type WWlKeyboardRepeatInfoEvent struct {
+type WlKeyboardRepeatInfoEvent struct {
 	// Rate contains the rate of repeating keys in characters per second
 	Rate int32
 
@@ -12331,13 +12255,13 @@ type WWlKeyboardRepeatInfoEvent struct {
 }
 
 // Opcode returns the event opcode for wl_keyboard.repeat_info in wayland
-func (WWlKeyboardRepeatInfoEvent) Opcode() uint16 { return 5 }
+func (WlKeyboardRepeatInfoEvent) Opcode() uint16 { return 5 }
 
-// Ensure WWlKeyboardRepeatInfoEvent implements Message.
-var _ Message = WWlKeyboardRepeatInfoEvent{}
+// Ensure WlKeyboardRepeatInfoEvent implements Message.
+var _ Message = WlKeyboardRepeatInfoEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlKeyboardRepeatInfoEvent) Scan(s *EventScanner) error {
+func (e *WlKeyboardRepeatInfoEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -12351,31 +12275,31 @@ func (e *WWlKeyboardRepeatInfoEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlKeyboardRepeatInfoEvent implements Event.
-var _ Event = &WWlKeyboardRepeatInfoEvent{}
+// Ensure WlKeyboardRepeatInfoEvent implements Event.
+var _ Event = &WlKeyboardRepeatInfoEvent{}
 
 // #endregion Interface wayland.wl_keyboard
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_touch
 
-// WWlTouchReleaseRequest requests to release the touch object
-type WWlTouchReleaseRequest struct {
+// WlTouchReleaseRequest requests to release the touch object
+type WlTouchReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for wl_touch.release in wayland
-func (WWlTouchReleaseRequest) Opcode() uint16 { return 0 }
+func (WlTouchReleaseRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlTouchReleaseRequest implements Message.
-var _ Message = WWlTouchReleaseRequest{}
+// Ensure WlTouchReleaseRequest implements Message.
+var _ Message = WlTouchReleaseRequest{}
 
-// WWlTouchDownEvent signals when touch down event and beginning of a touch sequence
+// WlTouchDownEvent signals when touch down event and beginning of a touch sequence
 //
 // A new touch point has appeared on the surface. This touch point is
 // assigned a unique ID. Future events from this touch point reference
 // this ID. The ID ceases to be valid after a touch up event and may be
 // reused in the future.
-type WWlTouchDownEvent struct {
+type WlTouchDownEvent struct {
 	// Serial contains serial number of the touch down event
 	Serial uint32
 
@@ -12396,13 +12320,13 @@ type WWlTouchDownEvent struct {
 }
 
 // Opcode returns the event opcode for wl_touch.down in wayland
-func (WWlTouchDownEvent) Opcode() uint16 { return 0 }
+func (WlTouchDownEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlTouchDownEvent implements Message.
-var _ Message = WWlTouchDownEvent{}
+// Ensure WlTouchDownEvent implements Message.
+var _ Message = WlTouchDownEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlTouchDownEvent) Scan(s *EventScanner) error {
+func (e *WlTouchDownEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12436,15 +12360,15 @@ func (e *WWlTouchDownEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlTouchDownEvent implements Event.
-var _ Event = &WWlTouchDownEvent{}
+// Ensure WlTouchDownEvent implements Event.
+var _ Event = &WlTouchDownEvent{}
 
-// WWlTouchUpEvent signals when end of a touch event sequence
+// WlTouchUpEvent signals when end of a touch event sequence
 //
 // The touch point has disappeared. No further events will be sent for
 // this touch point and the touch point's ID is released and may be
 // reused in a future touch down event.
-type WWlTouchUpEvent struct {
+type WlTouchUpEvent struct {
 	// Serial contains serial number of the touch up event
 	Serial uint32
 
@@ -12456,13 +12380,13 @@ type WWlTouchUpEvent struct {
 }
 
 // Opcode returns the event opcode for wl_touch.up in wayland
-func (WWlTouchUpEvent) Opcode() uint16 { return 1 }
+func (WlTouchUpEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlTouchUpEvent implements Message.
-var _ Message = WWlTouchUpEvent{}
+// Ensure WlTouchUpEvent implements Message.
+var _ Message = WlTouchUpEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlTouchUpEvent) Scan(s *EventScanner) error {
+func (e *WlTouchUpEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12481,13 +12405,13 @@ func (e *WWlTouchUpEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlTouchUpEvent implements Event.
-var _ Event = &WWlTouchUpEvent{}
+// Ensure WlTouchUpEvent implements Event.
+var _ Event = &WlTouchUpEvent{}
 
-// WWlTouchMotionEvent signals when update of touch point coordinates
+// WlTouchMotionEvent signals when update of touch point coordinates
 //
 // A touch point has changed coordinates.
-type WWlTouchMotionEvent struct {
+type WlTouchMotionEvent struct {
 	// Time contains timestamp with millisecond granularity
 	Time uint32
 
@@ -12502,13 +12426,13 @@ type WWlTouchMotionEvent struct {
 }
 
 // Opcode returns the event opcode for wl_touch.motion in wayland
-func (WWlTouchMotionEvent) Opcode() uint16 { return 2 }
+func (WlTouchMotionEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlTouchMotionEvent implements Message.
-var _ Message = WWlTouchMotionEvent{}
+// Ensure WlTouchMotionEvent implements Message.
+var _ Message = WlTouchMotionEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlTouchMotionEvent) Scan(s *EventScanner) error {
+func (e *WlTouchMotionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12532,10 +12456,10 @@ func (e *WWlTouchMotionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlTouchMotionEvent implements Event.
-var _ Event = &WWlTouchMotionEvent{}
+// Ensure WlTouchMotionEvent implements Event.
+var _ Event = &WlTouchMotionEvent{}
 
-// WWlTouchFrameEvent signals when end of touch frame event
+// WlTouchFrameEvent signals when end of touch frame event
 //
 // Indicates the end of a set of events that logically belong together.
 // A client is expected to accumulate the data in all events within the
@@ -12545,24 +12469,24 @@ var _ Event = &WWlTouchMotionEvent{}
 // guarantee is provided about the set of events within a frame. A client
 // must assume that any state not updated in a frame is unchanged from the
 // previously known state.
-type WWlTouchFrameEvent struct {
+type WlTouchFrameEvent struct {
 }
 
 // Opcode returns the event opcode for wl_touch.frame in wayland
-func (WWlTouchFrameEvent) Opcode() uint16 { return 3 }
+func (WlTouchFrameEvent) Opcode() uint16 { return 3 }
 
-// Ensure WWlTouchFrameEvent implements Message.
-var _ Message = WWlTouchFrameEvent{}
+// Ensure WlTouchFrameEvent implements Message.
+var _ Message = WlTouchFrameEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlTouchFrameEvent) Scan(s *EventScanner) error {
+func (e *WlTouchFrameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlTouchFrameEvent implements Event.
-var _ Event = &WWlTouchFrameEvent{}
+// Ensure WlTouchFrameEvent implements Event.
+var _ Event = &WlTouchFrameEvent{}
 
-// WWlTouchCancelEvent signals when touch session cancelled
+// WlTouchCancelEvent signals when touch session cancelled
 //
 // Sent if the compositor decides the touch stream is a global
 // gesture. No further events are sent to the clients from that
@@ -12570,24 +12494,24 @@ var _ Event = &WWlTouchFrameEvent{}
 // currently active on this client's surface. The client is
 // responsible for finalizing the touch points, future touch points on
 // this surface may reuse the touch point ID.
-type WWlTouchCancelEvent struct {
+type WlTouchCancelEvent struct {
 }
 
 // Opcode returns the event opcode for wl_touch.cancel in wayland
-func (WWlTouchCancelEvent) Opcode() uint16 { return 4 }
+func (WlTouchCancelEvent) Opcode() uint16 { return 4 }
 
-// Ensure WWlTouchCancelEvent implements Message.
-var _ Message = WWlTouchCancelEvent{}
+// Ensure WlTouchCancelEvent implements Message.
+var _ Message = WlTouchCancelEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlTouchCancelEvent) Scan(s *EventScanner) error {
+func (e *WlTouchCancelEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlTouchCancelEvent implements Event.
-var _ Event = &WWlTouchCancelEvent{}
+// Ensure WlTouchCancelEvent implements Event.
+var _ Event = &WlTouchCancelEvent{}
 
-// WWlTouchShapeEvent signals when update shape of touch point
+// WlTouchShapeEvent signals when update shape of touch point
 //
 // Sent when a touchpoint has changed its shape.
 //
@@ -12614,7 +12538,7 @@ var _ Event = &WWlTouchCancelEvent{}
 // This event is only sent by the compositor if the touch device supports
 // shape reports. The client has to make reasonable assumptions about the
 // shape if it did not receive this event.
-type WWlTouchShapeEvent struct {
+type WlTouchShapeEvent struct {
 	// ID contains the unique ID of this touch point
 	ID int32
 
@@ -12626,13 +12550,13 @@ type WWlTouchShapeEvent struct {
 }
 
 // Opcode returns the event opcode for wl_touch.shape in wayland
-func (WWlTouchShapeEvent) Opcode() uint16 { return 5 }
+func (WlTouchShapeEvent) Opcode() uint16 { return 5 }
 
-// Ensure WWlTouchShapeEvent implements Message.
-var _ Message = WWlTouchShapeEvent{}
+// Ensure WlTouchShapeEvent implements Message.
+var _ Message = WlTouchShapeEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlTouchShapeEvent) Scan(s *EventScanner) error {
+func (e *WlTouchShapeEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -12651,10 +12575,10 @@ func (e *WWlTouchShapeEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlTouchShapeEvent implements Event.
-var _ Event = &WWlTouchShapeEvent{}
+// Ensure WlTouchShapeEvent implements Event.
+var _ Event = &WlTouchShapeEvent{}
 
-// WWlTouchOrientationEvent signals when update orientation of touch point
+// WlTouchOrientationEvent signals when update orientation of touch point
 //
 // Sent when a touchpoint has changed its orientation.
 //
@@ -12679,7 +12603,7 @@ var _ Event = &WWlTouchShapeEvent{}
 //
 // This event is only sent by the compositor if the touch device supports
 // orientation reports.
-type WWlTouchOrientationEvent struct {
+type WlTouchOrientationEvent struct {
 	// ID contains the unique ID of this touch point
 	ID int32
 
@@ -12688,13 +12612,13 @@ type WWlTouchOrientationEvent struct {
 }
 
 // Opcode returns the event opcode for wl_touch.orientation in wayland
-func (WWlTouchOrientationEvent) Opcode() uint16 { return 6 }
+func (WlTouchOrientationEvent) Opcode() uint16 { return 6 }
 
-// Ensure WWlTouchOrientationEvent implements Message.
-var _ Message = WWlTouchOrientationEvent{}
+// Ensure WlTouchOrientationEvent implements Message.
+var _ Message = WlTouchOrientationEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlTouchOrientationEvent) Scan(s *EventScanner) error {
+func (e *WlTouchOrientationEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -12708,41 +12632,41 @@ func (e *WWlTouchOrientationEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlTouchOrientationEvent implements Event.
-var _ Event = &WWlTouchOrientationEvent{}
+// Ensure WlTouchOrientationEvent implements Event.
+var _ Event = &WlTouchOrientationEvent{}
 
 // #endregion Interface wayland.wl_touch
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_output
 
-// WWlOutputSubpixel represents subpixel geometry information
+// WlOutputSubpixel represents subpixel geometry information
 //
 // This enumeration describes how the physical
 // pixels on an output are laid out.
-type WWlOutputSubpixel int
+type WlOutputSubpixel int
 
 const (
-	// WWlOutputSubpixelUnknown corresponds to unknown geometry
-	WWlOutputSubpixelUnknown WWlOutputSubpixel = 0
+	// WlOutputSubpixelUnknown corresponds to unknown geometry
+	WlOutputSubpixelUnknown WlOutputSubpixel = 0
 
-	// WWlOutputSubpixelNone corresponds to no geometry
-	WWlOutputSubpixelNone WWlOutputSubpixel = 1
+	// WlOutputSubpixelNone corresponds to no geometry
+	WlOutputSubpixelNone WlOutputSubpixel = 1
 
-	// WWlOutputSubpixelHorizontalRgb corresponds to horizontal RGB
-	WWlOutputSubpixelHorizontalRgb WWlOutputSubpixel = 2
+	// WlOutputSubpixelHorizontalRgb corresponds to horizontal RGB
+	WlOutputSubpixelHorizontalRgb WlOutputSubpixel = 2
 
-	// WWlOutputSubpixelHorizontalBgr corresponds to horizontal BGR
-	WWlOutputSubpixelHorizontalBgr WWlOutputSubpixel = 3
+	// WlOutputSubpixelHorizontalBgr corresponds to horizontal BGR
+	WlOutputSubpixelHorizontalBgr WlOutputSubpixel = 3
 
-	// WWlOutputSubpixelVerticalRgb corresponds to vertical RGB
-	WWlOutputSubpixelVerticalRgb WWlOutputSubpixel = 4
+	// WlOutputSubpixelVerticalRgb corresponds to vertical RGB
+	WlOutputSubpixelVerticalRgb WlOutputSubpixel = 4
 
-	// WWlOutputSubpixelVerticalBgr corresponds to vertical BGR
-	WWlOutputSubpixelVerticalBgr WWlOutputSubpixel = 5
+	// WlOutputSubpixelVerticalBgr corresponds to vertical BGR
+	WlOutputSubpixelVerticalBgr WlOutputSubpixel = 5
 )
 
-// WWlOutputTransform represents transform from framebuffer to output
+// WlOutputTransform represents transform from framebuffer to output
 //
 // This describes the transform that a compositor will apply to a
 // surface to compensate for the rotation or mirroring of an
@@ -12755,62 +12679,62 @@ const (
 // tell the compositor, so that for fullscreen surfaces, the
 // compositor will still be able to scan out directly from client
 // surfaces.
-type WWlOutputTransform int
+type WlOutputTransform int
 
 const (
-	// WWlOutputTransformNormal corresponds to no transform
-	WWlOutputTransformNormal WWlOutputTransform = 0
+	// WlOutputTransformNormal corresponds to no transform
+	WlOutputTransformNormal WlOutputTransform = 0
 
-	// WWlOutputTransform90 corresponds to 90 degrees counter-clockwise
-	WWlOutputTransform90 WWlOutputTransform = 1
+	// WlOutputTransform90 corresponds to 90 degrees counter-clockwise
+	WlOutputTransform90 WlOutputTransform = 1
 
-	// WWlOutputTransform180 corresponds to 180 degrees counter-clockwise
-	WWlOutputTransform180 WWlOutputTransform = 2
+	// WlOutputTransform180 corresponds to 180 degrees counter-clockwise
+	WlOutputTransform180 WlOutputTransform = 2
 
-	// WWlOutputTransform270 corresponds to 270 degrees counter-clockwise
-	WWlOutputTransform270 WWlOutputTransform = 3
+	// WlOutputTransform270 corresponds to 270 degrees counter-clockwise
+	WlOutputTransform270 WlOutputTransform = 3
 
-	// WWlOutputTransformFlipped corresponds to 180 degree flip around a vertical axis
-	WWlOutputTransformFlipped WWlOutputTransform = 4
+	// WlOutputTransformFlipped corresponds to 180 degree flip around a vertical axis
+	WlOutputTransformFlipped WlOutputTransform = 4
 
-	// WWlOutputTransformFlipped90 corresponds to flip and rotate 90 degrees counter-clockwise
-	WWlOutputTransformFlipped90 WWlOutputTransform = 5
+	// WlOutputTransformFlipped90 corresponds to flip and rotate 90 degrees counter-clockwise
+	WlOutputTransformFlipped90 WlOutputTransform = 5
 
-	// WWlOutputTransformFlipped180 corresponds to flip and rotate 180 degrees counter-clockwise
-	WWlOutputTransformFlipped180 WWlOutputTransform = 6
+	// WlOutputTransformFlipped180 corresponds to flip and rotate 180 degrees counter-clockwise
+	WlOutputTransformFlipped180 WlOutputTransform = 6
 
-	// WWlOutputTransformFlipped270 corresponds to flip and rotate 270 degrees counter-clockwise
-	WWlOutputTransformFlipped270 WWlOutputTransform = 7
+	// WlOutputTransformFlipped270 corresponds to flip and rotate 270 degrees counter-clockwise
+	WlOutputTransformFlipped270 WlOutputTransform = 7
 )
 
-// WWlOutputMode represents mode information
+// WlOutputMode represents mode information
 //
 // These flags describe properties of an output mode.
 // They are used in the flags bitfield of the mode event.
-type WWlOutputMode uint
+type WlOutputMode uint
 
 const (
-	// WWlOutputModeCurrent corresponds to indicates this is the current mode
-	WWlOutputModeCurrent WWlOutputMode = 0x1
+	// WlOutputModeCurrent corresponds to indicates this is the current mode
+	WlOutputModeCurrent WlOutputMode = 0x1
 
-	// WWlOutputModePreferred corresponds to indicates this is the preferred mode
-	WWlOutputModePreferred WWlOutputMode = 0x2
+	// WlOutputModePreferred corresponds to indicates this is the preferred mode
+	WlOutputModePreferred WlOutputMode = 0x2
 )
 
-// WWlOutputReleaseRequest requests to release the output object
+// WlOutputReleaseRequest requests to release the output object
 //
 // Using this request a client can tell the server that it is not going to
 // use the output object anymore.
-type WWlOutputReleaseRequest struct {
+type WlOutputReleaseRequest struct {
 }
 
 // Opcode returns the request opcode for wl_output.release in wayland
-func (WWlOutputReleaseRequest) Opcode() uint16 { return 0 }
+func (WlOutputReleaseRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlOutputReleaseRequest implements Message.
-var _ Message = WWlOutputReleaseRequest{}
+// Ensure WlOutputReleaseRequest implements Message.
+var _ Message = WlOutputReleaseRequest{}
 
-// WWlOutputGeometryEvent signals when properties of the output
+// WlOutputGeometryEvent signals when properties of the output
 //
 // The geometry event describes geometric properties of the output.
 // The event is sent when binding to the output object and whenever
@@ -12825,7 +12749,7 @@ var _ Message = WWlOutputReleaseRequest{}
 // outputs, might fake this information. Instead of using x and y, clients
 // should use xdg_output.logical_position. Instead of using make and model,
 // clients should use xdg_output.name and xdg_output.description.
-type WWlOutputGeometryEvent struct {
+type WlOutputGeometryEvent struct {
 	// X contains x position within the global compositor space
 	X int32
 
@@ -12852,13 +12776,13 @@ type WWlOutputGeometryEvent struct {
 }
 
 // Opcode returns the event opcode for wl_output.geometry in wayland
-func (WWlOutputGeometryEvent) Opcode() uint16 { return 0 }
+func (WlOutputGeometryEvent) Opcode() uint16 { return 0 }
 
-// Ensure WWlOutputGeometryEvent implements Message.
-var _ Message = WWlOutputGeometryEvent{}
+// Ensure WlOutputGeometryEvent implements Message.
+var _ Message = WlOutputGeometryEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlOutputGeometryEvent) Scan(s *EventScanner) error {
+func (e *WlOutputGeometryEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -12902,10 +12826,10 @@ func (e *WWlOutputGeometryEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlOutputGeometryEvent implements Event.
-var _ Event = &WWlOutputGeometryEvent{}
+// Ensure WlOutputGeometryEvent implements Event.
+var _ Event = &WlOutputGeometryEvent{}
 
-// WWlOutputModeEvent signals when advertise available modes for the output
+// WlOutputModeEvent signals when advertise available modes for the output
 //
 // The mode event describes an available mode for the output.
 //
@@ -12937,7 +12861,7 @@ var _ Event = &WWlOutputGeometryEvent{}
 // Note: this information is not always meaningful for all outputs. Some
 // compositors, such as those exposing virtual outputs, might fake the
 // refresh rate or the size.
-type WWlOutputModeEvent struct {
+type WlOutputModeEvent struct {
 	// Flags contains bitfield of mode flags
 	Flags uint32
 
@@ -12952,13 +12876,13 @@ type WWlOutputModeEvent struct {
 }
 
 // Opcode returns the event opcode for wl_output.mode in wayland
-func (WWlOutputModeEvent) Opcode() uint16 { return 1 }
+func (WlOutputModeEvent) Opcode() uint16 { return 1 }
 
-// Ensure WWlOutputModeEvent implements Message.
-var _ Message = WWlOutputModeEvent{}
+// Ensure WlOutputModeEvent implements Message.
+var _ Message = WlOutputModeEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlOutputModeEvent) Scan(s *EventScanner) error {
+func (e *WlOutputModeEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -12982,34 +12906,34 @@ func (e *WWlOutputModeEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlOutputModeEvent implements Event.
-var _ Event = &WWlOutputModeEvent{}
+// Ensure WlOutputModeEvent implements Event.
+var _ Event = &WlOutputModeEvent{}
 
-// WWlOutputDoneEvent signals when sent all information about output
+// WlOutputDoneEvent signals when sent all information about output
 //
 // This event is sent after all other properties have been
 // sent after binding to the output object and after any
 // other property changes done after that. This allows
 // changes to the output properties to be seen as
 // atomic, even if they happen via multiple events.
-type WWlOutputDoneEvent struct {
+type WlOutputDoneEvent struct {
 }
 
 // Opcode returns the event opcode for wl_output.done in wayland
-func (WWlOutputDoneEvent) Opcode() uint16 { return 2 }
+func (WlOutputDoneEvent) Opcode() uint16 { return 2 }
 
-// Ensure WWlOutputDoneEvent implements Message.
-var _ Message = WWlOutputDoneEvent{}
+// Ensure WlOutputDoneEvent implements Message.
+var _ Message = WlOutputDoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlOutputDoneEvent) Scan(s *EventScanner) error {
+func (e *WlOutputDoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlOutputDoneEvent implements Event.
-var _ Event = &WWlOutputDoneEvent{}
+// Ensure WlOutputDoneEvent implements Event.
+var _ Event = &WlOutputDoneEvent{}
 
-// WWlOutputScaleEvent signals when output scaling properties
+// WlOutputScaleEvent signals when output scaling properties
 //
 // This event contains scaling geometry information
 // that is not in the geometry event. It may be sent after
@@ -13029,19 +12953,19 @@ var _ Event = &WWlOutputDoneEvent{}
 // the scale of the output. That way the compositor can
 // avoid scaling the surface, and the client can supply
 // a higher detail image.
-type WWlOutputScaleEvent struct {
+type WlOutputScaleEvent struct {
 	// Factor contains scaling factor of output
 	Factor int32
 }
 
 // Opcode returns the event opcode for wl_output.scale in wayland
-func (WWlOutputScaleEvent) Opcode() uint16 { return 3 }
+func (WlOutputScaleEvent) Opcode() uint16 { return 3 }
 
-// Ensure WWlOutputScaleEvent implements Message.
-var _ Message = WWlOutputScaleEvent{}
+// Ensure WlOutputScaleEvent implements Message.
+var _ Message = WlOutputScaleEvent{}
 
 // Scan scans the event from the socket.
-func (e *WWlOutputScaleEvent) Scan(s *EventScanner) error {
+func (e *WlOutputScaleEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -13050,30 +12974,30 @@ func (e *WWlOutputScaleEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WWlOutputScaleEvent implements Event.
-var _ Event = &WWlOutputScaleEvent{}
+// Ensure WlOutputScaleEvent implements Event.
+var _ Event = &WlOutputScaleEvent{}
 
 // #endregion Interface wayland.wl_output
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_region
 
-// WWlRegionDestroyRequest requests to destroy region
+// WlRegionDestroyRequest requests to destroy region
 //
 // Destroy the region.  This will invalidate the object ID.
-type WWlRegionDestroyRequest struct {
+type WlRegionDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_region.destroy in wayland
-func (WWlRegionDestroyRequest) Opcode() uint16 { return 0 }
+func (WlRegionDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlRegionDestroyRequest implements Message.
-var _ Message = WWlRegionDestroyRequest{}
+// Ensure WlRegionDestroyRequest implements Message.
+var _ Message = WlRegionDestroyRequest{}
 
-// WWlRegionAddRequest requests to add rectangle to region
+// WlRegionAddRequest requests to add rectangle to region
 //
 // Add the specified rectangle to the region.
-type WWlRegionAddRequest struct {
+type WlRegionAddRequest struct {
 	// X contains region-local x coordinate
 	X int32
 
@@ -13088,15 +13012,15 @@ type WWlRegionAddRequest struct {
 }
 
 // Opcode returns the request opcode for wl_region.add in wayland
-func (WWlRegionAddRequest) Opcode() uint16 { return 1 }
+func (WlRegionAddRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlRegionAddRequest implements Message.
-var _ Message = WWlRegionAddRequest{}
+// Ensure WlRegionAddRequest implements Message.
+var _ Message = WlRegionAddRequest{}
 
-// WWlRegionSubtractRequest requests to subtract rectangle from region
+// WlRegionSubtractRequest requests to subtract rectangle from region
 //
 // Subtract the specified rectangle from the region.
-type WWlRegionSubtractRequest struct {
+type WlRegionSubtractRequest struct {
 	// X contains region-local x coordinate
 	X int32
 
@@ -13111,38 +13035,38 @@ type WWlRegionSubtractRequest struct {
 }
 
 // Opcode returns the request opcode for wl_region.subtract in wayland
-func (WWlRegionSubtractRequest) Opcode() uint16 { return 2 }
+func (WlRegionSubtractRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlRegionSubtractRequest implements Message.
-var _ Message = WWlRegionSubtractRequest{}
+// Ensure WlRegionSubtractRequest implements Message.
+var _ Message = WlRegionSubtractRequest{}
 
 // #endregion Interface wayland.wl_region
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_subcompositor
 
-type WWlSubcompositorError int
+type WlSubcompositorError int
 
 const (
-	// WWlSubcompositorErrorBadSurface corresponds to the to-be sub-surface is invalid
-	WWlSubcompositorErrorBadSurface WWlSubcompositorError = 0
+	// WlSubcompositorErrorBadSurface corresponds to the to-be sub-surface is invalid
+	WlSubcompositorErrorBadSurface WlSubcompositorError = 0
 )
 
-// WWlSubcompositorDestroyRequest requests to unbind from the subcompositor interface
+// WlSubcompositorDestroyRequest requests to unbind from the subcompositor interface
 //
 // Informs the server that the client will not be using this
 // protocol object anymore. This does not affect any other
 // objects, wl_subsurface objects included.
-type WWlSubcompositorDestroyRequest struct {
+type WlSubcompositorDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_subcompositor.destroy in wayland
-func (WWlSubcompositorDestroyRequest) Opcode() uint16 { return 0 }
+func (WlSubcompositorDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlSubcompositorDestroyRequest implements Message.
-var _ Message = WWlSubcompositorDestroyRequest{}
+// Ensure WlSubcompositorDestroyRequest implements Message.
+var _ Message = WlSubcompositorDestroyRequest{}
 
-// WWlSubcompositorGetSubsurfaceRequest requests to give a surface the role sub-surface
+// WlSubcompositorGetSubsurfaceRequest requests to give a surface the role sub-surface
 //
 // Create a sub-surface interface for the given surface, and
 // associate it with the given parent surface. This turns a
@@ -13159,7 +13083,7 @@ var _ Message = WWlSubcompositorDestroyRequest{}
 //
 // This request modifies the behaviour of wl_surface.commit request on
 // the sub-surface, see the documentation on wl_subsurface interface.
-type WWlSubcompositorGetSubsurfaceRequest struct {
+type WlSubcompositorGetSubsurfaceRequest struct {
 	// ID contains the new sub-surface object ID
 	ID ObjectID
 
@@ -13171,40 +13095,40 @@ type WWlSubcompositorGetSubsurfaceRequest struct {
 }
 
 // Opcode returns the request opcode for wl_subcompositor.get_subsurface in wayland
-func (WWlSubcompositorGetSubsurfaceRequest) Opcode() uint16 { return 1 }
+func (WlSubcompositorGetSubsurfaceRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlSubcompositorGetSubsurfaceRequest implements Message.
-var _ Message = WWlSubcompositorGetSubsurfaceRequest{}
+// Ensure WlSubcompositorGetSubsurfaceRequest implements Message.
+var _ Message = WlSubcompositorGetSubsurfaceRequest{}
 
 // #endregion Interface wayland.wl_subcompositor
 
 // ----------------------------------------------------------------------------
 // #region Interface wayland.wl_subsurface
 
-type WWlSubsurfaceError int
+type WlSubsurfaceError int
 
 const (
-	// WWlSubsurfaceErrorBadSurface corresponds to wl_surface is not a sibling or the parent
-	WWlSubsurfaceErrorBadSurface WWlSubsurfaceError = 0
+	// WlSubsurfaceErrorBadSurface corresponds to wl_surface is not a sibling or the parent
+	WlSubsurfaceErrorBadSurface WlSubsurfaceError = 0
 )
 
-// WWlSubsurfaceDestroyRequest requests to remove sub-surface interface
+// WlSubsurfaceDestroyRequest requests to remove sub-surface interface
 //
 // The sub-surface interface is removed from the wl_surface object
 // that was turned into a sub-surface with a
 // wl_subcompositor.get_subsurface request. The wl_surface's association
 // to the parent is deleted, and the wl_surface loses its role as
 // a sub-surface. The wl_surface is unmapped immediately.
-type WWlSubsurfaceDestroyRequest struct {
+type WlSubsurfaceDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for wl_subsurface.destroy in wayland
-func (WWlSubsurfaceDestroyRequest) Opcode() uint16 { return 0 }
+func (WlSubsurfaceDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure WWlSubsurfaceDestroyRequest implements Message.
-var _ Message = WWlSubsurfaceDestroyRequest{}
+// Ensure WlSubsurfaceDestroyRequest implements Message.
+var _ Message = WlSubsurfaceDestroyRequest{}
 
-// WWlSubsurfaceSetPositionRequest requests to reposition the sub-surface
+// WlSubsurfaceSetPositionRequest requests to reposition the sub-surface
 //
 // This schedules a sub-surface position change.
 // The sub-surface will be moved so that its origin (top left
@@ -13222,7 +13146,7 @@ var _ Message = WWlSubsurfaceDestroyRequest{}
 // replaces the scheduled position from any previous request.
 //
 // The initial position is 0, 0.
-type WWlSubsurfaceSetPositionRequest struct {
+type WlSubsurfaceSetPositionRequest struct {
 	// X contains x coordinate in the parent surface
 	X int32
 
@@ -13231,12 +13155,12 @@ type WWlSubsurfaceSetPositionRequest struct {
 }
 
 // Opcode returns the request opcode for wl_subsurface.set_position in wayland
-func (WWlSubsurfaceSetPositionRequest) Opcode() uint16 { return 1 }
+func (WlSubsurfaceSetPositionRequest) Opcode() uint16 { return 1 }
 
-// Ensure WWlSubsurfaceSetPositionRequest implements Message.
-var _ Message = WWlSubsurfaceSetPositionRequest{}
+// Ensure WlSubsurfaceSetPositionRequest implements Message.
+var _ Message = WlSubsurfaceSetPositionRequest{}
 
-// WWlSubsurfacePlaceAboveRequest requests to restack the sub-surface
+// WlSubsurfacePlaceAboveRequest requests to restack the sub-surface
 //
 // This sub-surface is taken from the stack, and put back just
 // above the reference surface, changing the z-order of the sub-surfaces.
@@ -13253,33 +13177,33 @@ var _ Message = WWlSubsurfaceSetPositionRequest{}
 //
 // A new sub-surface is initially added as the top-most in the stack
 // of its siblings and parent.
-type WWlSubsurfacePlaceAboveRequest struct {
+type WlSubsurfacePlaceAboveRequest struct {
 	// Sibling contains the reference surface
 	Sibling ObjectID
 }
 
 // Opcode returns the request opcode for wl_subsurface.place_above in wayland
-func (WWlSubsurfacePlaceAboveRequest) Opcode() uint16 { return 2 }
+func (WlSubsurfacePlaceAboveRequest) Opcode() uint16 { return 2 }
 
-// Ensure WWlSubsurfacePlaceAboveRequest implements Message.
-var _ Message = WWlSubsurfacePlaceAboveRequest{}
+// Ensure WlSubsurfacePlaceAboveRequest implements Message.
+var _ Message = WlSubsurfacePlaceAboveRequest{}
 
-// WWlSubsurfacePlaceBelowRequest requests to restack the sub-surface
+// WlSubsurfacePlaceBelowRequest requests to restack the sub-surface
 //
 // The sub-surface is placed just below the reference surface.
 // See wl_subsurface.place_above.
-type WWlSubsurfacePlaceBelowRequest struct {
+type WlSubsurfacePlaceBelowRequest struct {
 	// Sibling contains the reference surface
 	Sibling ObjectID
 }
 
 // Opcode returns the request opcode for wl_subsurface.place_below in wayland
-func (WWlSubsurfacePlaceBelowRequest) Opcode() uint16 { return 3 }
+func (WlSubsurfacePlaceBelowRequest) Opcode() uint16 { return 3 }
 
-// Ensure WWlSubsurfacePlaceBelowRequest implements Message.
-var _ Message = WWlSubsurfacePlaceBelowRequest{}
+// Ensure WlSubsurfacePlaceBelowRequest implements Message.
+var _ Message = WlSubsurfacePlaceBelowRequest{}
 
-// WWlSubsurfaceSetSyncRequest requests to set sub-surface to synchronized mode
+// WlSubsurfaceSetSyncRequest requests to set sub-surface to synchronized mode
 //
 // Change the commit behaviour of the sub-surface to synchronized
 // mode, also described as the parent dependent mode.
@@ -13294,16 +13218,16 @@ var _ Message = WWlSubsurfacePlaceBelowRequest{}
 // parent surface commits do not (re-)apply old state.
 //
 // See wl_subsurface for the recursive effect of this mode.
-type WWlSubsurfaceSetSyncRequest struct {
+type WlSubsurfaceSetSyncRequest struct {
 }
 
 // Opcode returns the request opcode for wl_subsurface.set_sync in wayland
-func (WWlSubsurfaceSetSyncRequest) Opcode() uint16 { return 4 }
+func (WlSubsurfaceSetSyncRequest) Opcode() uint16 { return 4 }
 
-// Ensure WWlSubsurfaceSetSyncRequest implements Message.
-var _ Message = WWlSubsurfaceSetSyncRequest{}
+// Ensure WlSubsurfaceSetSyncRequest implements Message.
+var _ Message = WlSubsurfaceSetSyncRequest{}
 
-// WWlSubsurfaceSetDesyncRequest requests to set sub-surface to desynchronized mode
+// WlSubsurfaceSetDesyncRequest requests to set sub-surface to desynchronized mode
 //
 // Change the commit behaviour of the sub-surface to desynchronized
 // mode, also described as independent or freely running mode.
@@ -13324,14 +13248,14 @@ var _ Message = WWlSubsurfaceSetSyncRequest{}
 //
 // If a surface's parent surface behaves as desynchronized, then
 // the cached state is applied on set_desync.
-type WWlSubsurfaceSetDesyncRequest struct {
+type WlSubsurfaceSetDesyncRequest struct {
 }
 
 // Opcode returns the request opcode for wl_subsurface.set_desync in wayland
-func (WWlSubsurfaceSetDesyncRequest) Opcode() uint16 { return 5 }
+func (WlSubsurfaceSetDesyncRequest) Opcode() uint16 { return 5 }
 
-// Ensure WWlSubsurfaceSetDesyncRequest implements Message.
-var _ Message = WWlSubsurfaceSetDesyncRequest{}
+// Ensure WlSubsurfaceSetDesyncRequest implements Message.
+var _ Message = WlSubsurfaceSetDesyncRequest{}
 
 // #endregion Interface wayland.wl_subsurface
 
@@ -13344,58 +13268,58 @@ var _ Message = WWlSubsurfaceSetDesyncRequest{}
 // ----------------------------------------------------------------------------
 // #region Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_manager_v1
 
-// WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest requests to create a new primary selection source
+// ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest requests to create a new primary selection source
 //
 // Create a new primary selection source.
-type WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest struct {
+type ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest struct {
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_device_manager_v1.create_source in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest) Opcode() uint16 { return 0 }
+func (ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest) Opcode() uint16 { return 0 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}
+// Ensure ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest implements Message.
+var _ Message = ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}
 
-// WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest requests to create a new primary selection device
+// ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest requests to create a new primary selection device
 //
 // Create a new data device for a given seat.
-type WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest struct {
+type ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest struct {
 	ID ObjectID
 
 	Seat ObjectID
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_device_manager_v1.get_device in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest) Opcode() uint16 { return 1 }
+func (ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest) Opcode() uint16 { return 1 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}
+// Ensure ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest implements Message.
+var _ Message = ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}
 
-// WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest requests to destroy the primary selection device manager
+// ZwpPrimarySelectionDeviceManagerV1DestroyRequest requests to destroy the primary selection device manager
 //
 // Destroy the primary selection device manager.
-type WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest struct {
+type ZwpPrimarySelectionDeviceManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_device_manager_v1.destroy in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest) Opcode() uint16 { return 2 }
+func (ZwpPrimarySelectionDeviceManagerV1DestroyRequest) Opcode() uint16 { return 2 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
+// Ensure ZwpPrimarySelectionDeviceManagerV1DestroyRequest implements Message.
+var _ Message = ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_v1
 
-// WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest requests to set the primary selection
+// ZwpPrimarySelectionDeviceV1SetSelectionRequest requests to set the primary selection
 //
 // Replaces the current selection. The previous owner of the primary
 // selection will receive a wp_primary_selection_source.cancelled event.
 //
 // To unset the selection, set the source to NULL.
-type WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest struct {
+type ZwpPrimarySelectionDeviceV1SetSelectionRequest struct {
 	Source ObjectID
 
 	// Serial contains serial of the event that triggered this request
@@ -13403,42 +13327,42 @@ type WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_device_v1.set_selection in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest) Opcode() uint16 { return 0 }
+func (ZwpPrimarySelectionDeviceV1SetSelectionRequest) Opcode() uint16 { return 0 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionDeviceV1SetSelectionRequest{}
+// Ensure ZwpPrimarySelectionDeviceV1SetSelectionRequest implements Message.
+var _ Message = ZwpPrimarySelectionDeviceV1SetSelectionRequest{}
 
-// WPSUVZwpPrimarySelectionDeviceV1DestroyRequest requests to destroy the primary selection device
+// ZwpPrimarySelectionDeviceV1DestroyRequest requests to destroy the primary selection device
 //
 // Destroy the primary selection device.
-type WPSUVZwpPrimarySelectionDeviceV1DestroyRequest struct {
+type ZwpPrimarySelectionDeviceV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_device_v1.destroy in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionDeviceV1DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpPrimarySelectionDeviceV1DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceV1DestroyRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionDeviceV1DestroyRequest{}
+// Ensure ZwpPrimarySelectionDeviceV1DestroyRequest implements Message.
+var _ Message = ZwpPrimarySelectionDeviceV1DestroyRequest{}
 
-// WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent signals when introduce a new wp_primary_selection_offer
+// ZwpPrimarySelectionDeviceV1DataOfferEvent signals when introduce a new wp_primary_selection_offer
 //
 // Introduces a new wp_primary_selection_offer object that may be used
 // to receive the current primary selection. Immediately following this
 // event, the new wp_primary_selection_offer object will send
 // wp_primary_selection_offer.offer events to describe the offered mime
 // types.
-type WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent struct {
+type ZwpPrimarySelectionDeviceV1DataOfferEvent struct {
 	Offer ObjectID
 }
 
 // Opcode returns the event opcode for zwp_primary_selection_device_v1.data_offer in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent) Opcode() uint16 { return 0 }
+func (ZwpPrimarySelectionDeviceV1DataOfferEvent) Opcode() uint16 { return 0 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent implements Message.
-var _ Message = WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent{}
+// Ensure ZwpPrimarySelectionDeviceV1DataOfferEvent implements Message.
+var _ Message = ZwpPrimarySelectionDeviceV1DataOfferEvent{}
 
 // Scan scans the event from the socket.
-func (e *WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent) Scan(s *EventScanner) error {
+func (e *ZwpPrimarySelectionDeviceV1DataOfferEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -13447,10 +13371,10 @@ func (e *WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent) Scan(s *EventScanner) e
 	return nil
 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent implements Event.
-var _ Event = &WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent{}
+// Ensure ZwpPrimarySelectionDeviceV1DataOfferEvent implements Event.
+var _ Event = &ZwpPrimarySelectionDeviceV1DataOfferEvent{}
 
-// WPSUVZwpPrimarySelectionDeviceV1SelectionEvent signals when advertise a new primary selection
+// ZwpPrimarySelectionDeviceV1SelectionEvent signals when advertise a new primary selection
 //
 // The wp_primary_selection_device.selection event is sent to notify the
 // client of a new primary selection. This event is sent after the
@@ -13461,18 +13385,18 @@ var _ Event = &WPSUVZwpPrimarySelectionDeviceV1DataOfferEvent{}
 // The data_offer is valid until a new offer or NULL is received
 // or until the client loses keyboard focus. The client must destroy the
 // previous selection data_offer, if any, upon receiving this event.
-type WPSUVZwpPrimarySelectionDeviceV1SelectionEvent struct {
+type ZwpPrimarySelectionDeviceV1SelectionEvent struct {
 	ID ObjectID
 }
 
 // Opcode returns the event opcode for zwp_primary_selection_device_v1.selection in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionDeviceV1SelectionEvent) Opcode() uint16 { return 1 }
+func (ZwpPrimarySelectionDeviceV1SelectionEvent) Opcode() uint16 { return 1 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceV1SelectionEvent implements Message.
-var _ Message = WPSUVZwpPrimarySelectionDeviceV1SelectionEvent{}
+// Ensure ZwpPrimarySelectionDeviceV1SelectionEvent implements Message.
+var _ Message = ZwpPrimarySelectionDeviceV1SelectionEvent{}
 
 // Scan scans the event from the socket.
-func (e *WPSUVZwpPrimarySelectionDeviceV1SelectionEvent) Scan(s *EventScanner) error {
+func (e *ZwpPrimarySelectionDeviceV1SelectionEvent) Scan(s *EventScanner) error {
 	if v, err := s.ObjectID(); err != nil {
 		return err
 	} else {
@@ -13481,15 +13405,15 @@ func (e *WPSUVZwpPrimarySelectionDeviceV1SelectionEvent) Scan(s *EventScanner) e
 	return nil
 }
 
-// Ensure WPSUVZwpPrimarySelectionDeviceV1SelectionEvent implements Event.
-var _ Event = &WPSUVZwpPrimarySelectionDeviceV1SelectionEvent{}
+// Ensure ZwpPrimarySelectionDeviceV1SelectionEvent implements Event.
+var _ Event = &ZwpPrimarySelectionDeviceV1SelectionEvent{}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface wp_primary_selection_unstable_v1.zwp_primary_selection_offer_v1
 
-// WPSUVZwpPrimarySelectionOfferV1ReceiveRequest requests to request that the data is transferred
+// ZwpPrimarySelectionOfferV1ReceiveRequest requests to request that the data is transferred
 //
 // To transfer the contents of the primary selection clipboard, the client
 // issues this request and indicates the mime type that it wants to
@@ -13500,48 +13424,48 @@ var _ Event = &WPSUVZwpPrimarySelectionDeviceV1SelectionEvent{}
 //
 // The receiving client reads from the read end of the pipe until EOF and
 // closes its end, at which point the transfer is complete.
-type WPSUVZwpPrimarySelectionOfferV1ReceiveRequest struct {
+type ZwpPrimarySelectionOfferV1ReceiveRequest struct {
 	MimeType string
 
 	FD FD
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_offer_v1.receive in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionOfferV1ReceiveRequest) Opcode() uint16 { return 0 }
+func (ZwpPrimarySelectionOfferV1ReceiveRequest) Opcode() uint16 { return 0 }
 
-// Ensure WPSUVZwpPrimarySelectionOfferV1ReceiveRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionOfferV1ReceiveRequest{}
+// Ensure ZwpPrimarySelectionOfferV1ReceiveRequest implements Message.
+var _ Message = ZwpPrimarySelectionOfferV1ReceiveRequest{}
 
-// WPSUVZwpPrimarySelectionOfferV1DestroyRequest requests to destroy the primary selection offer
+// ZwpPrimarySelectionOfferV1DestroyRequest requests to destroy the primary selection offer
 //
 // Destroy the primary selection offer.
-type WPSUVZwpPrimarySelectionOfferV1DestroyRequest struct {
+type ZwpPrimarySelectionOfferV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_offer_v1.destroy in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionOfferV1DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpPrimarySelectionOfferV1DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure WPSUVZwpPrimarySelectionOfferV1DestroyRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionOfferV1DestroyRequest{}
+// Ensure ZwpPrimarySelectionOfferV1DestroyRequest implements Message.
+var _ Message = ZwpPrimarySelectionOfferV1DestroyRequest{}
 
-// WPSUVZwpPrimarySelectionOfferV1OfferEvent signals when advertise offered mime type
+// ZwpPrimarySelectionOfferV1OfferEvent signals when advertise offered mime type
 //
 // Sent immediately after creating announcing the
 // wp_primary_selection_offer through
 // wp_primary_selection_device.data_offer. One event is sent per offered
 // mime type.
-type WPSUVZwpPrimarySelectionOfferV1OfferEvent struct {
+type ZwpPrimarySelectionOfferV1OfferEvent struct {
 	MimeType string
 }
 
 // Opcode returns the event opcode for zwp_primary_selection_offer_v1.offer in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionOfferV1OfferEvent) Opcode() uint16 { return 0 }
+func (ZwpPrimarySelectionOfferV1OfferEvent) Opcode() uint16 { return 0 }
 
-// Ensure WPSUVZwpPrimarySelectionOfferV1OfferEvent implements Message.
-var _ Message = WPSUVZwpPrimarySelectionOfferV1OfferEvent{}
+// Ensure ZwpPrimarySelectionOfferV1OfferEvent implements Message.
+var _ Message = ZwpPrimarySelectionOfferV1OfferEvent{}
 
 // Scan scans the event from the socket.
-func (e *WPSUVZwpPrimarySelectionOfferV1OfferEvent) Scan(s *EventScanner) error {
+func (e *ZwpPrimarySelectionOfferV1OfferEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -13550,59 +13474,59 @@ func (e *WPSUVZwpPrimarySelectionOfferV1OfferEvent) Scan(s *EventScanner) error 
 	return nil
 }
 
-// Ensure WPSUVZwpPrimarySelectionOfferV1OfferEvent implements Event.
-var _ Event = &WPSUVZwpPrimarySelectionOfferV1OfferEvent{}
+// Ensure ZwpPrimarySelectionOfferV1OfferEvent implements Event.
+var _ Event = &ZwpPrimarySelectionOfferV1OfferEvent{}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_offer_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface wp_primary_selection_unstable_v1.zwp_primary_selection_source_v1
 
-// WPSUVZwpPrimarySelectionSourceV1OfferRequest requests to add an offered mime type
+// ZwpPrimarySelectionSourceV1OfferRequest requests to add an offered mime type
 //
 // This request adds a mime type to the set of mime types advertised to
 // targets. Can be called several times to offer multiple types.
-type WPSUVZwpPrimarySelectionSourceV1OfferRequest struct {
+type ZwpPrimarySelectionSourceV1OfferRequest struct {
 	MimeType string
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_source_v1.offer in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionSourceV1OfferRequest) Opcode() uint16 { return 0 }
+func (ZwpPrimarySelectionSourceV1OfferRequest) Opcode() uint16 { return 0 }
 
-// Ensure WPSUVZwpPrimarySelectionSourceV1OfferRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionSourceV1OfferRequest{}
+// Ensure ZwpPrimarySelectionSourceV1OfferRequest implements Message.
+var _ Message = ZwpPrimarySelectionSourceV1OfferRequest{}
 
-// WPSUVZwpPrimarySelectionSourceV1DestroyRequest requests to destroy the primary selection source
+// ZwpPrimarySelectionSourceV1DestroyRequest requests to destroy the primary selection source
 //
 // Destroy the primary selection source.
-type WPSUVZwpPrimarySelectionSourceV1DestroyRequest struct {
+type ZwpPrimarySelectionSourceV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_primary_selection_source_v1.destroy in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionSourceV1DestroyRequest) Opcode() uint16 { return 1 }
+func (ZwpPrimarySelectionSourceV1DestroyRequest) Opcode() uint16 { return 1 }
 
-// Ensure WPSUVZwpPrimarySelectionSourceV1DestroyRequest implements Message.
-var _ Message = WPSUVZwpPrimarySelectionSourceV1DestroyRequest{}
+// Ensure ZwpPrimarySelectionSourceV1DestroyRequest implements Message.
+var _ Message = ZwpPrimarySelectionSourceV1DestroyRequest{}
 
-// WPSUVZwpPrimarySelectionSourceV1SendEvent signals when send the primary selection contents
+// ZwpPrimarySelectionSourceV1SendEvent signals when send the primary selection contents
 //
 // Request for the current primary selection contents from the client.
 // Send the specified mime type over the passed file descriptor, then
 // close it.
-type WPSUVZwpPrimarySelectionSourceV1SendEvent struct {
+type ZwpPrimarySelectionSourceV1SendEvent struct {
 	MimeType string
 
 	FD FD
 }
 
 // Opcode returns the event opcode for zwp_primary_selection_source_v1.send in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionSourceV1SendEvent) Opcode() uint16 { return 0 }
+func (ZwpPrimarySelectionSourceV1SendEvent) Opcode() uint16 { return 0 }
 
-// Ensure WPSUVZwpPrimarySelectionSourceV1SendEvent implements Message.
-var _ Message = WPSUVZwpPrimarySelectionSourceV1SendEvent{}
+// Ensure ZwpPrimarySelectionSourceV1SendEvent implements Message.
+var _ Message = ZwpPrimarySelectionSourceV1SendEvent{}
 
 // Scan scans the event from the socket.
-func (e *WPSUVZwpPrimarySelectionSourceV1SendEvent) Scan(s *EventScanner) error {
+func (e *ZwpPrimarySelectionSourceV1SendEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -13616,29 +13540,29 @@ func (e *WPSUVZwpPrimarySelectionSourceV1SendEvent) Scan(s *EventScanner) error 
 	return nil
 }
 
-// Ensure WPSUVZwpPrimarySelectionSourceV1SendEvent implements Event.
-var _ Event = &WPSUVZwpPrimarySelectionSourceV1SendEvent{}
+// Ensure ZwpPrimarySelectionSourceV1SendEvent implements Event.
+var _ Event = &ZwpPrimarySelectionSourceV1SendEvent{}
 
-// WPSUVZwpPrimarySelectionSourceV1CancelledEvent signals when request for primary selection contents was canceled
+// ZwpPrimarySelectionSourceV1CancelledEvent signals when request for primary selection contents was canceled
 //
 // This primary selection source is no longer valid. The client should
 // clean up and destroy this primary selection source.
-type WPSUVZwpPrimarySelectionSourceV1CancelledEvent struct {
+type ZwpPrimarySelectionSourceV1CancelledEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_primary_selection_source_v1.cancelled in wp_primary_selection_unstable_v1
-func (WPSUVZwpPrimarySelectionSourceV1CancelledEvent) Opcode() uint16 { return 1 }
+func (ZwpPrimarySelectionSourceV1CancelledEvent) Opcode() uint16 { return 1 }
 
-// Ensure WPSUVZwpPrimarySelectionSourceV1CancelledEvent implements Message.
-var _ Message = WPSUVZwpPrimarySelectionSourceV1CancelledEvent{}
+// Ensure ZwpPrimarySelectionSourceV1CancelledEvent implements Message.
+var _ Message = ZwpPrimarySelectionSourceV1CancelledEvent{}
 
 // Scan scans the event from the socket.
-func (e *WPSUVZwpPrimarySelectionSourceV1CancelledEvent) Scan(s *EventScanner) error {
+func (e *ZwpPrimarySelectionSourceV1CancelledEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure WPSUVZwpPrimarySelectionSourceV1CancelledEvent implements Event.
-var _ Event = &WPSUVZwpPrimarySelectionSourceV1CancelledEvent{}
+// Ensure ZwpPrimarySelectionSourceV1CancelledEvent implements Event.
+var _ Event = &ZwpPrimarySelectionSourceV1CancelledEvent{}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_source_v1
 
@@ -13651,38 +13575,38 @@ var _ Event = &WPSUVZwpPrimarySelectionSourceV1CancelledEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface xdg_activation_v1.xdg_activation_v1
 
-// XAVXdgActivationV1DestroyRequest requests to destroy the xdg_activation object
+// XdgActivationV1DestroyRequest requests to destroy the xdg_activation object
 //
 // Notify the compositor that the xdg_activation object will no longer be
 // used.
 //
 // The child objects created via this interface are unaffected and should
 // be destroyed separately.
-type XAVXdgActivationV1DestroyRequest struct {
+type XdgActivationV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_activation_v1.destroy in xdg_activation_v1
-func (XAVXdgActivationV1DestroyRequest) Opcode() uint16 { return 0 }
+func (XdgActivationV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XAVXdgActivationV1DestroyRequest implements Message.
-var _ Message = XAVXdgActivationV1DestroyRequest{}
+// Ensure XdgActivationV1DestroyRequest implements Message.
+var _ Message = XdgActivationV1DestroyRequest{}
 
-// XAVXdgActivationV1GetActivationTokenRequest requests to requests a token
+// XdgActivationV1GetActivationTokenRequest requests to requests a token
 //
 // Creates an xdg_activation_token_v1 object that will provide
 // the initiating client with a unique token for this activation. This
 // token should be offered to the clients to be activated.
-type XAVXdgActivationV1GetActivationTokenRequest struct {
+type XdgActivationV1GetActivationTokenRequest struct {
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for xdg_activation_v1.get_activation_token in xdg_activation_v1
-func (XAVXdgActivationV1GetActivationTokenRequest) Opcode() uint16 { return 1 }
+func (XdgActivationV1GetActivationTokenRequest) Opcode() uint16 { return 1 }
 
-// Ensure XAVXdgActivationV1GetActivationTokenRequest implements Message.
-var _ Message = XAVXdgActivationV1GetActivationTokenRequest{}
+// Ensure XdgActivationV1GetActivationTokenRequest implements Message.
+var _ Message = XdgActivationV1GetActivationTokenRequest{}
 
-// XAVXdgActivationV1ActivateRequest requests to notify new interaction being available
+// XdgActivationV1ActivateRequest requests to notify new interaction being available
 //
 // Requests surface activation. It's up to the compositor to display
 // this information as desired, for example by placing the surface above
@@ -13694,7 +13618,7 @@ var _ Message = XAVXdgActivationV1GetActivationTokenRequest{}
 //
 // Compositors can ignore unknown activation tokens when an invalid
 // token is passed.
-type XAVXdgActivationV1ActivateRequest struct {
+type XdgActivationV1ActivateRequest struct {
 	// Token contains the activation token of the initiating client
 	Token string
 
@@ -13703,24 +13627,24 @@ type XAVXdgActivationV1ActivateRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_activation_v1.activate in xdg_activation_v1
-func (XAVXdgActivationV1ActivateRequest) Opcode() uint16 { return 2 }
+func (XdgActivationV1ActivateRequest) Opcode() uint16 { return 2 }
 
-// Ensure XAVXdgActivationV1ActivateRequest implements Message.
-var _ Message = XAVXdgActivationV1ActivateRequest{}
+// Ensure XdgActivationV1ActivateRequest implements Message.
+var _ Message = XdgActivationV1ActivateRequest{}
 
 // #endregion Interface xdg_activation_v1.xdg_activation_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_activation_v1.xdg_activation_token_v1
 
-type XAVXdgActivationTokenV1Error int
+type XdgActivationTokenV1Error int
 
 const (
-	// XAVXdgActivationTokenV1ErrorAlreadyUsed corresponds to The token has already been used previously
-	XAVXdgActivationTokenV1ErrorAlreadyUsed XAVXdgActivationTokenV1Error = 0
+	// XdgActivationTokenV1ErrorAlreadyUsed corresponds to The token has already been used previously
+	XdgActivationTokenV1ErrorAlreadyUsed XdgActivationTokenV1Error = 0
 )
 
-// XAVXdgActivationTokenV1SetSerialRequest requests to specifies the seat and serial of the activating event
+// XdgActivationTokenV1SetSerialRequest requests to specifies the seat and serial of the activating event
 //
 // Provides information about the seat and serial event that requested the
 // token.
@@ -13734,7 +13658,7 @@ const (
 // doesn't have a valid and recent enough event serial.
 //
 // Must be sent before commit. This information is optional.
-type XAVXdgActivationTokenV1SetSerialRequest struct {
+type XdgActivationTokenV1SetSerialRequest struct {
 	// Serial contains the serial of the event that triggered the activation
 	Serial uint32
 
@@ -13743,29 +13667,29 @@ type XAVXdgActivationTokenV1SetSerialRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_activation_token_v1.set_serial in xdg_activation_v1
-func (XAVXdgActivationTokenV1SetSerialRequest) Opcode() uint16 { return 0 }
+func (XdgActivationTokenV1SetSerialRequest) Opcode() uint16 { return 0 }
 
-// Ensure XAVXdgActivationTokenV1SetSerialRequest implements Message.
-var _ Message = XAVXdgActivationTokenV1SetSerialRequest{}
+// Ensure XdgActivationTokenV1SetSerialRequest implements Message.
+var _ Message = XdgActivationTokenV1SetSerialRequest{}
 
-// XAVXdgActivationTokenV1SetAppIDRequest requests to specifies the application being activated
+// XdgActivationTokenV1SetAppIDRequest requests to specifies the application being activated
 //
 // The requesting client can specify an app_id to associate the token
 // being created with it.
 //
 // Must be sent before commit. This information is optional.
-type XAVXdgActivationTokenV1SetAppIDRequest struct {
+type XdgActivationTokenV1SetAppIDRequest struct {
 	// AppID contains the application id of the client being activated.
 	AppID string
 }
 
 // Opcode returns the request opcode for xdg_activation_token_v1.set_app_id in xdg_activation_v1
-func (XAVXdgActivationTokenV1SetAppIDRequest) Opcode() uint16 { return 1 }
+func (XdgActivationTokenV1SetAppIDRequest) Opcode() uint16 { return 1 }
 
-// Ensure XAVXdgActivationTokenV1SetAppIDRequest implements Message.
-var _ Message = XAVXdgActivationTokenV1SetAppIDRequest{}
+// Ensure XdgActivationTokenV1SetAppIDRequest implements Message.
+var _ Message = XdgActivationTokenV1SetAppIDRequest{}
 
-// XAVXdgActivationTokenV1SetSurfaceRequest requests to specifies the surface requesting activation
+// XdgActivationTokenV1SetSurfaceRequest requests to specifies the surface requesting activation
 //
 // This request sets the surface requesting the activation. Note, this is
 // different from the surface that will be activated.
@@ -13774,60 +13698,60 @@ var _ Message = XAVXdgActivationTokenV1SetAppIDRequest{}
 // doesn't have a requesting surface.
 //
 // Must be sent before commit. This information is optional.
-type XAVXdgActivationTokenV1SetSurfaceRequest struct {
+type XdgActivationTokenV1SetSurfaceRequest struct {
 	// Surface contains the requesting surface
 	Surface ObjectID
 }
 
 // Opcode returns the request opcode for xdg_activation_token_v1.set_surface in xdg_activation_v1
-func (XAVXdgActivationTokenV1SetSurfaceRequest) Opcode() uint16 { return 2 }
+func (XdgActivationTokenV1SetSurfaceRequest) Opcode() uint16 { return 2 }
 
-// Ensure XAVXdgActivationTokenV1SetSurfaceRequest implements Message.
-var _ Message = XAVXdgActivationTokenV1SetSurfaceRequest{}
+// Ensure XdgActivationTokenV1SetSurfaceRequest implements Message.
+var _ Message = XdgActivationTokenV1SetSurfaceRequest{}
 
-// XAVXdgActivationTokenV1CommitRequest requests to issues the token request
+// XdgActivationTokenV1CommitRequest requests to issues the token request
 //
 // Requests an activation token based on the different parameters that
 // have been offered through set_serial, set_surface and set_app_id.
-type XAVXdgActivationTokenV1CommitRequest struct {
+type XdgActivationTokenV1CommitRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_activation_token_v1.commit in xdg_activation_v1
-func (XAVXdgActivationTokenV1CommitRequest) Opcode() uint16 { return 3 }
+func (XdgActivationTokenV1CommitRequest) Opcode() uint16 { return 3 }
 
-// Ensure XAVXdgActivationTokenV1CommitRequest implements Message.
-var _ Message = XAVXdgActivationTokenV1CommitRequest{}
+// Ensure XdgActivationTokenV1CommitRequest implements Message.
+var _ Message = XdgActivationTokenV1CommitRequest{}
 
-// XAVXdgActivationTokenV1DestroyRequest requests to destroy the xdg_activation_token_v1 object
+// XdgActivationTokenV1DestroyRequest requests to destroy the xdg_activation_token_v1 object
 //
 // Notify the compositor that the xdg_activation_token_v1 object will no
 // longer be used.
-type XAVXdgActivationTokenV1DestroyRequest struct {
+type XdgActivationTokenV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_activation_token_v1.destroy in xdg_activation_v1
-func (XAVXdgActivationTokenV1DestroyRequest) Opcode() uint16 { return 4 }
+func (XdgActivationTokenV1DestroyRequest) Opcode() uint16 { return 4 }
 
-// Ensure XAVXdgActivationTokenV1DestroyRequest implements Message.
-var _ Message = XAVXdgActivationTokenV1DestroyRequest{}
+// Ensure XdgActivationTokenV1DestroyRequest implements Message.
+var _ Message = XdgActivationTokenV1DestroyRequest{}
 
-// XAVXdgActivationTokenV1DoneEvent signals when the exported activation token
+// XdgActivationTokenV1DoneEvent signals when the exported activation token
 //
 // The 'done' event contains the unique token of this activation request
 // and notifies that the provider is done.
-type XAVXdgActivationTokenV1DoneEvent struct {
+type XdgActivationTokenV1DoneEvent struct {
 	// Token contains the exported activation token
 	Token string
 }
 
 // Opcode returns the event opcode for xdg_activation_token_v1.done in xdg_activation_v1
-func (XAVXdgActivationTokenV1DoneEvent) Opcode() uint16 { return 0 }
+func (XdgActivationTokenV1DoneEvent) Opcode() uint16 { return 0 }
 
-// Ensure XAVXdgActivationTokenV1DoneEvent implements Message.
-var _ Message = XAVXdgActivationTokenV1DoneEvent{}
+// Ensure XdgActivationTokenV1DoneEvent implements Message.
+var _ Message = XdgActivationTokenV1DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *XAVXdgActivationTokenV1DoneEvent) Scan(s *EventScanner) error {
+func (e *XdgActivationTokenV1DoneEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -13836,8 +13760,8 @@ func (e *XAVXdgActivationTokenV1DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XAVXdgActivationTokenV1DoneEvent implements Event.
-var _ Event = &XAVXdgActivationTokenV1DoneEvent{}
+// Ensure XdgActivationTokenV1DoneEvent implements Event.
+var _ Event = &XdgActivationTokenV1DoneEvent{}
 
 // #endregion Interface xdg_activation_v1.xdg_activation_token_v1
 
@@ -13850,20 +13774,20 @@ var _ Event = &XAVXdgActivationTokenV1DoneEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface xdg_decoration_unstable_v1.zxdg_decoration_manager_v1
 
-// XDUVZxdgDecorationManagerV1DestroyRequest requests to destroy the decoration manager object
+// ZxdgDecorationManagerV1DestroyRequest requests to destroy the decoration manager object
 //
 // Destroy the decoration manager. This doesn't destroy objects created
 // with the manager.
-type XDUVZxdgDecorationManagerV1DestroyRequest struct {
+type ZxdgDecorationManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_decoration_manager_v1.destroy in xdg_decoration_unstable_v1
-func (XDUVZxdgDecorationManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgDecorationManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XDUVZxdgDecorationManagerV1DestroyRequest implements Message.
-var _ Message = XDUVZxdgDecorationManagerV1DestroyRequest{}
+// Ensure ZxdgDecorationManagerV1DestroyRequest implements Message.
+var _ Message = ZxdgDecorationManagerV1DestroyRequest{}
 
-// XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest requests to create a new toplevel decoration object
+// ZxdgDecorationManagerV1GetToplevelDecorationRequest requests to create a new toplevel decoration object
 //
 // Create a new decoration object associated with the given toplevel.
 //
@@ -13872,63 +13796,63 @@ var _ Message = XDUVZxdgDecorationManagerV1DestroyRequest{}
 // client to attach or manipulate a buffer prior to the first
 // xdg_toplevel_decoration.configure event must also be treated as
 // errors.
-type XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest struct {
+type ZxdgDecorationManagerV1GetToplevelDecorationRequest struct {
 	ID ObjectID
 
 	Toplevel ObjectID
 }
 
 // Opcode returns the request opcode for zxdg_decoration_manager_v1.get_toplevel_decoration in xdg_decoration_unstable_v1
-func (XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest) Opcode() uint16 { return 1 }
+func (ZxdgDecorationManagerV1GetToplevelDecorationRequest) Opcode() uint16 { return 1 }
 
-// Ensure XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest implements Message.
-var _ Message = XDUVZxdgDecorationManagerV1GetToplevelDecorationRequest{}
+// Ensure ZxdgDecorationManagerV1GetToplevelDecorationRequest implements Message.
+var _ Message = ZxdgDecorationManagerV1GetToplevelDecorationRequest{}
 
 // #endregion Interface xdg_decoration_unstable_v1.zxdg_decoration_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_decoration_unstable_v1.zxdg_toplevel_decoration_v1
 
-type XDUVZxdgToplevelDecorationV1Error int
+type ZxdgToplevelDecorationV1Error int
 
 const (
-	// XDUVZxdgToplevelDecorationV1ErrorUnconfiguredBuffer corresponds to xdg_toplevel has a buffer attached before configure
-	XDUVZxdgToplevelDecorationV1ErrorUnconfiguredBuffer XDUVZxdgToplevelDecorationV1Error = 0
+	// ZxdgToplevelDecorationV1ErrorUnconfiguredBuffer corresponds to xdg_toplevel has a buffer attached before configure
+	ZxdgToplevelDecorationV1ErrorUnconfiguredBuffer ZxdgToplevelDecorationV1Error = 0
 
-	// XDUVZxdgToplevelDecorationV1ErrorAlreadyConstructed corresponds to xdg_toplevel already has a decoration object
-	XDUVZxdgToplevelDecorationV1ErrorAlreadyConstructed XDUVZxdgToplevelDecorationV1Error = 1
+	// ZxdgToplevelDecorationV1ErrorAlreadyConstructed corresponds to xdg_toplevel already has a decoration object
+	ZxdgToplevelDecorationV1ErrorAlreadyConstructed ZxdgToplevelDecorationV1Error = 1
 
-	// XDUVZxdgToplevelDecorationV1ErrorOrphaned corresponds to xdg_toplevel destroyed before the decoration object
-	XDUVZxdgToplevelDecorationV1ErrorOrphaned XDUVZxdgToplevelDecorationV1Error = 2
+	// ZxdgToplevelDecorationV1ErrorOrphaned corresponds to xdg_toplevel destroyed before the decoration object
+	ZxdgToplevelDecorationV1ErrorOrphaned ZxdgToplevelDecorationV1Error = 2
 )
 
-// XDUVZxdgToplevelDecorationV1Mode represents window decoration modes
+// ZxdgToplevelDecorationV1Mode represents window decoration modes
 //
 // These values describe window decoration modes.
-type XDUVZxdgToplevelDecorationV1Mode int
+type ZxdgToplevelDecorationV1Mode int
 
 const (
-	// XDUVZxdgToplevelDecorationV1ModeClientSide corresponds to no server-side window decoration
-	XDUVZxdgToplevelDecorationV1ModeClientSide XDUVZxdgToplevelDecorationV1Mode = 1
+	// ZxdgToplevelDecorationV1ModeClientSide corresponds to no server-side window decoration
+	ZxdgToplevelDecorationV1ModeClientSide ZxdgToplevelDecorationV1Mode = 1
 
-	// XDUVZxdgToplevelDecorationV1ModeServerSide corresponds to server-side window decoration
-	XDUVZxdgToplevelDecorationV1ModeServerSide XDUVZxdgToplevelDecorationV1Mode = 2
+	// ZxdgToplevelDecorationV1ModeServerSide corresponds to server-side window decoration
+	ZxdgToplevelDecorationV1ModeServerSide ZxdgToplevelDecorationV1Mode = 2
 )
 
-// XDUVZxdgToplevelDecorationV1DestroyRequest requests to destroy the decoration object
+// ZxdgToplevelDecorationV1DestroyRequest requests to destroy the decoration object
 //
 // Switch back to a mode without any server-side decorations at the next
 // commit.
-type XDUVZxdgToplevelDecorationV1DestroyRequest struct {
+type ZxdgToplevelDecorationV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_toplevel_decoration_v1.destroy in xdg_decoration_unstable_v1
-func (XDUVZxdgToplevelDecorationV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgToplevelDecorationV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XDUVZxdgToplevelDecorationV1DestroyRequest implements Message.
-var _ Message = XDUVZxdgToplevelDecorationV1DestroyRequest{}
+// Ensure ZxdgToplevelDecorationV1DestroyRequest implements Message.
+var _ Message = ZxdgToplevelDecorationV1DestroyRequest{}
 
-// XDUVZxdgToplevelDecorationV1SetModeRequest requests to set the decoration mode
+// ZxdgToplevelDecorationV1SetModeRequest requests to set the decoration mode
 //
 // Set the toplevel surface decoration mode. This informs the compositor
 // that the client prefers the provided decoration mode.
@@ -13948,33 +13872,33 @@ var _ Message = XDUVZxdgToplevelDecorationV1DestroyRequest{}
 // Such clients are responsible for preventing configure loops and must
 // make sure not to send multiple successive set_mode requests with the
 // same decoration mode.
-type XDUVZxdgToplevelDecorationV1SetModeRequest struct {
+type ZxdgToplevelDecorationV1SetModeRequest struct {
 	// Mode contains the decoration mode
 	Mode uint32
 }
 
 // Opcode returns the request opcode for zxdg_toplevel_decoration_v1.set_mode in xdg_decoration_unstable_v1
-func (XDUVZxdgToplevelDecorationV1SetModeRequest) Opcode() uint16 { return 1 }
+func (ZxdgToplevelDecorationV1SetModeRequest) Opcode() uint16 { return 1 }
 
-// Ensure XDUVZxdgToplevelDecorationV1SetModeRequest implements Message.
-var _ Message = XDUVZxdgToplevelDecorationV1SetModeRequest{}
+// Ensure ZxdgToplevelDecorationV1SetModeRequest implements Message.
+var _ Message = ZxdgToplevelDecorationV1SetModeRequest{}
 
-// XDUVZxdgToplevelDecorationV1UnsetModeRequest requests to unset the decoration mode
+// ZxdgToplevelDecorationV1UnsetModeRequest requests to unset the decoration mode
 //
 // Unset the toplevel surface decoration mode. This informs the compositor
 // that the client doesn't prefer a particular decoration mode.
 //
 // This request has the same semantics as set_mode.
-type XDUVZxdgToplevelDecorationV1UnsetModeRequest struct {
+type ZxdgToplevelDecorationV1UnsetModeRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_toplevel_decoration_v1.unset_mode in xdg_decoration_unstable_v1
-func (XDUVZxdgToplevelDecorationV1UnsetModeRequest) Opcode() uint16 { return 2 }
+func (ZxdgToplevelDecorationV1UnsetModeRequest) Opcode() uint16 { return 2 }
 
-// Ensure XDUVZxdgToplevelDecorationV1UnsetModeRequest implements Message.
-var _ Message = XDUVZxdgToplevelDecorationV1UnsetModeRequest{}
+// Ensure ZxdgToplevelDecorationV1UnsetModeRequest implements Message.
+var _ Message = ZxdgToplevelDecorationV1UnsetModeRequest{}
 
-// XDUVZxdgToplevelDecorationV1ConfigureEvent signals when suggest a surface change
+// ZxdgToplevelDecorationV1ConfigureEvent signals when suggest a surface change
 //
 // The configure event asks the client to change its decoration mode. The
 // configured state should not be applied immediately. Clients must send an
@@ -13983,19 +13907,19 @@ var _ Message = XDUVZxdgToplevelDecorationV1UnsetModeRequest{}
 //
 // A configure event can be sent at any time. The specified mode must be
 // obeyed by the client.
-type XDUVZxdgToplevelDecorationV1ConfigureEvent struct {
+type ZxdgToplevelDecorationV1ConfigureEvent struct {
 	// Mode contains the decoration mode
 	Mode uint32
 }
 
 // Opcode returns the event opcode for zxdg_toplevel_decoration_v1.configure in xdg_decoration_unstable_v1
-func (XDUVZxdgToplevelDecorationV1ConfigureEvent) Opcode() uint16 { return 0 }
+func (ZxdgToplevelDecorationV1ConfigureEvent) Opcode() uint16 { return 0 }
 
-// Ensure XDUVZxdgToplevelDecorationV1ConfigureEvent implements Message.
-var _ Message = XDUVZxdgToplevelDecorationV1ConfigureEvent{}
+// Ensure ZxdgToplevelDecorationV1ConfigureEvent implements Message.
+var _ Message = ZxdgToplevelDecorationV1ConfigureEvent{}
 
 // Scan scans the event from the socket.
-func (e *XDUVZxdgToplevelDecorationV1ConfigureEvent) Scan(s *EventScanner) error {
+func (e *ZxdgToplevelDecorationV1ConfigureEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -14004,8 +13928,8 @@ func (e *XDUVZxdgToplevelDecorationV1ConfigureEvent) Scan(s *EventScanner) error
 	return nil
 }
 
-// Ensure XDUVZxdgToplevelDecorationV1ConfigureEvent implements Event.
-var _ Event = &XDUVZxdgToplevelDecorationV1ConfigureEvent{}
+// Ensure ZxdgToplevelDecorationV1ConfigureEvent implements Event.
+var _ Event = &ZxdgToplevelDecorationV1ConfigureEvent{}
 
 // #endregion Interface xdg_decoration_unstable_v1.zxdg_toplevel_decoration_v1
 
@@ -14018,20 +13942,20 @@ var _ Event = &XDUVZxdgToplevelDecorationV1ConfigureEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v1.zxdg_exporter_v1
 
-// XFUVZxdgExporterV1DestroyRequest requests to destroy the xdg_exporter object
+// ZxdgExporterV1DestroyRequest requests to destroy the xdg_exporter object
 //
 // Notify the compositor that the xdg_exporter object will no longer be
 // used.
-type XFUVZxdgExporterV1DestroyRequest struct {
+type ZxdgExporterV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_exporter_v1.destroy in xdg_foreign_unstable_v1
-func (XFUVZxdgExporterV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgExporterV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgExporterV1DestroyRequest implements Message.
-var _ Message = XFUVZxdgExporterV1DestroyRequest{}
+// Ensure ZxdgExporterV1DestroyRequest implements Message.
+var _ Message = ZxdgExporterV1DestroyRequest{}
 
-// XFUVZxdgExporterV1ExportRequest requests to export a surface
+// ZxdgExporterV1ExportRequest requests to export a surface
 //
 // The export request exports the passed surface so that it can later be
 // imported via xdg_importer. When called, a new xdg_exported object will
@@ -14041,7 +13965,7 @@ var _ Message = XFUVZxdgExporterV1DestroyRequest{}
 // A surface may be exported multiple times, and each exported handle may
 // be used to create an xdg_imported multiple times. Only xdg_surface
 // surfaces may be exported.
-type XFUVZxdgExporterV1ExportRequest struct {
+type ZxdgExporterV1ExportRequest struct {
 	// ID contains the new xdg_exported object
 	ID ObjectID
 
@@ -14050,37 +13974,37 @@ type XFUVZxdgExporterV1ExportRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_exporter_v1.export in xdg_foreign_unstable_v1
-func (XFUVZxdgExporterV1ExportRequest) Opcode() uint16 { return 1 }
+func (ZxdgExporterV1ExportRequest) Opcode() uint16 { return 1 }
 
-// Ensure XFUVZxdgExporterV1ExportRequest implements Message.
-var _ Message = XFUVZxdgExporterV1ExportRequest{}
+// Ensure ZxdgExporterV1ExportRequest implements Message.
+var _ Message = ZxdgExporterV1ExportRequest{}
 
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_exporter_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v1.zxdg_importer_v1
 
-// XFUVZxdgImporterV1DestroyRequest requests to destroy the xdg_importer object
+// ZxdgImporterV1DestroyRequest requests to destroy the xdg_importer object
 //
 // Notify the compositor that the xdg_importer object will no longer be
 // used.
-type XFUVZxdgImporterV1DestroyRequest struct {
+type ZxdgImporterV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_importer_v1.destroy in xdg_foreign_unstable_v1
-func (XFUVZxdgImporterV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgImporterV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgImporterV1DestroyRequest implements Message.
-var _ Message = XFUVZxdgImporterV1DestroyRequest{}
+// Ensure ZxdgImporterV1DestroyRequest implements Message.
+var _ Message = ZxdgImporterV1DestroyRequest{}
 
-// XFUVZxdgImporterV1ImportRequest requests to import a surface
+// ZxdgImporterV1ImportRequest requests to import a surface
 //
 // The import request imports a surface from any client given a handle
 // retrieved by exporting said surface using xdg_exporter.export. When
 // called, a new xdg_imported object will be created. This new object
 // represents the imported surface, and the importing client can
 // manipulate its relationship using it. See xdg_imported for details.
-type XFUVZxdgImporterV1ImportRequest struct {
+type ZxdgImporterV1ImportRequest struct {
 	// ID contains the new xdg_imported object
 	ID ObjectID
 
@@ -14089,49 +14013,49 @@ type XFUVZxdgImporterV1ImportRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_importer_v1.import in xdg_foreign_unstable_v1
-func (XFUVZxdgImporterV1ImportRequest) Opcode() uint16 { return 1 }
+func (ZxdgImporterV1ImportRequest) Opcode() uint16 { return 1 }
 
-// Ensure XFUVZxdgImporterV1ImportRequest implements Message.
-var _ Message = XFUVZxdgImporterV1ImportRequest{}
+// Ensure ZxdgImporterV1ImportRequest implements Message.
+var _ Message = ZxdgImporterV1ImportRequest{}
 
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_importer_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v1.zxdg_exported_v1
 
-// XFUVZxdgExportedV1DestroyRequest requests to unexport the exported surface
+// ZxdgExportedV1DestroyRequest requests to unexport the exported surface
 //
 // Revoke the previously exported surface. This invalidates any
 // relationship the importer may have set up using the xdg_imported created
 // given the handle sent via xdg_exported.handle.
-type XFUVZxdgExportedV1DestroyRequest struct {
+type ZxdgExportedV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_exported_v1.destroy in xdg_foreign_unstable_v1
-func (XFUVZxdgExportedV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgExportedV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgExportedV1DestroyRequest implements Message.
-var _ Message = XFUVZxdgExportedV1DestroyRequest{}
+// Ensure ZxdgExportedV1DestroyRequest implements Message.
+var _ Message = ZxdgExportedV1DestroyRequest{}
 
-// XFUVZxdgExportedV1HandleEvent signals when the exported surface handle
+// ZxdgExportedV1HandleEvent signals when the exported surface handle
 //
 // The handle event contains the unique handle of this exported surface
 // reference. It may be shared with any client, which then can use it to
 // import the surface by calling xdg_importer.import. A handle may be
 // used to import the surface multiple times.
-type XFUVZxdgExportedV1HandleEvent struct {
+type ZxdgExportedV1HandleEvent struct {
 	// Handle contains the exported surface handle
 	Handle string
 }
 
 // Opcode returns the event opcode for zxdg_exported_v1.handle in xdg_foreign_unstable_v1
-func (XFUVZxdgExportedV1HandleEvent) Opcode() uint16 { return 0 }
+func (ZxdgExportedV1HandleEvent) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgExportedV1HandleEvent implements Message.
-var _ Message = XFUVZxdgExportedV1HandleEvent{}
+// Ensure ZxdgExportedV1HandleEvent implements Message.
+var _ Message = ZxdgExportedV1HandleEvent{}
 
 // Scan scans the event from the socket.
-func (e *XFUVZxdgExportedV1HandleEvent) Scan(s *EventScanner) error {
+func (e *ZxdgExportedV1HandleEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -14140,67 +14064,67 @@ func (e *XFUVZxdgExportedV1HandleEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XFUVZxdgExportedV1HandleEvent implements Event.
-var _ Event = &XFUVZxdgExportedV1HandleEvent{}
+// Ensure ZxdgExportedV1HandleEvent implements Event.
+var _ Event = &ZxdgExportedV1HandleEvent{}
 
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_exported_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v1.zxdg_imported_v1
 
-// XFUVZxdgImportedV1DestroyRequest requests to destroy the xdg_imported object
+// ZxdgImportedV1DestroyRequest requests to destroy the xdg_imported object
 //
 // Notify the compositor that it will no longer use the xdg_imported
 // object. Any relationship that may have been set up will at this point
 // be invalidated.
-type XFUVZxdgImportedV1DestroyRequest struct {
+type ZxdgImportedV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_imported_v1.destroy in xdg_foreign_unstable_v1
-func (XFUVZxdgImportedV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgImportedV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgImportedV1DestroyRequest implements Message.
-var _ Message = XFUVZxdgImportedV1DestroyRequest{}
+// Ensure ZxdgImportedV1DestroyRequest implements Message.
+var _ Message = ZxdgImportedV1DestroyRequest{}
 
-// XFUVZxdgImportedV1SetParentOfRequest requests to set as the parent of some surface
+// ZxdgImportedV1SetParentOfRequest requests to set as the parent of some surface
 //
 // Set the imported surface as the parent of some surface of the client.
 // The passed surface must be a toplevel xdg_surface. Calling this function
 // sets up a surface to surface relation with the same stacking and positioning
 // semantics as xdg_surface.set_parent.
-type XFUVZxdgImportedV1SetParentOfRequest struct {
+type ZxdgImportedV1SetParentOfRequest struct {
 	// Surface contains the child surface
 	Surface ObjectID
 }
 
 // Opcode returns the request opcode for zxdg_imported_v1.set_parent_of in xdg_foreign_unstable_v1
-func (XFUVZxdgImportedV1SetParentOfRequest) Opcode() uint16 { return 1 }
+func (ZxdgImportedV1SetParentOfRequest) Opcode() uint16 { return 1 }
 
-// Ensure XFUVZxdgImportedV1SetParentOfRequest implements Message.
-var _ Message = XFUVZxdgImportedV1SetParentOfRequest{}
+// Ensure ZxdgImportedV1SetParentOfRequest implements Message.
+var _ Message = ZxdgImportedV1SetParentOfRequest{}
 
-// XFUVZxdgImportedV1DestroyedEvent signals when the imported surface handle has been destroyed
+// ZxdgImportedV1DestroyedEvent signals when the imported surface handle has been destroyed
 //
 // The imported surface handle has been destroyed and any relationship set
 // up has been invalidated. This may happen for various reasons, for
 // example if the exported surface or the exported surface handle has been
 // destroyed, if the handle used for importing was invalid.
-type XFUVZxdgImportedV1DestroyedEvent struct {
+type ZxdgImportedV1DestroyedEvent struct {
 }
 
 // Opcode returns the event opcode for zxdg_imported_v1.destroyed in xdg_foreign_unstable_v1
-func (XFUVZxdgImportedV1DestroyedEvent) Opcode() uint16 { return 0 }
+func (ZxdgImportedV1DestroyedEvent) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgImportedV1DestroyedEvent implements Message.
-var _ Message = XFUVZxdgImportedV1DestroyedEvent{}
+// Ensure ZxdgImportedV1DestroyedEvent implements Message.
+var _ Message = ZxdgImportedV1DestroyedEvent{}
 
 // Scan scans the event from the socket.
-func (e *XFUVZxdgImportedV1DestroyedEvent) Scan(s *EventScanner) error {
+func (e *ZxdgImportedV1DestroyedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XFUVZxdgImportedV1DestroyedEvent implements Event.
-var _ Event = &XFUVZxdgImportedV1DestroyedEvent{}
+// Ensure ZxdgImportedV1DestroyedEvent implements Event.
+var _ Event = &ZxdgImportedV1DestroyedEvent{}
 
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_imported_v1
 
@@ -14213,31 +14137,31 @@ var _ Event = &XFUVZxdgImportedV1DestroyedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v2.zxdg_exporter_v2
 
-// XFUVZxdgExporterV2Error represents error values
+// ZxdgExporterV2Error represents error values
 //
 // These errors can be emitted in response to invalid xdg_exporter
 // requests.
-type XFUVZxdgExporterV2Error int
+type ZxdgExporterV2Error int
 
 const (
-	// XFUVZxdgExporterV2ErrorInvalidSurface corresponds to surface is not an xdg_toplevel
-	XFUVZxdgExporterV2ErrorInvalidSurface XFUVZxdgExporterV2Error = 0
+	// ZxdgExporterV2ErrorInvalidSurface corresponds to surface is not an xdg_toplevel
+	ZxdgExporterV2ErrorInvalidSurface ZxdgExporterV2Error = 0
 )
 
-// XFUVZxdgExporterV2DestroyRequest requests to destroy the xdg_exporter object
+// ZxdgExporterV2DestroyRequest requests to destroy the xdg_exporter object
 //
 // Notify the compositor that the xdg_exporter object will no longer be
 // used.
-type XFUVZxdgExporterV2DestroyRequest struct {
+type ZxdgExporterV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_exporter_v2.destroy in xdg_foreign_unstable_v2
-func (XFUVZxdgExporterV2DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgExporterV2DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgExporterV2DestroyRequest implements Message.
-var _ Message = XFUVZxdgExporterV2DestroyRequest{}
+// Ensure ZxdgExporterV2DestroyRequest implements Message.
+var _ Message = ZxdgExporterV2DestroyRequest{}
 
-// XFUVZxdgExporterV2ExportToplevelRequest requests to export a toplevel surface
+// ZxdgExporterV2ExportToplevelRequest requests to export a toplevel surface
 //
 // The export_toplevel request exports the passed surface so that it can later be
 // imported via xdg_importer. When called, a new xdg_exported object will
@@ -14248,7 +14172,7 @@ var _ Message = XFUVZxdgExporterV2DestroyRequest{}
 // be used to create an xdg_imported multiple times. Only xdg_toplevel
 // equivalent surfaces may be exported, otherwise an invalid_surface
 // protocol error is sent.
-type XFUVZxdgExporterV2ExportToplevelRequest struct {
+type ZxdgExporterV2ExportToplevelRequest struct {
 	// ID contains the new xdg_exported object
 	ID ObjectID
 
@@ -14257,37 +14181,37 @@ type XFUVZxdgExporterV2ExportToplevelRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_exporter_v2.export_toplevel in xdg_foreign_unstable_v2
-func (XFUVZxdgExporterV2ExportToplevelRequest) Opcode() uint16 { return 1 }
+func (ZxdgExporterV2ExportToplevelRequest) Opcode() uint16 { return 1 }
 
-// Ensure XFUVZxdgExporterV2ExportToplevelRequest implements Message.
-var _ Message = XFUVZxdgExporterV2ExportToplevelRequest{}
+// Ensure ZxdgExporterV2ExportToplevelRequest implements Message.
+var _ Message = ZxdgExporterV2ExportToplevelRequest{}
 
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_exporter_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v2.zxdg_importer_v2
 
-// XFUVZxdgImporterV2DestroyRequest requests to destroy the xdg_importer object
+// ZxdgImporterV2DestroyRequest requests to destroy the xdg_importer object
 //
 // Notify the compositor that the xdg_importer object will no longer be
 // used.
-type XFUVZxdgImporterV2DestroyRequest struct {
+type ZxdgImporterV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_importer_v2.destroy in xdg_foreign_unstable_v2
-func (XFUVZxdgImporterV2DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgImporterV2DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgImporterV2DestroyRequest implements Message.
-var _ Message = XFUVZxdgImporterV2DestroyRequest{}
+// Ensure ZxdgImporterV2DestroyRequest implements Message.
+var _ Message = ZxdgImporterV2DestroyRequest{}
 
-// XFUVZxdgImporterV2ImportToplevelRequest requests to import a toplevel surface
+// ZxdgImporterV2ImportToplevelRequest requests to import a toplevel surface
 //
 // The import_toplevel request imports a surface from any client given a handle
 // retrieved by exporting said surface using xdg_exporter.export_toplevel.
 // When called, a new xdg_imported object will be created. This new object
 // represents the imported surface, and the importing client can
 // manipulate its relationship using it. See xdg_imported for details.
-type XFUVZxdgImporterV2ImportToplevelRequest struct {
+type ZxdgImporterV2ImportToplevelRequest struct {
 	// ID contains the new xdg_imported object
 	ID ObjectID
 
@@ -14296,49 +14220,49 @@ type XFUVZxdgImporterV2ImportToplevelRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_importer_v2.import_toplevel in xdg_foreign_unstable_v2
-func (XFUVZxdgImporterV2ImportToplevelRequest) Opcode() uint16 { return 1 }
+func (ZxdgImporterV2ImportToplevelRequest) Opcode() uint16 { return 1 }
 
-// Ensure XFUVZxdgImporterV2ImportToplevelRequest implements Message.
-var _ Message = XFUVZxdgImporterV2ImportToplevelRequest{}
+// Ensure ZxdgImporterV2ImportToplevelRequest implements Message.
+var _ Message = ZxdgImporterV2ImportToplevelRequest{}
 
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_importer_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v2.zxdg_exported_v2
 
-// XFUVZxdgExportedV2DestroyRequest requests to unexport the exported surface
+// ZxdgExportedV2DestroyRequest requests to unexport the exported surface
 //
 // Revoke the previously exported surface. This invalidates any
 // relationship the importer may have set up using the xdg_imported created
 // given the handle sent via xdg_exported.handle.
-type XFUVZxdgExportedV2DestroyRequest struct {
+type ZxdgExportedV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_exported_v2.destroy in xdg_foreign_unstable_v2
-func (XFUVZxdgExportedV2DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgExportedV2DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgExportedV2DestroyRequest implements Message.
-var _ Message = XFUVZxdgExportedV2DestroyRequest{}
+// Ensure ZxdgExportedV2DestroyRequest implements Message.
+var _ Message = ZxdgExportedV2DestroyRequest{}
 
-// XFUVZxdgExportedV2HandleEvent signals when the exported surface handle
+// ZxdgExportedV2HandleEvent signals when the exported surface handle
 //
 // The handle event contains the unique handle of this exported surface
 // reference. It may be shared with any client, which then can use it to
 // import the surface by calling xdg_importer.import_toplevel. A handle
 // may be used to import the surface multiple times.
-type XFUVZxdgExportedV2HandleEvent struct {
+type ZxdgExportedV2HandleEvent struct {
 	// Handle contains the exported surface handle
 	Handle string
 }
 
 // Opcode returns the event opcode for zxdg_exported_v2.handle in xdg_foreign_unstable_v2
-func (XFUVZxdgExportedV2HandleEvent) Opcode() uint16 { return 0 }
+func (ZxdgExportedV2HandleEvent) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgExportedV2HandleEvent implements Message.
-var _ Message = XFUVZxdgExportedV2HandleEvent{}
+// Ensure ZxdgExportedV2HandleEvent implements Message.
+var _ Message = ZxdgExportedV2HandleEvent{}
 
 // Scan scans the event from the socket.
-func (e *XFUVZxdgExportedV2HandleEvent) Scan(s *EventScanner) error {
+func (e *ZxdgExportedV2HandleEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -14347,79 +14271,79 @@ func (e *XFUVZxdgExportedV2HandleEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XFUVZxdgExportedV2HandleEvent implements Event.
-var _ Event = &XFUVZxdgExportedV2HandleEvent{}
+// Ensure ZxdgExportedV2HandleEvent implements Event.
+var _ Event = &ZxdgExportedV2HandleEvent{}
 
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_exported_v2
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_foreign_unstable_v2.zxdg_imported_v2
 
-// XFUVZxdgImportedV2Error represents error values
+// ZxdgImportedV2Error represents error values
 //
 // These errors can be emitted in response to invalid xdg_imported
 // requests.
-type XFUVZxdgImportedV2Error int
+type ZxdgImportedV2Error int
 
 const (
-	// XFUVZxdgImportedV2ErrorInvalidSurface corresponds to surface is not an xdg_toplevel
-	XFUVZxdgImportedV2ErrorInvalidSurface XFUVZxdgImportedV2Error = 0
+	// ZxdgImportedV2ErrorInvalidSurface corresponds to surface is not an xdg_toplevel
+	ZxdgImportedV2ErrorInvalidSurface ZxdgImportedV2Error = 0
 )
 
-// XFUVZxdgImportedV2DestroyRequest requests to destroy the xdg_imported object
+// ZxdgImportedV2DestroyRequest requests to destroy the xdg_imported object
 //
 // Notify the compositor that it will no longer use the xdg_imported
 // object. Any relationship that may have been set up will at this point
 // be invalidated.
-type XFUVZxdgImportedV2DestroyRequest struct {
+type ZxdgImportedV2DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_imported_v2.destroy in xdg_foreign_unstable_v2
-func (XFUVZxdgImportedV2DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgImportedV2DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgImportedV2DestroyRequest implements Message.
-var _ Message = XFUVZxdgImportedV2DestroyRequest{}
+// Ensure ZxdgImportedV2DestroyRequest implements Message.
+var _ Message = ZxdgImportedV2DestroyRequest{}
 
-// XFUVZxdgImportedV2SetParentOfRequest requests to set as the parent of some surface
+// ZxdgImportedV2SetParentOfRequest requests to set as the parent of some surface
 //
 // Set the imported surface as the parent of some surface of the client.
 // The passed surface must be an xdg_toplevel equivalent, otherwise an
 // invalid_surface protocol error is sent. Calling this function sets up
 // a surface to surface relation with the same stacking and positioning
 // semantics as xdg_toplevel.set_parent.
-type XFUVZxdgImportedV2SetParentOfRequest struct {
+type ZxdgImportedV2SetParentOfRequest struct {
 	// Surface contains the child surface
 	Surface ObjectID
 }
 
 // Opcode returns the request opcode for zxdg_imported_v2.set_parent_of in xdg_foreign_unstable_v2
-func (XFUVZxdgImportedV2SetParentOfRequest) Opcode() uint16 { return 1 }
+func (ZxdgImportedV2SetParentOfRequest) Opcode() uint16 { return 1 }
 
-// Ensure XFUVZxdgImportedV2SetParentOfRequest implements Message.
-var _ Message = XFUVZxdgImportedV2SetParentOfRequest{}
+// Ensure ZxdgImportedV2SetParentOfRequest implements Message.
+var _ Message = ZxdgImportedV2SetParentOfRequest{}
 
-// XFUVZxdgImportedV2DestroyedEvent signals when the imported surface handle has been destroyed
+// ZxdgImportedV2DestroyedEvent signals when the imported surface handle has been destroyed
 //
 // The imported surface handle has been destroyed and any relationship set
 // up has been invalidated. This may happen for various reasons, for
 // example if the exported surface or the exported surface handle has been
 // destroyed, if the handle used for importing was invalid.
-type XFUVZxdgImportedV2DestroyedEvent struct {
+type ZxdgImportedV2DestroyedEvent struct {
 }
 
 // Opcode returns the event opcode for zxdg_imported_v2.destroyed in xdg_foreign_unstable_v2
-func (XFUVZxdgImportedV2DestroyedEvent) Opcode() uint16 { return 0 }
+func (ZxdgImportedV2DestroyedEvent) Opcode() uint16 { return 0 }
 
-// Ensure XFUVZxdgImportedV2DestroyedEvent implements Message.
-var _ Message = XFUVZxdgImportedV2DestroyedEvent{}
+// Ensure ZxdgImportedV2DestroyedEvent implements Message.
+var _ Message = ZxdgImportedV2DestroyedEvent{}
 
 // Scan scans the event from the socket.
-func (e *XFUVZxdgImportedV2DestroyedEvent) Scan(s *EventScanner) error {
+func (e *ZxdgImportedV2DestroyedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XFUVZxdgImportedV2DestroyedEvent implements Event.
-var _ Event = &XFUVZxdgImportedV2DestroyedEvent{}
+// Ensure ZxdgImportedV2DestroyedEvent implements Event.
+var _ Event = &ZxdgImportedV2DestroyedEvent{}
 
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_imported_v2
 
@@ -14432,55 +14356,55 @@ var _ Event = &XFUVZxdgImportedV2DestroyedEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface xdg_output_unstable_v1.zxdg_output_manager_v1
 
-// XOUVZxdgOutputManagerV1DestroyRequest requests to destroy the xdg_output_manager object
+// ZxdgOutputManagerV1DestroyRequest requests to destroy the xdg_output_manager object
 //
 // Using this request a client can tell the server that it is not
 // going to use the xdg_output_manager object anymore.
 //
 // Any objects already created through this instance are not affected.
-type XOUVZxdgOutputManagerV1DestroyRequest struct {
+type ZxdgOutputManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_output_manager_v1.destroy in xdg_output_unstable_v1
-func (XOUVZxdgOutputManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgOutputManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XOUVZxdgOutputManagerV1DestroyRequest implements Message.
-var _ Message = XOUVZxdgOutputManagerV1DestroyRequest{}
+// Ensure ZxdgOutputManagerV1DestroyRequest implements Message.
+var _ Message = ZxdgOutputManagerV1DestroyRequest{}
 
-// XOUVZxdgOutputManagerV1GetXdgOutputRequest requests to create an xdg output from a wl_output
+// ZxdgOutputManagerV1GetXdgOutputRequest requests to create an xdg output from a wl_output
 //
 // This creates a new xdg_output object for the given wl_output.
-type XOUVZxdgOutputManagerV1GetXdgOutputRequest struct {
+type ZxdgOutputManagerV1GetXdgOutputRequest struct {
 	ID ObjectID
 
 	Output ObjectID
 }
 
 // Opcode returns the request opcode for zxdg_output_manager_v1.get_xdg_output in xdg_output_unstable_v1
-func (XOUVZxdgOutputManagerV1GetXdgOutputRequest) Opcode() uint16 { return 1 }
+func (ZxdgOutputManagerV1GetXdgOutputRequest) Opcode() uint16 { return 1 }
 
-// Ensure XOUVZxdgOutputManagerV1GetXdgOutputRequest implements Message.
-var _ Message = XOUVZxdgOutputManagerV1GetXdgOutputRequest{}
+// Ensure ZxdgOutputManagerV1GetXdgOutputRequest implements Message.
+var _ Message = ZxdgOutputManagerV1GetXdgOutputRequest{}
 
 // #endregion Interface xdg_output_unstable_v1.zxdg_output_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_output_unstable_v1.zxdg_output_v1
 
-// XOUVZxdgOutputV1DestroyRequest requests to destroy the xdg_output object
+// ZxdgOutputV1DestroyRequest requests to destroy the xdg_output object
 //
 // Using this request a client can tell the server that it is not
 // going to use the xdg_output object anymore.
-type XOUVZxdgOutputV1DestroyRequest struct {
+type ZxdgOutputV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zxdg_output_v1.destroy in xdg_output_unstable_v1
-func (XOUVZxdgOutputV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZxdgOutputV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XOUVZxdgOutputV1DestroyRequest implements Message.
-var _ Message = XOUVZxdgOutputV1DestroyRequest{}
+// Ensure ZxdgOutputV1DestroyRequest implements Message.
+var _ Message = ZxdgOutputV1DestroyRequest{}
 
-// XOUVZxdgOutputV1LogicalPositionEvent signals when position of the output within the global compositor space
+// ZxdgOutputV1LogicalPositionEvent signals when position of the output within the global compositor space
 //
 // The position event describes the location of the wl_output within
 // the global compositor space.
@@ -14488,7 +14412,7 @@ var _ Message = XOUVZxdgOutputV1DestroyRequest{}
 // The logical_position event is sent after creating an xdg_output
 // (see xdg_output_manager.get_xdg_output) and whenever the location
 // of the output changes within the global compositor space.
-type XOUVZxdgOutputV1LogicalPositionEvent struct {
+type ZxdgOutputV1LogicalPositionEvent struct {
 	// X contains x position within the global compositor space
 	X int32
 
@@ -14497,13 +14421,13 @@ type XOUVZxdgOutputV1LogicalPositionEvent struct {
 }
 
 // Opcode returns the event opcode for zxdg_output_v1.logical_position in xdg_output_unstable_v1
-func (XOUVZxdgOutputV1LogicalPositionEvent) Opcode() uint16 { return 0 }
+func (ZxdgOutputV1LogicalPositionEvent) Opcode() uint16 { return 0 }
 
-// Ensure XOUVZxdgOutputV1LogicalPositionEvent implements Message.
-var _ Message = XOUVZxdgOutputV1LogicalPositionEvent{}
+// Ensure ZxdgOutputV1LogicalPositionEvent implements Message.
+var _ Message = ZxdgOutputV1LogicalPositionEvent{}
 
 // Scan scans the event from the socket.
-func (e *XOUVZxdgOutputV1LogicalPositionEvent) Scan(s *EventScanner) error {
+func (e *ZxdgOutputV1LogicalPositionEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -14517,10 +14441,10 @@ func (e *XOUVZxdgOutputV1LogicalPositionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XOUVZxdgOutputV1LogicalPositionEvent implements Event.
-var _ Event = &XOUVZxdgOutputV1LogicalPositionEvent{}
+// Ensure ZxdgOutputV1LogicalPositionEvent implements Event.
+var _ Event = &ZxdgOutputV1LogicalPositionEvent{}
 
-// XOUVZxdgOutputV1LogicalSizeEvent signals when size of the output in the global compositor space
+// ZxdgOutputV1LogicalSizeEvent signals when size of the output in the global compositor space
 //
 // The logical_size event describes the size of the output in the
 // global compositor space.
@@ -14556,7 +14480,7 @@ var _ Event = &XOUVZxdgOutputV1LogicalPositionEvent{}
 // size of the output changes, either as a result of a change in the
 // applied scale or because of a change in the corresponding output
 // mode(see wl_output.mode) or transform (see wl_output.transform).
-type XOUVZxdgOutputV1LogicalSizeEvent struct {
+type ZxdgOutputV1LogicalSizeEvent struct {
 	// Width contains width in global compositor space
 	Width int32
 
@@ -14565,13 +14489,13 @@ type XOUVZxdgOutputV1LogicalSizeEvent struct {
 }
 
 // Opcode returns the event opcode for zxdg_output_v1.logical_size in xdg_output_unstable_v1
-func (XOUVZxdgOutputV1LogicalSizeEvent) Opcode() uint16 { return 1 }
+func (ZxdgOutputV1LogicalSizeEvent) Opcode() uint16 { return 1 }
 
-// Ensure XOUVZxdgOutputV1LogicalSizeEvent implements Message.
-var _ Message = XOUVZxdgOutputV1LogicalSizeEvent{}
+// Ensure ZxdgOutputV1LogicalSizeEvent implements Message.
+var _ Message = ZxdgOutputV1LogicalSizeEvent{}
 
 // Scan scans the event from the socket.
-func (e *XOUVZxdgOutputV1LogicalSizeEvent) Scan(s *EventScanner) error {
+func (e *ZxdgOutputV1LogicalSizeEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -14585,10 +14509,10 @@ func (e *XOUVZxdgOutputV1LogicalSizeEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XOUVZxdgOutputV1LogicalSizeEvent implements Event.
-var _ Event = &XOUVZxdgOutputV1LogicalSizeEvent{}
+// Ensure ZxdgOutputV1LogicalSizeEvent implements Event.
+var _ Event = &ZxdgOutputV1LogicalSizeEvent{}
 
-// XOUVZxdgOutputV1DoneEvent signals when all information about the output have been sent
+// ZxdgOutputV1DoneEvent signals when all information about the output have been sent
 //
 // This event is sent after all other properties of an xdg_output
 // have been sent.
@@ -14599,24 +14523,24 @@ var _ Event = &XOUVZxdgOutputV1LogicalSizeEvent{}
 // For objects version 3 onwards, this event is deprecated. Compositors
 // are not required to send it anymore and must send wl_output.done
 // instead.
-type XOUVZxdgOutputV1DoneEvent struct {
+type ZxdgOutputV1DoneEvent struct {
 }
 
 // Opcode returns the event opcode for zxdg_output_v1.done in xdg_output_unstable_v1
-func (XOUVZxdgOutputV1DoneEvent) Opcode() uint16 { return 2 }
+func (ZxdgOutputV1DoneEvent) Opcode() uint16 { return 2 }
 
-// Ensure XOUVZxdgOutputV1DoneEvent implements Message.
-var _ Message = XOUVZxdgOutputV1DoneEvent{}
+// Ensure ZxdgOutputV1DoneEvent implements Message.
+var _ Message = ZxdgOutputV1DoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *XOUVZxdgOutputV1DoneEvent) Scan(s *EventScanner) error {
+func (e *ZxdgOutputV1DoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XOUVZxdgOutputV1DoneEvent implements Event.
-var _ Event = &XOUVZxdgOutputV1DoneEvent{}
+// Ensure ZxdgOutputV1DoneEvent implements Event.
+var _ Event = &ZxdgOutputV1DoneEvent{}
 
-// XOUVZxdgOutputV1NameEvent signals when name of this output
+// ZxdgOutputV1NameEvent signals when name of this output
 //
 // Many compositors will assign names to their outputs, show them to the
 // user, allow them to be configured by name, etc. The client may wish to
@@ -14636,19 +14560,19 @@ var _ Event = &XOUVZxdgOutputV1DoneEvent{}
 // xdg_output_manager.get_xdg_output). This event is only sent once per
 // xdg_output, and the name does not change over the lifetime of the
 // wl_output global.
-type XOUVZxdgOutputV1NameEvent struct {
+type ZxdgOutputV1NameEvent struct {
 	// Name contains output name
 	Name string
 }
 
 // Opcode returns the event opcode for zxdg_output_v1.name in xdg_output_unstable_v1
-func (XOUVZxdgOutputV1NameEvent) Opcode() uint16 { return 3 }
+func (ZxdgOutputV1NameEvent) Opcode() uint16 { return 3 }
 
-// Ensure XOUVZxdgOutputV1NameEvent implements Message.
-var _ Message = XOUVZxdgOutputV1NameEvent{}
+// Ensure ZxdgOutputV1NameEvent implements Message.
+var _ Message = ZxdgOutputV1NameEvent{}
 
 // Scan scans the event from the socket.
-func (e *XOUVZxdgOutputV1NameEvent) Scan(s *EventScanner) error {
+func (e *ZxdgOutputV1NameEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -14657,10 +14581,10 @@ func (e *XOUVZxdgOutputV1NameEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XOUVZxdgOutputV1NameEvent implements Event.
-var _ Event = &XOUVZxdgOutputV1NameEvent{}
+// Ensure ZxdgOutputV1NameEvent implements Event.
+var _ Event = &ZxdgOutputV1NameEvent{}
 
-// XOUVZxdgOutputV1DescriptionEvent signals when human-readable description of this output
+// ZxdgOutputV1DescriptionEvent signals when human-readable description of this output
 //
 // Many compositors can produce human-readable descriptions of their
 // outputs.  The client may wish to know this description as well, to
@@ -14677,19 +14601,19 @@ var _ Event = &XOUVZxdgOutputV1NameEvent{}
 // For objects of version 2 and lower, this event is only sent once per
 // xdg_output, and the description does not change over the lifetime of
 // the wl_output global.
-type XOUVZxdgOutputV1DescriptionEvent struct {
+type ZxdgOutputV1DescriptionEvent struct {
 	// Description contains output description
 	Description string
 }
 
 // Opcode returns the event opcode for zxdg_output_v1.description in xdg_output_unstable_v1
-func (XOUVZxdgOutputV1DescriptionEvent) Opcode() uint16 { return 4 }
+func (ZxdgOutputV1DescriptionEvent) Opcode() uint16 { return 4 }
 
-// Ensure XOUVZxdgOutputV1DescriptionEvent implements Message.
-var _ Message = XOUVZxdgOutputV1DescriptionEvent{}
+// Ensure ZxdgOutputV1DescriptionEvent implements Message.
+var _ Message = ZxdgOutputV1DescriptionEvent{}
 
 // Scan scans the event from the socket.
-func (e *XOUVZxdgOutputV1DescriptionEvent) Scan(s *EventScanner) error {
+func (e *ZxdgOutputV1DescriptionEvent) Scan(s *EventScanner) error {
 	if v, err := s.String(); err != nil {
 		return err
 	} else {
@@ -14698,8 +14622,8 @@ func (e *XOUVZxdgOutputV1DescriptionEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XOUVZxdgOutputV1DescriptionEvent implements Event.
-var _ Event = &XOUVZxdgOutputV1DescriptionEvent{}
+// Ensure ZxdgOutputV1DescriptionEvent implements Event.
+var _ Event = &ZxdgOutputV1DescriptionEvent{}
 
 // #endregion Interface xdg_output_unstable_v1.zxdg_output_v1
 
@@ -14712,60 +14636,60 @@ var _ Event = &XOUVZxdgOutputV1DescriptionEvent{}
 // ----------------------------------------------------------------------------
 // #region Interface xdg_shell.xdg_wm_base
 
-type XSXdgWmBaseError int
+type XdgWmBaseError int
 
 const (
-	// XSXdgWmBaseErrorRole corresponds to given wl_surface has another role
-	XSXdgWmBaseErrorRole XSXdgWmBaseError = 0
+	// XdgWmBaseErrorRole corresponds to given wl_surface has another role
+	XdgWmBaseErrorRole XdgWmBaseError = 0
 
-	// XSXdgWmBaseErrorDefunctSurfaces corresponds to xdg_wm_base was destroyed before children
-	XSXdgWmBaseErrorDefunctSurfaces XSXdgWmBaseError = 1
+	// XdgWmBaseErrorDefunctSurfaces corresponds to xdg_wm_base was destroyed before children
+	XdgWmBaseErrorDefunctSurfaces XdgWmBaseError = 1
 
-	// XSXdgWmBaseErrorNotTheTopmostPopup corresponds to the client tried to map or destroy a non-topmost popup
-	XSXdgWmBaseErrorNotTheTopmostPopup XSXdgWmBaseError = 2
+	// XdgWmBaseErrorNotTheTopmostPopup corresponds to the client tried to map or destroy a non-topmost popup
+	XdgWmBaseErrorNotTheTopmostPopup XdgWmBaseError = 2
 
-	// XSXdgWmBaseErrorInvalidPopupParent corresponds to the client specified an invalid popup parent surface
-	XSXdgWmBaseErrorInvalidPopupParent XSXdgWmBaseError = 3
+	// XdgWmBaseErrorInvalidPopupParent corresponds to the client specified an invalid popup parent surface
+	XdgWmBaseErrorInvalidPopupParent XdgWmBaseError = 3
 
-	// XSXdgWmBaseErrorInvalidSurfaceState corresponds to the client provided an invalid surface state
-	XSXdgWmBaseErrorInvalidSurfaceState XSXdgWmBaseError = 4
+	// XdgWmBaseErrorInvalidSurfaceState corresponds to the client provided an invalid surface state
+	XdgWmBaseErrorInvalidSurfaceState XdgWmBaseError = 4
 
-	// XSXdgWmBaseErrorInvalidPositioner corresponds to the client provided an invalid positioner
-	XSXdgWmBaseErrorInvalidPositioner XSXdgWmBaseError = 5
+	// XdgWmBaseErrorInvalidPositioner corresponds to the client provided an invalid positioner
+	XdgWmBaseErrorInvalidPositioner XdgWmBaseError = 5
 )
 
-// XSXdgWmBaseDestroyRequest requests to destroy xdg_wm_base
+// XdgWmBaseDestroyRequest requests to destroy xdg_wm_base
 //
 // Destroy this xdg_wm_base object.
 //
 // Destroying a bound xdg_wm_base object while there are surfaces
 // still alive created by this xdg_wm_base object instance is illegal
 // and will result in a protocol error.
-type XSXdgWmBaseDestroyRequest struct {
+type XdgWmBaseDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_wm_base.destroy in xdg_shell
-func (XSXdgWmBaseDestroyRequest) Opcode() uint16 { return 0 }
+func (XdgWmBaseDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgWmBaseDestroyRequest implements Message.
-var _ Message = XSXdgWmBaseDestroyRequest{}
+// Ensure XdgWmBaseDestroyRequest implements Message.
+var _ Message = XdgWmBaseDestroyRequest{}
 
-// XSXdgWmBaseCreatePositionerRequest requests to create a positioner object
+// XdgWmBaseCreatePositionerRequest requests to create a positioner object
 //
 // Create a positioner object. A positioner object is used to position
 // surfaces relative to some parent surface. See the interface description
 // and xdg_surface.get_popup for details.
-type XSXdgWmBaseCreatePositionerRequest struct {
+type XdgWmBaseCreatePositionerRequest struct {
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for xdg_wm_base.create_positioner in xdg_shell
-func (XSXdgWmBaseCreatePositionerRequest) Opcode() uint16 { return 1 }
+func (XdgWmBaseCreatePositionerRequest) Opcode() uint16 { return 1 }
 
-// Ensure XSXdgWmBaseCreatePositionerRequest implements Message.
-var _ Message = XSXdgWmBaseCreatePositionerRequest{}
+// Ensure XdgWmBaseCreatePositionerRequest implements Message.
+var _ Message = XdgWmBaseCreatePositionerRequest{}
 
-// XSXdgWmBaseGetXdgSurfaceRequest requests to create a shell surface from a surface
+// XdgWmBaseGetXdgSurfaceRequest requests to create a shell surface from a surface
 //
 // This creates an xdg_surface for the given surface. While xdg_surface
 // itself is not a role, the corresponding surface may only be assigned
@@ -14780,34 +14704,34 @@ var _ Message = XSXdgWmBaseCreatePositionerRequest{}
 //
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
-type XSXdgWmBaseGetXdgSurfaceRequest struct {
+type XdgWmBaseGetXdgSurfaceRequest struct {
 	ID ObjectID
 
 	Surface ObjectID
 }
 
 // Opcode returns the request opcode for xdg_wm_base.get_xdg_surface in xdg_shell
-func (XSXdgWmBaseGetXdgSurfaceRequest) Opcode() uint16 { return 2 }
+func (XdgWmBaseGetXdgSurfaceRequest) Opcode() uint16 { return 2 }
 
-// Ensure XSXdgWmBaseGetXdgSurfaceRequest implements Message.
-var _ Message = XSXdgWmBaseGetXdgSurfaceRequest{}
+// Ensure XdgWmBaseGetXdgSurfaceRequest implements Message.
+var _ Message = XdgWmBaseGetXdgSurfaceRequest{}
 
-// XSXdgWmBasePongRequest requests to respond to a ping event
+// XdgWmBasePongRequest requests to respond to a ping event
 //
 // A client must respond to a ping event with a pong request or
 // the client may be deemed unresponsive. See xdg_wm_base.ping.
-type XSXdgWmBasePongRequest struct {
+type XdgWmBasePongRequest struct {
 	// Serial contains serial of the ping event
 	Serial uint32
 }
 
 // Opcode returns the request opcode for xdg_wm_base.pong in xdg_shell
-func (XSXdgWmBasePongRequest) Opcode() uint16 { return 3 }
+func (XdgWmBasePongRequest) Opcode() uint16 { return 3 }
 
-// Ensure XSXdgWmBasePongRequest implements Message.
-var _ Message = XSXdgWmBasePongRequest{}
+// Ensure XdgWmBasePongRequest implements Message.
+var _ Message = XdgWmBasePongRequest{}
 
-// XSXdgWmBasePingEvent signals when check if the client is alive
+// XdgWmBasePingEvent signals when check if the client is alive
 //
 // The ping event asks the client if it's still alive. Pass the
 // serial specified in the event back to the compositor by sending
@@ -14820,19 +14744,19 @@ var _ Message = XSXdgWmBasePongRequest{}
 //
 // A compositor is free to ping in any way it wants, but a client must
 // always respond to any xdg_wm_base object it created.
-type XSXdgWmBasePingEvent struct {
+type XdgWmBasePingEvent struct {
 	// Serial contains pass this to the pong request
 	Serial uint32
 }
 
 // Opcode returns the event opcode for xdg_wm_base.ping in xdg_shell
-func (XSXdgWmBasePingEvent) Opcode() uint16 { return 0 }
+func (XdgWmBasePingEvent) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgWmBasePingEvent implements Message.
-var _ Message = XSXdgWmBasePingEvent{}
+// Ensure XdgWmBasePingEvent implements Message.
+var _ Message = XdgWmBasePingEvent{}
 
 // Scan scans the event from the socket.
-func (e *XSXdgWmBasePingEvent) Scan(s *EventScanner) error {
+func (e *XdgWmBasePingEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -14841,66 +14765,66 @@ func (e *XSXdgWmBasePingEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XSXdgWmBasePingEvent implements Event.
-var _ Event = &XSXdgWmBasePingEvent{}
+// Ensure XdgWmBasePingEvent implements Event.
+var _ Event = &XdgWmBasePingEvent{}
 
 // #endregion Interface xdg_shell.xdg_wm_base
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_shell.xdg_positioner
 
-type XSXdgPositionerError int
+type XdgPositionerError int
 
 const (
-	// XSXdgPositionerErrorInvalidInput corresponds to invalid input provided
-	XSXdgPositionerErrorInvalidInput XSXdgPositionerError = 0
+	// XdgPositionerErrorInvalidInput corresponds to invalid input provided
+	XdgPositionerErrorInvalidInput XdgPositionerError = 0
 )
 
-type XSXdgPositionerAnchor int
+type XdgPositionerAnchor int
 
 const (
-	XSXdgPositionerAnchorNone XSXdgPositionerAnchor = 0
+	XdgPositionerAnchorNone XdgPositionerAnchor = 0
 
-	XSXdgPositionerAnchorTop XSXdgPositionerAnchor = 1
+	XdgPositionerAnchorTop XdgPositionerAnchor = 1
 
-	XSXdgPositionerAnchorBottom XSXdgPositionerAnchor = 2
+	XdgPositionerAnchorBottom XdgPositionerAnchor = 2
 
-	XSXdgPositionerAnchorLeft XSXdgPositionerAnchor = 3
+	XdgPositionerAnchorLeft XdgPositionerAnchor = 3
 
-	XSXdgPositionerAnchorRight XSXdgPositionerAnchor = 4
+	XdgPositionerAnchorRight XdgPositionerAnchor = 4
 
-	XSXdgPositionerAnchorTopLeft XSXdgPositionerAnchor = 5
+	XdgPositionerAnchorTopLeft XdgPositionerAnchor = 5
 
-	XSXdgPositionerAnchorBottomLeft XSXdgPositionerAnchor = 6
+	XdgPositionerAnchorBottomLeft XdgPositionerAnchor = 6
 
-	XSXdgPositionerAnchorTopRight XSXdgPositionerAnchor = 7
+	XdgPositionerAnchorTopRight XdgPositionerAnchor = 7
 
-	XSXdgPositionerAnchorBottomRight XSXdgPositionerAnchor = 8
+	XdgPositionerAnchorBottomRight XdgPositionerAnchor = 8
 )
 
-type XSXdgPositionerGravity int
+type XdgPositionerGravity int
 
 const (
-	XSXdgPositionerGravityNone XSXdgPositionerGravity = 0
+	XdgPositionerGravityNone XdgPositionerGravity = 0
 
-	XSXdgPositionerGravityTop XSXdgPositionerGravity = 1
+	XdgPositionerGravityTop XdgPositionerGravity = 1
 
-	XSXdgPositionerGravityBottom XSXdgPositionerGravity = 2
+	XdgPositionerGravityBottom XdgPositionerGravity = 2
 
-	XSXdgPositionerGravityLeft XSXdgPositionerGravity = 3
+	XdgPositionerGravityLeft XdgPositionerGravity = 3
 
-	XSXdgPositionerGravityRight XSXdgPositionerGravity = 4
+	XdgPositionerGravityRight XdgPositionerGravity = 4
 
-	XSXdgPositionerGravityTopLeft XSXdgPositionerGravity = 5
+	XdgPositionerGravityTopLeft XdgPositionerGravity = 5
 
-	XSXdgPositionerGravityBottomLeft XSXdgPositionerGravity = 6
+	XdgPositionerGravityBottomLeft XdgPositionerGravity = 6
 
-	XSXdgPositionerGravityTopRight XSXdgPositionerGravity = 7
+	XdgPositionerGravityTopRight XdgPositionerGravity = 7
 
-	XSXdgPositionerGravityBottomRight XSXdgPositionerGravity = 8
+	XdgPositionerGravityBottomRight XdgPositionerGravity = 8
 )
 
-// XSXdgPositionerConstraintAdjustment represents constraint adjustments
+// XdgPositionerConstraintAdjustment represents constraint adjustments
 //
 // The constraint adjustment value define ways the compositor will adjust
 // the position of the surface, if the unadjusted position would result
@@ -14913,44 +14837,44 @@ const (
 //
 // The adjustments can be combined, according to a defined precedence: 1)
 // Flip, 2) Slide, 3) Resize.
-type XSXdgPositionerConstraintAdjustment uint
+type XdgPositionerConstraintAdjustment uint
 
 const (
-	XSXdgPositionerConstraintAdjustmentNone XSXdgPositionerConstraintAdjustment = 0
+	XdgPositionerConstraintAdjustmentNone XdgPositionerConstraintAdjustment = 0
 
-	XSXdgPositionerConstraintAdjustmentSlideX XSXdgPositionerConstraintAdjustment = 1
+	XdgPositionerConstraintAdjustmentSlideX XdgPositionerConstraintAdjustment = 1
 
-	XSXdgPositionerConstraintAdjustmentSlideY XSXdgPositionerConstraintAdjustment = 2
+	XdgPositionerConstraintAdjustmentSlideY XdgPositionerConstraintAdjustment = 2
 
-	XSXdgPositionerConstraintAdjustmentFlipX XSXdgPositionerConstraintAdjustment = 4
+	XdgPositionerConstraintAdjustmentFlipX XdgPositionerConstraintAdjustment = 4
 
-	XSXdgPositionerConstraintAdjustmentFlipY XSXdgPositionerConstraintAdjustment = 8
+	XdgPositionerConstraintAdjustmentFlipY XdgPositionerConstraintAdjustment = 8
 
-	XSXdgPositionerConstraintAdjustmentResizeX XSXdgPositionerConstraintAdjustment = 16
+	XdgPositionerConstraintAdjustmentResizeX XdgPositionerConstraintAdjustment = 16
 
-	XSXdgPositionerConstraintAdjustmentResizeY XSXdgPositionerConstraintAdjustment = 32
+	XdgPositionerConstraintAdjustmentResizeY XdgPositionerConstraintAdjustment = 32
 )
 
-// XSXdgPositionerDestroyRequest requests to destroy the xdg_positioner object
+// XdgPositionerDestroyRequest requests to destroy the xdg_positioner object
 //
 // Notify the compositor that the xdg_positioner will no longer be used.
-type XSXdgPositionerDestroyRequest struct {
+type XdgPositionerDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_positioner.destroy in xdg_shell
-func (XSXdgPositionerDestroyRequest) Opcode() uint16 { return 0 }
+func (XdgPositionerDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgPositionerDestroyRequest implements Message.
-var _ Message = XSXdgPositionerDestroyRequest{}
+// Ensure XdgPositionerDestroyRequest implements Message.
+var _ Message = XdgPositionerDestroyRequest{}
 
-// XSXdgPositionerSetSizeRequest requests to set the size of the to-be positioned rectangle
+// XdgPositionerSetSizeRequest requests to set the size of the to-be positioned rectangle
 //
 // Set the size of the surface that is to be positioned with the positioner
 // object. The size is in surface-local coordinates and corresponds to the
 // window geometry. See xdg_surface.set_window_geometry.
 //
 // If a zero or negative size is set the invalid_input error is raised.
-type XSXdgPositionerSetSizeRequest struct {
+type XdgPositionerSetSizeRequest struct {
 	// Width contains width of positioned rectangle
 	Width int32
 
@@ -14959,12 +14883,12 @@ type XSXdgPositionerSetSizeRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_size in xdg_shell
-func (XSXdgPositionerSetSizeRequest) Opcode() uint16 { return 1 }
+func (XdgPositionerSetSizeRequest) Opcode() uint16 { return 1 }
 
-// Ensure XSXdgPositionerSetSizeRequest implements Message.
-var _ Message = XSXdgPositionerSetSizeRequest{}
+// Ensure XdgPositionerSetSizeRequest implements Message.
+var _ Message = XdgPositionerSetSizeRequest{}
 
-// XSXdgPositionerSetAnchorRectRequest requests to set the anchor rectangle within the parent surface
+// XdgPositionerSetAnchorRectRequest requests to set the anchor rectangle within the parent surface
 //
 // Specify the anchor rectangle within the parent surface that the child
 // surface will be placed relative to. The rectangle is relative to the
@@ -14976,7 +14900,7 @@ var _ Message = XSXdgPositionerSetSizeRequest{}
 // positioned child's parent surface.
 //
 // If a negative size is set the invalid_input error is raised.
-type XSXdgPositionerSetAnchorRectRequest struct {
+type XdgPositionerSetAnchorRectRequest struct {
 	// X contains x position of anchor rectangle
 	X int32
 
@@ -14991,12 +14915,12 @@ type XSXdgPositionerSetAnchorRectRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_anchor_rect in xdg_shell
-func (XSXdgPositionerSetAnchorRectRequest) Opcode() uint16 { return 2 }
+func (XdgPositionerSetAnchorRectRequest) Opcode() uint16 { return 2 }
 
-// Ensure XSXdgPositionerSetAnchorRectRequest implements Message.
-var _ Message = XSXdgPositionerSetAnchorRectRequest{}
+// Ensure XdgPositionerSetAnchorRectRequest implements Message.
+var _ Message = XdgPositionerSetAnchorRectRequest{}
 
-// XSXdgPositionerSetAnchorRequest requests to set anchor rectangle anchor
+// XdgPositionerSetAnchorRequest requests to set anchor rectangle anchor
 //
 // Defines the anchor point for the anchor rectangle. The specified anchor
 // is used derive an anchor point that the child surface will be
@@ -15004,18 +14928,18 @@ var _ Message = XSXdgPositionerSetAnchorRectRequest{}
 // 'bottom_right'), the anchor point will be at the specified corner;
 // otherwise, the derived anchor point will be centered on the specified
 // edge, or in the center of the anchor rectangle if no edge is specified.
-type XSXdgPositionerSetAnchorRequest struct {
+type XdgPositionerSetAnchorRequest struct {
 	// Anchor contains anchor
 	Anchor uint32
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_anchor in xdg_shell
-func (XSXdgPositionerSetAnchorRequest) Opcode() uint16 { return 3 }
+func (XdgPositionerSetAnchorRequest) Opcode() uint16 { return 3 }
 
-// Ensure XSXdgPositionerSetAnchorRequest implements Message.
-var _ Message = XSXdgPositionerSetAnchorRequest{}
+// Ensure XdgPositionerSetAnchorRequest implements Message.
+var _ Message = XdgPositionerSetAnchorRequest{}
 
-// XSXdgPositionerSetGravityRequest requests to set child surface gravity
+// XdgPositionerSetGravityRequest requests to set child surface gravity
 //
 // Defines in what direction a surface should be positioned, relative to
 // the anchor point of the parent surface. If a corner gravity is
@@ -15023,18 +14947,18 @@ var _ Message = XSXdgPositionerSetAnchorRequest{}
 // will be placed towards the specified gravity; otherwise, the child
 // surface will be centered over the anchor point on any axis that had no
 // gravity specified.
-type XSXdgPositionerSetGravityRequest struct {
+type XdgPositionerSetGravityRequest struct {
 	// Gravity contains gravity direction
 	Gravity uint32
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_gravity in xdg_shell
-func (XSXdgPositionerSetGravityRequest) Opcode() uint16 { return 4 }
+func (XdgPositionerSetGravityRequest) Opcode() uint16 { return 4 }
 
-// Ensure XSXdgPositionerSetGravityRequest implements Message.
-var _ Message = XSXdgPositionerSetGravityRequest{}
+// Ensure XdgPositionerSetGravityRequest implements Message.
+var _ Message = XdgPositionerSetGravityRequest{}
 
-// XSXdgPositionerSetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
+// XdgPositionerSetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
 //
 // Specify how the window should be positioned if the originally intended
 // position caused the surface to be constrained, meaning at least
@@ -15049,18 +14973,18 @@ var _ Message = XSXdgPositionerSetGravityRequest{}
 // are applied is specified in the corresponding adjustment descriptions.
 //
 // The default adjustment is none.
-type XSXdgPositionerSetConstraintAdjustmentRequest struct {
+type XdgPositionerSetConstraintAdjustmentRequest struct {
 	// ConstraintAdjustment contains bit mask of constraint adjustments
 	ConstraintAdjustment uint32
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_constraint_adjustment in xdg_shell
-func (XSXdgPositionerSetConstraintAdjustmentRequest) Opcode() uint16 { return 5 }
+func (XdgPositionerSetConstraintAdjustmentRequest) Opcode() uint16 { return 5 }
 
-// Ensure XSXdgPositionerSetConstraintAdjustmentRequest implements Message.
-var _ Message = XSXdgPositionerSetConstraintAdjustmentRequest{}
+// Ensure XdgPositionerSetConstraintAdjustmentRequest implements Message.
+var _ Message = XdgPositionerSetConstraintAdjustmentRequest{}
 
-// XSXdgPositionerSetOffsetRequest requests to set surface position offset
+// XdgPositionerSetOffsetRequest requests to set surface position offset
 //
 // Specify the surface position offset relative to the position of the
 // anchor on the anchor rectangle and the anchor on the surface. For
@@ -15073,7 +14997,7 @@ var _ Message = XSXdgPositionerSetConstraintAdjustmentRequest{}
 // An example use case is placing a popup menu on top of a user interface
 // element, while aligning the user interface element of the parent surface
 // with some user interface element placed somewhere in the popup surface.
-type XSXdgPositionerSetOffsetRequest struct {
+type XdgPositionerSetOffsetRequest struct {
 	// X contains surface position x offset
 	X int32
 
@@ -15082,12 +15006,12 @@ type XSXdgPositionerSetOffsetRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_offset in xdg_shell
-func (XSXdgPositionerSetOffsetRequest) Opcode() uint16 { return 6 }
+func (XdgPositionerSetOffsetRequest) Opcode() uint16 { return 6 }
 
-// Ensure XSXdgPositionerSetOffsetRequest implements Message.
-var _ Message = XSXdgPositionerSetOffsetRequest{}
+// Ensure XdgPositionerSetOffsetRequest implements Message.
+var _ Message = XdgPositionerSetOffsetRequest{}
 
-// XSXdgPositionerSetReactiveRequest requests to continuously reconstrain the surface
+// XdgPositionerSetReactiveRequest requests to continuously reconstrain the surface
 //
 // When set reactive, the surface is reconstrained if the conditions used
 // for constraining changed, e.g. the parent window moved.
@@ -15095,16 +15019,16 @@ var _ Message = XSXdgPositionerSetOffsetRequest{}
 // If the conditions changed and the popup was reconstrained, an
 // xdg_popup.configure event is sent with updated geometry, followed by an
 // xdg_surface.configure event.
-type XSXdgPositionerSetReactiveRequest struct {
+type XdgPositionerSetReactiveRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_reactive in xdg_shell
-func (XSXdgPositionerSetReactiveRequest) Opcode() uint16 { return 7 }
+func (XdgPositionerSetReactiveRequest) Opcode() uint16 { return 7 }
 
-// Ensure XSXdgPositionerSetReactiveRequest implements Message.
-var _ Message = XSXdgPositionerSetReactiveRequest{}
+// Ensure XdgPositionerSetReactiveRequest implements Message.
+var _ Message = XdgPositionerSetReactiveRequest{}
 
-type XSXdgPositionerSetParentSizeRequest struct {
+type XdgPositionerSetParentSizeRequest struct {
 	// ParentWidth contains future window geometry width of parent
 	ParentWidth int32
 
@@ -15113,74 +15037,74 @@ type XSXdgPositionerSetParentSizeRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_parent_size in xdg_shell
-func (XSXdgPositionerSetParentSizeRequest) Opcode() uint16 { return 8 }
+func (XdgPositionerSetParentSizeRequest) Opcode() uint16 { return 8 }
 
-// Ensure XSXdgPositionerSetParentSizeRequest implements Message.
-var _ Message = XSXdgPositionerSetParentSizeRequest{}
+// Ensure XdgPositionerSetParentSizeRequest implements Message.
+var _ Message = XdgPositionerSetParentSizeRequest{}
 
-// XSXdgPositionerSetParentConfigureRequest requests to set parent configure this is a response to
+// XdgPositionerSetParentConfigureRequest requests to set parent configure this is a response to
 //
 // Set the serial of an xdg_surface.configure event this positioner will be
 // used in response to. The compositor may use this information together
 // with set_parent_size to determine what future state the popup should be
 // constrained using.
-type XSXdgPositionerSetParentConfigureRequest struct {
+type XdgPositionerSetParentConfigureRequest struct {
 	// Serial contains serial of parent configure event
 	Serial uint32
 }
 
 // Opcode returns the request opcode for xdg_positioner.set_parent_configure in xdg_shell
-func (XSXdgPositionerSetParentConfigureRequest) Opcode() uint16 { return 9 }
+func (XdgPositionerSetParentConfigureRequest) Opcode() uint16 { return 9 }
 
-// Ensure XSXdgPositionerSetParentConfigureRequest implements Message.
-var _ Message = XSXdgPositionerSetParentConfigureRequest{}
+// Ensure XdgPositionerSetParentConfigureRequest implements Message.
+var _ Message = XdgPositionerSetParentConfigureRequest{}
 
 // #endregion Interface xdg_shell.xdg_positioner
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_shell.xdg_surface
 
-type XSXdgSurfaceError int
+type XdgSurfaceError int
 
 const (
-	XSXdgSurfaceErrorNotConstructed XSXdgSurfaceError = 1
+	XdgSurfaceErrorNotConstructed XdgSurfaceError = 1
 
-	XSXdgSurfaceErrorAlreadyConstructed XSXdgSurfaceError = 2
+	XdgSurfaceErrorAlreadyConstructed XdgSurfaceError = 2
 
-	XSXdgSurfaceErrorUnconfiguredBuffer XSXdgSurfaceError = 3
+	XdgSurfaceErrorUnconfiguredBuffer XdgSurfaceError = 3
 )
 
-// XSXdgSurfaceDestroyRequest requests to destroy the xdg_surface
+// XdgSurfaceDestroyRequest requests to destroy the xdg_surface
 //
 // Destroy the xdg_surface object. An xdg_surface must only be destroyed
 // after its role object has been destroyed.
-type XSXdgSurfaceDestroyRequest struct {
+type XdgSurfaceDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_surface.destroy in xdg_shell
-func (XSXdgSurfaceDestroyRequest) Opcode() uint16 { return 0 }
+func (XdgSurfaceDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgSurfaceDestroyRequest implements Message.
-var _ Message = XSXdgSurfaceDestroyRequest{}
+// Ensure XdgSurfaceDestroyRequest implements Message.
+var _ Message = XdgSurfaceDestroyRequest{}
 
-// XSXdgSurfaceGetToplevelRequest requests to assign the xdg_toplevel surface role
+// XdgSurfaceGetToplevelRequest requests to assign the xdg_toplevel surface role
 //
 // This creates an xdg_toplevel object for the given xdg_surface and gives
 // the associated wl_surface the xdg_toplevel role.
 //
 // See the documentation of xdg_toplevel for more details about what an
 // xdg_toplevel is and how it is used.
-type XSXdgSurfaceGetToplevelRequest struct {
+type XdgSurfaceGetToplevelRequest struct {
 	ID ObjectID
 }
 
 // Opcode returns the request opcode for xdg_surface.get_toplevel in xdg_shell
-func (XSXdgSurfaceGetToplevelRequest) Opcode() uint16 { return 1 }
+func (XdgSurfaceGetToplevelRequest) Opcode() uint16 { return 1 }
 
-// Ensure XSXdgSurfaceGetToplevelRequest implements Message.
-var _ Message = XSXdgSurfaceGetToplevelRequest{}
+// Ensure XdgSurfaceGetToplevelRequest implements Message.
+var _ Message = XdgSurfaceGetToplevelRequest{}
 
-// XSXdgSurfaceGetPopupRequest requests to assign the xdg_popup surface role
+// XdgSurfaceGetPopupRequest requests to assign the xdg_popup surface role
 //
 // This creates an xdg_popup object for the given xdg_surface and gives
 // the associated wl_surface the xdg_popup role.
@@ -15190,7 +15114,7 @@ var _ Message = XSXdgSurfaceGetToplevelRequest{}
 //
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
-type XSXdgSurfaceGetPopupRequest struct {
+type XdgSurfaceGetPopupRequest struct {
 	ID ObjectID
 
 	Parent ObjectID
@@ -15199,12 +15123,12 @@ type XSXdgSurfaceGetPopupRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_surface.get_popup in xdg_shell
-func (XSXdgSurfaceGetPopupRequest) Opcode() uint16 { return 2 }
+func (XdgSurfaceGetPopupRequest) Opcode() uint16 { return 2 }
 
-// Ensure XSXdgSurfaceGetPopupRequest implements Message.
-var _ Message = XSXdgSurfaceGetPopupRequest{}
+// Ensure XdgSurfaceGetPopupRequest implements Message.
+var _ Message = XdgSurfaceGetPopupRequest{}
 
-// XSXdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
+// XdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
 //
 // The window geometry of a surface is its "visible bounds" from the
 // user's perspective. Client-side decorations often have invisible
@@ -15235,7 +15159,7 @@ var _ Message = XSXdgSurfaceGetPopupRequest{}
 // the set window geometry clamped to the bounding rectangle of the
 // combined geometry of the surface of the xdg_surface and the associated
 // subsurfaces.
-type XSXdgSurfaceSetWindowGeometryRequest struct {
+type XdgSurfaceSetWindowGeometryRequest struct {
 	X int32
 
 	Y int32
@@ -15246,12 +15170,12 @@ type XSXdgSurfaceSetWindowGeometryRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_surface.set_window_geometry in xdg_shell
-func (XSXdgSurfaceSetWindowGeometryRequest) Opcode() uint16 { return 3 }
+func (XdgSurfaceSetWindowGeometryRequest) Opcode() uint16 { return 3 }
 
-// Ensure XSXdgSurfaceSetWindowGeometryRequest implements Message.
-var _ Message = XSXdgSurfaceSetWindowGeometryRequest{}
+// Ensure XdgSurfaceSetWindowGeometryRequest implements Message.
+var _ Message = XdgSurfaceSetWindowGeometryRequest{}
 
-// XSXdgSurfaceAckConfigureRequest requests to ack a configure event
+// XdgSurfaceAckConfigureRequest requests to ack a configure event
 //
 // When a configure event is received, if a client commits the
 // surface in response to the configure event, then the client
@@ -15272,18 +15196,18 @@ var _ Message = XSXdgSurfaceSetWindowGeometryRequest{}
 // A client may send multiple ack_configure requests before committing, but
 // only the last request sent before a commit indicates which configure
 // event the client really is responding to.
-type XSXdgSurfaceAckConfigureRequest struct {
+type XdgSurfaceAckConfigureRequest struct {
 	// Serial contains the serial from the configure event
 	Serial uint32
 }
 
 // Opcode returns the request opcode for xdg_surface.ack_configure in xdg_shell
-func (XSXdgSurfaceAckConfigureRequest) Opcode() uint16 { return 4 }
+func (XdgSurfaceAckConfigureRequest) Opcode() uint16 { return 4 }
 
-// Ensure XSXdgSurfaceAckConfigureRequest implements Message.
-var _ Message = XSXdgSurfaceAckConfigureRequest{}
+// Ensure XdgSurfaceAckConfigureRequest implements Message.
+var _ Message = XdgSurfaceAckConfigureRequest{}
 
-// XSXdgSurfaceConfigureEvent signals when suggest a surface change
+// XdgSurfaceConfigureEvent signals when suggest a surface change
 //
 // The configure event marks the end of a configure sequence. A configure
 // sequence is a set of one or more events configuring the state of the
@@ -15301,19 +15225,19 @@ var _ Message = XSXdgSurfaceAckConfigureRequest{}
 //
 // If the client receives multiple configure events before it can respond
 // to one, it is free to discard all but the last event it received.
-type XSXdgSurfaceConfigureEvent struct {
+type XdgSurfaceConfigureEvent struct {
 	// Serial contains serial of the configure event
 	Serial uint32
 }
 
 // Opcode returns the event opcode for xdg_surface.configure in xdg_shell
-func (XSXdgSurfaceConfigureEvent) Opcode() uint16 { return 0 }
+func (XdgSurfaceConfigureEvent) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgSurfaceConfigureEvent implements Message.
-var _ Message = XSXdgSurfaceConfigureEvent{}
+// Ensure XdgSurfaceConfigureEvent implements Message.
+var _ Message = XdgSurfaceConfigureEvent{}
 
 // Scan scans the event from the socket.
-func (e *XSXdgSurfaceConfigureEvent) Scan(s *EventScanner) error {
+func (e *XdgSurfaceConfigureEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -15322,41 +15246,41 @@ func (e *XSXdgSurfaceConfigureEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XSXdgSurfaceConfigureEvent implements Event.
-var _ Event = &XSXdgSurfaceConfigureEvent{}
+// Ensure XdgSurfaceConfigureEvent implements Event.
+var _ Event = &XdgSurfaceConfigureEvent{}
 
 // #endregion Interface xdg_shell.xdg_surface
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_shell.xdg_toplevel
 
-// XSXdgToplevelResizeEdge represents edge values for resizing
+// XdgToplevelResizeEdge represents edge values for resizing
 //
 // These values are used to indicate which edge of a surface
 // is being dragged in a resize operation.
-type XSXdgToplevelResizeEdge int
+type XdgToplevelResizeEdge int
 
 const (
-	XSXdgToplevelResizeEdgeNone XSXdgToplevelResizeEdge = 0
+	XdgToplevelResizeEdgeNone XdgToplevelResizeEdge = 0
 
-	XSXdgToplevelResizeEdgeTop XSXdgToplevelResizeEdge = 1
+	XdgToplevelResizeEdgeTop XdgToplevelResizeEdge = 1
 
-	XSXdgToplevelResizeEdgeBottom XSXdgToplevelResizeEdge = 2
+	XdgToplevelResizeEdgeBottom XdgToplevelResizeEdge = 2
 
-	XSXdgToplevelResizeEdgeLeft XSXdgToplevelResizeEdge = 4
+	XdgToplevelResizeEdgeLeft XdgToplevelResizeEdge = 4
 
-	XSXdgToplevelResizeEdgeTopLeft XSXdgToplevelResizeEdge = 5
+	XdgToplevelResizeEdgeTopLeft XdgToplevelResizeEdge = 5
 
-	XSXdgToplevelResizeEdgeBottomLeft XSXdgToplevelResizeEdge = 6
+	XdgToplevelResizeEdgeBottomLeft XdgToplevelResizeEdge = 6
 
-	XSXdgToplevelResizeEdgeRight XSXdgToplevelResizeEdge = 8
+	XdgToplevelResizeEdgeRight XdgToplevelResizeEdge = 8
 
-	XSXdgToplevelResizeEdgeTopRight XSXdgToplevelResizeEdge = 9
+	XdgToplevelResizeEdgeTopRight XdgToplevelResizeEdge = 9
 
-	XSXdgToplevelResizeEdgeBottomRight XSXdgToplevelResizeEdge = 10
+	XdgToplevelResizeEdgeBottomRight XdgToplevelResizeEdge = 10
 )
 
-// XSXdgToplevelState represents types of state on the surface
+// XdgToplevelState represents types of state on the surface
 //
 // The different state values used on the surface. This is designed for
 // state values like maximized, fullscreen. It is paired with the
@@ -15365,44 +15289,44 @@ const (
 //
 // States set in this way are double-buffered. They will get applied on
 // the next commit.
-type XSXdgToplevelState int
+type XdgToplevelState int
 
 const (
-	// XSXdgToplevelStateMaximized corresponds to the surface is maximized
-	XSXdgToplevelStateMaximized XSXdgToplevelState = 1
+	// XdgToplevelStateMaximized corresponds to the surface is maximized
+	XdgToplevelStateMaximized XdgToplevelState = 1
 
-	// XSXdgToplevelStateFullscreen corresponds to the surface is fullscreen
-	XSXdgToplevelStateFullscreen XSXdgToplevelState = 2
+	// XdgToplevelStateFullscreen corresponds to the surface is fullscreen
+	XdgToplevelStateFullscreen XdgToplevelState = 2
 
-	// XSXdgToplevelStateResizing corresponds to the surface is being resized
-	XSXdgToplevelStateResizing XSXdgToplevelState = 3
+	// XdgToplevelStateResizing corresponds to the surface is being resized
+	XdgToplevelStateResizing XdgToplevelState = 3
 
-	// XSXdgToplevelStateActivated corresponds to the surface is now activated
-	XSXdgToplevelStateActivated XSXdgToplevelState = 4
+	// XdgToplevelStateActivated corresponds to the surface is now activated
+	XdgToplevelStateActivated XdgToplevelState = 4
 
-	XSXdgToplevelStateTiledLeft XSXdgToplevelState = 5
+	XdgToplevelStateTiledLeft XdgToplevelState = 5
 
-	XSXdgToplevelStateTiledRight XSXdgToplevelState = 6
+	XdgToplevelStateTiledRight XdgToplevelState = 6
 
-	XSXdgToplevelStateTiledTop XSXdgToplevelState = 7
+	XdgToplevelStateTiledTop XdgToplevelState = 7
 
-	XSXdgToplevelStateTiledBottom XSXdgToplevelState = 8
+	XdgToplevelStateTiledBottom XdgToplevelState = 8
 )
 
-// XSXdgToplevelDestroyRequest requests to destroy the xdg_toplevel
+// XdgToplevelDestroyRequest requests to destroy the xdg_toplevel
 //
 // This request destroys the role surface and unmaps the surface;
 // see "Unmapping" behavior in interface section for details.
-type XSXdgToplevelDestroyRequest struct {
+type XdgToplevelDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.destroy in xdg_shell
-func (XSXdgToplevelDestroyRequest) Opcode() uint16 { return 0 }
+func (XdgToplevelDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgToplevelDestroyRequest implements Message.
-var _ Message = XSXdgToplevelDestroyRequest{}
+// Ensure XdgToplevelDestroyRequest implements Message.
+var _ Message = XdgToplevelDestroyRequest{}
 
-// XSXdgToplevelSetParentRequest requests to set the parent of this surface
+// XdgToplevelSetParentRequest requests to set the parent of this surface
 //
 // Set the "parent" of this surface. This surface should be stacked
 // above the parent surface and all other ancestor surfaces.
@@ -15420,17 +15344,17 @@ var _ Message = XSXdgToplevelDestroyRequest{}
 // parent of this surface. If no parent exists for the now-unmapped
 // parent then the children are managed as though they have no
 // parent surface.
-type XSXdgToplevelSetParentRequest struct {
+type XdgToplevelSetParentRequest struct {
 	Parent ObjectID
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_parent in xdg_shell
-func (XSXdgToplevelSetParentRequest) Opcode() uint16 { return 1 }
+func (XdgToplevelSetParentRequest) Opcode() uint16 { return 1 }
 
-// Ensure XSXdgToplevelSetParentRequest implements Message.
-var _ Message = XSXdgToplevelSetParentRequest{}
+// Ensure XdgToplevelSetParentRequest implements Message.
+var _ Message = XdgToplevelSetParentRequest{}
 
-// XSXdgToplevelSetTitleRequest requests to set surface title
+// XdgToplevelSetTitleRequest requests to set surface title
 //
 // Set a short title for the surface.
 //
@@ -15439,17 +15363,17 @@ var _ Message = XSXdgToplevelSetParentRequest{}
 // compositor.
 //
 // The string must be encoded in UTF-8.
-type XSXdgToplevelSetTitleRequest struct {
+type XdgToplevelSetTitleRequest struct {
 	Title string
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_title in xdg_shell
-func (XSXdgToplevelSetTitleRequest) Opcode() uint16 { return 2 }
+func (XdgToplevelSetTitleRequest) Opcode() uint16 { return 2 }
 
-// Ensure XSXdgToplevelSetTitleRequest implements Message.
-var _ Message = XSXdgToplevelSetTitleRequest{}
+// Ensure XdgToplevelSetTitleRequest implements Message.
+var _ Message = XdgToplevelSetTitleRequest{}
 
-// XSXdgToplevelSetAppIDRequest requests to set application ID
+// XdgToplevelSetAppIDRequest requests to set application ID
 //
 // Set an application identifier for the surface.
 //
@@ -15474,17 +15398,17 @@ var _ Message = XSXdgToplevelSetTitleRequest{}
 // names and .desktop files.
 //
 // [0] http://standards.freedesktop.org/desktop-entry-spec/
-type XSXdgToplevelSetAppIDRequest struct {
+type XdgToplevelSetAppIDRequest struct {
 	AppID string
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_app_id in xdg_shell
-func (XSXdgToplevelSetAppIDRequest) Opcode() uint16 { return 3 }
+func (XdgToplevelSetAppIDRequest) Opcode() uint16 { return 3 }
 
-// Ensure XSXdgToplevelSetAppIDRequest implements Message.
-var _ Message = XSXdgToplevelSetAppIDRequest{}
+// Ensure XdgToplevelSetAppIDRequest implements Message.
+var _ Message = XdgToplevelSetAppIDRequest{}
 
-// XSXdgToplevelShowWindowMenuRequest requests to show the window menu
+// XdgToplevelShowWindowMenuRequest requests to show the window menu
 //
 // Clients implementing client-side decorations might want to show
 // a context menu when right-clicking on the decorations, giving the
@@ -15497,7 +15421,7 @@ var _ Message = XSXdgToplevelSetAppIDRequest{}
 //
 // This request must be used in response to some sort of user action
 // like a button press, key press, or touch down event.
-type XSXdgToplevelShowWindowMenuRequest struct {
+type XdgToplevelShowWindowMenuRequest struct {
 	// Seat contains the wl_seat of the user event
 	Seat ObjectID
 
@@ -15512,12 +15436,12 @@ type XSXdgToplevelShowWindowMenuRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.show_window_menu in xdg_shell
-func (XSXdgToplevelShowWindowMenuRequest) Opcode() uint16 { return 4 }
+func (XdgToplevelShowWindowMenuRequest) Opcode() uint16 { return 4 }
 
-// Ensure XSXdgToplevelShowWindowMenuRequest implements Message.
-var _ Message = XSXdgToplevelShowWindowMenuRequest{}
+// Ensure XdgToplevelShowWindowMenuRequest implements Message.
+var _ Message = XdgToplevelShowWindowMenuRequest{}
 
-// XSXdgToplevelMoveRequest requests to start an interactive move
+// XdgToplevelMoveRequest requests to start an interactive move
 //
 // Start an interactive, user-driven move of the surface.
 //
@@ -15535,7 +15459,7 @@ var _ Message = XSXdgToplevelShowWindowMenuRequest{}
 // compositor to visually indicate that the move is taking place, such as
 // updating a pointer cursor, during the move. There is no guarantee
 // that the device focus will return when the move is completed.
-type XSXdgToplevelMoveRequest struct {
+type XdgToplevelMoveRequest struct {
 	// Seat contains the wl_seat of the user event
 	Seat ObjectID
 
@@ -15544,12 +15468,12 @@ type XSXdgToplevelMoveRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.move in xdg_shell
-func (XSXdgToplevelMoveRequest) Opcode() uint16 { return 5 }
+func (XdgToplevelMoveRequest) Opcode() uint16 { return 5 }
 
-// Ensure XSXdgToplevelMoveRequest implements Message.
-var _ Message = XSXdgToplevelMoveRequest{}
+// Ensure XdgToplevelMoveRequest implements Message.
+var _ Message = XdgToplevelMoveRequest{}
 
-// XSXdgToplevelResizeRequest requests to start an interactive resize
+// XdgToplevelResizeRequest requests to start an interactive resize
 //
 // Start a user-driven, interactive resize of the surface.
 //
@@ -15581,7 +15505,7 @@ var _ Message = XSXdgToplevelMoveRequest{}
 // example when dragging the top left corner. The compositor may also
 // use this information to adapt its behavior, e.g. choose an
 // appropriate cursor image.
-type XSXdgToplevelResizeRequest struct {
+type XdgToplevelResizeRequest struct {
 	// Seat contains the wl_seat of the user event
 	Seat ObjectID
 
@@ -15593,12 +15517,12 @@ type XSXdgToplevelResizeRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.resize in xdg_shell
-func (XSXdgToplevelResizeRequest) Opcode() uint16 { return 6 }
+func (XdgToplevelResizeRequest) Opcode() uint16 { return 6 }
 
-// Ensure XSXdgToplevelResizeRequest implements Message.
-var _ Message = XSXdgToplevelResizeRequest{}
+// Ensure XdgToplevelResizeRequest implements Message.
+var _ Message = XdgToplevelResizeRequest{}
 
-// XSXdgToplevelSetMaxSizeRequest requests to set the maximum size
+// XdgToplevelSetMaxSizeRequest requests to set the maximum size
 //
 // Set a maximum size for the window.
 //
@@ -15634,19 +15558,19 @@ var _ Message = XSXdgToplevelResizeRequest{}
 // The width and height must be greater than or equal to zero. Using
 // strictly negative values for width and height will result in a
 // protocol error.
-type XSXdgToplevelSetMaxSizeRequest struct {
+type XdgToplevelSetMaxSizeRequest struct {
 	Width int32
 
 	Height int32
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_max_size in xdg_shell
-func (XSXdgToplevelSetMaxSizeRequest) Opcode() uint16 { return 7 }
+func (XdgToplevelSetMaxSizeRequest) Opcode() uint16 { return 7 }
 
-// Ensure XSXdgToplevelSetMaxSizeRequest implements Message.
-var _ Message = XSXdgToplevelSetMaxSizeRequest{}
+// Ensure XdgToplevelSetMaxSizeRequest implements Message.
+var _ Message = XdgToplevelSetMaxSizeRequest{}
 
-// XSXdgToplevelSetMinSizeRequest requests to set the minimum size
+// XdgToplevelSetMinSizeRequest requests to set the minimum size
 //
 // Set a minimum size for the window.
 //
@@ -15682,19 +15606,19 @@ var _ Message = XSXdgToplevelSetMaxSizeRequest{}
 // The width and height must be greater than or equal to zero. Using
 // strictly negative values for width and height will result in a
 // protocol error.
-type XSXdgToplevelSetMinSizeRequest struct {
+type XdgToplevelSetMinSizeRequest struct {
 	Width int32
 
 	Height int32
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_min_size in xdg_shell
-func (XSXdgToplevelSetMinSizeRequest) Opcode() uint16 { return 8 }
+func (XdgToplevelSetMinSizeRequest) Opcode() uint16 { return 8 }
 
-// Ensure XSXdgToplevelSetMinSizeRequest implements Message.
-var _ Message = XSXdgToplevelSetMinSizeRequest{}
+// Ensure XdgToplevelSetMinSizeRequest implements Message.
+var _ Message = XdgToplevelSetMinSizeRequest{}
 
-// XSXdgToplevelSetMaximizedRequest requests to maximize the window
+// XdgToplevelSetMaximizedRequest requests to maximize the window
 //
 // Maximize the surface.
 //
@@ -15715,16 +15639,16 @@ var _ Message = XSXdgToplevelSetMinSizeRequest{}
 // If the surface is in a fullscreen state, this request has no direct
 // effect. It may alter the state the surface is returned to when
 // unmaximized unless overridden by the compositor.
-type XSXdgToplevelSetMaximizedRequest struct {
+type XdgToplevelSetMaximizedRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_maximized in xdg_shell
-func (XSXdgToplevelSetMaximizedRequest) Opcode() uint16 { return 9 }
+func (XdgToplevelSetMaximizedRequest) Opcode() uint16 { return 9 }
 
-// Ensure XSXdgToplevelSetMaximizedRequest implements Message.
-var _ Message = XSXdgToplevelSetMaximizedRequest{}
+// Ensure XdgToplevelSetMaximizedRequest implements Message.
+var _ Message = XdgToplevelSetMaximizedRequest{}
 
-// XSXdgToplevelUnsetMaximizedRequest requests to unmaximize the window
+// XdgToplevelUnsetMaximizedRequest requests to unmaximize the window
 //
 // Unmaximize the surface.
 //
@@ -15747,16 +15671,16 @@ var _ Message = XSXdgToplevelSetMaximizedRequest{}
 // If the surface is in a fullscreen state, this request has no direct
 // effect. It may alter the state the surface is returned to when
 // unmaximized unless overridden by the compositor.
-type XSXdgToplevelUnsetMaximizedRequest struct {
+type XdgToplevelUnsetMaximizedRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.unset_maximized in xdg_shell
-func (XSXdgToplevelUnsetMaximizedRequest) Opcode() uint16 { return 10 }
+func (XdgToplevelUnsetMaximizedRequest) Opcode() uint16 { return 10 }
 
-// Ensure XSXdgToplevelUnsetMaximizedRequest implements Message.
-var _ Message = XSXdgToplevelUnsetMaximizedRequest{}
+// Ensure XdgToplevelUnsetMaximizedRequest implements Message.
+var _ Message = XdgToplevelUnsetMaximizedRequest{}
 
-// XSXdgToplevelSetFullscreenRequest requests to set the window as fullscreen on an output
+// XdgToplevelSetFullscreenRequest requests to set the window as fullscreen on an output
 //
 // Make the surface fullscreen.
 //
@@ -15781,17 +15705,17 @@ var _ Message = XSXdgToplevelUnsetMaximizedRequest{}
 // sure that other screen content not part of the same surface tree (made
 // up of subsurfaces, popups or similarly coupled surfaces) are not
 // visible below the fullscreened surface.
-type XSXdgToplevelSetFullscreenRequest struct {
+type XdgToplevelSetFullscreenRequest struct {
 	Output ObjectID
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_fullscreen in xdg_shell
-func (XSXdgToplevelSetFullscreenRequest) Opcode() uint16 { return 11 }
+func (XdgToplevelSetFullscreenRequest) Opcode() uint16 { return 11 }
 
-// Ensure XSXdgToplevelSetFullscreenRequest implements Message.
-var _ Message = XSXdgToplevelSetFullscreenRequest{}
+// Ensure XdgToplevelSetFullscreenRequest implements Message.
+var _ Message = XdgToplevelSetFullscreenRequest{}
 
-// XSXdgToplevelUnsetFullscreenRequest requests to unset the window as fullscreen
+// XdgToplevelUnsetFullscreenRequest requests to unset the window as fullscreen
 //
 // Make the surface no longer fullscreen.
 //
@@ -15810,16 +15734,16 @@ var _ Message = XSXdgToplevelSetFullscreenRequest{}
 //
 // The client must also acknowledge the configure when committing the new
 // content (see ack_configure).
-type XSXdgToplevelUnsetFullscreenRequest struct {
+type XdgToplevelUnsetFullscreenRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.unset_fullscreen in xdg_shell
-func (XSXdgToplevelUnsetFullscreenRequest) Opcode() uint16 { return 12 }
+func (XdgToplevelUnsetFullscreenRequest) Opcode() uint16 { return 12 }
 
-// Ensure XSXdgToplevelUnsetFullscreenRequest implements Message.
-var _ Message = XSXdgToplevelUnsetFullscreenRequest{}
+// Ensure XdgToplevelUnsetFullscreenRequest implements Message.
+var _ Message = XdgToplevelUnsetFullscreenRequest{}
 
-// XSXdgToplevelSetMinimizedRequest requests to set the window as minimized
+// XdgToplevelSetMinimizedRequest requests to set the window as minimized
 //
 // Request that the compositor minimize your surface. There is no
 // way to know if the surface is currently minimized, nor is there
@@ -15829,16 +15753,16 @@ var _ Message = XSXdgToplevelUnsetFullscreenRequest{}
 // instead use the wl_surface.frame event for this, as this will
 // also work with live previews on windows in Alt-Tab, Expose or
 // similar compositor features.
-type XSXdgToplevelSetMinimizedRequest struct {
+type XdgToplevelSetMinimizedRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_toplevel.set_minimized in xdg_shell
-func (XSXdgToplevelSetMinimizedRequest) Opcode() uint16 { return 13 }
+func (XdgToplevelSetMinimizedRequest) Opcode() uint16 { return 13 }
 
-// Ensure XSXdgToplevelSetMinimizedRequest implements Message.
-var _ Message = XSXdgToplevelSetMinimizedRequest{}
+// Ensure XdgToplevelSetMinimizedRequest implements Message.
+var _ Message = XdgToplevelSetMinimizedRequest{}
 
-// XSXdgToplevelConfigureEvent signals when suggest a surface change
+// XdgToplevelConfigureEvent signals when suggest a surface change
 //
 // This configure event asks the client to resize its toplevel surface or
 // to change its state. The configured state should not be applied
@@ -15859,7 +15783,7 @@ var _ Message = XSXdgToplevelSetMinimizedRequest{}
 //
 // Clients must send an ack_configure in response to this event. See
 // xdg_surface.configure and xdg_surface.ack_configure for details.
-type XSXdgToplevelConfigureEvent struct {
+type XdgToplevelConfigureEvent struct {
 	Width int32
 
 	Height int32
@@ -15868,13 +15792,13 @@ type XSXdgToplevelConfigureEvent struct {
 }
 
 // Opcode returns the event opcode for xdg_toplevel.configure in xdg_shell
-func (XSXdgToplevelConfigureEvent) Opcode() uint16 { return 0 }
+func (XdgToplevelConfigureEvent) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgToplevelConfigureEvent implements Message.
-var _ Message = XSXdgToplevelConfigureEvent{}
+// Ensure XdgToplevelConfigureEvent implements Message.
+var _ Message = XdgToplevelConfigureEvent{}
 
 // Scan scans the event from the socket.
-func (e *XSXdgToplevelConfigureEvent) Scan(s *EventScanner) error {
+func (e *XdgToplevelConfigureEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -15893,10 +15817,10 @@ func (e *XSXdgToplevelConfigureEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XSXdgToplevelConfigureEvent implements Event.
-var _ Event = &XSXdgToplevelConfigureEvent{}
+// Ensure XdgToplevelConfigureEvent implements Event.
+var _ Event = &XdgToplevelConfigureEvent{}
 
-// XSXdgToplevelCloseEvent signals when surface wants to be closed
+// XdgToplevelCloseEvent signals when surface wants to be closed
 //
 // The close event is sent by the compositor when the user
 // wants the surface to be closed. This should be equivalent to
@@ -15906,52 +15830,52 @@ var _ Event = &XSXdgToplevelConfigureEvent{}
 // This is only a request that the user intends to close the
 // window. The client may choose to ignore this request, or show
 // a dialog to ask the user to save their data, etc.
-type XSXdgToplevelCloseEvent struct {
+type XdgToplevelCloseEvent struct {
 }
 
 // Opcode returns the event opcode for xdg_toplevel.close in xdg_shell
-func (XSXdgToplevelCloseEvent) Opcode() uint16 { return 1 }
+func (XdgToplevelCloseEvent) Opcode() uint16 { return 1 }
 
-// Ensure XSXdgToplevelCloseEvent implements Message.
-var _ Message = XSXdgToplevelCloseEvent{}
+// Ensure XdgToplevelCloseEvent implements Message.
+var _ Message = XdgToplevelCloseEvent{}
 
 // Scan scans the event from the socket.
-func (e *XSXdgToplevelCloseEvent) Scan(s *EventScanner) error {
+func (e *XdgToplevelCloseEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XSXdgToplevelCloseEvent implements Event.
-var _ Event = &XSXdgToplevelCloseEvent{}
+// Ensure XdgToplevelCloseEvent implements Event.
+var _ Event = &XdgToplevelCloseEvent{}
 
 // #endregion Interface xdg_shell.xdg_toplevel
 
 // ----------------------------------------------------------------------------
 // #region Interface xdg_shell.xdg_popup
 
-type XSXdgPopupError int
+type XdgPopupError int
 
 const (
-	// XSXdgPopupErrorInvalidGrab corresponds to tried to grab after being mapped
-	XSXdgPopupErrorInvalidGrab XSXdgPopupError = 0
+	// XdgPopupErrorInvalidGrab corresponds to tried to grab after being mapped
+	XdgPopupErrorInvalidGrab XdgPopupError = 0
 )
 
-// XSXdgPopupDestroyRequest requests to remove xdg_popup interface
+// XdgPopupDestroyRequest requests to remove xdg_popup interface
 //
 // This destroys the popup. Explicitly destroying the xdg_popup
 // object will also dismiss the popup, and unmap the surface.
 //
 // If this xdg_popup is not the "topmost" popup, a protocol error
 // will be sent.
-type XSXdgPopupDestroyRequest struct {
+type XdgPopupDestroyRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_popup.destroy in xdg_shell
-func (XSXdgPopupDestroyRequest) Opcode() uint16 { return 0 }
+func (XdgPopupDestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgPopupDestroyRequest implements Message.
-var _ Message = XSXdgPopupDestroyRequest{}
+// Ensure XdgPopupDestroyRequest implements Message.
+var _ Message = XdgPopupDestroyRequest{}
 
-// XSXdgPopupGrabRequest requests to make the popup take an explicit grab
+// XdgPopupGrabRequest requests to make the popup take an explicit grab
 //
 // This request makes the created popup take an explicit grab. An explicit
 // grab will be dismissed when the user dismisses the popup, or when the
@@ -15994,7 +15918,7 @@ var _ Message = XSXdgPopupDestroyRequest{}
 // and touch events for all their surfaces as normal (similar to an
 // "owner-events" grab in X11 parlance), while the top most grabbing popup
 // will always have keyboard focus.
-type XSXdgPopupGrabRequest struct {
+type XdgPopupGrabRequest struct {
 	// Seat contains the wl_seat of the user event
 	Seat ObjectID
 
@@ -16003,12 +15927,12 @@ type XSXdgPopupGrabRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_popup.grab in xdg_shell
-func (XSXdgPopupGrabRequest) Opcode() uint16 { return 1 }
+func (XdgPopupGrabRequest) Opcode() uint16 { return 1 }
 
-// Ensure XSXdgPopupGrabRequest implements Message.
-var _ Message = XSXdgPopupGrabRequest{}
+// Ensure XdgPopupGrabRequest implements Message.
+var _ Message = XdgPopupGrabRequest{}
 
-// XSXdgPopupRepositionRequest requests to recalculate the popup's location
+// XdgPopupRepositionRequest requests to recalculate the popup's location
 //
 // Reposition an already-mapped popup. The popup will be placed given the
 // details in the passed xdg_positioner object, and a
@@ -16033,7 +15957,7 @@ var _ Message = XSXdgPopupGrabRequest{}
 // If the popup is repositioned together with a parent that is being
 // resized, but not in response to a configure event, the client should
 // send an xdg_positioner.set_parent_size request.
-type XSXdgPopupRepositionRequest struct {
+type XdgPopupRepositionRequest struct {
 	Positioner ObjectID
 
 	// Token contains reposition request token
@@ -16041,12 +15965,12 @@ type XSXdgPopupRepositionRequest struct {
 }
 
 // Opcode returns the request opcode for xdg_popup.reposition in xdg_shell
-func (XSXdgPopupRepositionRequest) Opcode() uint16 { return 2 }
+func (XdgPopupRepositionRequest) Opcode() uint16 { return 2 }
 
-// Ensure XSXdgPopupRepositionRequest implements Message.
-var _ Message = XSXdgPopupRepositionRequest{}
+// Ensure XdgPopupRepositionRequest implements Message.
+var _ Message = XdgPopupRepositionRequest{}
 
-// XSXdgPopupConfigureEvent signals when configure the popup surface
+// XdgPopupConfigureEvent signals when configure the popup surface
 //
 // This event asks the popup surface to configure itself given the
 // configuration. The configured state should not be applied immediately.
@@ -16060,7 +15984,7 @@ var _ Message = XSXdgPopupRepositionRequest{}
 // ever sent once for the initial configuration. Starting with version 3,
 // it may be sent again if the popup is setup with an xdg_positioner with
 // set_reactive requested, or in response to xdg_popup.reposition requests.
-type XSXdgPopupConfigureEvent struct {
+type XdgPopupConfigureEvent struct {
 	// X contains x position relative to parent surface window geometry
 	X int32
 
@@ -16075,13 +15999,13 @@ type XSXdgPopupConfigureEvent struct {
 }
 
 // Opcode returns the event opcode for xdg_popup.configure in xdg_shell
-func (XSXdgPopupConfigureEvent) Opcode() uint16 { return 0 }
+func (XdgPopupConfigureEvent) Opcode() uint16 { return 0 }
 
-// Ensure XSXdgPopupConfigureEvent implements Message.
-var _ Message = XSXdgPopupConfigureEvent{}
+// Ensure XdgPopupConfigureEvent implements Message.
+var _ Message = XdgPopupConfigureEvent{}
 
 // Scan scans the event from the socket.
-func (e *XSXdgPopupConfigureEvent) Scan(s *EventScanner) error {
+func (e *XdgPopupConfigureEvent) Scan(s *EventScanner) error {
 	if v, err := s.Int(); err != nil {
 		return err
 	} else {
@@ -16105,32 +16029,32 @@ func (e *XSXdgPopupConfigureEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XSXdgPopupConfigureEvent implements Event.
-var _ Event = &XSXdgPopupConfigureEvent{}
+// Ensure XdgPopupConfigureEvent implements Event.
+var _ Event = &XdgPopupConfigureEvent{}
 
-// XSXdgPopupPopupDoneEvent signals when popup interaction is done
+// XdgPopupPopupDoneEvent signals when popup interaction is done
 //
 // The popup_done event is sent out when a popup is dismissed by the
 // compositor. The client should destroy the xdg_popup object at this
 // point.
-type XSXdgPopupPopupDoneEvent struct {
+type XdgPopupPopupDoneEvent struct {
 }
 
 // Opcode returns the event opcode for xdg_popup.popup_done in xdg_shell
-func (XSXdgPopupPopupDoneEvent) Opcode() uint16 { return 1 }
+func (XdgPopupPopupDoneEvent) Opcode() uint16 { return 1 }
 
-// Ensure XSXdgPopupPopupDoneEvent implements Message.
-var _ Message = XSXdgPopupPopupDoneEvent{}
+// Ensure XdgPopupPopupDoneEvent implements Message.
+var _ Message = XdgPopupPopupDoneEvent{}
 
 // Scan scans the event from the socket.
-func (e *XSXdgPopupPopupDoneEvent) Scan(s *EventScanner) error {
+func (e *XdgPopupPopupDoneEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XSXdgPopupPopupDoneEvent implements Event.
-var _ Event = &XSXdgPopupPopupDoneEvent{}
+// Ensure XdgPopupPopupDoneEvent implements Event.
+var _ Event = &XdgPopupPopupDoneEvent{}
 
-// XSXdgPopupRepositionedEvent signals when signal the completion of a repositioned request
+// XdgPopupRepositionedEvent signals when signal the completion of a repositioned request
 //
 // The repositioned event is sent as part of a popup configuration
 // sequence, together with xdg_popup.configure and lastly
@@ -16147,19 +16071,19 @@ var _ Event = &XSXdgPopupPopupDoneEvent{}
 // The client should optionally update the content of the popup, but must
 // acknowledge the new popup configuration for the new position to take
 // effect. See xdg_surface.ack_configure for details.
-type XSXdgPopupRepositionedEvent struct {
+type XdgPopupRepositionedEvent struct {
 	// Token contains reposition request token
 	Token uint32
 }
 
 // Opcode returns the event opcode for xdg_popup.repositioned in xdg_shell
-func (XSXdgPopupRepositionedEvent) Opcode() uint16 { return 2 }
+func (XdgPopupRepositionedEvent) Opcode() uint16 { return 2 }
 
-// Ensure XSXdgPopupRepositionedEvent implements Message.
-var _ Message = XSXdgPopupRepositionedEvent{}
+// Ensure XdgPopupRepositionedEvent implements Message.
+var _ Message = XdgPopupRepositionedEvent{}
 
 // Scan scans the event from the socket.
-func (e *XSXdgPopupRepositionedEvent) Scan(s *EventScanner) error {
+func (e *XdgPopupRepositionedEvent) Scan(s *EventScanner) error {
 	if v, err := s.Uint(); err != nil {
 		return err
 	} else {
@@ -16168,8 +16092,8 @@ func (e *XSXdgPopupRepositionedEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure XSXdgPopupRepositionedEvent implements Event.
-var _ Event = &XSXdgPopupRepositionedEvent{}
+// Ensure XdgPopupRepositionedEvent implements Event.
+var _ Event = &XdgPopupRepositionedEvent{}
 
 // #endregion Interface xdg_shell.xdg_popup
 
@@ -16177,2063 +16101,24 @@ var _ Event = &XSXdgPopupRepositionedEvent{}
 // #endregion Protocol xdg_shell
 
 ////////////////////////////////////////////////////////////////////////////////
-// #region Protocol xdg_shell_unstable_v5
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v5.xdg_shell
-
-// XSUVXdgShellVersion represents latest protocol version
-//
-// The 'current' member of this enum gives the version of the
-// protocol.  Implementations can compare this to the version
-// they implement using static_assert to ensure the protocol and
-// implementation versions match.
-type XSUVXdgShellVersion int
-
-const (
-	// XSUVXdgShellVersionCurrent corresponds to Always the latest version
-	XSUVXdgShellVersionCurrent XSUVXdgShellVersion = 5
-)
-
-type XSUVXdgShellError int
-
-const (
-	// XSUVXdgShellErrorRole corresponds to given wl_surface has another role
-	XSUVXdgShellErrorRole XSUVXdgShellError = 0
-
-	// XSUVXdgShellErrorDefunctSurfaces corresponds to xdg_shell was destroyed before children
-	XSUVXdgShellErrorDefunctSurfaces XSUVXdgShellError = 1
-
-	// XSUVXdgShellErrorNotTheTopmostPopup corresponds to the client tried to map or destroy a non-topmost popup
-	XSUVXdgShellErrorNotTheTopmostPopup XSUVXdgShellError = 2
-
-	// XSUVXdgShellErrorInvalidPopupParent corresponds to the client specified an invalid popup parent surface
-	XSUVXdgShellErrorInvalidPopupParent XSUVXdgShellError = 3
-)
-
-// XSUVXdgShellDestroyRequest requests to destroy xdg_shell
-//
-// Destroy this xdg_shell object.
-//
-// Destroying a bound xdg_shell object while there are surfaces
-// still alive created by this xdg_shell object instance is illegal
-// and will result in a protocol error.
-type XSUVXdgShellDestroyRequest struct {
-}
-
-// Opcode returns the request opcode for xdg_shell.destroy in xdg_shell_unstable_v5
-func (XSUVXdgShellDestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVXdgShellDestroyRequest implements Message.
-var _ Message = XSUVXdgShellDestroyRequest{}
-
-// XSUVXdgShellUseUnstableVersionRequest requests to enable use of this unstable version
-//
-// Negotiate the unstable version of the interface.  This
-// mechanism is in place to ensure client and server agree on the
-// unstable versions of the protocol that they speak or exit
-// cleanly if they don't agree.  This request will go away once
-// the xdg-shell protocol is stable.
-type XSUVXdgShellUseUnstableVersionRequest struct {
-	Version int32
-}
-
-// Opcode returns the request opcode for xdg_shell.use_unstable_version in xdg_shell_unstable_v5
-func (XSUVXdgShellUseUnstableVersionRequest) Opcode() uint16 { return 1 }
-
-// Ensure XSUVXdgShellUseUnstableVersionRequest implements Message.
-var _ Message = XSUVXdgShellUseUnstableVersionRequest{}
-
-// XSUVXdgShellGetXdgSurfaceRequest requests to create a shell surface from a surface
-//
-// This creates an xdg_surface for the given surface and gives it the
-// xdg_surface role. A wl_surface can only be given an xdg_surface role
-// once. If get_xdg_surface is called with a wl_surface that already has
-// an active xdg_surface associated with it, or if it had any other role,
-// an error is raised.
-//
-// See the documentation of xdg_surface for more details about what an
-// xdg_surface is and how it is used.
-type XSUVXdgShellGetXdgSurfaceRequest struct {
-	ID ObjectID
-
-	Surface ObjectID
-}
-
-// Opcode returns the request opcode for xdg_shell.get_xdg_surface in xdg_shell_unstable_v5
-func (XSUVXdgShellGetXdgSurfaceRequest) Opcode() uint16 { return 2 }
-
-// Ensure XSUVXdgShellGetXdgSurfaceRequest implements Message.
-var _ Message = XSUVXdgShellGetXdgSurfaceRequest{}
-
-// XSUVXdgShellGetXdgPopupRequest requests to create a popup for a surface
-//
-// This creates an xdg_popup for the given surface and gives it the
-// xdg_popup role. A wl_surface can only be given an xdg_popup role
-// once. If get_xdg_popup is called with a wl_surface that already has
-// an active xdg_popup associated with it, or if it had any other role,
-// an error is raised.
-//
-// This request must be used in response to some sort of user action
-// like a button press, key press, or touch down event.
-//
-// See the documentation of xdg_popup for more details about what an
-// xdg_popup is and how it is used.
-type XSUVXdgShellGetXdgPopupRequest struct {
-	ID ObjectID
-
-	Surface ObjectID
-
-	Parent ObjectID
-
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-
-	X int32
-
-	Y int32
-}
-
-// Opcode returns the request opcode for xdg_shell.get_xdg_popup in xdg_shell_unstable_v5
-func (XSUVXdgShellGetXdgPopupRequest) Opcode() uint16 { return 3 }
-
-// Ensure XSUVXdgShellGetXdgPopupRequest implements Message.
-var _ Message = XSUVXdgShellGetXdgPopupRequest{}
-
-// XSUVXdgShellPongRequest requests to respond to a ping event
-//
-// A client must respond to a ping event with a pong request or
-// the client may be deemed unresponsive.
-type XSUVXdgShellPongRequest struct {
-	// Serial contains serial of the ping event
-	Serial uint32
-}
-
-// Opcode returns the request opcode for xdg_shell.pong in xdg_shell_unstable_v5
-func (XSUVXdgShellPongRequest) Opcode() uint16 { return 4 }
-
-// Ensure XSUVXdgShellPongRequest implements Message.
-var _ Message = XSUVXdgShellPongRequest{}
-
-// XSUVXdgShellPingEvent signals when check if the client is alive
-//
-// The ping event asks the client if it's still alive. Pass the
-// serial specified in the event back to the compositor by sending
-// a "pong" request back with the specified serial.
-//
-// Compositors can use this to determine if the client is still
-// alive. It's unspecified what will happen if the client doesn't
-// respond to the ping request, or in what timeframe. Clients should
-// try to respond in a reasonable amount of time.
-//
-// A compositor is free to ping in any way it wants, but a client must
-// always respond to any xdg_shell object it created.
-type XSUVXdgShellPingEvent struct {
-	// Serial contains pass this to the pong request
-	Serial uint32
-}
-
-// Opcode returns the event opcode for xdg_shell.ping in xdg_shell_unstable_v5
-func (XSUVXdgShellPingEvent) Opcode() uint16 { return 0 }
-
-// Ensure XSUVXdgShellPingEvent implements Message.
-var _ Message = XSUVXdgShellPingEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVXdgShellPingEvent) Scan(s *EventScanner) error {
-	if v, err := s.Uint(); err != nil {
-		return err
-	} else {
-		e.Serial = v
-	}
-	return nil
-}
-
-// Ensure XSUVXdgShellPingEvent implements Event.
-var _ Event = &XSUVXdgShellPingEvent{}
-
-// #endregion Interface xdg_shell_unstable_v5.xdg_shell
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v5.xdg_surface
-
-// XSUVXdgSurfaceResizeEdge represents edge values for resizing
-//
-// These values are used to indicate which edge of a surface
-// is being dragged in a resize operation.
-type XSUVXdgSurfaceResizeEdge int
-
-const (
-	XSUVXdgSurfaceResizeEdgeNone XSUVXdgSurfaceResizeEdge = 0
-
-	XSUVXdgSurfaceResizeEdgeTop XSUVXdgSurfaceResizeEdge = 1
-
-	XSUVXdgSurfaceResizeEdgeBottom XSUVXdgSurfaceResizeEdge = 2
-
-	XSUVXdgSurfaceResizeEdgeLeft XSUVXdgSurfaceResizeEdge = 4
-
-	XSUVXdgSurfaceResizeEdgeTopLeft XSUVXdgSurfaceResizeEdge = 5
-
-	XSUVXdgSurfaceResizeEdgeBottomLeft XSUVXdgSurfaceResizeEdge = 6
-
-	XSUVXdgSurfaceResizeEdgeRight XSUVXdgSurfaceResizeEdge = 8
-
-	XSUVXdgSurfaceResizeEdgeTopRight XSUVXdgSurfaceResizeEdge = 9
-
-	XSUVXdgSurfaceResizeEdgeBottomRight XSUVXdgSurfaceResizeEdge = 10
-)
-
-// XSUVXdgSurfaceState represents types of state on the surface
-//
-// The different state values used on the surface. This is designed for
-// state values like maximized, fullscreen. It is paired with the
-// configure event to ensure that both the client and the compositor
-// setting the state can be synchronized.
-//
-// States set in this way are double-buffered. They will get applied on
-// the next commit.
-//
-// Desktop environments may extend this enum by taking up a range of
-// values and documenting the range they chose in this description.
-// They are not required to document the values for the range that they
-// chose. Ideally, any good extensions from a desktop environment should
-// make its way into standardization into this enum.
-//
-// The current reserved ranges are:
-//
-// 0x0000 - 0x0FFF: xdg-shell core values, documented below.
-// 0x1000 - 0x1FFF: GNOME
-// 0x2000 - 0x2FFF: EFL
-type XSUVXdgSurfaceState int
-
-const (
-	// XSUVXdgSurfaceStateMaximized corresponds to the surface is maximized
-	XSUVXdgSurfaceStateMaximized XSUVXdgSurfaceState = 1
-
-	// XSUVXdgSurfaceStateFullscreen corresponds to the surface is fullscreen
-	XSUVXdgSurfaceStateFullscreen XSUVXdgSurfaceState = 2
-
-	// XSUVXdgSurfaceStateResizing corresponds to the surface is being resized
-	XSUVXdgSurfaceStateResizing XSUVXdgSurfaceState = 3
-
-	// XSUVXdgSurfaceStateActivated corresponds to the surface is now activated
-	XSUVXdgSurfaceStateActivated XSUVXdgSurfaceState = 4
-)
-
-// XSUVXdgSurfaceDestroyRequest requests to Destroy the xdg_surface
-//
-// Unmap and destroy the window. The window will be effectively
-// hidden from the user's point of view, and all state like
-// maximization, fullscreen, and so on, will be lost.
-type XSUVXdgSurfaceDestroyRequest struct {
-}
-
-// Opcode returns the request opcode for xdg_surface.destroy in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceDestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVXdgSurfaceDestroyRequest implements Message.
-var _ Message = XSUVXdgSurfaceDestroyRequest{}
-
-// XSUVXdgSurfaceSetParentRequest requests to set the parent of this surface
-//
-// Set the "parent" of this surface. This window should be stacked
-// above a parent. The parent surface must be mapped as long as this
-// surface is mapped.
-//
-// Parent windows should be set on dialogs, toolboxes, or other
-// "auxiliary" surfaces, so that the parent is raised when the dialog
-// is raised.
-type XSUVXdgSurfaceSetParentRequest struct {
-	Parent ObjectID
-}
-
-// Opcode returns the request opcode for xdg_surface.set_parent in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceSetParentRequest) Opcode() uint16 { return 1 }
-
-// Ensure XSUVXdgSurfaceSetParentRequest implements Message.
-var _ Message = XSUVXdgSurfaceSetParentRequest{}
-
-// XSUVXdgSurfaceSetTitleRequest requests to set surface title
-//
-// Set a short title for the surface.
-//
-// This string may be used to identify the surface in a task bar,
-// window list, or other user interface elements provided by the
-// compositor.
-//
-// The string must be encoded in UTF-8.
-type XSUVXdgSurfaceSetTitleRequest struct {
-	Title string
-}
-
-// Opcode returns the request opcode for xdg_surface.set_title in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceSetTitleRequest) Opcode() uint16 { return 2 }
-
-// Ensure XSUVXdgSurfaceSetTitleRequest implements Message.
-var _ Message = XSUVXdgSurfaceSetTitleRequest{}
-
-// XSUVXdgSurfaceSetAppIDRequest requests to set application ID
-//
-// Set an application identifier for the surface.
-//
-// The app ID identifies the general class of applications to which
-// the surface belongs. The compositor can use this to group multiple
-// surfaces together, or to determine how to launch a new application.
-//
-// For D-Bus activatable applications, the app ID is used as the D-Bus
-// service name.
-//
-// The compositor shell will try to group application surfaces together
-// by their app ID.  As a best practice, it is suggested to select app
-// ID's that match the basename of the application's .desktop file.
-// For example, "org.freedesktop.FooViewer" where the .desktop file is
-// "org.freedesktop.FooViewer.desktop".
-//
-// See the desktop-entry specification [0] for more details on
-// application identifiers and how they relate to well-known D-Bus
-// names and .desktop files.
-//
-// [0] http://standards.freedesktop.org/desktop-entry-spec/
-type XSUVXdgSurfaceSetAppIDRequest struct {
-	AppID string
-}
-
-// Opcode returns the request opcode for xdg_surface.set_app_id in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceSetAppIDRequest) Opcode() uint16 { return 3 }
-
-// Ensure XSUVXdgSurfaceSetAppIDRequest implements Message.
-var _ Message = XSUVXdgSurfaceSetAppIDRequest{}
-
-// XSUVXdgSurfaceShowWindowMenuRequest requests to show the window menu
-//
-// Clients implementing client-side decorations might want to show
-// a context menu when right-clicking on the decorations, giving the
-// user a menu that they can use to maximize or minimize the window.
-//
-// This request asks the compositor to pop up such a window menu at
-// the given position, relative to the local surface coordinates of
-// the parent surface. There are no guarantees as to what menu items
-// the window menu contains.
-//
-// This request must be used in response to some sort of user action
-// like a button press, key press, or touch down event.
-type XSUVXdgSurfaceShowWindowMenuRequest struct {
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-
-	// X contains the x position to pop up the window menu at
-	X int32
-
-	// Y contains the y position to pop up the window menu at
-	Y int32
-}
-
-// Opcode returns the request opcode for xdg_surface.show_window_menu in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceShowWindowMenuRequest) Opcode() uint16 { return 4 }
-
-// Ensure XSUVXdgSurfaceShowWindowMenuRequest implements Message.
-var _ Message = XSUVXdgSurfaceShowWindowMenuRequest{}
-
-// XSUVXdgSurfaceMoveRequest requests to start an interactive move
-//
-// Start an interactive, user-driven move of the surface.
-//
-// This request must be used in response to some sort of user action
-// like a button press, key press, or touch down event. The passed
-// serial is used to determine the type of interactive move (touch,
-// pointer, etc).
-//
-// The server may ignore move requests depending on the state of
-// the surface (e.g. fullscreen or maximized), or if the passed serial
-// is no longer valid.
-//
-// If triggered, the surface will lose the focus of the device
-// (wl_pointer, wl_touch, etc) used for the move. It is up to the
-// compositor to visually indicate that the move is taking place, such as
-// updating a pointer cursor, during the move. There is no guarantee
-// that the device focus will return when the move is completed.
-type XSUVXdgSurfaceMoveRequest struct {
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-}
-
-// Opcode returns the request opcode for xdg_surface.move in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceMoveRequest) Opcode() uint16 { return 5 }
-
-// Ensure XSUVXdgSurfaceMoveRequest implements Message.
-var _ Message = XSUVXdgSurfaceMoveRequest{}
-
-// XSUVXdgSurfaceResizeRequest requests to start an interactive resize
-//
-// Start a user-driven, interactive resize of the surface.
-//
-// This request must be used in response to some sort of user action
-// like a button press, key press, or touch down event. The passed
-// serial is used to determine the type of interactive resize (touch,
-// pointer, etc).
-//
-// The server may ignore resize requests depending on the state of
-// the surface (e.g. fullscreen or maximized).
-//
-// If triggered, the client will receive configure events with the
-// "resize" state enum value and the expected sizes. See the "resize"
-// enum value for more details about what is required. The client
-// must also acknowledge configure events using "ack_configure". After
-// the resize is completed, the client will receive another "configure"
-// event without the resize state.
-//
-// If triggered, the surface also will lose the focus of the device
-// (wl_pointer, wl_touch, etc) used for the resize. It is up to the
-// compositor to visually indicate that the resize is taking place,
-// such as updating a pointer cursor, during the resize. There is no
-// guarantee that the device focus will return when the resize is
-// completed.
-//
-// The edges parameter specifies how the surface should be resized,
-// and is one of the values of the resize_edge enum. The compositor
-// may use this information to update the surface position for
-// example when dragging the top left corner. The compositor may also
-// use this information to adapt its behavior, e.g. choose an
-// appropriate cursor image.
-type XSUVXdgSurfaceResizeRequest struct {
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-
-	// Edges contains which edge or corner is being dragged
-	Edges uint32
-}
-
-// Opcode returns the request opcode for xdg_surface.resize in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceResizeRequest) Opcode() uint16 { return 6 }
-
-// Ensure XSUVXdgSurfaceResizeRequest implements Message.
-var _ Message = XSUVXdgSurfaceResizeRequest{}
-
-// XSUVXdgSurfaceAckConfigureRequest requests to ack a configure event
-//
-// When a configure event is received, if a client commits the
-// surface in response to the configure event, then the client
-// must make an ack_configure request sometime before the commit
-// request, passing along the serial of the configure event.
-//
-// For instance, the compositor might use this information to move
-// a surface to the top left only when the client has drawn itself
-// for the maximized or fullscreen state.
-//
-// If the client receives multiple configure events before it
-// can respond to one, it only has to ack the last configure event.
-//
-// A client is not required to commit immediately after sending
-// an ack_configure request - it may even ack_configure several times
-// before its next surface commit.
-//
-// The compositor expects that the most recently received
-// ack_configure request at the time of a commit indicates which
-// configure event the client is responding to.
-type XSUVXdgSurfaceAckConfigureRequest struct {
-	// Serial contains the serial from the configure event
-	Serial uint32
-}
-
-// Opcode returns the request opcode for xdg_surface.ack_configure in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceAckConfigureRequest) Opcode() uint16 { return 7 }
-
-// Ensure XSUVXdgSurfaceAckConfigureRequest implements Message.
-var _ Message = XSUVXdgSurfaceAckConfigureRequest{}
-
-// XSUVXdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
-//
-// The window geometry of a window is its "visible bounds" from the
-// user's perspective. Client-side decorations often have invisible
-// portions like drop-shadows which should be ignored for the
-// purposes of aligning, placing and constraining windows.
-//
-// The window geometry is double buffered, and will be applied at the
-// time wl_surface.commit of the corresponding wl_surface is called.
-//
-// Once the window geometry of the surface is set once, it is not
-// possible to unset it, and it will remain the same until
-// set_window_geometry is called again, even if a new subsurface or
-// buffer is attached.
-//
-// If never set, the value is the full bounds of the surface,
-// including any subsurfaces. This updates dynamically on every
-// commit. This unset mode is meant for extremely simple clients.
-//
-// If responding to a configure event, the window geometry in here
-// must respect the sizing negotiations specified by the states in
-// the configure event.
-//
-// The arguments are given in the surface local coordinate space of
-// the wl_surface associated with this xdg_surface.
-//
-// The width and height must be greater than zero.
-type XSUVXdgSurfaceSetWindowGeometryRequest struct {
-	X int32
-
-	Y int32
-
-	Width int32
-
-	Height int32
-}
-
-// Opcode returns the request opcode for xdg_surface.set_window_geometry in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceSetWindowGeometryRequest) Opcode() uint16 { return 8 }
-
-// Ensure XSUVXdgSurfaceSetWindowGeometryRequest implements Message.
-var _ Message = XSUVXdgSurfaceSetWindowGeometryRequest{}
-
-// XSUVXdgSurfaceSetMaximizedRequest requests to maximize the window
-//
-// Maximize the surface.
-//
-// After requesting that the surface should be maximized, the compositor
-// will respond by emitting a configure event with the "maximized" state
-// and the required window geometry. The client should then update its
-// content, drawing it in a maximized state, i.e. without shadow or other
-// decoration outside of the window geometry. The client must also
-// acknowledge the configure when committing the new content (see
-// ack_configure).
-//
-// It is up to the compositor to decide how and where to maximize the
-// surface, for example which output and what region of the screen should
-// be used.
-//
-// If the surface was already maximized, the compositor will still emit
-// a configure event with the "maximized" state.
-type XSUVXdgSurfaceSetMaximizedRequest struct {
-}
-
-// Opcode returns the request opcode for xdg_surface.set_maximized in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceSetMaximizedRequest) Opcode() uint16 { return 9 }
-
-// Ensure XSUVXdgSurfaceSetMaximizedRequest implements Message.
-var _ Message = XSUVXdgSurfaceSetMaximizedRequest{}
-
-// XSUVXdgSurfaceUnsetMaximizedRequest requests to unmaximize the window
-//
-// Unmaximize the surface.
-//
-// After requesting that the surface should be unmaximized, the compositor
-// will respond by emitting a configure event without the "maximized"
-// state. If available, the compositor will include the window geometry
-// dimensions the window had prior to being maximized in the configure
-// request. The client must then update its content, drawing it in a
-// regular state, i.e. potentially with shadow, etc. The client must also
-// acknowledge the configure when committing the new content (see
-// ack_configure).
-//
-// It is up to the compositor to position the surface after it was
-// unmaximized; usually the position the surface had before maximizing, if
-// applicable.
-//
-// If the surface was already not maximized, the compositor will still
-// emit a configure event without the "maximized" state.
-type XSUVXdgSurfaceUnsetMaximizedRequest struct {
-}
-
-// Opcode returns the request opcode for xdg_surface.unset_maximized in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceUnsetMaximizedRequest) Opcode() uint16 { return 10 }
-
-// Ensure XSUVXdgSurfaceUnsetMaximizedRequest implements Message.
-var _ Message = XSUVXdgSurfaceUnsetMaximizedRequest{}
-
-// XSUVXdgSurfaceSetFullscreenRequest requests to set the window as fullscreen on a monitor
-//
-// Make the surface fullscreen.
-//
-// You can specify an output that you would prefer to be fullscreen.
-// If this value is NULL, it's up to the compositor to choose which
-// display will be used to map this surface.
-//
-// If the surface doesn't cover the whole output, the compositor will
-// position the surface in the center of the output and compensate with
-// black borders filling the rest of the output.
-type XSUVXdgSurfaceSetFullscreenRequest struct {
-	Output ObjectID
-}
-
-// Opcode returns the request opcode for xdg_surface.set_fullscreen in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceSetFullscreenRequest) Opcode() uint16 { return 11 }
-
-// Ensure XSUVXdgSurfaceSetFullscreenRequest implements Message.
-var _ Message = XSUVXdgSurfaceSetFullscreenRequest{}
-
-type XSUVXdgSurfaceUnsetFullscreenRequest struct {
-}
-
-// Opcode returns the request opcode for xdg_surface.unset_fullscreen in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceUnsetFullscreenRequest) Opcode() uint16 { return 12 }
-
-// Ensure XSUVXdgSurfaceUnsetFullscreenRequest implements Message.
-var _ Message = XSUVXdgSurfaceUnsetFullscreenRequest{}
-
-// XSUVXdgSurfaceSetMinimizedRequest requests to set the window as minimized
-//
-// Request that the compositor minimize your surface. There is no
-// way to know if the surface is currently minimized, nor is there
-// any way to unset minimization on this surface.
-//
-// If you are looking to throttle redrawing when minimized, please
-// instead use the wl_surface.frame event for this, as this will
-// also work with live previews on windows in Alt-Tab, Expose or
-// similar compositor features.
-type XSUVXdgSurfaceSetMinimizedRequest struct {
-}
-
-// Opcode returns the request opcode for xdg_surface.set_minimized in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceSetMinimizedRequest) Opcode() uint16 { return 13 }
-
-// Ensure XSUVXdgSurfaceSetMinimizedRequest implements Message.
-var _ Message = XSUVXdgSurfaceSetMinimizedRequest{}
-
-// XSUVXdgSurfaceConfigureEvent signals when suggest a surface change
-//
-// The configure event asks the client to resize its surface or to
-// change its state.
-//
-// The width and height arguments specify a hint to the window
-// about how its surface should be resized in window geometry
-// coordinates. See set_window_geometry.
-//
-// If the width or height arguments are zero, it means the client
-// should decide its own window dimension. This may happen when the
-// compositor need to configure the state of the surface but doesn't
-// have any information about any previous or expected dimension.
-//
-// The states listed in the event specify how the width/height
-// arguments should be interpreted, and possibly how it should be
-// drawn.
-//
-// Clients should arrange their surface for the new size and
-// states, and then send a ack_configure request with the serial
-// sent in this configure event at some point before committing
-// the new surface.
-//
-// If the client receives multiple configure events before it
-// can respond to one, it is free to discard all but the last
-// event it received.
-type XSUVXdgSurfaceConfigureEvent struct {
-	Width int32
-
-	Height int32
-
-	States []byte
-
-	Serial uint32
-}
-
-// Opcode returns the event opcode for xdg_surface.configure in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceConfigureEvent) Opcode() uint16 { return 0 }
-
-// Ensure XSUVXdgSurfaceConfigureEvent implements Message.
-var _ Message = XSUVXdgSurfaceConfigureEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVXdgSurfaceConfigureEvent) Scan(s *EventScanner) error {
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.Width = v
-	}
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.Height = v
-	}
-	if v, err := s.Array(); err != nil {
-		return err
-	} else {
-		e.States = v
-	}
-	if v, err := s.Uint(); err != nil {
-		return err
-	} else {
-		e.Serial = v
-	}
-	return nil
-}
-
-// Ensure XSUVXdgSurfaceConfigureEvent implements Event.
-var _ Event = &XSUVXdgSurfaceConfigureEvent{}
-
-// XSUVXdgSurfaceCloseEvent signals when surface wants to be closed
-//
-// The close event is sent by the compositor when the user
-// wants the surface to be closed. This should be equivalent to
-// the user clicking the close button in client-side decorations,
-// if your application has any...
-//
-// This is only a request that the user intends to close your
-// window. The client may choose to ignore this request, or show
-// a dialog to ask the user to save their data...
-type XSUVXdgSurfaceCloseEvent struct {
-}
-
-// Opcode returns the event opcode for xdg_surface.close in xdg_shell_unstable_v5
-func (XSUVXdgSurfaceCloseEvent) Opcode() uint16 { return 1 }
-
-// Ensure XSUVXdgSurfaceCloseEvent implements Message.
-var _ Message = XSUVXdgSurfaceCloseEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVXdgSurfaceCloseEvent) Scan(s *EventScanner) error {
-	return nil
-}
-
-// Ensure XSUVXdgSurfaceCloseEvent implements Event.
-var _ Event = &XSUVXdgSurfaceCloseEvent{}
-
-// #endregion Interface xdg_shell_unstable_v5.xdg_surface
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v5.xdg_popup
-
-// XSUVXdgPopupDestroyRequest requests to remove xdg_popup interface
-//
-// This destroys the popup. Explicitly destroying the xdg_popup
-// object will also dismiss the popup, and unmap the surface.
-//
-// If this xdg_popup is not the "topmost" popup, a protocol error
-// will be sent.
-type XSUVXdgPopupDestroyRequest struct {
-}
-
-// Opcode returns the request opcode for xdg_popup.destroy in xdg_shell_unstable_v5
-func (XSUVXdgPopupDestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVXdgPopupDestroyRequest implements Message.
-var _ Message = XSUVXdgPopupDestroyRequest{}
-
-// XSUVXdgPopupPopupDoneEvent signals when popup interaction is done
-//
-// The popup_done event is sent out when a popup is dismissed by the
-// compositor. The client should destroy the xdg_popup object at this
-// point.
-type XSUVXdgPopupPopupDoneEvent struct {
-}
-
-// Opcode returns the event opcode for xdg_popup.popup_done in xdg_shell_unstable_v5
-func (XSUVXdgPopupPopupDoneEvent) Opcode() uint16 { return 0 }
-
-// Ensure XSUVXdgPopupPopupDoneEvent implements Message.
-var _ Message = XSUVXdgPopupPopupDoneEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVXdgPopupPopupDoneEvent) Scan(s *EventScanner) error {
-	return nil
-}
-
-// Ensure XSUVXdgPopupPopupDoneEvent implements Event.
-var _ Event = &XSUVXdgPopupPopupDoneEvent{}
-
-// #endregion Interface xdg_shell_unstable_v5.xdg_popup
-
-////////////////////////////////////////////////////////////////////////////////
-// #endregion Protocol xdg_shell_unstable_v5
-
-////////////////////////////////////////////////////////////////////////////////
-// #region Protocol xdg_shell_unstable_v6
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v6.zxdg_shell_v6
-
-type XSUVZxdgShellV6Error int
-
-const (
-	// XSUVZxdgShellV6ErrorRole corresponds to given wl_surface has another role
-	XSUVZxdgShellV6ErrorRole XSUVZxdgShellV6Error = 0
-
-	// XSUVZxdgShellV6ErrorDefunctSurfaces corresponds to xdg_shell was destroyed before children
-	XSUVZxdgShellV6ErrorDefunctSurfaces XSUVZxdgShellV6Error = 1
-
-	// XSUVZxdgShellV6ErrorNotTheTopmostPopup corresponds to the client tried to map or destroy a non-topmost popup
-	XSUVZxdgShellV6ErrorNotTheTopmostPopup XSUVZxdgShellV6Error = 2
-
-	// XSUVZxdgShellV6ErrorInvalidPopupParent corresponds to the client specified an invalid popup parent surface
-	XSUVZxdgShellV6ErrorInvalidPopupParent XSUVZxdgShellV6Error = 3
-
-	// XSUVZxdgShellV6ErrorInvalidSurfaceState corresponds to the client provided an invalid surface state
-	XSUVZxdgShellV6ErrorInvalidSurfaceState XSUVZxdgShellV6Error = 4
-
-	// XSUVZxdgShellV6ErrorInvalidPositioner corresponds to the client provided an invalid positioner
-	XSUVZxdgShellV6ErrorInvalidPositioner XSUVZxdgShellV6Error = 5
-)
-
-// XSUVZxdgShellV6DestroyRequest requests to destroy xdg_shell
-//
-// Destroy this xdg_shell object.
-//
-// Destroying a bound xdg_shell object while there are surfaces
-// still alive created by this xdg_shell object instance is illegal
-// and will result in a protocol error.
-type XSUVZxdgShellV6DestroyRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_shell_v6.destroy in xdg_shell_unstable_v6
-func (XSUVZxdgShellV6DestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgShellV6DestroyRequest implements Message.
-var _ Message = XSUVZxdgShellV6DestroyRequest{}
-
-// XSUVZxdgShellV6CreatePositionerRequest requests to create a positioner object
-//
-// Create a positioner object. A positioner object is used to position
-// surfaces relative to some parent surface. See the interface description
-// and xdg_surface.get_popup for details.
-type XSUVZxdgShellV6CreatePositionerRequest struct {
-	ID ObjectID
-}
-
-// Opcode returns the request opcode for zxdg_shell_v6.create_positioner in xdg_shell_unstable_v6
-func (XSUVZxdgShellV6CreatePositionerRequest) Opcode() uint16 { return 1 }
-
-// Ensure XSUVZxdgShellV6CreatePositionerRequest implements Message.
-var _ Message = XSUVZxdgShellV6CreatePositionerRequest{}
-
-// XSUVZxdgShellV6GetXdgSurfaceRequest requests to create a shell surface from a surface
-//
-// This creates an xdg_surface for the given surface. While xdg_surface
-// itself is not a role, the corresponding surface may only be assigned
-// a role extending xdg_surface, such as xdg_toplevel or xdg_popup.
-//
-// This creates an xdg_surface for the given surface. An xdg_surface is
-// used as basis to define a role to a given surface, such as xdg_toplevel
-// or xdg_popup. It also manages functionality shared between xdg_surface
-// based surface roles.
-//
-// See the documentation of xdg_surface for more details about what an
-// xdg_surface is and how it is used.
-type XSUVZxdgShellV6GetXdgSurfaceRequest struct {
-	ID ObjectID
-
-	Surface ObjectID
-}
-
-// Opcode returns the request opcode for zxdg_shell_v6.get_xdg_surface in xdg_shell_unstable_v6
-func (XSUVZxdgShellV6GetXdgSurfaceRequest) Opcode() uint16 { return 2 }
-
-// Ensure XSUVZxdgShellV6GetXdgSurfaceRequest implements Message.
-var _ Message = XSUVZxdgShellV6GetXdgSurfaceRequest{}
-
-// XSUVZxdgShellV6PongRequest requests to respond to a ping event
-//
-// A client must respond to a ping event with a pong request or
-// the client may be deemed unresponsive. See xdg_shell.ping.
-type XSUVZxdgShellV6PongRequest struct {
-	// Serial contains serial of the ping event
-	Serial uint32
-}
-
-// Opcode returns the request opcode for zxdg_shell_v6.pong in xdg_shell_unstable_v6
-func (XSUVZxdgShellV6PongRequest) Opcode() uint16 { return 3 }
-
-// Ensure XSUVZxdgShellV6PongRequest implements Message.
-var _ Message = XSUVZxdgShellV6PongRequest{}
-
-// XSUVZxdgShellV6PingEvent signals when check if the client is alive
-//
-// The ping event asks the client if it's still alive. Pass the
-// serial specified in the event back to the compositor by sending
-// a "pong" request back with the specified serial. See xdg_shell.ping.
-//
-// Compositors can use this to determine if the client is still
-// alive. It's unspecified what will happen if the client doesn't
-// respond to the ping request, or in what timeframe. Clients should
-// try to respond in a reasonable amount of time.
-//
-// A compositor is free to ping in any way it wants, but a client must
-// always respond to any xdg_shell object it created.
-type XSUVZxdgShellV6PingEvent struct {
-	// Serial contains pass this to the pong request
-	Serial uint32
-}
-
-// Opcode returns the event opcode for zxdg_shell_v6.ping in xdg_shell_unstable_v6
-func (XSUVZxdgShellV6PingEvent) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgShellV6PingEvent implements Message.
-var _ Message = XSUVZxdgShellV6PingEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVZxdgShellV6PingEvent) Scan(s *EventScanner) error {
-	if v, err := s.Uint(); err != nil {
-		return err
-	} else {
-		e.Serial = v
-	}
-	return nil
-}
-
-// Ensure XSUVZxdgShellV6PingEvent implements Event.
-var _ Event = &XSUVZxdgShellV6PingEvent{}
-
-// #endregion Interface xdg_shell_unstable_v6.zxdg_shell_v6
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v6.zxdg_positioner_v6
-
-type XSUVZxdgPositionerV6Error int
-
-const (
-	// XSUVZxdgPositionerV6ErrorInvalidInput corresponds to invalid input provided
-	XSUVZxdgPositionerV6ErrorInvalidInput XSUVZxdgPositionerV6Error = 0
-)
-
-type XSUVZxdgPositionerV6Anchor uint
-
-const (
-	// XSUVZxdgPositionerV6AnchorNone corresponds to the center of the anchor rectangle
-	XSUVZxdgPositionerV6AnchorNone XSUVZxdgPositionerV6Anchor = 0
-
-	// XSUVZxdgPositionerV6AnchorTop corresponds to the top edge of the anchor rectangle
-	XSUVZxdgPositionerV6AnchorTop XSUVZxdgPositionerV6Anchor = 1
-
-	// XSUVZxdgPositionerV6AnchorBottom corresponds to the bottom edge of the anchor rectangle
-	XSUVZxdgPositionerV6AnchorBottom XSUVZxdgPositionerV6Anchor = 2
-
-	// XSUVZxdgPositionerV6AnchorLeft corresponds to the left edge of the anchor rectangle
-	XSUVZxdgPositionerV6AnchorLeft XSUVZxdgPositionerV6Anchor = 4
-
-	// XSUVZxdgPositionerV6AnchorRight corresponds to the right edge of the anchor rectangle
-	XSUVZxdgPositionerV6AnchorRight XSUVZxdgPositionerV6Anchor = 8
-)
-
-type XSUVZxdgPositionerV6Gravity uint
-
-const (
-	// XSUVZxdgPositionerV6GravityNone corresponds to center over the anchor edge
-	XSUVZxdgPositionerV6GravityNone XSUVZxdgPositionerV6Gravity = 0
-
-	// XSUVZxdgPositionerV6GravityTop corresponds to position above the anchor edge
-	XSUVZxdgPositionerV6GravityTop XSUVZxdgPositionerV6Gravity = 1
-
-	// XSUVZxdgPositionerV6GravityBottom corresponds to position below the anchor edge
-	XSUVZxdgPositionerV6GravityBottom XSUVZxdgPositionerV6Gravity = 2
-
-	// XSUVZxdgPositionerV6GravityLeft corresponds to position to the left of the anchor edge
-	XSUVZxdgPositionerV6GravityLeft XSUVZxdgPositionerV6Gravity = 4
-
-	// XSUVZxdgPositionerV6GravityRight corresponds to position to the right of the anchor edge
-	XSUVZxdgPositionerV6GravityRight XSUVZxdgPositionerV6Gravity = 8
-)
-
-// XSUVZxdgPositionerV6ConstraintAdjustment represents constraint adjustments
-//
-// The constraint adjustment value define ways the compositor will adjust
-// the position of the surface, if the unadjusted position would result
-// in the surface being partly constrained.
-//
-// Whether a surface is considered 'constrained' is left to the compositor
-// to determine. For example, the surface may be partly outside the
-// compositor's defined 'work area', thus necessitating the child surface's
-// position be adjusted until it is entirely inside the work area.
-//
-// The adjustments can be combined, according to a defined precedence: 1)
-// Flip, 2) Slide, 3) Resize.
-type XSUVZxdgPositionerV6ConstraintAdjustment uint
-
-const (
-	XSUVZxdgPositionerV6ConstraintAdjustmentNone XSUVZxdgPositionerV6ConstraintAdjustment = 0
-
-	XSUVZxdgPositionerV6ConstraintAdjustmentSlideX XSUVZxdgPositionerV6ConstraintAdjustment = 1
-
-	XSUVZxdgPositionerV6ConstraintAdjustmentSlideY XSUVZxdgPositionerV6ConstraintAdjustment = 2
-
-	XSUVZxdgPositionerV6ConstraintAdjustmentFlipX XSUVZxdgPositionerV6ConstraintAdjustment = 4
-
-	XSUVZxdgPositionerV6ConstraintAdjustmentFlipY XSUVZxdgPositionerV6ConstraintAdjustment = 8
-
-	XSUVZxdgPositionerV6ConstraintAdjustmentResizeX XSUVZxdgPositionerV6ConstraintAdjustment = 16
-
-	XSUVZxdgPositionerV6ConstraintAdjustmentResizeY XSUVZxdgPositionerV6ConstraintAdjustment = 32
-)
-
-// XSUVZxdgPositionerV6DestroyRequest requests to destroy the xdg_positioner object
-//
-// Notify the compositor that the xdg_positioner will no longer be used.
-type XSUVZxdgPositionerV6DestroyRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_positioner_v6.destroy in xdg_shell_unstable_v6
-func (XSUVZxdgPositionerV6DestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgPositionerV6DestroyRequest implements Message.
-var _ Message = XSUVZxdgPositionerV6DestroyRequest{}
-
-// XSUVZxdgPositionerV6SetSizeRequest requests to set the size of the to-be positioned rectangle
-//
-// Set the size of the surface that is to be positioned with the positioner
-// object. The size is in surface-local coordinates and corresponds to the
-// window geometry. See xdg_surface.set_window_geometry.
-//
-// If a zero or negative size is set the invalid_input error is raised.
-type XSUVZxdgPositionerV6SetSizeRequest struct {
-	// Width contains width of positioned rectangle
-	Width int32
-
-	// Height contains height of positioned rectangle
-	Height int32
-}
-
-// Opcode returns the request opcode for zxdg_positioner_v6.set_size in xdg_shell_unstable_v6
-func (XSUVZxdgPositionerV6SetSizeRequest) Opcode() uint16 { return 1 }
-
-// Ensure XSUVZxdgPositionerV6SetSizeRequest implements Message.
-var _ Message = XSUVZxdgPositionerV6SetSizeRequest{}
-
-// XSUVZxdgPositionerV6SetAnchorRectRequest requests to set the anchor rectangle within the parent surface
-//
-// Specify the anchor rectangle within the parent surface that the child
-// surface will be placed relative to. The rectangle is relative to the
-// window geometry as defined by xdg_surface.set_window_geometry of the
-// parent surface. The rectangle must be at least 1x1 large.
-//
-// When the xdg_positioner object is used to position a child surface, the
-// anchor rectangle may not extend outside the window geometry of the
-// positioned child's parent surface.
-//
-// If a zero or negative size is set the invalid_input error is raised.
-type XSUVZxdgPositionerV6SetAnchorRectRequest struct {
-	// X contains x position of anchor rectangle
-	X int32
-
-	// Y contains y position of anchor rectangle
-	Y int32
-
-	// Width contains width of anchor rectangle
-	Width int32
-
-	// Height contains height of anchor rectangle
-	Height int32
-}
-
-// Opcode returns the request opcode for zxdg_positioner_v6.set_anchor_rect in xdg_shell_unstable_v6
-func (XSUVZxdgPositionerV6SetAnchorRectRequest) Opcode() uint16 { return 2 }
-
-// Ensure XSUVZxdgPositionerV6SetAnchorRectRequest implements Message.
-var _ Message = XSUVZxdgPositionerV6SetAnchorRectRequest{}
-
-// XSUVZxdgPositionerV6SetAnchorRequest requests to set anchor rectangle anchor edges
-//
-// Defines a set of edges for the anchor rectangle. These are used to
-// derive an anchor point that the child surface will be positioned
-// relative to. If two orthogonal edges are specified (e.g. 'top' and
-// 'left'), then the anchor point will be the intersection of the edges
-// (e.g. the top left position of the rectangle); otherwise, the derived
-// anchor point will be centered on the specified edge, or in the center of
-// the anchor rectangle if no edge is specified.
-//
-// If two parallel anchor edges are specified (e.g. 'left' and 'right'),
-// the invalid_input error is raised.
-type XSUVZxdgPositionerV6SetAnchorRequest struct {
-	// Anchor contains bit mask of anchor edges
-	Anchor uint32
-}
-
-// Opcode returns the request opcode for zxdg_positioner_v6.set_anchor in xdg_shell_unstable_v6
-func (XSUVZxdgPositionerV6SetAnchorRequest) Opcode() uint16 { return 3 }
-
-// Ensure XSUVZxdgPositionerV6SetAnchorRequest implements Message.
-var _ Message = XSUVZxdgPositionerV6SetAnchorRequest{}
-
-// XSUVZxdgPositionerV6SetGravityRequest requests to set child surface gravity
-//
-// Defines in what direction a surface should be positioned, relative to
-// the anchor point of the parent surface. If two orthogonal gravities are
-// specified (e.g. 'bottom' and 'right'), then the child surface will be
-// placed in the specified direction; otherwise, the child surface will be
-// centered over the anchor point on any axis that had no gravity
-// specified.
-//
-// If two parallel gravities are specified (e.g. 'left' and 'right'), the
-// invalid_input error is raised.
-type XSUVZxdgPositionerV6SetGravityRequest struct {
-	// Gravity contains bit mask of gravity directions
-	Gravity uint32
-}
-
-// Opcode returns the request opcode for zxdg_positioner_v6.set_gravity in xdg_shell_unstable_v6
-func (XSUVZxdgPositionerV6SetGravityRequest) Opcode() uint16 { return 4 }
-
-// Ensure XSUVZxdgPositionerV6SetGravityRequest implements Message.
-var _ Message = XSUVZxdgPositionerV6SetGravityRequest{}
-
-// XSUVZxdgPositionerV6SetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
-//
-// Specify how the window should be positioned if the originally intended
-// position caused the surface to be constrained, meaning at least
-// partially outside positioning boundaries set by the compositor. The
-// adjustment is set by constructing a bitmask describing the adjustment to
-// be made when the surface is constrained on that axis.
-//
-// If no bit for one axis is set, the compositor will assume that the child
-// surface should not change its position on that axis when constrained.
-//
-// If more than one bit for one axis is set, the order of how adjustments
-// are applied is specified in the corresponding adjustment descriptions.
-//
-// The default adjustment is none.
-type XSUVZxdgPositionerV6SetConstraintAdjustmentRequest struct {
-	// ConstraintAdjustment contains bit mask of constraint adjustments
-	ConstraintAdjustment uint32
-}
-
-// Opcode returns the request opcode for zxdg_positioner_v6.set_constraint_adjustment in xdg_shell_unstable_v6
-func (XSUVZxdgPositionerV6SetConstraintAdjustmentRequest) Opcode() uint16 { return 5 }
-
-// Ensure XSUVZxdgPositionerV6SetConstraintAdjustmentRequest implements Message.
-var _ Message = XSUVZxdgPositionerV6SetConstraintAdjustmentRequest{}
-
-// XSUVZxdgPositionerV6SetOffsetRequest requests to set surface position offset
-//
-// Specify the surface position offset relative to the position of the
-// anchor on the anchor rectangle and the anchor on the surface. For
-// example if the anchor of the anchor rectangle is at (x, y), the surface
-// has the gravity bottom|right, and the offset is (ox, oy), the calculated
-// surface position will be (x + ox, y + oy). The offset position of the
-// surface is the one used for constraint testing. See
-// set_constraint_adjustment.
-//
-// An example use case is placing a popup menu on top of a user interface
-// element, while aligning the user interface element of the parent surface
-// with some user interface element placed somewhere in the popup surface.
-type XSUVZxdgPositionerV6SetOffsetRequest struct {
-	// X contains surface position x offset
-	X int32
-
-	// Y contains surface position y offset
-	Y int32
-}
-
-// Opcode returns the request opcode for zxdg_positioner_v6.set_offset in xdg_shell_unstable_v6
-func (XSUVZxdgPositionerV6SetOffsetRequest) Opcode() uint16 { return 6 }
-
-// Ensure XSUVZxdgPositionerV6SetOffsetRequest implements Message.
-var _ Message = XSUVZxdgPositionerV6SetOffsetRequest{}
-
-// #endregion Interface xdg_shell_unstable_v6.zxdg_positioner_v6
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v6.zxdg_surface_v6
-
-type XSUVZxdgSurfaceV6Error int
-
-const (
-	XSUVZxdgSurfaceV6ErrorNotConstructed XSUVZxdgSurfaceV6Error = 1
-
-	XSUVZxdgSurfaceV6ErrorAlreadyConstructed XSUVZxdgSurfaceV6Error = 2
-
-	XSUVZxdgSurfaceV6ErrorUnconfiguredBuffer XSUVZxdgSurfaceV6Error = 3
-)
-
-// XSUVZxdgSurfaceV6DestroyRequest requests to destroy the xdg_surface
-//
-// Destroy the xdg_surface object. An xdg_surface must only be destroyed
-// after its role object has been destroyed.
-type XSUVZxdgSurfaceV6DestroyRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_surface_v6.destroy in xdg_shell_unstable_v6
-func (XSUVZxdgSurfaceV6DestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgSurfaceV6DestroyRequest implements Message.
-var _ Message = XSUVZxdgSurfaceV6DestroyRequest{}
-
-// XSUVZxdgSurfaceV6GetToplevelRequest requests to assign the xdg_toplevel surface role
-//
-// This creates an xdg_toplevel object for the given xdg_surface and gives
-// the associated wl_surface the xdg_toplevel role.
-//
-// See the documentation of xdg_toplevel for more details about what an
-// xdg_toplevel is and how it is used.
-type XSUVZxdgSurfaceV6GetToplevelRequest struct {
-	ID ObjectID
-}
-
-// Opcode returns the request opcode for zxdg_surface_v6.get_toplevel in xdg_shell_unstable_v6
-func (XSUVZxdgSurfaceV6GetToplevelRequest) Opcode() uint16 { return 1 }
-
-// Ensure XSUVZxdgSurfaceV6GetToplevelRequest implements Message.
-var _ Message = XSUVZxdgSurfaceV6GetToplevelRequest{}
-
-// XSUVZxdgSurfaceV6GetPopupRequest requests to assign the xdg_popup surface role
-//
-// This creates an xdg_popup object for the given xdg_surface and gives the
-// associated wl_surface the xdg_popup role.
-//
-// See the documentation of xdg_popup for more details about what an
-// xdg_popup is and how it is used.
-type XSUVZxdgSurfaceV6GetPopupRequest struct {
-	ID ObjectID
-
-	Parent ObjectID
-
-	Positioner ObjectID
-}
-
-// Opcode returns the request opcode for zxdg_surface_v6.get_popup in xdg_shell_unstable_v6
-func (XSUVZxdgSurfaceV6GetPopupRequest) Opcode() uint16 { return 2 }
-
-// Ensure XSUVZxdgSurfaceV6GetPopupRequest implements Message.
-var _ Message = XSUVZxdgSurfaceV6GetPopupRequest{}
-
-// XSUVZxdgSurfaceV6SetWindowGeometryRequest requests to set the new window geometry
-//
-// The window geometry of a surface is its "visible bounds" from the
-// user's perspective. Client-side decorations often have invisible
-// portions like drop-shadows which should be ignored for the
-// purposes of aligning, placing and constraining windows.
-//
-// The window geometry is double buffered, and will be applied at the
-// time wl_surface.commit of the corresponding wl_surface is called.
-//
-// Once the window geometry of the surface is set, it is not possible to
-// unset it, and it will remain the same until set_window_geometry is
-// called again, even if a new subsurface or buffer is attached.
-//
-// If never set, the value is the full bounds of the surface,
-// including any subsurfaces. This updates dynamically on every
-// commit. This unset is meant for extremely simple clients.
-//
-// The arguments are given in the surface-local coordinate space of
-// the wl_surface associated with this xdg_surface.
-//
-// The width and height must be greater than zero. Setting an invalid size
-// will raise an error. When applied, the effective window geometry will be
-// the set window geometry clamped to the bounding rectangle of the
-// combined geometry of the surface of the xdg_surface and the associated
-// subsurfaces.
-type XSUVZxdgSurfaceV6SetWindowGeometryRequest struct {
-	X int32
-
-	Y int32
-
-	Width int32
-
-	Height int32
-}
-
-// Opcode returns the request opcode for zxdg_surface_v6.set_window_geometry in xdg_shell_unstable_v6
-func (XSUVZxdgSurfaceV6SetWindowGeometryRequest) Opcode() uint16 { return 3 }
-
-// Ensure XSUVZxdgSurfaceV6SetWindowGeometryRequest implements Message.
-var _ Message = XSUVZxdgSurfaceV6SetWindowGeometryRequest{}
-
-// XSUVZxdgSurfaceV6AckConfigureRequest requests to ack a configure event
-//
-// When a configure event is received, if a client commits the
-// surface in response to the configure event, then the client
-// must make an ack_configure request sometime before the commit
-// request, passing along the serial of the configure event.
-//
-// For instance, for toplevel surfaces the compositor might use this
-// information to move a surface to the top left only when the client has
-// drawn itself for the maximized or fullscreen state.
-//
-// If the client receives multiple configure events before it
-// can respond to one, it only has to ack the last configure event.
-//
-// A client is not required to commit immediately after sending
-// an ack_configure request - it may even ack_configure several times
-// before its next surface commit.
-//
-// A client may send multiple ack_configure requests before committing, but
-// only the last request sent before a commit indicates which configure
-// event the client really is responding to.
-type XSUVZxdgSurfaceV6AckConfigureRequest struct {
-	// Serial contains the serial from the configure event
-	Serial uint32
-}
-
-// Opcode returns the request opcode for zxdg_surface_v6.ack_configure in xdg_shell_unstable_v6
-func (XSUVZxdgSurfaceV6AckConfigureRequest) Opcode() uint16 { return 4 }
-
-// Ensure XSUVZxdgSurfaceV6AckConfigureRequest implements Message.
-var _ Message = XSUVZxdgSurfaceV6AckConfigureRequest{}
-
-// XSUVZxdgSurfaceV6ConfigureEvent signals when suggest a surface change
-//
-// The configure event marks the end of a configure sequence. A configure
-// sequence is a set of one or more events configuring the state of the
-// xdg_surface, including the final xdg_surface.configure event.
-//
-// Where applicable, xdg_surface surface roles will during a configure
-// sequence extend this event as a latched state sent as events before the
-// xdg_surface.configure event. Such events should be considered to make up
-// a set of atomically applied configuration states, where the
-// xdg_surface.configure commits the accumulated state.
-//
-// Clients should arrange their surface for the new states, and then send
-// an ack_configure request with the serial sent in this configure event at
-// some point before committing the new surface.
-//
-// If the client receives multiple configure events before it can respond
-// to one, it is free to discard all but the last event it received.
-type XSUVZxdgSurfaceV6ConfigureEvent struct {
-	// Serial contains serial of the configure event
-	Serial uint32
-}
-
-// Opcode returns the event opcode for zxdg_surface_v6.configure in xdg_shell_unstable_v6
-func (XSUVZxdgSurfaceV6ConfigureEvent) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgSurfaceV6ConfigureEvent implements Message.
-var _ Message = XSUVZxdgSurfaceV6ConfigureEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVZxdgSurfaceV6ConfigureEvent) Scan(s *EventScanner) error {
-	if v, err := s.Uint(); err != nil {
-		return err
-	} else {
-		e.Serial = v
-	}
-	return nil
-}
-
-// Ensure XSUVZxdgSurfaceV6ConfigureEvent implements Event.
-var _ Event = &XSUVZxdgSurfaceV6ConfigureEvent{}
-
-// #endregion Interface xdg_shell_unstable_v6.zxdg_surface_v6
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v6.zxdg_toplevel_v6
-
-// XSUVZxdgToplevelV6ResizeEdge represents edge values for resizing
-//
-// These values are used to indicate which edge of a surface
-// is being dragged in a resize operation.
-type XSUVZxdgToplevelV6ResizeEdge int
-
-const (
-	XSUVZxdgToplevelV6ResizeEdgeNone XSUVZxdgToplevelV6ResizeEdge = 0
-
-	XSUVZxdgToplevelV6ResizeEdgeTop XSUVZxdgToplevelV6ResizeEdge = 1
-
-	XSUVZxdgToplevelV6ResizeEdgeBottom XSUVZxdgToplevelV6ResizeEdge = 2
-
-	XSUVZxdgToplevelV6ResizeEdgeLeft XSUVZxdgToplevelV6ResizeEdge = 4
-
-	XSUVZxdgToplevelV6ResizeEdgeTopLeft XSUVZxdgToplevelV6ResizeEdge = 5
-
-	XSUVZxdgToplevelV6ResizeEdgeBottomLeft XSUVZxdgToplevelV6ResizeEdge = 6
-
-	XSUVZxdgToplevelV6ResizeEdgeRight XSUVZxdgToplevelV6ResizeEdge = 8
-
-	XSUVZxdgToplevelV6ResizeEdgeTopRight XSUVZxdgToplevelV6ResizeEdge = 9
-
-	XSUVZxdgToplevelV6ResizeEdgeBottomRight XSUVZxdgToplevelV6ResizeEdge = 10
-)
-
-// XSUVZxdgToplevelV6State represents types of state on the surface
-//
-// The different state values used on the surface. This is designed for
-// state values like maximized, fullscreen. It is paired with the
-// configure event to ensure that both the client and the compositor
-// setting the state can be synchronized.
-//
-// States set in this way are double-buffered. They will get applied on
-// the next commit.
-type XSUVZxdgToplevelV6State int
-
-const (
-	// XSUVZxdgToplevelV6StateMaximized corresponds to the surface is maximized
-	XSUVZxdgToplevelV6StateMaximized XSUVZxdgToplevelV6State = 1
-
-	// XSUVZxdgToplevelV6StateFullscreen corresponds to the surface is fullscreen
-	XSUVZxdgToplevelV6StateFullscreen XSUVZxdgToplevelV6State = 2
-
-	// XSUVZxdgToplevelV6StateResizing corresponds to the surface is being resized
-	XSUVZxdgToplevelV6StateResizing XSUVZxdgToplevelV6State = 3
-
-	// XSUVZxdgToplevelV6StateActivated corresponds to the surface is now activated
-	XSUVZxdgToplevelV6StateActivated XSUVZxdgToplevelV6State = 4
-)
-
-// XSUVZxdgToplevelV6DestroyRequest requests to destroy the xdg_toplevel
-//
-// Unmap and destroy the window. The window will be effectively
-// hidden from the user's point of view, and all state like
-// maximization, fullscreen, and so on, will be lost.
-type XSUVZxdgToplevelV6DestroyRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.destroy in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6DestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgToplevelV6DestroyRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6DestroyRequest{}
-
-// XSUVZxdgToplevelV6SetParentRequest requests to set the parent of this surface
-//
-// Set the "parent" of this surface. This window should be stacked
-// above a parent. The parent surface must be mapped as long as this
-// surface is mapped.
-//
-// Parent windows should be set on dialogs, toolboxes, or other
-// "auxiliary" surfaces, so that the parent is raised when the dialog
-// is raised.
-type XSUVZxdgToplevelV6SetParentRequest struct {
-	Parent ObjectID
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_parent in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetParentRequest) Opcode() uint16 { return 1 }
-
-// Ensure XSUVZxdgToplevelV6SetParentRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetParentRequest{}
-
-// XSUVZxdgToplevelV6SetTitleRequest requests to set surface title
-//
-// Set a short title for the surface.
-//
-// This string may be used to identify the surface in a task bar,
-// window list, or other user interface elements provided by the
-// compositor.
-//
-// The string must be encoded in UTF-8.
-type XSUVZxdgToplevelV6SetTitleRequest struct {
-	Title string
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_title in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetTitleRequest) Opcode() uint16 { return 2 }
-
-// Ensure XSUVZxdgToplevelV6SetTitleRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetTitleRequest{}
-
-// XSUVZxdgToplevelV6SetAppIDRequest requests to set application ID
-//
-// Set an application identifier for the surface.
-//
-// The app ID identifies the general class of applications to which
-// the surface belongs. The compositor can use this to group multiple
-// surfaces together, or to determine how to launch a new application.
-//
-// For D-Bus activatable applications, the app ID is used as the D-Bus
-// service name.
-//
-// The compositor shell will try to group application surfaces together
-// by their app ID. As a best practice, it is suggested to select app
-// ID's that match the basename of the application's .desktop file.
-// For example, "org.freedesktop.FooViewer" where the .desktop file is
-// "org.freedesktop.FooViewer.desktop".
-//
-// See the desktop-entry specification [0] for more details on
-// application identifiers and how they relate to well-known D-Bus
-// names and .desktop files.
-//
-// [0] http://standards.freedesktop.org/desktop-entry-spec/
-type XSUVZxdgToplevelV6SetAppIDRequest struct {
-	AppID string
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_app_id in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetAppIDRequest) Opcode() uint16 { return 3 }
-
-// Ensure XSUVZxdgToplevelV6SetAppIDRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetAppIDRequest{}
-
-// XSUVZxdgToplevelV6ShowWindowMenuRequest requests to show the window menu
-//
-// Clients implementing client-side decorations might want to show
-// a context menu when right-clicking on the decorations, giving the
-// user a menu that they can use to maximize or minimize the window.
-//
-// This request asks the compositor to pop up such a window menu at
-// the given position, relative to the local surface coordinates of
-// the parent surface. There are no guarantees as to what menu items
-// the window menu contains.
-//
-// This request must be used in response to some sort of user action
-// like a button press, key press, or touch down event.
-type XSUVZxdgToplevelV6ShowWindowMenuRequest struct {
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-
-	// X contains the x position to pop up the window menu at
-	X int32
-
-	// Y contains the y position to pop up the window menu at
-	Y int32
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.show_window_menu in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6ShowWindowMenuRequest) Opcode() uint16 { return 4 }
-
-// Ensure XSUVZxdgToplevelV6ShowWindowMenuRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6ShowWindowMenuRequest{}
-
-// XSUVZxdgToplevelV6MoveRequest requests to start an interactive move
-//
-// Start an interactive, user-driven move of the surface.
-//
-// This request must be used in response to some sort of user action
-// like a button press, key press, or touch down event. The passed
-// serial is used to determine the type of interactive move (touch,
-// pointer, etc).
-//
-// The server may ignore move requests depending on the state of
-// the surface (e.g. fullscreen or maximized), or if the passed serial
-// is no longer valid.
-//
-// If triggered, the surface will lose the focus of the device
-// (wl_pointer, wl_touch, etc) used for the move. It is up to the
-// compositor to visually indicate that the move is taking place, such as
-// updating a pointer cursor, during the move. There is no guarantee
-// that the device focus will return when the move is completed.
-type XSUVZxdgToplevelV6MoveRequest struct {
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.move in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6MoveRequest) Opcode() uint16 { return 5 }
-
-// Ensure XSUVZxdgToplevelV6MoveRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6MoveRequest{}
-
-// XSUVZxdgToplevelV6ResizeRequest requests to start an interactive resize
-//
-// Start a user-driven, interactive resize of the surface.
-//
-// This request must be used in response to some sort of user action
-// like a button press, key press, or touch down event. The passed
-// serial is used to determine the type of interactive resize (touch,
-// pointer, etc).
-//
-// The server may ignore resize requests depending on the state of
-// the surface (e.g. fullscreen or maximized).
-//
-// If triggered, the client will receive configure events with the
-// "resize" state enum value and the expected sizes. See the "resize"
-// enum value for more details about what is required. The client
-// must also acknowledge configure events using "ack_configure". After
-// the resize is completed, the client will receive another "configure"
-// event without the resize state.
-//
-// If triggered, the surface also will lose the focus of the device
-// (wl_pointer, wl_touch, etc) used for the resize. It is up to the
-// compositor to visually indicate that the resize is taking place,
-// such as updating a pointer cursor, during the resize. There is no
-// guarantee that the device focus will return when the resize is
-// completed.
-//
-// The edges parameter specifies how the surface should be resized,
-// and is one of the values of the resize_edge enum. The compositor
-// may use this information to update the surface position for
-// example when dragging the top left corner. The compositor may also
-// use this information to adapt its behavior, e.g. choose an
-// appropriate cursor image.
-type XSUVZxdgToplevelV6ResizeRequest struct {
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-
-	// Edges contains which edge or corner is being dragged
-	Edges uint32
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.resize in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6ResizeRequest) Opcode() uint16 { return 6 }
-
-// Ensure XSUVZxdgToplevelV6ResizeRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6ResizeRequest{}
-
-// XSUVZxdgToplevelV6SetMaxSizeRequest requests to set the maximum size
-//
-// Set a maximum size for the window.
-//
-// The client can specify a maximum size so that the compositor does
-// not try to configure the window beyond this size.
-//
-// The width and height arguments are in window geometry coordinates.
-// See xdg_surface.set_window_geometry.
-//
-// Values set in this way are double-buffered. They will get applied
-// on the next commit.
-//
-// The compositor can use this information to allow or disallow
-// different states like maximize or fullscreen and draw accurate
-// animations.
-//
-// Similarly, a tiling window manager may use this information to
-// place and resize client windows in a more effective way.
-//
-// The client should not rely on the compositor to obey the maximum
-// size. The compositor may decide to ignore the values set by the
-// client and request a larger size.
-//
-// If never set, or a value of zero in the request, means that the
-// client has no expected maximum size in the given dimension.
-// As a result, a client wishing to reset the maximum size
-// to an unspecified state can use zero for width and height in the
-// request.
-//
-// Requesting a maximum size to be smaller than the minimum size of
-// a surface is illegal and will result in a protocol error.
-//
-// The width and height must be greater than or equal to zero. Using
-// strictly negative values for width and height will result in a
-// protocol error.
-type XSUVZxdgToplevelV6SetMaxSizeRequest struct {
-	Width int32
-
-	Height int32
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_max_size in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetMaxSizeRequest) Opcode() uint16 { return 7 }
-
-// Ensure XSUVZxdgToplevelV6SetMaxSizeRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetMaxSizeRequest{}
-
-// XSUVZxdgToplevelV6SetMinSizeRequest requests to set the minimum size
-//
-// Set a minimum size for the window.
-//
-// The client can specify a minimum size so that the compositor does
-// not try to configure the window below this size.
-//
-// The width and height arguments are in window geometry coordinates.
-// See xdg_surface.set_window_geometry.
-//
-// Values set in this way are double-buffered. They will get applied
-// on the next commit.
-//
-// The compositor can use this information to allow or disallow
-// different states like maximize or fullscreen and draw accurate
-// animations.
-//
-// Similarly, a tiling window manager may use this information to
-// place and resize client windows in a more effective way.
-//
-// The client should not rely on the compositor to obey the minimum
-// size. The compositor may decide to ignore the values set by the
-// client and request a smaller size.
-//
-// If never set, or a value of zero in the request, means that the
-// client has no expected minimum size in the given dimension.
-// As a result, a client wishing to reset the minimum size
-// to an unspecified state can use zero for width and height in the
-// request.
-//
-// Requesting a minimum size to be larger than the maximum size of
-// a surface is illegal and will result in a protocol error.
-//
-// The width and height must be greater than or equal to zero. Using
-// strictly negative values for width and height will result in a
-// protocol error.
-type XSUVZxdgToplevelV6SetMinSizeRequest struct {
-	Width int32
-
-	Height int32
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_min_size in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetMinSizeRequest) Opcode() uint16 { return 8 }
-
-// Ensure XSUVZxdgToplevelV6SetMinSizeRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetMinSizeRequest{}
-
-// XSUVZxdgToplevelV6SetMaximizedRequest requests to maximize the window
-//
-// Maximize the surface.
-//
-// After requesting that the surface should be maximized, the compositor
-// will respond by emitting a configure event with the "maximized" state
-// and the required window geometry. The client should then update its
-// content, drawing it in a maximized state, i.e. without shadow or other
-// decoration outside of the window geometry. The client must also
-// acknowledge the configure when committing the new content (see
-// ack_configure).
-//
-// It is up to the compositor to decide how and where to maximize the
-// surface, for example which output and what region of the screen should
-// be used.
-//
-// If the surface was already maximized, the compositor will still emit
-// a configure event with the "maximized" state.
-type XSUVZxdgToplevelV6SetMaximizedRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_maximized in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetMaximizedRequest) Opcode() uint16 { return 9 }
-
-// Ensure XSUVZxdgToplevelV6SetMaximizedRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetMaximizedRequest{}
-
-// XSUVZxdgToplevelV6UnsetMaximizedRequest requests to unmaximize the window
-//
-// Unmaximize the surface.
-//
-// After requesting that the surface should be unmaximized, the compositor
-// will respond by emitting a configure event without the "maximized"
-// state. If available, the compositor will include the window geometry
-// dimensions the window had prior to being maximized in the configure
-// request. The client must then update its content, drawing it in a
-// regular state, i.e. potentially with shadow, etc. The client must also
-// acknowledge the configure when committing the new content (see
-// ack_configure).
-//
-// It is up to the compositor to position the surface after it was
-// unmaximized; usually the position the surface had before maximizing, if
-// applicable.
-//
-// If the surface was already not maximized, the compositor will still
-// emit a configure event without the "maximized" state.
-type XSUVZxdgToplevelV6UnsetMaximizedRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.unset_maximized in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6UnsetMaximizedRequest) Opcode() uint16 { return 10 }
-
-// Ensure XSUVZxdgToplevelV6UnsetMaximizedRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6UnsetMaximizedRequest{}
-
-// XSUVZxdgToplevelV6SetFullscreenRequest requests to set the window as fullscreen on a monitor
-//
-// Make the surface fullscreen.
-//
-// You can specify an output that you would prefer to be fullscreen.
-// If this value is NULL, it's up to the compositor to choose which
-// display will be used to map this surface.
-//
-// If the surface doesn't cover the whole output, the compositor will
-// position the surface in the center of the output and compensate with
-// black borders filling the rest of the output.
-type XSUVZxdgToplevelV6SetFullscreenRequest struct {
-	Output ObjectID
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_fullscreen in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetFullscreenRequest) Opcode() uint16 { return 11 }
-
-// Ensure XSUVZxdgToplevelV6SetFullscreenRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetFullscreenRequest{}
-
-type XSUVZxdgToplevelV6UnsetFullscreenRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.unset_fullscreen in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6UnsetFullscreenRequest) Opcode() uint16 { return 12 }
-
-// Ensure XSUVZxdgToplevelV6UnsetFullscreenRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6UnsetFullscreenRequest{}
-
-// XSUVZxdgToplevelV6SetMinimizedRequest requests to set the window as minimized
-//
-// Request that the compositor minimize your surface. There is no
-// way to know if the surface is currently minimized, nor is there
-// any way to unset minimization on this surface.
-//
-// If you are looking to throttle redrawing when minimized, please
-// instead use the wl_surface.frame event for this, as this will
-// also work with live previews on windows in Alt-Tab, Expose or
-// similar compositor features.
-type XSUVZxdgToplevelV6SetMinimizedRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_toplevel_v6.set_minimized in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6SetMinimizedRequest) Opcode() uint16 { return 13 }
-
-// Ensure XSUVZxdgToplevelV6SetMinimizedRequest implements Message.
-var _ Message = XSUVZxdgToplevelV6SetMinimizedRequest{}
-
-// XSUVZxdgToplevelV6ConfigureEvent signals when suggest a surface change
-//
-// This configure event asks the client to resize its toplevel surface or
-// to change its state. The configured state should not be applied
-// immediately. See xdg_surface.configure for details.
-//
-// The width and height arguments specify a hint to the window
-// about how its surface should be resized in window geometry
-// coordinates. See set_window_geometry.
-//
-// If the width or height arguments are zero, it means the client
-// should decide its own window dimension. This may happen when the
-// compositor needs to configure the state of the surface but doesn't
-// have any information about any previous or expected dimension.
-//
-// The states listed in the event specify how the width/height
-// arguments should be interpreted, and possibly how it should be
-// drawn.
-//
-// Clients must send an ack_configure in response to this event. See
-// xdg_surface.configure and xdg_surface.ack_configure for details.
-type XSUVZxdgToplevelV6ConfigureEvent struct {
-	Width int32
-
-	Height int32
-
-	States []byte
-}
-
-// Opcode returns the event opcode for zxdg_toplevel_v6.configure in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6ConfigureEvent) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgToplevelV6ConfigureEvent implements Message.
-var _ Message = XSUVZxdgToplevelV6ConfigureEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVZxdgToplevelV6ConfigureEvent) Scan(s *EventScanner) error {
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.Width = v
-	}
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.Height = v
-	}
-	if v, err := s.Array(); err != nil {
-		return err
-	} else {
-		e.States = v
-	}
-	return nil
-}
-
-// Ensure XSUVZxdgToplevelV6ConfigureEvent implements Event.
-var _ Event = &XSUVZxdgToplevelV6ConfigureEvent{}
-
-// XSUVZxdgToplevelV6CloseEvent signals when surface wants to be closed
-//
-// The close event is sent by the compositor when the user
-// wants the surface to be closed. This should be equivalent to
-// the user clicking the close button in client-side decorations,
-// if your application has any.
-//
-// This is only a request that the user intends to close the
-// window. The client may choose to ignore this request, or show
-// a dialog to ask the user to save their data, etc.
-type XSUVZxdgToplevelV6CloseEvent struct {
-}
-
-// Opcode returns the event opcode for zxdg_toplevel_v6.close in xdg_shell_unstable_v6
-func (XSUVZxdgToplevelV6CloseEvent) Opcode() uint16 { return 1 }
-
-// Ensure XSUVZxdgToplevelV6CloseEvent implements Message.
-var _ Message = XSUVZxdgToplevelV6CloseEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVZxdgToplevelV6CloseEvent) Scan(s *EventScanner) error {
-	return nil
-}
-
-// Ensure XSUVZxdgToplevelV6CloseEvent implements Event.
-var _ Event = &XSUVZxdgToplevelV6CloseEvent{}
-
-// #endregion Interface xdg_shell_unstable_v6.zxdg_toplevel_v6
-
-// ----------------------------------------------------------------------------
-// #region Interface xdg_shell_unstable_v6.zxdg_popup_v6
-
-type XSUVZxdgPopupV6Error int
-
-const (
-	// XSUVZxdgPopupV6ErrorInvalidGrab corresponds to tried to grab after being mapped
-	XSUVZxdgPopupV6ErrorInvalidGrab XSUVZxdgPopupV6Error = 0
-)
-
-// XSUVZxdgPopupV6DestroyRequest requests to remove xdg_popup interface
-//
-// This destroys the popup. Explicitly destroying the xdg_popup
-// object will also dismiss the popup, and unmap the surface.
-//
-// If this xdg_popup is not the "topmost" popup, a protocol error
-// will be sent.
-type XSUVZxdgPopupV6DestroyRequest struct {
-}
-
-// Opcode returns the request opcode for zxdg_popup_v6.destroy in xdg_shell_unstable_v6
-func (XSUVZxdgPopupV6DestroyRequest) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgPopupV6DestroyRequest implements Message.
-var _ Message = XSUVZxdgPopupV6DestroyRequest{}
-
-// XSUVZxdgPopupV6GrabRequest requests to make the popup take an explicit grab
-//
-// This request makes the created popup take an explicit grab. An explicit
-// grab will be dismissed when the user dismisses the popup, or when the
-// client destroys the xdg_popup. This can be done by the user clicking
-// outside the surface, using the keyboard, or even locking the screen
-// through closing the lid or a timeout.
-//
-// If the compositor denies the grab, the popup will be immediately
-// dismissed.
-//
-// This request must be used in response to some sort of user action like a
-// button press, key press, or touch down event. The serial number of the
-// event should be passed as 'serial'.
-//
-// The parent of a grabbing popup must either be an xdg_toplevel surface or
-// another xdg_popup with an explicit grab. If the parent is another
-// xdg_popup it means that the popups are nested, with this popup now being
-// the topmost popup.
-//
-// Nested popups must be destroyed in the reverse order they were created
-// in, e.g. the only popup you are allowed to destroy at all times is the
-// topmost one.
-//
-// When compositors choose to dismiss a popup, they may dismiss every
-// nested grabbing popup as well. When a compositor dismisses popups, it
-// will follow the same dismissing order as required from the client.
-//
-// The parent of a grabbing popup must either be another xdg_popup with an
-// active explicit grab, or an xdg_popup or xdg_toplevel, if there are no
-// explicit grabs already taken.
-//
-// If the topmost grabbing popup is destroyed, the grab will be returned to
-// the parent of the popup, if that parent previously had an explicit grab.
-//
-// If the parent is a grabbing popup which has already been dismissed, this
-// popup will be immediately dismissed. If the parent is a popup that did
-// not take an explicit grab, an error will be raised.
-//
-// During a popup grab, the client owning the grab will receive pointer
-// and touch events for all their surfaces as normal (similar to an
-// "owner-events" grab in X11 parlance), while the top most grabbing popup
-// will always have keyboard focus.
-type XSUVZxdgPopupV6GrabRequest struct {
-	// Seat contains the wl_seat of the user event
-	Seat ObjectID
-
-	// Serial contains the serial of the user event
-	Serial uint32
-}
-
-// Opcode returns the request opcode for zxdg_popup_v6.grab in xdg_shell_unstable_v6
-func (XSUVZxdgPopupV6GrabRequest) Opcode() uint16 { return 1 }
-
-// Ensure XSUVZxdgPopupV6GrabRequest implements Message.
-var _ Message = XSUVZxdgPopupV6GrabRequest{}
-
-// XSUVZxdgPopupV6ConfigureEvent signals when configure the popup surface
-//
-// This event asks the popup surface to configure itself given the
-// configuration. The configured state should not be applied immediately.
-// See xdg_surface.configure for details.
-//
-// The x and y arguments represent the position the popup was placed at
-// given the xdg_positioner rule, relative to the upper left corner of the
-// window geometry of the parent surface.
-type XSUVZxdgPopupV6ConfigureEvent struct {
-	// X contains x position relative to parent surface window geometry
-	X int32
-
-	// Y contains y position relative to parent surface window geometry
-	Y int32
-
-	// Width contains window geometry width
-	Width int32
-
-	// Height contains window geometry height
-	Height int32
-}
-
-// Opcode returns the event opcode for zxdg_popup_v6.configure in xdg_shell_unstable_v6
-func (XSUVZxdgPopupV6ConfigureEvent) Opcode() uint16 { return 0 }
-
-// Ensure XSUVZxdgPopupV6ConfigureEvent implements Message.
-var _ Message = XSUVZxdgPopupV6ConfigureEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVZxdgPopupV6ConfigureEvent) Scan(s *EventScanner) error {
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.X = v
-	}
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.Y = v
-	}
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.Width = v
-	}
-	if v, err := s.Int(); err != nil {
-		return err
-	} else {
-		e.Height = v
-	}
-	return nil
-}
-
-// Ensure XSUVZxdgPopupV6ConfigureEvent implements Event.
-var _ Event = &XSUVZxdgPopupV6ConfigureEvent{}
-
-// XSUVZxdgPopupV6PopupDoneEvent signals when popup interaction is done
-//
-// The popup_done event is sent out when a popup is dismissed by the
-// compositor. The client should destroy the xdg_popup object at this
-// point.
-type XSUVZxdgPopupV6PopupDoneEvent struct {
-}
-
-// Opcode returns the event opcode for zxdg_popup_v6.popup_done in xdg_shell_unstable_v6
-func (XSUVZxdgPopupV6PopupDoneEvent) Opcode() uint16 { return 1 }
-
-// Ensure XSUVZxdgPopupV6PopupDoneEvent implements Message.
-var _ Message = XSUVZxdgPopupV6PopupDoneEvent{}
-
-// Scan scans the event from the socket.
-func (e *XSUVZxdgPopupV6PopupDoneEvent) Scan(s *EventScanner) error {
-	return nil
-}
-
-// Ensure XSUVZxdgPopupV6PopupDoneEvent implements Event.
-var _ Event = &XSUVZxdgPopupV6PopupDoneEvent{}
-
-// #endregion Interface xdg_shell_unstable_v6.zxdg_popup_v6
-
-////////////////////////////////////////////////////////////////////////////////
-// #endregion Protocol xdg_shell_unstable_v6
-
-////////////////////////////////////////////////////////////////////////////////
 // #region Protocol xwayland_keyboard_grab_unstable_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_manager_v1
 
-// XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest requests to destroy the keyboard grab manager
+// ZwpXwaylandKeyboardGrabManagerV1DestroyRequest requests to destroy the keyboard grab manager
 //
 // Destroy the keyboard grab manager.
-type XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest struct {
+type ZwpXwaylandKeyboardGrabManagerV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_xwayland_keyboard_grab_manager_v1.destroy in xwayland_keyboard_grab_unstable_v1
-func (XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpXwaylandKeyboardGrabManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest implements Message.
-var _ Message = XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}
+// Ensure ZwpXwaylandKeyboardGrabManagerV1DestroyRequest implements Message.
+var _ Message = ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}
 
-// XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest requests to grab the keyboard to a surface
+// ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest requests to grab the keyboard to a surface
 //
 // The grab_keyboard request asks for a grab of the keyboard, forcing
 // the keyboard focus for the given seat upon the given surface.
@@ -18254,7 +16139,7 @@ var _ Message = XKGUVZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}
 // * does not guarantee that events sent to this client are continuous,
 // a compositor may change and reroute keyboard events while the grab
 // is nominally active.
-type XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest struct {
+type ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest struct {
 	ID ObjectID
 
 	// Surface contains surface to report keyboard events to
@@ -18265,28 +16150,28 @@ type XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_xwayland_keyboard_grab_manager_v1.grab_keyboard in xwayland_keyboard_grab_unstable_v1
-func (XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest) Opcode() uint16 { return 1 }
+func (ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest) Opcode() uint16 { return 1 }
 
-// Ensure XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest implements Message.
-var _ Message = XKGUVZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}
+// Ensure ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest implements Message.
+var _ Message = ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}
 
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_manager_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_v1
 
-// XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest requests to destroy the grabbed keyboard object
+// ZwpXwaylandKeyboardGrabV1DestroyRequest requests to destroy the grabbed keyboard object
 //
 // Destroy the grabbed keyboard object. If applicable, the compositor
 // will ungrab the keyboard.
-type XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest struct {
+type ZwpXwaylandKeyboardGrabV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_xwayland_keyboard_grab_v1.destroy in xwayland_keyboard_grab_unstable_v1
-func (XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpXwaylandKeyboardGrabV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest implements Message.
-var _ Message = XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest{}
+// Ensure ZwpXwaylandKeyboardGrabV1DestroyRequest implements Message.
+var _ Message = ZwpXwaylandKeyboardGrabV1DestroyRequest{}
 
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_v1
 
@@ -18299,28 +16184,28 @@ var _ Message = XKGUVZwpXwaylandKeyboardGrabV1DestroyRequest{}
 // ----------------------------------------------------------------------------
 // #region Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_explicit_synchronization_v1
 
-type ZLESUVZwpLinuxExplicitSynchronizationV1Error int
+type ZwpLinuxExplicitSynchronizationV1Error int
 
 const (
-	// ZLESUVZwpLinuxExplicitSynchronizationV1ErrorSynchronizationExists corresponds to the surface already has a synchronization object associated
-	ZLESUVZwpLinuxExplicitSynchronizationV1ErrorSynchronizationExists ZLESUVZwpLinuxExplicitSynchronizationV1Error = 0
+	// ZwpLinuxExplicitSynchronizationV1ErrorSynchronizationExists corresponds to the surface already has a synchronization object associated
+	ZwpLinuxExplicitSynchronizationV1ErrorSynchronizationExists ZwpLinuxExplicitSynchronizationV1Error = 0
 )
 
-// ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest requests to destroy explicit synchronization factory object
+// ZwpLinuxExplicitSynchronizationV1DestroyRequest requests to destroy explicit synchronization factory object
 //
 // Destroy this explicit synchronization factory object. Other objects,
 // including zwp_linux_surface_synchronization_v1 objects created by this
 // factory, shall not be affected by this request.
-type ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest struct {
+type ZwpLinuxExplicitSynchronizationV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_explicit_synchronization_v1.destroy in zwp_linux_explicit_synchronization_unstable_v1
-func (ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpLinuxExplicitSynchronizationV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest implements Message.
-var _ Message = ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest{}
+// Ensure ZwpLinuxExplicitSynchronizationV1DestroyRequest implements Message.
+var _ Message = ZwpLinuxExplicitSynchronizationV1DestroyRequest{}
 
-// ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest requests to extend surface interface for explicit synchronization
+// ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest requests to extend surface interface for explicit synchronization
 //
 // Instantiate an interface extension for the given wl_surface to provide
 // explicit synchronization.
@@ -18333,7 +16218,7 @@ var _ Message = ZLESUVZwpLinuxExplicitSynchronizationV1DestroyRequest{}
 // extension internally. If a client is using such an API for a
 // wl_surface, it should not directly use this extension on that surface,
 // to avoid raising a synchronization_exists protocol error.
-type ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest struct {
+type ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest struct {
 	// ID contains the new synchronization interface id
 	ID ObjectID
 
@@ -18342,39 +16227,39 @@ type ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_explicit_synchronization_v1.get_synchronization in zwp_linux_explicit_synchronization_unstable_v1
-func (ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest) Opcode() uint16 { return 1 }
+func (ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest) Opcode() uint16 { return 1 }
 
-// Ensure ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest implements Message.
-var _ Message = ZLESUVZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
+// Ensure ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest implements Message.
+var _ Message = ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_explicit_synchronization_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_surface_synchronization_v1
 
-type ZLESUVZwpLinuxSurfaceSynchronizationV1Error int
+type ZwpLinuxSurfaceSynchronizationV1Error int
 
 const (
-	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorInvalidFence corresponds to the fence specified by the client could not be imported
-	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorInvalidFence ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 0
+	// ZwpLinuxSurfaceSynchronizationV1ErrorInvalidFence corresponds to the fence specified by the client could not be imported
+	ZwpLinuxSurfaceSynchronizationV1ErrorInvalidFence ZwpLinuxSurfaceSynchronizationV1Error = 0
 
-	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateFence corresponds to multiple fences added for a single surface commit
-	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateFence ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 1
+	// ZwpLinuxSurfaceSynchronizationV1ErrorDuplicateFence corresponds to multiple fences added for a single surface commit
+	ZwpLinuxSurfaceSynchronizationV1ErrorDuplicateFence ZwpLinuxSurfaceSynchronizationV1Error = 1
 
-	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateRelease corresponds to multiple releases added for a single surface commit
-	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorDuplicateRelease ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 2
+	// ZwpLinuxSurfaceSynchronizationV1ErrorDuplicateRelease corresponds to multiple releases added for a single surface commit
+	ZwpLinuxSurfaceSynchronizationV1ErrorDuplicateRelease ZwpLinuxSurfaceSynchronizationV1Error = 2
 
-	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoSurface corresponds to the associated wl_surface was destroyed
-	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoSurface ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 3
+	// ZwpLinuxSurfaceSynchronizationV1ErrorNoSurface corresponds to the associated wl_surface was destroyed
+	ZwpLinuxSurfaceSynchronizationV1ErrorNoSurface ZwpLinuxSurfaceSynchronizationV1Error = 3
 
-	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorUnsupportedBuffer corresponds to the buffer does not support explicit synchronization
-	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorUnsupportedBuffer ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 4
+	// ZwpLinuxSurfaceSynchronizationV1ErrorUnsupportedBuffer corresponds to the buffer does not support explicit synchronization
+	ZwpLinuxSurfaceSynchronizationV1ErrorUnsupportedBuffer ZwpLinuxSurfaceSynchronizationV1Error = 4
 
-	// ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoBuffer corresponds to no buffer was attached
-	ZLESUVZwpLinuxSurfaceSynchronizationV1ErrorNoBuffer ZLESUVZwpLinuxSurfaceSynchronizationV1Error = 5
+	// ZwpLinuxSurfaceSynchronizationV1ErrorNoBuffer corresponds to no buffer was attached
+	ZwpLinuxSurfaceSynchronizationV1ErrorNoBuffer ZwpLinuxSurfaceSynchronizationV1Error = 5
 )
 
-// ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest requests to destroy synchronization object
+// ZwpLinuxSurfaceSynchronizationV1DestroyRequest requests to destroy synchronization object
 //
 // Destroy this explicit synchronization object.
 //
@@ -18384,16 +16269,16 @@ const (
 //
 // zwp_linux_buffer_release_v1 objects created by this object are not
 // affected by this request.
-type ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest struct {
+type ZwpLinuxSurfaceSynchronizationV1DestroyRequest struct {
 }
 
 // Opcode returns the request opcode for zwp_linux_surface_synchronization_v1.destroy in zwp_linux_explicit_synchronization_unstable_v1
-func (ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest) Opcode() uint16 { return 0 }
+func (ZwpLinuxSurfaceSynchronizationV1DestroyRequest) Opcode() uint16 { return 0 }
 
-// Ensure ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest implements Message.
-var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
+// Ensure ZwpLinuxSurfaceSynchronizationV1DestroyRequest implements Message.
+var _ Message = ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
 
-// ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest requests to set the acquire fence
+// ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest requests to set the acquire fence
 //
 // Set the acquire fence that must be signaled before the compositor
 // may sample from the buffer attached with wl_surface.attach. The fence
@@ -18418,18 +16303,18 @@ var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
 //
 // If at surface commit time there is no buffer attached, a NO_BUFFER
 // error is raised.
-type ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct {
+type ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct {
 	// FD contains acquire fence fd
 	FD FD
 }
 
 // Opcode returns the request opcode for zwp_linux_surface_synchronization_v1.set_acquire_fence in zwp_linux_explicit_synchronization_unstable_v1
-func (ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest) Opcode() uint16 { return 1 }
+func (ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest) Opcode() uint16 { return 1 }
 
-// Ensure ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest implements Message.
-var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}
+// Ensure ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest implements Message.
+var _ Message = ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}
 
-// ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest requests to release fence for last-attached buffer
+// ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest requests to release fence for last-attached buffer
 //
 // Create a listener for the release of the buffer attached by the
 // client with wl_surface.attach. See zwp_linux_buffer_release_v1
@@ -18448,23 +16333,23 @@ var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}
 //
 // If at surface commit time there is no buffer attached, a NO_BUFFER
 // error is raised.
-type ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct {
+type ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct {
 	// Release contains new zwp_linux_buffer_release_v1 object
 	Release ObjectID
 }
 
 // Opcode returns the request opcode for zwp_linux_surface_synchronization_v1.get_release in zwp_linux_explicit_synchronization_unstable_v1
-func (ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest) Opcode() uint16 { return 2 }
+func (ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest) Opcode() uint16 { return 2 }
 
-// Ensure ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest implements Message.
-var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
+// Ensure ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest implements Message.
+var _ Message = ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_surface_synchronization_v1
 
 // ----------------------------------------------------------------------------
 // #region Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_buffer_release_v1
 
-// ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent signals when release buffer with fence
+// ZwpLinuxBufferReleaseV1FencedReleaseEvent signals when release buffer with fence
 //
 // Sent when the compositor has finalised its usage of the associated
 // buffer for the relevant commit, providing a dma_fence which will be
@@ -18477,19 +16362,19 @@ var _ Message = ZLESUVZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
 // destroy the buffer.
 //
 // This event destroys the zwp_linux_buffer_release_v1 object.
-type ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent struct {
+type ZwpLinuxBufferReleaseV1FencedReleaseEvent struct {
 	// Fence contains fence for last operation on buffer
 	Fence FD
 }
 
 // Opcode returns the event opcode for zwp_linux_buffer_release_v1.fenced_release in zwp_linux_explicit_synchronization_unstable_v1
-func (ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent) Opcode() uint16 { return 0 }
+func (ZwpLinuxBufferReleaseV1FencedReleaseEvent) Opcode() uint16 { return 0 }
 
-// Ensure ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent implements Message.
-var _ Message = ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent{}
+// Ensure ZwpLinuxBufferReleaseV1FencedReleaseEvent implements Message.
+var _ Message = ZwpLinuxBufferReleaseV1FencedReleaseEvent{}
 
 // Scan scans the event from the socket.
-func (e *ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent) Scan(s *EventScanner) error {
+func (e *ZwpLinuxBufferReleaseV1FencedReleaseEvent) Scan(s *EventScanner) error {
 	if v, err := s.FD(); err != nil {
 		return err
 	} else {
@@ -18498,10 +16383,10 @@ func (e *ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent) Scan(s *EventScanner) 
 	return nil
 }
 
-// Ensure ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent implements Event.
-var _ Event = &ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent{}
+// Ensure ZwpLinuxBufferReleaseV1FencedReleaseEvent implements Event.
+var _ Event = &ZwpLinuxBufferReleaseV1FencedReleaseEvent{}
 
-// ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent signals when release buffer immediately
+// ZwpLinuxBufferReleaseV1ImmediateReleaseEvent signals when release buffer immediately
 //
 // Sent when the compositor has finalised its usage of the associated
 // buffer for the relevant commit, and either performed no operations
@@ -18514,22 +16399,22 @@ var _ Event = &ZLESUVZwpLinuxBufferReleaseV1FencedReleaseEvent{}
 // destroy the buffer.
 //
 // This event destroys the zwp_linux_buffer_release_v1 object.
-type ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent struct {
+type ZwpLinuxBufferReleaseV1ImmediateReleaseEvent struct {
 }
 
 // Opcode returns the event opcode for zwp_linux_buffer_release_v1.immediate_release in zwp_linux_explicit_synchronization_unstable_v1
-func (ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent) Opcode() uint16 { return 1 }
+func (ZwpLinuxBufferReleaseV1ImmediateReleaseEvent) Opcode() uint16 { return 1 }
 
-// Ensure ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent implements Message.
-var _ Message = ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
+// Ensure ZwpLinuxBufferReleaseV1ImmediateReleaseEvent implements Message.
+var _ Message = ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
 
 // Scan scans the event from the socket.
-func (e *ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent) Scan(s *EventScanner) error {
+func (e *ZwpLinuxBufferReleaseV1ImmediateReleaseEvent) Scan(s *EventScanner) error {
 	return nil
 }
 
-// Ensure ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent implements Event.
-var _ Event = &ZLESUVZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
+// Ensure ZwpLinuxBufferReleaseV1ImmediateReleaseEvent implements Event.
+var _ Event = &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_buffer_release_v1
 

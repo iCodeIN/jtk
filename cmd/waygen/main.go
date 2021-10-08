@@ -165,6 +165,16 @@ func walkdir(path string) error {
 			return nil
 		}
 
+		// Skip tests.xml.
+		if name == "tests.xml" {
+			return nil
+		}
+
+		// Skip old xdg_shell.
+		if name == "xdg-shell-unstable-v5.xml" || name == "xdg-shell-unstable-v6.xml" {
+			return nil
+		}
+
 		if err := parsefile(path); err != nil {
 			return fmt.Errorf("processing %q: %w", name, err)
 		}
@@ -231,7 +241,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 				typ = "uint"
 			}
 
-			enumname := namegen(initialism(proto.Name), intf.Name, enum.Name)
+			enumname := namegen(intf.Name, enum.Name)
 
 			// Make doc comment.
 			if err := docgen(w, enumname, enum.Description, "represents", ""); err != nil {
@@ -246,7 +256,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 			// Make entry constants.
 			fmt.Fprintf(w, "const (\n")
 			for _, entry := range enum.Entries {
-				entryname := namegen(initialism(proto.Name), intf.Name, enum.Name, entry.Name)
+				entryname := namegen(intf.Name, enum.Name, entry.Name)
 
 				if err := docgen(w, entryname, description{Summary: entry.Summary}, "corresponds to", "\t"); err != nil {
 					return fmt.Errorf("writing enum entry %s doc comment: %v", entryname, err)
@@ -261,7 +271,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 
 		// Generate request structs.
 		for opcode, request := range intf.Requests {
-			structname := namegen(initialism(proto.Name), intf.Name, request.Name, "request")
+			structname := namegen(intf.Name, request.Name, "request")
 
 			// Make doc comment.
 			if err := docgen(w, structname, request.Description, "requests to", ""); err != nil {
@@ -300,7 +310,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 
 		// Generate event structs.
 		for opcode, event := range intf.Events {
-			structname := namegen(initialism(proto.Name), intf.Name, event.Name, "event")
+			structname := namegen(intf.Name, event.Name, "event")
 
 			// Make doc comment.
 			if err := docgen(w, structname, event.Description, "signals when", ""); err != nil {
@@ -461,17 +471,6 @@ func docgen(w io.Writer, name string, desc description, filler string, prefix st
 	}
 
 	return nil
-}
-
-func initialism(name string) string {
-	b := strings.Builder{}
-
-	for _, part := range strings.Split(name, "_") {
-		b.WriteByte(part[0])
-		b.WriteByte('_')
-	}
-
-	return b.String()
 }
 
 func namegen(names ...string) string {
