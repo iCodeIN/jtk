@@ -15,5 +15,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to Wayland compositor: %v", err)
 	}
+
 	defer conn.Close()
 }

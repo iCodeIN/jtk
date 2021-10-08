@@ -335,6 +335,28 @@ func codegenproto(w io.Writer, proto protocol) error {
 			if _, err := fmt.Fprintf(w, "// Ensure %s implements Message.\nvar _ Message = %s{}\n\n", structname, structname); err != nil {
 				return fmt.Errorf("writing event %s Message interface check: %v", structname, err)
 			}
+
+			// Implement Scan function.
+			if _, err := fmt.Fprintf(w,
+				"// Scan scans the event from the socket.\nfunc (e *%s) Scan(s *EventScanner) error {\n", structname); err != nil {
+				return fmt.Errorf("writing event %s Scan function header: %v", structname, err)
+			}
+
+			// Write argument scanners.
+			for _, arg := range event.Args {
+				if err := argscangen(w, arg); err != nil {
+					return err
+				}
+			}
+
+			if _, err := fmt.Fprintf(w, "\treturn nil\n}\n"); err != nil {
+				return fmt.Errorf("writing event %s Scan function footer: %v", structname, err)
+			}
+
+			// Ensure implementation of Message
+			if _, err := fmt.Fprintf(w, "// Ensure %s implements Event.\nvar _ Event = &%s{}\n\n", structname, structname); err != nil {
+				return fmt.Errorf("writing event %s Event interface check: %v", structname, err)
+			}
 		}
 
 		if _, err := fmt.Fprintf(w, "// #endregion Interface %s.%s\n\n", proto.Name, intf.Name); err != nil {
@@ -364,9 +386,9 @@ func arggen(w io.Writer, arg arg) error {
 	case "uint":
 		typ = "uint32"
 	case "fixed":
-		typ = "int32"
+		typ = "Fixed"
 	case "object", "new_id":
-		typ = "uint32"
+		typ = "ObjectID"
 	case "string":
 		typ = "string"
 	case "array":
@@ -380,6 +402,36 @@ func arggen(w io.Writer, arg arg) error {
 	// Write actual arg.
 	if _, err := fmt.Fprintf(w, "\t%s %s\n\n", argname, typ); err != nil {
 		return fmt.Errorf("writing argument %s: %v", argname, err)
+	}
+
+	return nil
+}
+
+func argscangen(w io.Writer, arg arg) error {
+	argname := namegen(arg.Name)
+
+	typ := ""
+	switch arg.Type {
+	case "int":
+		typ = "Int"
+	case "uint":
+		typ = "Uint"
+	case "fixed":
+		typ = "Fixed"
+	case "object", "new_id":
+		typ = "ObjectID"
+	case "string":
+		typ = "String"
+	case "array":
+		typ = "Array"
+	case "fd":
+		typ = "FD"
+	default:
+		return fmt.Errorf("argument %s: unknown argument type %q", argname, arg.Type)
+	}
+
+	if _, err := fmt.Fprintf(w, "\tif v, err := s.%s(); err != nil {\n\t\treturn err\n\t} else {\n\t\te.%s = v\n\t}\n", typ, argname); err != nil {
+		return fmt.Errorf("writing argument scanner %s: %v", argname, err)
 	}
 
 	return nil
