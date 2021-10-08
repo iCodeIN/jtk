@@ -306,6 +306,28 @@ func codegenproto(w io.Writer, proto protocol) error {
 			if _, err := fmt.Fprintf(w, "// Ensure %s implements Message.\nvar _ Message = %s{}\n\n", structname, structname); err != nil {
 				return fmt.Errorf("writing request %s Message interface check: %v", structname, err)
 			}
+
+			// Implement Emit function.
+			if _, err := fmt.Fprintf(w,
+				"// Emit emits the message to the emitter.\nfunc (r *%s) Emit(e *RequestEmitter) error {\n", structname); err != nil {
+				return fmt.Errorf("writing request %s Emit function header: %v", structname, err)
+			}
+
+			// Write argument emitters.
+			for _, arg := range request.Args {
+				if err := argemitgen(w, arg); err != nil {
+					return err
+				}
+			}
+
+			if _, err := fmt.Fprintf(w, "\treturn nil\n}\n"); err != nil {
+				return fmt.Errorf("writing request %s Emit function footer: %v", structname, err)
+			}
+
+			// Ensure implementation of Request
+			if _, err := fmt.Fprintf(w, "// Ensure %s implements Request.\nvar _ Request = &%s{}\n\n", structname, structname); err != nil {
+				return fmt.Errorf("writing request %s Request interface check: %v", structname, err)
+			}
 		}
 
 		// Generate event structs.
@@ -363,7 +385,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 				return fmt.Errorf("writing event %s Scan function footer: %v", structname, err)
 			}
 
-			// Ensure implementation of Message
+			// Ensure implementation of Event
 			if _, err := fmt.Fprintf(w, "// Ensure %s implements Event.\nvar _ Event = &%s{}\n\n", structname, structname); err != nil {
 				return fmt.Errorf("writing event %s Event interface check: %v", structname, err)
 			}
@@ -442,6 +464,36 @@ func argscangen(w io.Writer, arg arg) error {
 
 	if _, err := fmt.Fprintf(w, "\tif v, err := s.%s(); err != nil {\n\t\treturn err\n\t} else {\n\t\te.%s = v\n\t}\n", typ, argname); err != nil {
 		return fmt.Errorf("writing argument scanner %s: %v", argname, err)
+	}
+
+	return nil
+}
+
+func argemitgen(w io.Writer, arg arg) error {
+	argname := namegen(arg.Name)
+
+	typ := ""
+	switch arg.Type {
+	case "int":
+		typ = "Int"
+	case "uint":
+		typ = "Uint"
+	case "fixed":
+		typ = "Fixed"
+	case "object", "new_id":
+		typ = "ObjectID"
+	case "string":
+		typ = "String"
+	case "array":
+		typ = "Array"
+	case "fd":
+		typ = "FD"
+	default:
+		return fmt.Errorf("argument %s: unknown argument type %q", argname, arg.Type)
+	}
+
+	if _, err := fmt.Fprintf(w, "\tif err := e.Put%s(r.%s); err != nil {\n\t\treturn err\n\t}\n", typ, argname); err != nil {
+		return fmt.Errorf("writing argument emitter %s: %v", argname, err)
 	}
 
 	return nil

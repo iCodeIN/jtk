@@ -23,6 +23,17 @@ func (WpDrmLeaseDeviceV1CreateLeaseRequestRequest) Opcode() uint16 { return 0 }
 // Ensure WpDrmLeaseDeviceV1CreateLeaseRequestRequest implements Message.
 var _ Message = WpDrmLeaseDeviceV1CreateLeaseRequestRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WpDrmLeaseDeviceV1CreateLeaseRequestRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WpDrmLeaseDeviceV1CreateLeaseRequestRequest implements Request.
+var _ Request = &WpDrmLeaseDeviceV1CreateLeaseRequestRequest{}
+
 // WpDrmLeaseDeviceV1ReleaseRequest requests to release this object
 //
 // Indicates the client no longer wishes to use this object. In response
@@ -39,6 +50,14 @@ func (WpDrmLeaseDeviceV1ReleaseRequest) Opcode() uint16 { return 1 }
 
 // Ensure WpDrmLeaseDeviceV1ReleaseRequest implements Message.
 var _ Message = WpDrmLeaseDeviceV1ReleaseRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WpDrmLeaseDeviceV1ReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WpDrmLeaseDeviceV1ReleaseRequest implements Request.
+var _ Request = &WpDrmLeaseDeviceV1ReleaseRequest{}
 
 // WpDrmLeaseDeviceV1DrmFDEvent signals when open a non-master fd for this DRM node
 //
@@ -178,6 +197,14 @@ func (WpDrmLeaseConnectorV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure WpDrmLeaseConnectorV1DestroyRequest implements Message.
 var _ Message = WpDrmLeaseConnectorV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WpDrmLeaseConnectorV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WpDrmLeaseConnectorV1DestroyRequest implements Request.
+var _ Request = &WpDrmLeaseConnectorV1DestroyRequest{}
 
 // WpDrmLeaseConnectorV1NameEvent signals when name
 //
@@ -357,6 +384,17 @@ func (WpDrmLeaseRequestV1RequestConnectorRequest) Opcode() uint16 { return 0 }
 // Ensure WpDrmLeaseRequestV1RequestConnectorRequest implements Message.
 var _ Message = WpDrmLeaseRequestV1RequestConnectorRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WpDrmLeaseRequestV1RequestConnectorRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Connector); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WpDrmLeaseRequestV1RequestConnectorRequest implements Request.
+var _ Request = &WpDrmLeaseRequestV1RequestConnectorRequest{}
+
 // WpDrmLeaseRequestV1SubmitRequest requests to submit the lease request
 //
 // Submits the lease request and creates a new wp_drm_lease_v1 object.
@@ -376,6 +414,17 @@ func (WpDrmLeaseRequestV1SubmitRequest) Opcode() uint16 { return 1 }
 // Ensure WpDrmLeaseRequestV1SubmitRequest implements Message.
 var _ Message = WpDrmLeaseRequestV1SubmitRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WpDrmLeaseRequestV1SubmitRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WpDrmLeaseRequestV1SubmitRequest implements Request.
+var _ Request = &WpDrmLeaseRequestV1SubmitRequest{}
+
 // #endregion Interface drm_lease_v1.wp_drm_lease_request_v1
 
 // ----------------------------------------------------------------------------
@@ -394,6 +443,14 @@ func (WpDrmLeaseV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure WpDrmLeaseV1DestroyRequest implements Message.
 var _ Message = WpDrmLeaseV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WpDrmLeaseV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WpDrmLeaseV1DestroyRequest implements Request.
+var _ Request = &WpDrmLeaseV1DestroyRequest{}
 
 // WpDrmLeaseV1LeaseFDEvent signals when shares the DRM file descriptor
 //
@@ -555,6 +612,14 @@ func (ZwpFullscreenShellV1ReleaseRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpFullscreenShellV1ReleaseRequest implements Message.
 var _ Message = ZwpFullscreenShellV1ReleaseRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpFullscreenShellV1ReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpFullscreenShellV1ReleaseRequest implements Request.
+var _ Request = &ZwpFullscreenShellV1ReleaseRequest{}
+
 // ZwpFullscreenShellV1PresentSurfaceRequest requests to present surface for display
 //
 // Present a surface on the given output.
@@ -591,6 +656,23 @@ func (ZwpFullscreenShellV1PresentSurfaceRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpFullscreenShellV1PresentSurfaceRequest implements Message.
 var _ Message = ZwpFullscreenShellV1PresentSurfaceRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpFullscreenShellV1PresentSurfaceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Method); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Output); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpFullscreenShellV1PresentSurfaceRequest implements Request.
+var _ Request = &ZwpFullscreenShellV1PresentSurfaceRequest{}
 
 // ZwpFullscreenShellV1PresentSurfaceForModeRequest requests to present surface for display at a particular mode
 //
@@ -650,6 +732,26 @@ func (ZwpFullscreenShellV1PresentSurfaceForModeRequest) Opcode() uint16 { return
 
 // Ensure ZwpFullscreenShellV1PresentSurfaceForModeRequest implements Message.
 var _ Message = ZwpFullscreenShellV1PresentSurfaceForModeRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpFullscreenShellV1PresentSurfaceForModeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Output); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Framerate); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Feedback); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpFullscreenShellV1PresentSurfaceForModeRequest implements Request.
+var _ Request = &ZwpFullscreenShellV1PresentSurfaceForModeRequest{}
 
 // ZwpFullscreenShellV1CapabilityEvent signals when advertises a capability of the compositor
 //
@@ -787,6 +889,14 @@ func (ZwpIdleInhibitManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpIdleInhibitManagerV1DestroyRequest implements Message.
 var _ Message = ZwpIdleInhibitManagerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpIdleInhibitManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpIdleInhibitManagerV1DestroyRequest implements Request.
+var _ Request = &ZwpIdleInhibitManagerV1DestroyRequest{}
+
 // ZwpIdleInhibitManagerV1CreateInhibitorRequest requests to create a new inhibitor object
 //
 // Create a new inhibitor object associated with the given surface.
@@ -802,6 +912,20 @@ func (ZwpIdleInhibitManagerV1CreateInhibitorRequest) Opcode() uint16 { return 1 
 
 // Ensure ZwpIdleInhibitManagerV1CreateInhibitorRequest implements Message.
 var _ Message = ZwpIdleInhibitManagerV1CreateInhibitorRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpIdleInhibitManagerV1CreateInhibitorRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpIdleInhibitManagerV1CreateInhibitorRequest implements Request.
+var _ Request = &ZwpIdleInhibitManagerV1CreateInhibitorRequest{}
 
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibit_manager_v1
 
@@ -819,6 +943,14 @@ func (ZwpIdleInhibitorV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpIdleInhibitorV1DestroyRequest implements Message.
 var _ Message = ZwpIdleInhibitorV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpIdleInhibitorV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpIdleInhibitorV1DestroyRequest implements Request.
+var _ Request = &ZwpIdleInhibitorV1DestroyRequest{}
 
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibitor_v1
 
@@ -839,6 +971,14 @@ func (ZwpInputMethodContextV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpInputMethodContextV1DestroyRequest implements Message.
 var _ Message = ZwpInputMethodContextV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1DestroyRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1DestroyRequest{}
 
 // ZwpInputMethodContextV1CommitStringRequest requests to commit string
 //
@@ -864,6 +1004,20 @@ func (ZwpInputMethodContextV1CommitStringRequest) Opcode() uint16 { return 1 }
 // Ensure ZwpInputMethodContextV1CommitStringRequest implements Message.
 var _ Message = ZwpInputMethodContextV1CommitStringRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1CommitStringRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutString(r.Text); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1CommitStringRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1CommitStringRequest{}
+
 // ZwpInputMethodContextV1PreeditStringRequest requests to pre-edit string
 //
 // Send the pre-edit string text to the application text input.
@@ -888,6 +1042,23 @@ func (ZwpInputMethodContextV1PreeditStringRequest) Opcode() uint16 { return 2 }
 // Ensure ZwpInputMethodContextV1PreeditStringRequest implements Message.
 var _ Message = ZwpInputMethodContextV1PreeditStringRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1PreeditStringRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutString(r.Text); err != nil {
+		return err
+	}
+	if err := e.PutString(r.Commit); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1PreeditStringRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1PreeditStringRequest{}
+
 // ZwpInputMethodContextV1PreeditStylingRequest requests to pre-edit styling
 //
 // Set the styling information on composing text. The style is applied for
@@ -910,6 +1081,23 @@ func (ZwpInputMethodContextV1PreeditStylingRequest) Opcode() uint16 { return 3 }
 // Ensure ZwpInputMethodContextV1PreeditStylingRequest implements Message.
 var _ Message = ZwpInputMethodContextV1PreeditStylingRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1PreeditStylingRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Index); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Length); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Style); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1PreeditStylingRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1PreeditStylingRequest{}
+
 // ZwpInputMethodContextV1PreeditCursorRequest requests to pre-edit cursor
 //
 // Set the cursor position inside the composing text (as byte offset)
@@ -928,6 +1116,17 @@ func (ZwpInputMethodContextV1PreeditCursorRequest) Opcode() uint16 { return 4 }
 // Ensure ZwpInputMethodContextV1PreeditCursorRequest implements Message.
 var _ Message = ZwpInputMethodContextV1PreeditCursorRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1PreeditCursorRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Index); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1PreeditCursorRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1PreeditCursorRequest{}
+
 // ZwpInputMethodContextV1DeleteSurroundingTextRequest requests to delete text
 //
 // Remove the surrounding text.
@@ -945,6 +1144,20 @@ func (ZwpInputMethodContextV1DeleteSurroundingTextRequest) Opcode() uint16 { ret
 
 // Ensure ZwpInputMethodContextV1DeleteSurroundingTextRequest implements Message.
 var _ Message = ZwpInputMethodContextV1DeleteSurroundingTextRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1DeleteSurroundingTextRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Index); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Length); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1DeleteSurroundingTextRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1DeleteSurroundingTextRequest{}
 
 // ZwpInputMethodContextV1CursorPositionRequest requests to set cursor to a new position
 //
@@ -970,6 +1183,20 @@ func (ZwpInputMethodContextV1CursorPositionRequest) Opcode() uint16 { return 6 }
 // Ensure ZwpInputMethodContextV1CursorPositionRequest implements Message.
 var _ Message = ZwpInputMethodContextV1CursorPositionRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1CursorPositionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Index); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Anchor); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1CursorPositionRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1CursorPositionRequest{}
+
 type ZwpInputMethodContextV1ModifiersMapRequest struct {
 	Map []byte
 }
@@ -979,6 +1206,17 @@ func (ZwpInputMethodContextV1ModifiersMapRequest) Opcode() uint16 { return 7 }
 
 // Ensure ZwpInputMethodContextV1ModifiersMapRequest implements Message.
 var _ Message = ZwpInputMethodContextV1ModifiersMapRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1ModifiersMapRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutArray(r.Map); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1ModifiersMapRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1ModifiersMapRequest{}
 
 // ZwpInputMethodContextV1KeysymRequest requests to keysym
 //
@@ -1005,6 +1243,29 @@ func (ZwpInputMethodContextV1KeysymRequest) Opcode() uint16 { return 8 }
 // Ensure ZwpInputMethodContextV1KeysymRequest implements Message.
 var _ Message = ZwpInputMethodContextV1KeysymRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1KeysymRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Time); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Sym); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.State); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Modifiers); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1KeysymRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1KeysymRequest{}
+
 // ZwpInputMethodContextV1GrabKeyboardRequest requests to grab hardware keyboard
 //
 // Allow an input method to receive hardware keyboard input and process
@@ -1020,6 +1281,17 @@ func (ZwpInputMethodContextV1GrabKeyboardRequest) Opcode() uint16 { return 9 }
 
 // Ensure ZwpInputMethodContextV1GrabKeyboardRequest implements Message.
 var _ Message = ZwpInputMethodContextV1GrabKeyboardRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1GrabKeyboardRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Keyboard); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1GrabKeyboardRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1GrabKeyboardRequest{}
 
 // ZwpInputMethodContextV1KeyRequest requests to forward key event
 //
@@ -1048,6 +1320,26 @@ func (ZwpInputMethodContextV1KeyRequest) Opcode() uint16 { return 10 }
 
 // Ensure ZwpInputMethodContextV1KeyRequest implements Message.
 var _ Message = ZwpInputMethodContextV1KeyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1KeyRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Time); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Key); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.State); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1KeyRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1KeyRequest{}
 
 // ZwpInputMethodContextV1ModifiersRequest requests to forward modifiers event
 //
@@ -1078,6 +1370,29 @@ func (ZwpInputMethodContextV1ModifiersRequest) Opcode() uint16 { return 11 }
 // Ensure ZwpInputMethodContextV1ModifiersRequest implements Message.
 var _ Message = ZwpInputMethodContextV1ModifiersRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1ModifiersRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.ModsDepressed); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.ModsLatched); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.ModsLocked); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Group); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1ModifiersRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1ModifiersRequest{}
+
 type ZwpInputMethodContextV1LanguageRequest struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
@@ -1091,6 +1406,20 @@ func (ZwpInputMethodContextV1LanguageRequest) Opcode() uint16 { return 12 }
 // Ensure ZwpInputMethodContextV1LanguageRequest implements Message.
 var _ Message = ZwpInputMethodContextV1LanguageRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1LanguageRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutString(r.Language); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1LanguageRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1LanguageRequest{}
+
 type ZwpInputMethodContextV1TextDirectionRequest struct {
 	// Serial contains serial of the latest known text input state
 	Serial uint32
@@ -1103,6 +1432,20 @@ func (ZwpInputMethodContextV1TextDirectionRequest) Opcode() uint16 { return 13 }
 
 // Ensure ZwpInputMethodContextV1TextDirectionRequest implements Message.
 var _ Message = ZwpInputMethodContextV1TextDirectionRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputMethodContextV1TextDirectionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Direction); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputMethodContextV1TextDirectionRequest implements Request.
+var _ Request = &ZwpInputMethodContextV1TextDirectionRequest{}
 
 // ZwpInputMethodContextV1SurroundingTextEvent signals when surrounding text event
 //
@@ -1349,6 +1692,20 @@ func (ZwpInputPanelV1GetInputPanelSurfaceRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpInputPanelV1GetInputPanelSurfaceRequest implements Message.
 var _ Message = ZwpInputPanelV1GetInputPanelSurfaceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputPanelV1GetInputPanelSurfaceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputPanelV1GetInputPanelSurfaceRequest implements Request.
+var _ Request = &ZwpInputPanelV1GetInputPanelSurfaceRequest{}
+
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_v1
 
 // ----------------------------------------------------------------------------
@@ -1377,6 +1734,20 @@ func (ZwpInputPanelSurfaceV1SetToplevelRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpInputPanelSurfaceV1SetToplevelRequest implements Message.
 var _ Message = ZwpInputPanelSurfaceV1SetToplevelRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputPanelSurfaceV1SetToplevelRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Output); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Position); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputPanelSurfaceV1SetToplevelRequest implements Request.
+var _ Request = &ZwpInputPanelSurfaceV1SetToplevelRequest{}
+
 // ZwpInputPanelSurfaceV1SetOverlayPanelRequest requests to set the surface type as an overlay panel
 //
 // Set the input_panel_surface to be an overlay panel.
@@ -1391,6 +1762,14 @@ func (ZwpInputPanelSurfaceV1SetOverlayPanelRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpInputPanelSurfaceV1SetOverlayPanelRequest implements Message.
 var _ Message = ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputPanelSurfaceV1SetOverlayPanelRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpInputPanelSurfaceV1SetOverlayPanelRequest implements Request.
+var _ Request = &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_surface_v1
 
@@ -1417,6 +1796,14 @@ func (ZwpInputTimestampsManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpInputTimestampsManagerV1DestroyRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputTimestampsManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpInputTimestampsManagerV1DestroyRequest implements Request.
+var _ Request = &ZwpInputTimestampsManagerV1DestroyRequest{}
+
 // ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest requests to subscribe to high-resolution keyboard timestamp events
 //
 // Creates a new input timestamps object that represents a subscription
@@ -1439,6 +1826,20 @@ func (ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest) Opcode() uint16 {
 
 // Ensure ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Keyboard); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest implements Request.
+var _ Request = &ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}
 
 // ZwpInputTimestampsManagerV1GetPointerTimestampsRequest requests to subscribe to high-resolution pointer timestamp events
 //
@@ -1463,6 +1864,20 @@ func (ZwpInputTimestampsManagerV1GetPointerTimestampsRequest) Opcode() uint16 { 
 // Ensure ZwpInputTimestampsManagerV1GetPointerTimestampsRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputTimestampsManagerV1GetPointerTimestampsRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Pointer); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputTimestampsManagerV1GetPointerTimestampsRequest implements Request.
+var _ Request = &ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}
+
 // ZwpInputTimestampsManagerV1GetTouchTimestampsRequest requests to subscribe to high-resolution touch timestamp events
 //
 // Creates a new input timestamps object that represents a subscription
@@ -1486,6 +1901,20 @@ func (ZwpInputTimestampsManagerV1GetTouchTimestampsRequest) Opcode() uint16 { re
 // Ensure ZwpInputTimestampsManagerV1GetTouchTimestampsRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpInputTimestampsManagerV1GetTouchTimestampsRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Touch); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpInputTimestampsManagerV1GetTouchTimestampsRequest implements Request.
+var _ Request = &ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}
+
 // #endregion Interface input_timestamps_unstable_v1.zwp_input_timestamps_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -1504,6 +1933,14 @@ func (ZwpInputTimestampsV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpInputTimestampsV1DestroyRequest implements Message.
 var _ Message = ZwpInputTimestampsV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpInputTimestampsV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpInputTimestampsV1DestroyRequest implements Request.
+var _ Request = &ZwpInputTimestampsV1DestroyRequest{}
 
 // ZwpInputTimestampsV1TimestampEvent signals when high-resolution timestamp event
 //
@@ -1591,6 +2028,14 @@ func (ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest) Opcode() uint16 { retu
 // Ensure ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest implements Request.
+var _ Request = &ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}
+
 // ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest requests to create a new keyboard shortcuts inhibitor object
 //
 // Create a new keyboard shortcuts inhibitor object associated with
@@ -1614,6 +2059,23 @@ func (ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest) Opcode() uint
 // Ensure ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest implements Request.
+var _ Request = &ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}
+
 // #endregion Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibit_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -1630,6 +2092,14 @@ func (ZwpKeyboardShortcutsInhibitorV1DestroyRequest) Opcode() uint16 { return 0 
 
 // Ensure ZwpKeyboardShortcutsInhibitorV1DestroyRequest implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpKeyboardShortcutsInhibitorV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpKeyboardShortcutsInhibitorV1DestroyRequest implements Request.
+var _ Request = &ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}
 
 // ZwpKeyboardShortcutsInhibitorV1ActiveEvent signals when shortcuts are inhibited
 //
@@ -1706,6 +2176,14 @@ func (ZwpLinuxDmabufV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpLinuxDmabufV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxDmabufV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxDmabufV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpLinuxDmabufV1DestroyRequest implements Request.
+var _ Request = &ZwpLinuxDmabufV1DestroyRequest{}
+
 // ZwpLinuxDmabufV1CreateParamsRequest requests to create a temporary object for buffer parameters
 //
 // This temporary object is used to collect multiple dmabuf handles into
@@ -1722,6 +2200,17 @@ func (ZwpLinuxDmabufV1CreateParamsRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpLinuxDmabufV1CreateParamsRequest implements Message.
 var _ Message = ZwpLinuxDmabufV1CreateParamsRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxDmabufV1CreateParamsRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ParamsID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLinuxDmabufV1CreateParamsRequest implements Request.
+var _ Request = &ZwpLinuxDmabufV1CreateParamsRequest{}
 
 // ZwpLinuxDmabufV1FormatEvent signals when supported buffer format
 //
@@ -1881,6 +2370,14 @@ func (ZwpLinuxBufferParamsV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpLinuxBufferParamsV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxBufferParamsV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpLinuxBufferParamsV1DestroyRequest implements Request.
+var _ Request = &ZwpLinuxBufferParamsV1DestroyRequest{}
+
 // ZwpLinuxBufferParamsV1AddRequest requests to add a dmabuf to the temporary set
 //
 // This request adds one dmabuf to the set in this
@@ -1926,6 +2423,32 @@ func (ZwpLinuxBufferParamsV1AddRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpLinuxBufferParamsV1AddRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1AddRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxBufferParamsV1AddRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutFD(r.FD); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.PlaneIdx); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Offset); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Stride); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.ModifierHi); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.ModifierLo); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLinuxBufferParamsV1AddRequest implements Request.
+var _ Request = &ZwpLinuxBufferParamsV1AddRequest{}
 
 // ZwpLinuxBufferParamsV1CreateRequest requests to create a wl_buffer from the given dmabufs
 //
@@ -2008,6 +2531,26 @@ func (ZwpLinuxBufferParamsV1CreateRequest) Opcode() uint16 { return 2 }
 // Ensure ZwpLinuxBufferParamsV1CreateRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1CreateRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxBufferParamsV1CreateRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Format); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Flags); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLinuxBufferParamsV1CreateRequest implements Request.
+var _ Request = &ZwpLinuxBufferParamsV1CreateRequest{}
+
 // ZwpLinuxBufferParamsV1CreateImmedRequest requests to immediately create a wl_buffer from the given dmabufs
 //
 // This asks for immediate creation of a wl_buffer by importing the
@@ -2055,6 +2598,29 @@ func (ZwpLinuxBufferParamsV1CreateImmedRequest) Opcode() uint16 { return 3 }
 
 // Ensure ZwpLinuxBufferParamsV1CreateImmedRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1CreateImmedRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxBufferParamsV1CreateImmedRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.BufferID); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Format); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Flags); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLinuxBufferParamsV1CreateImmedRequest implements Request.
+var _ Request = &ZwpLinuxBufferParamsV1CreateImmedRequest{}
 
 // ZwpLinuxBufferParamsV1CreatedEvent signals when buffer creation succeeded
 //
@@ -2160,6 +2726,14 @@ func (ZwpPointerConstraintsV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpPointerConstraintsV1DestroyRequest implements Message.
 var _ Message = ZwpPointerConstraintsV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPointerConstraintsV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPointerConstraintsV1DestroyRequest implements Request.
+var _ Request = &ZwpPointerConstraintsV1DestroyRequest{}
+
 // ZwpPointerConstraintsV1LockPointerRequest requests to lock pointer to a position
 //
 // The lock_pointer request lets the client request to disable movements of
@@ -2218,6 +2792,29 @@ func (ZwpPointerConstraintsV1LockPointerRequest) Opcode() uint16 { return 1 }
 // Ensure ZwpPointerConstraintsV1LockPointerRequest implements Message.
 var _ Message = ZwpPointerConstraintsV1LockPointerRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPointerConstraintsV1LockPointerRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Pointer); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Region); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Lifetime); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPointerConstraintsV1LockPointerRequest implements Request.
+var _ Request = &ZwpPointerConstraintsV1LockPointerRequest{}
+
 // ZwpPointerConstraintsV1ConfinePointerRequest requests to confine pointer to a region
 //
 // The confine_pointer request lets the client request to confine the
@@ -2259,6 +2856,29 @@ func (ZwpPointerConstraintsV1ConfinePointerRequest) Opcode() uint16 { return 2 }
 // Ensure ZwpPointerConstraintsV1ConfinePointerRequest implements Message.
 var _ Message = ZwpPointerConstraintsV1ConfinePointerRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPointerConstraintsV1ConfinePointerRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Pointer); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Region); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Lifetime); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPointerConstraintsV1ConfinePointerRequest implements Request.
+var _ Request = &ZwpPointerConstraintsV1ConfinePointerRequest{}
+
 // #endregion Interface pointer_constraints_unstable_v1.zwp_pointer_constraints_v1
 
 // ----------------------------------------------------------------------------
@@ -2276,6 +2896,14 @@ func (ZwpLockedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpLockedPointerV1DestroyRequest implements Message.
 var _ Message = ZwpLockedPointerV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpLockedPointerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpLockedPointerV1DestroyRequest implements Request.
+var _ Request = &ZwpLockedPointerV1DestroyRequest{}
 
 // ZwpLockedPointerV1SetCursorPositionHintRequest requests to set the pointer cursor position hint
 //
@@ -2304,6 +2932,20 @@ func (ZwpLockedPointerV1SetCursorPositionHintRequest) Opcode() uint16 { return 1
 // Ensure ZwpLockedPointerV1SetCursorPositionHintRequest implements Message.
 var _ Message = ZwpLockedPointerV1SetCursorPositionHintRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpLockedPointerV1SetCursorPositionHintRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutFixed(r.SurfaceX); err != nil {
+		return err
+	}
+	if err := e.PutFixed(r.SurfaceY); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLockedPointerV1SetCursorPositionHintRequest implements Request.
+var _ Request = &ZwpLockedPointerV1SetCursorPositionHintRequest{}
+
 // ZwpLockedPointerV1SetRegionRequest requests to set a new lock region
 //
 // Set a new region used to lock the pointer.
@@ -2323,6 +2965,17 @@ func (ZwpLockedPointerV1SetRegionRequest) Opcode() uint16 { return 2 }
 
 // Ensure ZwpLockedPointerV1SetRegionRequest implements Message.
 var _ Message = ZwpLockedPointerV1SetRegionRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpLockedPointerV1SetRegionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Region); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLockedPointerV1SetRegionRequest implements Request.
+var _ Request = &ZwpLockedPointerV1SetRegionRequest{}
 
 // ZwpLockedPointerV1LockedEvent signals when lock activation event
 //
@@ -2387,6 +3040,14 @@ func (ZwpConfinedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpConfinedPointerV1DestroyRequest implements Message.
 var _ Message = ZwpConfinedPointerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpConfinedPointerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpConfinedPointerV1DestroyRequest implements Request.
+var _ Request = &ZwpConfinedPointerV1DestroyRequest{}
+
 // ZwpConfinedPointerV1SetRegionRequest requests to set a new confine region
 //
 // Set a new region used to confine the pointer.
@@ -2415,6 +3076,17 @@ func (ZwpConfinedPointerV1SetRegionRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpConfinedPointerV1SetRegionRequest implements Message.
 var _ Message = ZwpConfinedPointerV1SetRegionRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpConfinedPointerV1SetRegionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Region); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpConfinedPointerV1SetRegionRequest implements Request.
+var _ Request = &ZwpConfinedPointerV1SetRegionRequest{}
 
 // ZwpConfinedPointerV1ConfinedEvent signals when pointer confined
 //
@@ -2489,6 +3161,20 @@ func (ZwpPointerGesturesV1GetSwipeGestureRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpPointerGesturesV1GetSwipeGestureRequest implements Message.
 var _ Message = ZwpPointerGesturesV1GetSwipeGestureRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPointerGesturesV1GetSwipeGestureRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Pointer); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPointerGesturesV1GetSwipeGestureRequest implements Request.
+var _ Request = &ZwpPointerGesturesV1GetSwipeGestureRequest{}
+
 // ZwpPointerGesturesV1GetPinchGestureRequest requests to get pinch gesture
 //
 // Create a pinch gesture object. See the
@@ -2505,6 +3191,20 @@ func (ZwpPointerGesturesV1GetPinchGestureRequest) Opcode() uint16 { return 1 }
 // Ensure ZwpPointerGesturesV1GetPinchGestureRequest implements Message.
 var _ Message = ZwpPointerGesturesV1GetPinchGestureRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPointerGesturesV1GetPinchGestureRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Pointer); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPointerGesturesV1GetPinchGestureRequest implements Request.
+var _ Request = &ZwpPointerGesturesV1GetPinchGestureRequest{}
+
 // ZwpPointerGesturesV1ReleaseRequest requests to destroy the pointer gesture object
 //
 // Destroy the pointer gesture object. Swipe, pinch and hold objects
@@ -2517,6 +3217,14 @@ func (ZwpPointerGesturesV1ReleaseRequest) Opcode() uint16 { return 2 }
 
 // Ensure ZwpPointerGesturesV1ReleaseRequest implements Message.
 var _ Message = ZwpPointerGesturesV1ReleaseRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpPointerGesturesV1ReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPointerGesturesV1ReleaseRequest implements Request.
+var _ Request = &ZwpPointerGesturesV1ReleaseRequest{}
 
 // ZwpPointerGesturesV1GetHoldGestureRequest requests to get hold gesture
 //
@@ -2534,6 +3242,20 @@ func (ZwpPointerGesturesV1GetHoldGestureRequest) Opcode() uint16 { return 3 }
 // Ensure ZwpPointerGesturesV1GetHoldGestureRequest implements Message.
 var _ Message = ZwpPointerGesturesV1GetHoldGestureRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPointerGesturesV1GetHoldGestureRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Pointer); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPointerGesturesV1GetHoldGestureRequest implements Request.
+var _ Request = &ZwpPointerGesturesV1GetHoldGestureRequest{}
+
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gestures_v1
 
 // ----------------------------------------------------------------------------
@@ -2548,6 +3270,14 @@ func (ZwpPointerGestureSwipeV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpPointerGestureSwipeV1DestroyRequest implements Message.
 var _ Message = ZwpPointerGestureSwipeV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpPointerGestureSwipeV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPointerGestureSwipeV1DestroyRequest implements Request.
+var _ Request = &ZwpPointerGestureSwipeV1DestroyRequest{}
 
 // ZwpPointerGestureSwipeV1BeginEvent signals when multi-finger swipe begin
 //
@@ -2708,6 +3438,14 @@ func (ZwpPointerGesturePinchV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpPointerGesturePinchV1DestroyRequest implements Message.
 var _ Message = ZwpPointerGesturePinchV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpPointerGesturePinchV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPointerGesturePinchV1DestroyRequest implements Request.
+var _ Request = &ZwpPointerGesturePinchV1DestroyRequest{}
 
 // ZwpPointerGesturePinchV1BeginEvent signals when multi-finger pinch begin
 //
@@ -2892,6 +3630,14 @@ func (ZwpPointerGestureHoldV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpPointerGestureHoldV1DestroyRequest implements Message.
 var _ Message = ZwpPointerGestureHoldV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPointerGestureHoldV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPointerGestureHoldV1DestroyRequest implements Request.
+var _ Request = &ZwpPointerGestureHoldV1DestroyRequest{}
+
 // ZwpPointerGestureHoldV1BeginEvent signals when multi-finger hold begin
 //
 // This event is sent when a hold gesture is detected on the device.
@@ -3030,6 +3776,14 @@ func (WpPresentationDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure WpPresentationDestroyRequest implements Message.
 var _ Message = WpPresentationDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WpPresentationDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WpPresentationDestroyRequest implements Request.
+var _ Request = &WpPresentationDestroyRequest{}
+
 // WpPresentationFeedbackRequest requests to request presentation feedback information
 //
 // Request presentation feedback for the current content submission
@@ -3053,6 +3807,20 @@ func (WpPresentationFeedbackRequest) Opcode() uint16 { return 1 }
 
 // Ensure WpPresentationFeedbackRequest implements Message.
 var _ Message = WpPresentationFeedbackRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WpPresentationFeedbackRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Callback); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WpPresentationFeedbackRequest implements Request.
+var _ Request = &WpPresentationFeedbackRequest{}
 
 // WpPresentationClockIDEvent signals when clock ID for timestamps
 //
@@ -3325,6 +4093,14 @@ func (ZwpRelativePointerManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpRelativePointerManagerV1DestroyRequest implements Message.
 var _ Message = ZwpRelativePointerManagerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpRelativePointerManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpRelativePointerManagerV1DestroyRequest implements Request.
+var _ Request = &ZwpRelativePointerManagerV1DestroyRequest{}
+
 // ZwpRelativePointerManagerV1GetRelativePointerRequest requests to get a relative pointer object
 //
 // Create a relative pointer interface given a wl_pointer object. See the
@@ -3341,6 +4117,20 @@ func (ZwpRelativePointerManagerV1GetRelativePointerRequest) Opcode() uint16 { re
 // Ensure ZwpRelativePointerManagerV1GetRelativePointerRequest implements Message.
 var _ Message = ZwpRelativePointerManagerV1GetRelativePointerRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpRelativePointerManagerV1GetRelativePointerRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Pointer); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpRelativePointerManagerV1GetRelativePointerRequest implements Request.
+var _ Request = &ZwpRelativePointerManagerV1GetRelativePointerRequest{}
+
 // #endregion Interface relative_pointer_unstable_v1.zwp_relative_pointer_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -3355,6 +4145,14 @@ func (ZwpRelativePointerV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpRelativePointerV1DestroyRequest implements Message.
 var _ Message = ZwpRelativePointerV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpRelativePointerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpRelativePointerV1DestroyRequest implements Request.
+var _ Request = &ZwpRelativePointerV1DestroyRequest{}
 
 // ZwpRelativePointerV1RelativeMotionEvent signals when relative pointer motion
 //
@@ -3480,6 +4278,20 @@ func (ZwpTabletManagerV1GetTabletSeatRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletManagerV1GetTabletSeatRequest implements Message.
 var _ Message = ZwpTabletManagerV1GetTabletSeatRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletManagerV1GetTabletSeatRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.TabletSeat); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTabletManagerV1GetTabletSeatRequest implements Request.
+var _ Request = &ZwpTabletManagerV1GetTabletSeatRequest{}
+
 // ZwpTabletManagerV1DestroyRequest requests to release the memory for the tablet manager object
 //
 // Destroy the wp_tablet_manager object. Objects created from this
@@ -3492,6 +4304,14 @@ func (ZwpTabletManagerV1DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTabletManagerV1DestroyRequest implements Message.
 var _ Message = ZwpTabletManagerV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletManagerV1DestroyRequest implements Request.
+var _ Request = &ZwpTabletManagerV1DestroyRequest{}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_manager_v1
 
@@ -3510,6 +4330,14 @@ func (ZwpTabletSeatV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpTabletSeatV1DestroyRequest implements Message.
 var _ Message = ZwpTabletSeatV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletSeatV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletSeatV1DestroyRequest implements Request.
+var _ Request = &ZwpTabletSeatV1DestroyRequest{}
 
 // ZwpTabletSeatV1TabletAddedEvent signals when new device notification
 //
@@ -3716,6 +4544,26 @@ func (ZwpTabletToolV1SetCursorRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletToolV1SetCursorRequest implements Message.
 var _ Message = ZwpTabletToolV1SetCursorRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletToolV1SetCursorRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.HotspotX); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.HotspotY); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTabletToolV1SetCursorRequest implements Request.
+var _ Request = &ZwpTabletToolV1SetCursorRequest{}
+
 // ZwpTabletToolV1DestroyRequest requests to destroy the tool object
 //
 // This destroys the client's resource for this tool object.
@@ -3727,6 +4575,14 @@ func (ZwpTabletToolV1DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTabletToolV1DestroyRequest implements Message.
 var _ Message = ZwpTabletToolV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletToolV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletToolV1DestroyRequest implements Request.
+var _ Request = &ZwpTabletToolV1DestroyRequest{}
 
 // ZwpTabletToolV1TypeEvent signals when tool type
 //
@@ -4428,6 +5284,14 @@ func (ZwpTabletV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletV1DestroyRequest implements Message.
 var _ Message = ZwpTabletV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletV1DestroyRequest implements Request.
+var _ Request = &ZwpTabletV1DestroyRequest{}
+
 // ZwpTabletV1NameEvent signals when tablet device name
 //
 // This event is sent in the initial burst of events before the
@@ -4607,6 +5471,20 @@ func (ZwpTabletManagerV2GetTabletSeatRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletManagerV2GetTabletSeatRequest implements Message.
 var _ Message = ZwpTabletManagerV2GetTabletSeatRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletManagerV2GetTabletSeatRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.TabletSeat); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTabletManagerV2GetTabletSeatRequest implements Request.
+var _ Request = &ZwpTabletManagerV2GetTabletSeatRequest{}
+
 // ZwpTabletManagerV2DestroyRequest requests to release the memory for the tablet manager object
 //
 // Destroy the wp_tablet_manager object. Objects created from this
@@ -4619,6 +5497,14 @@ func (ZwpTabletManagerV2DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTabletManagerV2DestroyRequest implements Message.
 var _ Message = ZwpTabletManagerV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletManagerV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletManagerV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletManagerV2DestroyRequest{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_manager_v2
 
@@ -4637,6 +5523,14 @@ func (ZwpTabletSeatV2DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpTabletSeatV2DestroyRequest implements Message.
 var _ Message = ZwpTabletSeatV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletSeatV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletSeatV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletSeatV2DestroyRequest{}
 
 // ZwpTabletSeatV2TabletAddedEvent signals when new device notification
 //
@@ -4877,6 +5771,26 @@ func (ZwpTabletToolV2SetCursorRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletToolV2SetCursorRequest implements Message.
 var _ Message = ZwpTabletToolV2SetCursorRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletToolV2SetCursorRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.HotspotX); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.HotspotY); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTabletToolV2SetCursorRequest implements Request.
+var _ Request = &ZwpTabletToolV2SetCursorRequest{}
+
 // ZwpTabletToolV2DestroyRequest requests to destroy the tool object
 //
 // This destroys the client's resource for this tool object.
@@ -4888,6 +5802,14 @@ func (ZwpTabletToolV2DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTabletToolV2DestroyRequest implements Message.
 var _ Message = ZwpTabletToolV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletToolV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletToolV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletToolV2DestroyRequest{}
 
 // ZwpTabletToolV2TypeEvent signals when tool type
 //
@@ -5589,6 +6511,14 @@ func (ZwpTabletV2DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletV2DestroyRequest implements Message.
 var _ Message = ZwpTabletV2DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletV2DestroyRequest{}
+
 // ZwpTabletV2NameEvent signals when tablet device name
 //
 // This event is sent in the initial burst of events before the
@@ -5793,6 +6723,20 @@ func (ZwpTabletPadRingV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletPadRingV2SetFeedbackRequest implements Message.
 var _ Message = ZwpTabletPadRingV2SetFeedbackRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletPadRingV2SetFeedbackRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Description); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTabletPadRingV2SetFeedbackRequest implements Request.
+var _ Request = &ZwpTabletPadRingV2SetFeedbackRequest{}
+
 // ZwpTabletPadRingV2DestroyRequest requests to destroy the ring object
 //
 // This destroys the client's resource for this ring object.
@@ -5804,6 +6748,14 @@ func (ZwpTabletPadRingV2DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTabletPadRingV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadRingV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletPadRingV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletPadRingV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletPadRingV2DestroyRequest{}
 
 // ZwpTabletPadRingV2SourceEvent signals when ring event source
 //
@@ -5994,6 +6946,20 @@ func (ZwpTabletPadStripV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletPadStripV2SetFeedbackRequest implements Message.
 var _ Message = ZwpTabletPadStripV2SetFeedbackRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletPadStripV2SetFeedbackRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Description); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTabletPadStripV2SetFeedbackRequest implements Request.
+var _ Request = &ZwpTabletPadStripV2SetFeedbackRequest{}
+
 // ZwpTabletPadStripV2DestroyRequest requests to destroy the strip object
 //
 // This destroys the client's resource for this strip object.
@@ -6005,6 +6971,14 @@ func (ZwpTabletPadStripV2DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTabletPadStripV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadStripV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletPadStripV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletPadStripV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletPadStripV2DestroyRequest{}
 
 // ZwpTabletPadStripV2SourceEvent signals when strip event source
 //
@@ -6161,6 +7135,14 @@ func (ZwpTabletPadGroupV2DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpTabletPadGroupV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadGroupV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletPadGroupV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletPadGroupV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletPadGroupV2DestroyRequest{}
 
 // ZwpTabletPadGroupV2ButtonsEvent signals when buttons announced
 //
@@ -6451,6 +7433,23 @@ func (ZwpTabletPadV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTabletPadV2SetFeedbackRequest implements Message.
 var _ Message = ZwpTabletPadV2SetFeedbackRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTabletPadV2SetFeedbackRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Button); err != nil {
+		return err
+	}
+	if err := e.PutString(r.Description); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTabletPadV2SetFeedbackRequest implements Request.
+var _ Request = &ZwpTabletPadV2SetFeedbackRequest{}
+
 // ZwpTabletPadV2DestroyRequest requests to destroy the pad object
 //
 // Destroy the wp_tablet_pad object. Objects created from this object
@@ -6463,6 +7462,14 @@ func (ZwpTabletPadV2DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTabletPadV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTabletPadV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTabletPadV2DestroyRequest implements Request.
+var _ Request = &ZwpTabletPadV2DestroyRequest{}
 
 // ZwpTabletPadV2GroupEvent signals when group announced
 //
@@ -6894,6 +7901,20 @@ func (ZwpTextInputV1ActivateRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTextInputV1ActivateRequest implements Message.
 var _ Message = ZwpTextInputV1ActivateRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1ActivateRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1ActivateRequest implements Request.
+var _ Request = &ZwpTextInputV1ActivateRequest{}
+
 // ZwpTextInputV1DeactivateRequest requests to request deactivation
 //
 // Requests the text_input object to be deactivated (typically when the
@@ -6909,6 +7930,17 @@ func (ZwpTextInputV1DeactivateRequest) Opcode() uint16 { return 1 }
 // Ensure ZwpTextInputV1DeactivateRequest implements Message.
 var _ Message = ZwpTextInputV1DeactivateRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1DeactivateRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1DeactivateRequest implements Request.
+var _ Request = &ZwpTextInputV1DeactivateRequest{}
+
 // ZwpTextInputV1ShowInputPanelRequest requests to show input panels
 //
 // Requests input panels (virtual keyboard) to show.
@@ -6921,6 +7953,14 @@ func (ZwpTextInputV1ShowInputPanelRequest) Opcode() uint16 { return 2 }
 // Ensure ZwpTextInputV1ShowInputPanelRequest implements Message.
 var _ Message = ZwpTextInputV1ShowInputPanelRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1ShowInputPanelRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputV1ShowInputPanelRequest implements Request.
+var _ Request = &ZwpTextInputV1ShowInputPanelRequest{}
+
 // ZwpTextInputV1HideInputPanelRequest requests to hide input panels
 //
 // Requests input panels (virtual keyboard) to hide.
@@ -6932,6 +7972,14 @@ func (ZwpTextInputV1HideInputPanelRequest) Opcode() uint16 { return 3 }
 
 // Ensure ZwpTextInputV1HideInputPanelRequest implements Message.
 var _ Message = ZwpTextInputV1HideInputPanelRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1HideInputPanelRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputV1HideInputPanelRequest implements Request.
+var _ Request = &ZwpTextInputV1HideInputPanelRequest{}
 
 // ZwpTextInputV1ResetRequest requests to reset
 //
@@ -6946,6 +7994,14 @@ func (ZwpTextInputV1ResetRequest) Opcode() uint16 { return 4 }
 
 // Ensure ZwpTextInputV1ResetRequest implements Message.
 var _ Message = ZwpTextInputV1ResetRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1ResetRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputV1ResetRequest implements Request.
+var _ Request = &ZwpTextInputV1ResetRequest{}
 
 // ZwpTextInputV1SetSurroundingTextRequest requests to sets the surrounding text
 //
@@ -6968,6 +8024,23 @@ func (ZwpTextInputV1SetSurroundingTextRequest) Opcode() uint16 { return 5 }
 // Ensure ZwpTextInputV1SetSurroundingTextRequest implements Message.
 var _ Message = ZwpTextInputV1SetSurroundingTextRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1SetSurroundingTextRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Text); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Cursor); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Anchor); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1SetSurroundingTextRequest implements Request.
+var _ Request = &ZwpTextInputV1SetSurroundingTextRequest{}
+
 // ZwpTextInputV1SetContentTypeRequest requests to set content purpose and hint
 //
 // Sets the content purpose and content hint. While the purpose is the
@@ -6989,6 +8062,20 @@ func (ZwpTextInputV1SetContentTypeRequest) Opcode() uint16 { return 6 }
 // Ensure ZwpTextInputV1SetContentTypeRequest implements Message.
 var _ Message = ZwpTextInputV1SetContentTypeRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1SetContentTypeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Hint); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Purpose); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1SetContentTypeRequest implements Request.
+var _ Request = &ZwpTextInputV1SetContentTypeRequest{}
+
 type ZwpTextInputV1SetCursorRectangleRequest struct {
 	X int32
 
@@ -7004,6 +8091,26 @@ func (ZwpTextInputV1SetCursorRectangleRequest) Opcode() uint16 { return 7 }
 
 // Ensure ZwpTextInputV1SetCursorRectangleRequest implements Message.
 var _ Message = ZwpTextInputV1SetCursorRectangleRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1SetCursorRectangleRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1SetCursorRectangleRequest implements Request.
+var _ Request = &ZwpTextInputV1SetCursorRectangleRequest{}
 
 // ZwpTextInputV1SetPreferredLanguageRequest requests to sets preferred language
 //
@@ -7024,6 +8131,17 @@ func (ZwpTextInputV1SetPreferredLanguageRequest) Opcode() uint16 { return 8 }
 // Ensure ZwpTextInputV1SetPreferredLanguageRequest implements Message.
 var _ Message = ZwpTextInputV1SetPreferredLanguageRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1SetPreferredLanguageRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Language); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1SetPreferredLanguageRequest implements Request.
+var _ Request = &ZwpTextInputV1SetPreferredLanguageRequest{}
+
 type ZwpTextInputV1CommitStateRequest struct {
 	// Serial contains used to identify the known state
 	Serial uint32
@@ -7034,6 +8152,17 @@ func (ZwpTextInputV1CommitStateRequest) Opcode() uint16 { return 9 }
 
 // Ensure ZwpTextInputV1CommitStateRequest implements Message.
 var _ Message = ZwpTextInputV1CommitStateRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1CommitStateRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1CommitStateRequest implements Request.
+var _ Request = &ZwpTextInputV1CommitStateRequest{}
 
 type ZwpTextInputV1InvokeActionRequest struct {
 	Button uint32
@@ -7046,6 +8175,20 @@ func (ZwpTextInputV1InvokeActionRequest) Opcode() uint16 { return 10 }
 
 // Ensure ZwpTextInputV1InvokeActionRequest implements Message.
 var _ Message = ZwpTextInputV1InvokeActionRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV1InvokeActionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Button); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Index); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV1InvokeActionRequest implements Request.
+var _ Request = &ZwpTextInputV1InvokeActionRequest{}
 
 // ZwpTextInputV1EnterEvent signals when enter event
 //
@@ -7542,6 +8685,17 @@ func (ZwpTextInputManagerV1CreateTextInputRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTextInputManagerV1CreateTextInputRequest implements Message.
 var _ Message = ZwpTextInputManagerV1CreateTextInputRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputManagerV1CreateTextInputRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputManagerV1CreateTextInputRequest implements Request.
+var _ Request = &ZwpTextInputManagerV1CreateTextInputRequest{}
+
 // #endregion Interface text_input_unstable_v1.zwp_text_input_manager_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -7673,6 +8827,14 @@ func (ZwpTextInputV3DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTextInputV3DestroyRequest implements Message.
 var _ Message = ZwpTextInputV3DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputV3DestroyRequest implements Request.
+var _ Request = &ZwpTextInputV3DestroyRequest{}
+
 // ZwpTextInputV3EnableRequest requests to Request text input to be enabled
 //
 // Requests text input on the surface previously obtained from the enter
@@ -7713,6 +8875,14 @@ func (ZwpTextInputV3EnableRequest) Opcode() uint16 { return 1 }
 // Ensure ZwpTextInputV3EnableRequest implements Message.
 var _ Message = ZwpTextInputV3EnableRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3EnableRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputV3EnableRequest implements Request.
+var _ Request = &ZwpTextInputV3EnableRequest{}
+
 // ZwpTextInputV3DisableRequest requests to Disable text input on a surface
 //
 // Explicitly disable text input on the current surface (typically when
@@ -7728,6 +8898,14 @@ func (ZwpTextInputV3DisableRequest) Opcode() uint16 { return 2 }
 
 // Ensure ZwpTextInputV3DisableRequest implements Message.
 var _ Message = ZwpTextInputV3DisableRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3DisableRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputV3DisableRequest implements Request.
+var _ Request = &ZwpTextInputV3DisableRequest{}
 
 // ZwpTextInputV3SetSurroundingTextRequest requests to sets the surrounding text
 //
@@ -7776,6 +8954,23 @@ func (ZwpTextInputV3SetSurroundingTextRequest) Opcode() uint16 { return 3 }
 // Ensure ZwpTextInputV3SetSurroundingTextRequest implements Message.
 var _ Message = ZwpTextInputV3SetSurroundingTextRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3SetSurroundingTextRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Text); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Cursor); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Anchor); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV3SetSurroundingTextRequest implements Request.
+var _ Request = &ZwpTextInputV3SetSurroundingTextRequest{}
+
 // ZwpTextInputV3SetTextChangeCauseRequest requests to indicates the cause of surrounding text change
 //
 // Tells the compositor why the text surrounding the cursor changed.
@@ -7802,6 +8997,17 @@ func (ZwpTextInputV3SetTextChangeCauseRequest) Opcode() uint16 { return 4 }
 // Ensure ZwpTextInputV3SetTextChangeCauseRequest implements Message.
 var _ Message = ZwpTextInputV3SetTextChangeCauseRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3SetTextChangeCauseRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Cause); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV3SetTextChangeCauseRequest implements Request.
+var _ Request = &ZwpTextInputV3SetTextChangeCauseRequest{}
+
 // ZwpTextInputV3SetContentTypeRequest requests to set content purpose and hint
 //
 // Sets the content purpose and content hint. While the purpose is the
@@ -7826,6 +9032,20 @@ func (ZwpTextInputV3SetContentTypeRequest) Opcode() uint16 { return 5 }
 
 // Ensure ZwpTextInputV3SetContentTypeRequest implements Message.
 var _ Message = ZwpTextInputV3SetContentTypeRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3SetContentTypeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Hint); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Purpose); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV3SetContentTypeRequest implements Request.
+var _ Request = &ZwpTextInputV3SetContentTypeRequest{}
 
 // ZwpTextInputV3SetCursorRectangleRequest requests to set cursor position
 //
@@ -7862,6 +9082,26 @@ func (ZwpTextInputV3SetCursorRectangleRequest) Opcode() uint16 { return 6 }
 // Ensure ZwpTextInputV3SetCursorRectangleRequest implements Message.
 var _ Message = ZwpTextInputV3SetCursorRectangleRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3SetCursorRectangleRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputV3SetCursorRectangleRequest implements Request.
+var _ Request = &ZwpTextInputV3SetCursorRectangleRequest{}
+
 // ZwpTextInputV3CommitRequest requests to commit state
 //
 // Atomically applies state changes recently sent to the compositor.
@@ -7895,6 +9135,14 @@ func (ZwpTextInputV3CommitRequest) Opcode() uint16 { return 7 }
 
 // Ensure ZwpTextInputV3CommitRequest implements Message.
 var _ Message = ZwpTextInputV3CommitRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputV3CommitRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputV3CommitRequest implements Request.
+var _ Request = &ZwpTextInputV3CommitRequest{}
 
 // ZwpTextInputV3EnterEvent signals when enter event
 //
@@ -8167,6 +9415,14 @@ func (ZwpTextInputManagerV3DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpTextInputManagerV3DestroyRequest implements Message.
 var _ Message = ZwpTextInputManagerV3DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputManagerV3DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpTextInputManagerV3DestroyRequest implements Request.
+var _ Request = &ZwpTextInputManagerV3DestroyRequest{}
+
 // ZwpTextInputManagerV3GetTextInputRequest requests to create a new text input object
 //
 // Creates a new text-input object for a given seat.
@@ -8181,6 +9437,20 @@ func (ZwpTextInputManagerV3GetTextInputRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpTextInputManagerV3GetTextInputRequest implements Message.
 var _ Message = ZwpTextInputManagerV3GetTextInputRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpTextInputManagerV3GetTextInputRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpTextInputManagerV3GetTextInputRequest implements Request.
+var _ Request = &ZwpTextInputManagerV3GetTextInputRequest{}
 
 // #endregion Interface text_input_unstable_v3.zwp_text_input_manager_v3
 
@@ -8214,6 +9484,14 @@ func (WpViewporterDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure WpViewporterDestroyRequest implements Message.
 var _ Message = WpViewporterDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WpViewporterDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WpViewporterDestroyRequest implements Request.
+var _ Request = &WpViewporterDestroyRequest{}
+
 // WpViewporterGetViewportRequest requests to extend surface interface for crop and scale
 //
 // Instantiate an interface extension for the given wl_surface to
@@ -8233,6 +9511,20 @@ func (WpViewporterGetViewportRequest) Opcode() uint16 { return 1 }
 
 // Ensure WpViewporterGetViewportRequest implements Message.
 var _ Message = WpViewporterGetViewportRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WpViewporterGetViewportRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WpViewporterGetViewportRequest implements Request.
+var _ Request = &WpViewporterGetViewportRequest{}
 
 // #endregion Interface viewporter.wp_viewporter
 
@@ -8268,6 +9560,14 @@ func (WpViewportDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure WpViewportDestroyRequest implements Message.
 var _ Message = WpViewportDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WpViewportDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WpViewportDestroyRequest implements Request.
+var _ Request = &WpViewportDestroyRequest{}
+
 // WpViewportSetSourceRequest requests to set the source rectangle for cropping
 //
 // Set the source rectangle of the associated wl_surface. See
@@ -8301,6 +9601,26 @@ func (WpViewportSetSourceRequest) Opcode() uint16 { return 1 }
 // Ensure WpViewportSetSourceRequest implements Message.
 var _ Message = WpViewportSetSourceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WpViewportSetSourceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutFixed(r.X); err != nil {
+		return err
+	}
+	if err := e.PutFixed(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutFixed(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutFixed(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WpViewportSetSourceRequest implements Request.
+var _ Request = &WpViewportSetSourceRequest{}
+
 // WpViewportSetDestinationRequest requests to set the surface size for scaling
 //
 // Set the destination size of the associated wl_surface. See
@@ -8327,6 +9647,20 @@ func (WpViewportSetDestinationRequest) Opcode() uint16 { return 2 }
 
 // Ensure WpViewportSetDestinationRequest implements Message.
 var _ Message = WpViewportSetDestinationRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WpViewportSetDestinationRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WpViewportSetDestinationRequest implements Request.
+var _ Request = &WpViewportSetDestinationRequest{}
 
 // #endregion Interface viewporter.wp_viewport
 
@@ -8383,6 +9717,17 @@ func (WlDisplaySyncRequest) Opcode() uint16 { return 0 }
 // Ensure WlDisplaySyncRequest implements Message.
 var _ Message = WlDisplaySyncRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlDisplaySyncRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Callback); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDisplaySyncRequest implements Request.
+var _ Request = &WlDisplaySyncRequest{}
+
 // WlDisplayGetRegistryRequest requests to get global registry object
 //
 // This request creates a registry object that allows the client
@@ -8404,6 +9749,17 @@ func (WlDisplayGetRegistryRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlDisplayGetRegistryRequest implements Message.
 var _ Message = WlDisplayGetRegistryRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDisplayGetRegistryRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Registry); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDisplayGetRegistryRequest implements Request.
+var _ Request = &WlDisplayGetRegistryRequest{}
 
 // WlDisplayErrorEvent signals when fatal error event
 //
@@ -8507,6 +9863,20 @@ func (WlRegistryBindRequest) Opcode() uint16 { return 0 }
 
 // Ensure WlRegistryBindRequest implements Message.
 var _ Message = WlRegistryBindRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlRegistryBindRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Name); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlRegistryBindRequest implements Request.
+var _ Request = &WlRegistryBindRequest{}
 
 // WlRegistryGlobalEvent signals when announce global object
 //
@@ -8642,6 +10012,17 @@ func (WlCompositorCreateSurfaceRequest) Opcode() uint16 { return 0 }
 // Ensure WlCompositorCreateSurfaceRequest implements Message.
 var _ Message = WlCompositorCreateSurfaceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlCompositorCreateSurfaceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlCompositorCreateSurfaceRequest implements Request.
+var _ Request = &WlCompositorCreateSurfaceRequest{}
+
 // WlCompositorCreateRegionRequest requests to create new region
 //
 // Ask the compositor to create a new region.
@@ -8655,6 +10036,17 @@ func (WlCompositorCreateRegionRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlCompositorCreateRegionRequest implements Message.
 var _ Message = WlCompositorCreateRegionRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlCompositorCreateRegionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlCompositorCreateRegionRequest implements Request.
+var _ Request = &WlCompositorCreateRegionRequest{}
 
 // #endregion Interface wayland.wl_compositor
 
@@ -8700,6 +10092,32 @@ func (WlShmPoolCreateBufferRequest) Opcode() uint16 { return 0 }
 // Ensure WlShmPoolCreateBufferRequest implements Message.
 var _ Message = WlShmPoolCreateBufferRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShmPoolCreateBufferRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Offset); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Stride); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Format); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShmPoolCreateBufferRequest implements Request.
+var _ Request = &WlShmPoolCreateBufferRequest{}
+
 // WlShmPoolDestroyRequest requests to destroy the pool
 //
 // Destroy the shared memory pool.
@@ -8715,6 +10133,14 @@ func (WlShmPoolDestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlShmPoolDestroyRequest implements Message.
 var _ Message = WlShmPoolDestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlShmPoolDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlShmPoolDestroyRequest implements Request.
+var _ Request = &WlShmPoolDestroyRequest{}
 
 // WlShmPoolResizeRequest requests to change the size of the pool mapping
 //
@@ -8732,6 +10158,17 @@ func (WlShmPoolResizeRequest) Opcode() uint16 { return 2 }
 
 // Ensure WlShmPoolResizeRequest implements Message.
 var _ Message = WlShmPoolResizeRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlShmPoolResizeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Size); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShmPoolResizeRequest implements Request.
+var _ Request = &WlShmPoolResizeRequest{}
 
 // #endregion Interface wayland.wl_shm_pool
 
@@ -9093,6 +10530,23 @@ func (WlShmCreatePoolRequest) Opcode() uint16 { return 0 }
 // Ensure WlShmCreatePoolRequest implements Message.
 var _ Message = WlShmCreatePoolRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShmCreatePoolRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutFD(r.FD); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Size); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShmCreatePoolRequest implements Request.
+var _ Request = &WlShmCreatePoolRequest{}
+
 // WlShmFormatEvent signals when pixel format description
 //
 // Informs the client about a valid pixel format that
@@ -9141,6 +10595,14 @@ func (WlBufferDestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure WlBufferDestroyRequest implements Message.
 var _ Message = WlBufferDestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlBufferDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlBufferDestroyRequest implements Request.
+var _ Request = &WlBufferDestroyRequest{}
 
 // WlBufferReleaseEvent signals when compositor releases buffer
 //
@@ -9224,6 +10686,20 @@ func (WlDataOfferAcceptRequest) Opcode() uint16 { return 0 }
 // Ensure WlDataOfferAcceptRequest implements Message.
 var _ Message = WlDataOfferAcceptRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlDataOfferAcceptRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutString(r.MimeType); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataOfferAcceptRequest implements Request.
+var _ Request = &WlDataOfferAcceptRequest{}
+
 // WlDataOfferReceiveRequest requests to request that the data is transferred
 //
 // To transfer the offered data, the client issues this request
@@ -9255,6 +10731,20 @@ func (WlDataOfferReceiveRequest) Opcode() uint16 { return 1 }
 // Ensure WlDataOfferReceiveRequest implements Message.
 var _ Message = WlDataOfferReceiveRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlDataOfferReceiveRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.MimeType); err != nil {
+		return err
+	}
+	if err := e.PutFD(r.FD); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataOfferReceiveRequest implements Request.
+var _ Request = &WlDataOfferReceiveRequest{}
+
 // WlDataOfferDestroyRequest requests to destroy data offer
 //
 // Destroy the data offer.
@@ -9266,6 +10756,14 @@ func (WlDataOfferDestroyRequest) Opcode() uint16 { return 2 }
 
 // Ensure WlDataOfferDestroyRequest implements Message.
 var _ Message = WlDataOfferDestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDataOfferDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlDataOfferDestroyRequest implements Request.
+var _ Request = &WlDataOfferDestroyRequest{}
 
 // WlDataOfferFinishRequest requests to the offer will no longer be used
 //
@@ -9291,6 +10789,14 @@ func (WlDataOfferFinishRequest) Opcode() uint16 { return 3 }
 
 // Ensure WlDataOfferFinishRequest implements Message.
 var _ Message = WlDataOfferFinishRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDataOfferFinishRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlDataOfferFinishRequest implements Request.
+var _ Request = &WlDataOfferFinishRequest{}
 
 // WlDataOfferSetActionsRequest requests to set the available/preferred drag-and-drop actions
 //
@@ -9338,6 +10844,20 @@ func (WlDataOfferSetActionsRequest) Opcode() uint16 { return 4 }
 
 // Ensure WlDataOfferSetActionsRequest implements Message.
 var _ Message = WlDataOfferSetActionsRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDataOfferSetActionsRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.DndActions); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.PreferredAction); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataOfferSetActionsRequest implements Request.
+var _ Request = &WlDataOfferSetActionsRequest{}
 
 // WlDataOfferOfferEvent signals when advertise offered mime type
 //
@@ -9488,6 +11008,17 @@ func (WlDataSourceOfferRequest) Opcode() uint16 { return 0 }
 // Ensure WlDataSourceOfferRequest implements Message.
 var _ Message = WlDataSourceOfferRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlDataSourceOfferRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.MimeType); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataSourceOfferRequest implements Request.
+var _ Request = &WlDataSourceOfferRequest{}
+
 // WlDataSourceDestroyRequest requests to destroy the data source
 //
 // Destroy the data source.
@@ -9499,6 +11030,14 @@ func (WlDataSourceDestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlDataSourceDestroyRequest implements Message.
 var _ Message = WlDataSourceDestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDataSourceDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlDataSourceDestroyRequest implements Request.
+var _ Request = &WlDataSourceDestroyRequest{}
 
 // WlDataSourceSetActionsRequest requests to set the available drag-and-drop actions
 //
@@ -9525,6 +11064,17 @@ func (WlDataSourceSetActionsRequest) Opcode() uint16 { return 2 }
 
 // Ensure WlDataSourceSetActionsRequest implements Message.
 var _ Message = WlDataSourceSetActionsRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDataSourceSetActionsRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.DndActions); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataSourceSetActionsRequest implements Request.
+var _ Request = &WlDataSourceSetActionsRequest{}
 
 // WlDataSourceTargetEvent signals when a target accepts an offered mime type
 //
@@ -9798,6 +11348,26 @@ func (WlDataDeviceStartDragRequest) Opcode() uint16 { return 0 }
 // Ensure WlDataDeviceStartDragRequest implements Message.
 var _ Message = WlDataDeviceStartDragRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlDataDeviceStartDragRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Source); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Origin); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Icon); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataDeviceStartDragRequest implements Request.
+var _ Request = &WlDataDeviceStartDragRequest{}
+
 // WlDataDeviceSetSelectionRequest requests to copy data to the selection
 //
 // This request asks the compositor to set the selection
@@ -9818,6 +11388,20 @@ func (WlDataDeviceSetSelectionRequest) Opcode() uint16 { return 1 }
 // Ensure WlDataDeviceSetSelectionRequest implements Message.
 var _ Message = WlDataDeviceSetSelectionRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlDataDeviceSetSelectionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Source); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataDeviceSetSelectionRequest implements Request.
+var _ Request = &WlDataDeviceSetSelectionRequest{}
+
 // WlDataDeviceReleaseRequest requests to destroy data device
 //
 // This request destroys the data device.
@@ -9829,6 +11413,14 @@ func (WlDataDeviceReleaseRequest) Opcode() uint16 { return 2 }
 
 // Ensure WlDataDeviceReleaseRequest implements Message.
 var _ Message = WlDataDeviceReleaseRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDataDeviceReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlDataDeviceReleaseRequest implements Request.
+var _ Request = &WlDataDeviceReleaseRequest{}
 
 // WlDataDeviceDataOfferEvent signals when introduce a new wl_data_offer
 //
@@ -10122,6 +11714,17 @@ func (WlDataDeviceManagerCreateDataSourceRequest) Opcode() uint16 { return 0 }
 // Ensure WlDataDeviceManagerCreateDataSourceRequest implements Message.
 var _ Message = WlDataDeviceManagerCreateDataSourceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlDataDeviceManagerCreateDataSourceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataDeviceManagerCreateDataSourceRequest implements Request.
+var _ Request = &WlDataDeviceManagerCreateDataSourceRequest{}
+
 // WlDataDeviceManagerGetDataDeviceRequest requests to create a new data device
 //
 // Create a new data device for a given seat.
@@ -10138,6 +11741,20 @@ func (WlDataDeviceManagerGetDataDeviceRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlDataDeviceManagerGetDataDeviceRequest implements Message.
 var _ Message = WlDataDeviceManagerGetDataDeviceRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlDataDeviceManagerGetDataDeviceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlDataDeviceManagerGetDataDeviceRequest implements Request.
+var _ Request = &WlDataDeviceManagerGetDataDeviceRequest{}
 
 // #endregion Interface wayland.wl_data_device_manager
 
@@ -10171,6 +11788,20 @@ func (WlShellGetShellSurfaceRequest) Opcode() uint16 { return 0 }
 
 // Ensure WlShellGetShellSurfaceRequest implements Message.
 var _ Message = WlShellGetShellSurfaceRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlShellGetShellSurfaceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellGetShellSurfaceRequest implements Request.
+var _ Request = &WlShellGetShellSurfaceRequest{}
 
 // #endregion Interface wayland.wl_shell
 
@@ -10261,6 +11892,17 @@ func (WlShellSurfacePongRequest) Opcode() uint16 { return 0 }
 // Ensure WlShellSurfacePongRequest implements Message.
 var _ Message = WlShellSurfacePongRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShellSurfacePongRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfacePongRequest implements Request.
+var _ Request = &WlShellSurfacePongRequest{}
+
 // WlShellSurfaceMoveRequest requests to start an interactive move
 //
 // Start a pointer-driven move of the surface.
@@ -10281,6 +11923,20 @@ func (WlShellSurfaceMoveRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlShellSurfaceMoveRequest implements Message.
 var _ Message = WlShellSurfaceMoveRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceMoveRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceMoveRequest implements Request.
+var _ Request = &WlShellSurfaceMoveRequest{}
 
 // WlShellSurfaceResizeRequest requests to start an interactive resize
 //
@@ -10306,6 +11962,23 @@ func (WlShellSurfaceResizeRequest) Opcode() uint16 { return 2 }
 // Ensure WlShellSurfaceResizeRequest implements Message.
 var _ Message = WlShellSurfaceResizeRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceResizeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Edges); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceResizeRequest implements Request.
+var _ Request = &WlShellSurfaceResizeRequest{}
+
 // WlShellSurfaceSetToplevelRequest requests to make the surface a toplevel surface
 //
 // Map the surface as a toplevel surface.
@@ -10319,6 +11992,14 @@ func (WlShellSurfaceSetToplevelRequest) Opcode() uint16 { return 3 }
 
 // Ensure WlShellSurfaceSetToplevelRequest implements Message.
 var _ Message = WlShellSurfaceSetToplevelRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceSetToplevelRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlShellSurfaceSetToplevelRequest implements Request.
+var _ Request = &WlShellSurfaceSetToplevelRequest{}
 
 // WlShellSurfaceSetTransientRequest requests to make the surface a transient surface
 //
@@ -10348,6 +12029,26 @@ func (WlShellSurfaceSetTransientRequest) Opcode() uint16 { return 4 }
 
 // Ensure WlShellSurfaceSetTransientRequest implements Message.
 var _ Message = WlShellSurfaceSetTransientRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceSetTransientRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Parent); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Flags); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceSetTransientRequest implements Request.
+var _ Request = &WlShellSurfaceSetTransientRequest{}
 
 // WlShellSurfaceSetFullscreenRequest requests to make the surface a fullscreen surface
 //
@@ -10401,6 +12102,23 @@ func (WlShellSurfaceSetFullscreenRequest) Opcode() uint16 { return 5 }
 // Ensure WlShellSurfaceSetFullscreenRequest implements Message.
 var _ Message = WlShellSurfaceSetFullscreenRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceSetFullscreenRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Method); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Framerate); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Output); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceSetFullscreenRequest implements Request.
+var _ Request = &WlShellSurfaceSetFullscreenRequest{}
+
 // WlShellSurfaceSetPopupRequest requests to make the surface a popup surface
 //
 // Map the surface as a popup.
@@ -10448,6 +12166,32 @@ func (WlShellSurfaceSetPopupRequest) Opcode() uint16 { return 6 }
 // Ensure WlShellSurfaceSetPopupRequest implements Message.
 var _ Message = WlShellSurfaceSetPopupRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceSetPopupRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Parent); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Flags); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceSetPopupRequest implements Request.
+var _ Request = &WlShellSurfaceSetPopupRequest{}
+
 // WlShellSurfaceSetMaximizedRequest requests to make the surface a maximized surface
 //
 // Map the surface as a maximized surface.
@@ -10479,6 +12223,17 @@ func (WlShellSurfaceSetMaximizedRequest) Opcode() uint16 { return 7 }
 // Ensure WlShellSurfaceSetMaximizedRequest implements Message.
 var _ Message = WlShellSurfaceSetMaximizedRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceSetMaximizedRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Output); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceSetMaximizedRequest implements Request.
+var _ Request = &WlShellSurfaceSetMaximizedRequest{}
+
 // WlShellSurfaceSetTitleRequest requests to set surface title
 //
 // Set a short title for the surface.
@@ -10499,6 +12254,17 @@ func (WlShellSurfaceSetTitleRequest) Opcode() uint16 { return 8 }
 // Ensure WlShellSurfaceSetTitleRequest implements Message.
 var _ Message = WlShellSurfaceSetTitleRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceSetTitleRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Title); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceSetTitleRequest implements Request.
+var _ Request = &WlShellSurfaceSetTitleRequest{}
+
 // WlShellSurfaceSetClassRequest requests to set surface class
 //
 // Set a class for the surface.
@@ -10517,6 +12283,17 @@ func (WlShellSurfaceSetClassRequest) Opcode() uint16 { return 9 }
 
 // Ensure WlShellSurfaceSetClassRequest implements Message.
 var _ Message = WlShellSurfaceSetClassRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlShellSurfaceSetClassRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Class); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlShellSurfaceSetClassRequest implements Request.
+var _ Request = &WlShellSurfaceSetClassRequest{}
 
 // WlShellSurfacePingEvent signals when ping client
 //
@@ -10660,6 +12437,14 @@ func (WlSurfaceDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure WlSurfaceDestroyRequest implements Message.
 var _ Message = WlSurfaceDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSurfaceDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlSurfaceDestroyRequest implements Request.
+var _ Request = &WlSurfaceDestroyRequest{}
+
 // WlSurfaceAttachRequest requests to set the surface contents
 //
 // Set a buffer as the content of this surface.
@@ -10728,6 +12513,23 @@ func (WlSurfaceAttachRequest) Opcode() uint16 { return 1 }
 // Ensure WlSurfaceAttachRequest implements Message.
 var _ Message = WlSurfaceAttachRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSurfaceAttachRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Buffer); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceAttachRequest implements Request.
+var _ Request = &WlSurfaceAttachRequest{}
+
 // WlSurfaceDamageRequest requests to mark part of the surface damaged
 //
 // This request is used to describe the regions where the pending
@@ -10770,6 +12572,26 @@ func (WlSurfaceDamageRequest) Opcode() uint16 { return 2 }
 
 // Ensure WlSurfaceDamageRequest implements Message.
 var _ Message = WlSurfaceDamageRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSurfaceDamageRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceDamageRequest implements Request.
+var _ Request = &WlSurfaceDamageRequest{}
 
 // WlSurfaceFrameRequest requests to request a frame throttling hint
 //
@@ -10816,6 +12638,17 @@ func (WlSurfaceFrameRequest) Opcode() uint16 { return 3 }
 // Ensure WlSurfaceFrameRequest implements Message.
 var _ Message = WlSurfaceFrameRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSurfaceFrameRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Callback); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceFrameRequest implements Request.
+var _ Request = &WlSurfaceFrameRequest{}
+
 // WlSurfaceSetOpaqueRegionRequest requests to set opaque region
 //
 // This request sets the region of the surface that contains
@@ -10853,6 +12686,17 @@ func (WlSurfaceSetOpaqueRegionRequest) Opcode() uint16 { return 4 }
 // Ensure WlSurfaceSetOpaqueRegionRequest implements Message.
 var _ Message = WlSurfaceSetOpaqueRegionRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSurfaceSetOpaqueRegionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Region); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceSetOpaqueRegionRequest implements Request.
+var _ Request = &WlSurfaceSetOpaqueRegionRequest{}
+
 // WlSurfaceSetInputRegionRequest requests to set input region
 //
 // This request sets the region of the surface that can receive
@@ -10888,6 +12732,17 @@ func (WlSurfaceSetInputRegionRequest) Opcode() uint16 { return 5 }
 // Ensure WlSurfaceSetInputRegionRequest implements Message.
 var _ Message = WlSurfaceSetInputRegionRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSurfaceSetInputRegionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Region); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceSetInputRegionRequest implements Request.
+var _ Request = &WlSurfaceSetInputRegionRequest{}
+
 // WlSurfaceCommitRequest requests to commit pending surface state
 //
 // Surface state (input, opaque, and damage regions, attached buffers,
@@ -10915,6 +12770,14 @@ func (WlSurfaceCommitRequest) Opcode() uint16 { return 6 }
 
 // Ensure WlSurfaceCommitRequest implements Message.
 var _ Message = WlSurfaceCommitRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSurfaceCommitRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlSurfaceCommitRequest implements Request.
+var _ Request = &WlSurfaceCommitRequest{}
 
 // WlSurfaceSetBufferTransformRequest requests to sets the buffer transformation
 //
@@ -10958,6 +12821,17 @@ func (WlSurfaceSetBufferTransformRequest) Opcode() uint16 { return 7 }
 // Ensure WlSurfaceSetBufferTransformRequest implements Message.
 var _ Message = WlSurfaceSetBufferTransformRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSurfaceSetBufferTransformRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Transform); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceSetBufferTransformRequest implements Request.
+var _ Request = &WlSurfaceSetBufferTransformRequest{}
+
 // WlSurfaceSetBufferScaleRequest requests to sets the buffer scaling factor
 //
 // This request sets an optional scaling factor on how the compositor
@@ -10993,6 +12867,17 @@ func (WlSurfaceSetBufferScaleRequest) Opcode() uint16 { return 8 }
 
 // Ensure WlSurfaceSetBufferScaleRequest implements Message.
 var _ Message = WlSurfaceSetBufferScaleRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSurfaceSetBufferScaleRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Scale); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceSetBufferScaleRequest implements Request.
+var _ Request = &WlSurfaceSetBufferScaleRequest{}
 
 // WlSurfaceDamageBufferRequest requests to mark part of the surface damaged using buffer coordinates
 //
@@ -11047,6 +12932,26 @@ func (WlSurfaceDamageBufferRequest) Opcode() uint16 { return 9 }
 
 // Ensure WlSurfaceDamageBufferRequest implements Message.
 var _ Message = WlSurfaceDamageBufferRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSurfaceDamageBufferRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSurfaceDamageBufferRequest implements Request.
+var _ Request = &WlSurfaceDamageBufferRequest{}
 
 // WlSurfaceEnterEvent signals when surface enters an output
 //
@@ -11167,6 +13072,17 @@ func (WlSeatGetPointerRequest) Opcode() uint16 { return 0 }
 // Ensure WlSeatGetPointerRequest implements Message.
 var _ Message = WlSeatGetPointerRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSeatGetPointerRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSeatGetPointerRequest implements Request.
+var _ Request = &WlSeatGetPointerRequest{}
+
 // WlSeatGetKeyboardRequest requests to return keyboard object
 //
 // The ID provided will be initialized to the wl_keyboard interface
@@ -11187,6 +13103,17 @@ func (WlSeatGetKeyboardRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlSeatGetKeyboardRequest implements Message.
 var _ Message = WlSeatGetKeyboardRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSeatGetKeyboardRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSeatGetKeyboardRequest implements Request.
+var _ Request = &WlSeatGetKeyboardRequest{}
 
 // WlSeatGetTouchRequest requests to return touch object
 //
@@ -11209,6 +13136,17 @@ func (WlSeatGetTouchRequest) Opcode() uint16 { return 2 }
 // Ensure WlSeatGetTouchRequest implements Message.
 var _ Message = WlSeatGetTouchRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSeatGetTouchRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSeatGetTouchRequest implements Request.
+var _ Request = &WlSeatGetTouchRequest{}
+
 // WlSeatReleaseRequest requests to release the seat object
 //
 // Using this request a client can tell the server that it is not going to
@@ -11221,6 +13159,14 @@ func (WlSeatReleaseRequest) Opcode() uint16 { return 3 }
 
 // Ensure WlSeatReleaseRequest implements Message.
 var _ Message = WlSeatReleaseRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSeatReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlSeatReleaseRequest implements Request.
+var _ Request = &WlSeatReleaseRequest{}
 
 // WlSeatCapabilitiesEvent signals when seat capabilities changed
 //
@@ -11444,6 +13390,26 @@ func (WlPointerSetCursorRequest) Opcode() uint16 { return 0 }
 // Ensure WlPointerSetCursorRequest implements Message.
 var _ Message = WlPointerSetCursorRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlPointerSetCursorRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.HotspotX); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.HotspotY); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlPointerSetCursorRequest implements Request.
+var _ Request = &WlPointerSetCursorRequest{}
+
 // WlPointerReleaseRequest requests to release the pointer object
 //
 // Using this request a client can tell the server that it is not going to
@@ -11459,6 +13425,14 @@ func (WlPointerReleaseRequest) Opcode() uint16 { return 1 }
 
 // Ensure WlPointerReleaseRequest implements Message.
 var _ Message = WlPointerReleaseRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlPointerReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlPointerReleaseRequest implements Request.
+var _ Request = &WlPointerReleaseRequest{}
 
 // WlPointerEnterEvent signals when enter event
 //
@@ -11976,6 +13950,14 @@ func (WlKeyboardReleaseRequest) Opcode() uint16 { return 0 }
 // Ensure WlKeyboardReleaseRequest implements Message.
 var _ Message = WlKeyboardReleaseRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlKeyboardReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlKeyboardReleaseRequest implements Request.
+var _ Request = &WlKeyboardReleaseRequest{}
+
 // WlKeyboardKeymapEvent signals when keyboard mapping
 //
 // This event provides a file descriptor to the client which can be
@@ -12292,6 +14274,14 @@ func (WlTouchReleaseRequest) Opcode() uint16 { return 0 }
 
 // Ensure WlTouchReleaseRequest implements Message.
 var _ Message = WlTouchReleaseRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlTouchReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlTouchReleaseRequest implements Request.
+var _ Request = &WlTouchReleaseRequest{}
 
 // WlTouchDownEvent signals when touch down event and beginning of a touch sequence
 //
@@ -12734,6 +14724,14 @@ func (WlOutputReleaseRequest) Opcode() uint16 { return 0 }
 // Ensure WlOutputReleaseRequest implements Message.
 var _ Message = WlOutputReleaseRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlOutputReleaseRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlOutputReleaseRequest implements Request.
+var _ Request = &WlOutputReleaseRequest{}
+
 // WlOutputGeometryEvent signals when properties of the output
 //
 // The geometry event describes geometric properties of the output.
@@ -12994,6 +14992,14 @@ func (WlRegionDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure WlRegionDestroyRequest implements Message.
 var _ Message = WlRegionDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlRegionDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlRegionDestroyRequest implements Request.
+var _ Request = &WlRegionDestroyRequest{}
+
 // WlRegionAddRequest requests to add rectangle to region
 //
 // Add the specified rectangle to the region.
@@ -13017,6 +15023,26 @@ func (WlRegionAddRequest) Opcode() uint16 { return 1 }
 // Ensure WlRegionAddRequest implements Message.
 var _ Message = WlRegionAddRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlRegionAddRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlRegionAddRequest implements Request.
+var _ Request = &WlRegionAddRequest{}
+
 // WlRegionSubtractRequest requests to subtract rectangle from region
 //
 // Subtract the specified rectangle from the region.
@@ -13039,6 +15065,26 @@ func (WlRegionSubtractRequest) Opcode() uint16 { return 2 }
 
 // Ensure WlRegionSubtractRequest implements Message.
 var _ Message = WlRegionSubtractRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlRegionSubtractRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlRegionSubtractRequest implements Request.
+var _ Request = &WlRegionSubtractRequest{}
 
 // #endregion Interface wayland.wl_region
 
@@ -13065,6 +15111,14 @@ func (WlSubcompositorDestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure WlSubcompositorDestroyRequest implements Message.
 var _ Message = WlSubcompositorDestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSubcompositorDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlSubcompositorDestroyRequest implements Request.
+var _ Request = &WlSubcompositorDestroyRequest{}
 
 // WlSubcompositorGetSubsurfaceRequest requests to give a surface the role sub-surface
 //
@@ -13100,6 +15154,23 @@ func (WlSubcompositorGetSubsurfaceRequest) Opcode() uint16 { return 1 }
 // Ensure WlSubcompositorGetSubsurfaceRequest implements Message.
 var _ Message = WlSubcompositorGetSubsurfaceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSubcompositorGetSubsurfaceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Parent); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSubcompositorGetSubsurfaceRequest implements Request.
+var _ Request = &WlSubcompositorGetSubsurfaceRequest{}
+
 // #endregion Interface wayland.wl_subcompositor
 
 // ----------------------------------------------------------------------------
@@ -13127,6 +15198,14 @@ func (WlSubsurfaceDestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure WlSubsurfaceDestroyRequest implements Message.
 var _ Message = WlSubsurfaceDestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSubsurfaceDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlSubsurfaceDestroyRequest implements Request.
+var _ Request = &WlSubsurfaceDestroyRequest{}
 
 // WlSubsurfaceSetPositionRequest requests to reposition the sub-surface
 //
@@ -13160,6 +15239,20 @@ func (WlSubsurfaceSetPositionRequest) Opcode() uint16 { return 1 }
 // Ensure WlSubsurfaceSetPositionRequest implements Message.
 var _ Message = WlSubsurfaceSetPositionRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSubsurfaceSetPositionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSubsurfaceSetPositionRequest implements Request.
+var _ Request = &WlSubsurfaceSetPositionRequest{}
+
 // WlSubsurfacePlaceAboveRequest requests to restack the sub-surface
 //
 // This sub-surface is taken from the stack, and put back just
@@ -13188,6 +15281,17 @@ func (WlSubsurfacePlaceAboveRequest) Opcode() uint16 { return 2 }
 // Ensure WlSubsurfacePlaceAboveRequest implements Message.
 var _ Message = WlSubsurfacePlaceAboveRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSubsurfacePlaceAboveRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Sibling); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSubsurfacePlaceAboveRequest implements Request.
+var _ Request = &WlSubsurfacePlaceAboveRequest{}
+
 // WlSubsurfacePlaceBelowRequest requests to restack the sub-surface
 //
 // The sub-surface is placed just below the reference surface.
@@ -13202,6 +15306,17 @@ func (WlSubsurfacePlaceBelowRequest) Opcode() uint16 { return 3 }
 
 // Ensure WlSubsurfacePlaceBelowRequest implements Message.
 var _ Message = WlSubsurfacePlaceBelowRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSubsurfacePlaceBelowRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Sibling); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure WlSubsurfacePlaceBelowRequest implements Request.
+var _ Request = &WlSubsurfacePlaceBelowRequest{}
 
 // WlSubsurfaceSetSyncRequest requests to set sub-surface to synchronized mode
 //
@@ -13226,6 +15341,14 @@ func (WlSubsurfaceSetSyncRequest) Opcode() uint16 { return 4 }
 
 // Ensure WlSubsurfaceSetSyncRequest implements Message.
 var _ Message = WlSubsurfaceSetSyncRequest{}
+
+// Emit emits the message to the emitter.
+func (r *WlSubsurfaceSetSyncRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlSubsurfaceSetSyncRequest implements Request.
+var _ Request = &WlSubsurfaceSetSyncRequest{}
 
 // WlSubsurfaceSetDesyncRequest requests to set sub-surface to desynchronized mode
 //
@@ -13257,6 +15380,14 @@ func (WlSubsurfaceSetDesyncRequest) Opcode() uint16 { return 5 }
 // Ensure WlSubsurfaceSetDesyncRequest implements Message.
 var _ Message = WlSubsurfaceSetDesyncRequest{}
 
+// Emit emits the message to the emitter.
+func (r *WlSubsurfaceSetDesyncRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure WlSubsurfaceSetDesyncRequest implements Request.
+var _ Request = &WlSubsurfaceSetDesyncRequest{}
+
 // #endregion Interface wayland.wl_subsurface
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -13281,6 +15412,17 @@ func (ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest) Opcode() uint16 { r
 // Ensure ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest implements Request.
+var _ Request = &ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}
+
 // ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest requests to create a new primary selection device
 //
 // Create a new data device for a given seat.
@@ -13296,6 +15438,20 @@ func (ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest) Opcode() uint16 { retu
 // Ensure ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest implements Request.
+var _ Request = &ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}
+
 // ZwpPrimarySelectionDeviceManagerV1DestroyRequest requests to destroy the primary selection device manager
 //
 // Destroy the primary selection device manager.
@@ -13307,6 +15463,14 @@ func (ZwpPrimarySelectionDeviceManagerV1DestroyRequest) Opcode() uint16 { return
 
 // Ensure ZwpPrimarySelectionDeviceManagerV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionDeviceManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionDeviceManagerV1DestroyRequest implements Request.
+var _ Request = &ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_manager_v1
 
@@ -13332,6 +15496,20 @@ func (ZwpPrimarySelectionDeviceV1SetSelectionRequest) Opcode() uint16 { return 0
 // Ensure ZwpPrimarySelectionDeviceV1SetSelectionRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceV1SetSelectionRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionDeviceV1SetSelectionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Source); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionDeviceV1SetSelectionRequest implements Request.
+var _ Request = &ZwpPrimarySelectionDeviceV1SetSelectionRequest{}
+
 // ZwpPrimarySelectionDeviceV1DestroyRequest requests to destroy the primary selection device
 //
 // Destroy the primary selection device.
@@ -13343,6 +15521,14 @@ func (ZwpPrimarySelectionDeviceV1DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpPrimarySelectionDeviceV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionDeviceV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionDeviceV1DestroyRequest implements Request.
+var _ Request = &ZwpPrimarySelectionDeviceV1DestroyRequest{}
 
 // ZwpPrimarySelectionDeviceV1DataOfferEvent signals when introduce a new wp_primary_selection_offer
 //
@@ -13436,6 +15622,20 @@ func (ZwpPrimarySelectionOfferV1ReceiveRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpPrimarySelectionOfferV1ReceiveRequest implements Message.
 var _ Message = ZwpPrimarySelectionOfferV1ReceiveRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionOfferV1ReceiveRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.MimeType); err != nil {
+		return err
+	}
+	if err := e.PutFD(r.FD); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionOfferV1ReceiveRequest implements Request.
+var _ Request = &ZwpPrimarySelectionOfferV1ReceiveRequest{}
+
 // ZwpPrimarySelectionOfferV1DestroyRequest requests to destroy the primary selection offer
 //
 // Destroy the primary selection offer.
@@ -13447,6 +15647,14 @@ func (ZwpPrimarySelectionOfferV1DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpPrimarySelectionOfferV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionOfferV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionOfferV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionOfferV1DestroyRequest implements Request.
+var _ Request = &ZwpPrimarySelectionOfferV1DestroyRequest{}
 
 // ZwpPrimarySelectionOfferV1OfferEvent signals when advertise offered mime type
 //
@@ -13496,6 +15704,17 @@ func (ZwpPrimarySelectionSourceV1OfferRequest) Opcode() uint16 { return 0 }
 // Ensure ZwpPrimarySelectionSourceV1OfferRequest implements Message.
 var _ Message = ZwpPrimarySelectionSourceV1OfferRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionSourceV1OfferRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.MimeType); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionSourceV1OfferRequest implements Request.
+var _ Request = &ZwpPrimarySelectionSourceV1OfferRequest{}
+
 // ZwpPrimarySelectionSourceV1DestroyRequest requests to destroy the primary selection source
 //
 // Destroy the primary selection source.
@@ -13507,6 +15726,14 @@ func (ZwpPrimarySelectionSourceV1DestroyRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZwpPrimarySelectionSourceV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionSourceV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpPrimarySelectionSourceV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpPrimarySelectionSourceV1DestroyRequest implements Request.
+var _ Request = &ZwpPrimarySelectionSourceV1DestroyRequest{}
 
 // ZwpPrimarySelectionSourceV1SendEvent signals when send the primary selection contents
 //
@@ -13591,6 +15818,14 @@ func (XdgActivationV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure XdgActivationV1DestroyRequest implements Message.
 var _ Message = XdgActivationV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgActivationV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgActivationV1DestroyRequest implements Request.
+var _ Request = &XdgActivationV1DestroyRequest{}
+
 // XdgActivationV1GetActivationTokenRequest requests to requests a token
 //
 // Creates an xdg_activation_token_v1 object that will provide
@@ -13605,6 +15840,17 @@ func (XdgActivationV1GetActivationTokenRequest) Opcode() uint16 { return 1 }
 
 // Ensure XdgActivationV1GetActivationTokenRequest implements Message.
 var _ Message = XdgActivationV1GetActivationTokenRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgActivationV1GetActivationTokenRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgActivationV1GetActivationTokenRequest implements Request.
+var _ Request = &XdgActivationV1GetActivationTokenRequest{}
 
 // XdgActivationV1ActivateRequest requests to notify new interaction being available
 //
@@ -13631,6 +15877,20 @@ func (XdgActivationV1ActivateRequest) Opcode() uint16 { return 2 }
 
 // Ensure XdgActivationV1ActivateRequest implements Message.
 var _ Message = XdgActivationV1ActivateRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgActivationV1ActivateRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Token); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgActivationV1ActivateRequest implements Request.
+var _ Request = &XdgActivationV1ActivateRequest{}
 
 // #endregion Interface xdg_activation_v1.xdg_activation_v1
 
@@ -13672,6 +15932,20 @@ func (XdgActivationTokenV1SetSerialRequest) Opcode() uint16 { return 0 }
 // Ensure XdgActivationTokenV1SetSerialRequest implements Message.
 var _ Message = XdgActivationTokenV1SetSerialRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgActivationTokenV1SetSerialRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgActivationTokenV1SetSerialRequest implements Request.
+var _ Request = &XdgActivationTokenV1SetSerialRequest{}
+
 // XdgActivationTokenV1SetAppIDRequest requests to specifies the application being activated
 //
 // The requesting client can specify an app_id to associate the token
@@ -13688,6 +15962,17 @@ func (XdgActivationTokenV1SetAppIDRequest) Opcode() uint16 { return 1 }
 
 // Ensure XdgActivationTokenV1SetAppIDRequest implements Message.
 var _ Message = XdgActivationTokenV1SetAppIDRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgActivationTokenV1SetAppIDRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.AppID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgActivationTokenV1SetAppIDRequest implements Request.
+var _ Request = &XdgActivationTokenV1SetAppIDRequest{}
 
 // XdgActivationTokenV1SetSurfaceRequest requests to specifies the surface requesting activation
 //
@@ -13709,6 +15994,17 @@ func (XdgActivationTokenV1SetSurfaceRequest) Opcode() uint16 { return 2 }
 // Ensure XdgActivationTokenV1SetSurfaceRequest implements Message.
 var _ Message = XdgActivationTokenV1SetSurfaceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgActivationTokenV1SetSurfaceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgActivationTokenV1SetSurfaceRequest implements Request.
+var _ Request = &XdgActivationTokenV1SetSurfaceRequest{}
+
 // XdgActivationTokenV1CommitRequest requests to issues the token request
 //
 // Requests an activation token based on the different parameters that
@@ -13722,6 +16018,14 @@ func (XdgActivationTokenV1CommitRequest) Opcode() uint16 { return 3 }
 // Ensure XdgActivationTokenV1CommitRequest implements Message.
 var _ Message = XdgActivationTokenV1CommitRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgActivationTokenV1CommitRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgActivationTokenV1CommitRequest implements Request.
+var _ Request = &XdgActivationTokenV1CommitRequest{}
+
 // XdgActivationTokenV1DestroyRequest requests to destroy the xdg_activation_token_v1 object
 //
 // Notify the compositor that the xdg_activation_token_v1 object will no
@@ -13734,6 +16038,14 @@ func (XdgActivationTokenV1DestroyRequest) Opcode() uint16 { return 4 }
 
 // Ensure XdgActivationTokenV1DestroyRequest implements Message.
 var _ Message = XdgActivationTokenV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgActivationTokenV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgActivationTokenV1DestroyRequest implements Request.
+var _ Request = &XdgActivationTokenV1DestroyRequest{}
 
 // XdgActivationTokenV1DoneEvent signals when the exported activation token
 //
@@ -13787,6 +16099,14 @@ func (ZxdgDecorationManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZxdgDecorationManagerV1DestroyRequest implements Message.
 var _ Message = ZxdgDecorationManagerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgDecorationManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgDecorationManagerV1DestroyRequest implements Request.
+var _ Request = &ZxdgDecorationManagerV1DestroyRequest{}
+
 // ZxdgDecorationManagerV1GetToplevelDecorationRequest requests to create a new toplevel decoration object
 //
 // Create a new decoration object associated with the given toplevel.
@@ -13807,6 +16127,20 @@ func (ZxdgDecorationManagerV1GetToplevelDecorationRequest) Opcode() uint16 { ret
 
 // Ensure ZxdgDecorationManagerV1GetToplevelDecorationRequest implements Message.
 var _ Message = ZxdgDecorationManagerV1GetToplevelDecorationRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgDecorationManagerV1GetToplevelDecorationRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Toplevel); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgDecorationManagerV1GetToplevelDecorationRequest implements Request.
+var _ Request = &ZxdgDecorationManagerV1GetToplevelDecorationRequest{}
 
 // #endregion Interface xdg_decoration_unstable_v1.zxdg_decoration_manager_v1
 
@@ -13852,6 +16186,14 @@ func (ZxdgToplevelDecorationV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZxdgToplevelDecorationV1DestroyRequest implements Message.
 var _ Message = ZxdgToplevelDecorationV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgToplevelDecorationV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgToplevelDecorationV1DestroyRequest implements Request.
+var _ Request = &ZxdgToplevelDecorationV1DestroyRequest{}
+
 // ZxdgToplevelDecorationV1SetModeRequest requests to set the decoration mode
 //
 // Set the toplevel surface decoration mode. This informs the compositor
@@ -13883,6 +16225,17 @@ func (ZxdgToplevelDecorationV1SetModeRequest) Opcode() uint16 { return 1 }
 // Ensure ZxdgToplevelDecorationV1SetModeRequest implements Message.
 var _ Message = ZxdgToplevelDecorationV1SetModeRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgToplevelDecorationV1SetModeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Mode); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgToplevelDecorationV1SetModeRequest implements Request.
+var _ Request = &ZxdgToplevelDecorationV1SetModeRequest{}
+
 // ZxdgToplevelDecorationV1UnsetModeRequest requests to unset the decoration mode
 //
 // Unset the toplevel surface decoration mode. This informs the compositor
@@ -13897,6 +16250,14 @@ func (ZxdgToplevelDecorationV1UnsetModeRequest) Opcode() uint16 { return 2 }
 
 // Ensure ZxdgToplevelDecorationV1UnsetModeRequest implements Message.
 var _ Message = ZxdgToplevelDecorationV1UnsetModeRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgToplevelDecorationV1UnsetModeRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgToplevelDecorationV1UnsetModeRequest implements Request.
+var _ Request = &ZxdgToplevelDecorationV1UnsetModeRequest{}
 
 // ZxdgToplevelDecorationV1ConfigureEvent signals when suggest a surface change
 //
@@ -13955,6 +16316,14 @@ func (ZxdgExporterV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZxdgExporterV1DestroyRequest implements Message.
 var _ Message = ZxdgExporterV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgExporterV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgExporterV1DestroyRequest implements Request.
+var _ Request = &ZxdgExporterV1DestroyRequest{}
+
 // ZxdgExporterV1ExportRequest requests to export a surface
 //
 // The export request exports the passed surface so that it can later be
@@ -13979,6 +16348,20 @@ func (ZxdgExporterV1ExportRequest) Opcode() uint16 { return 1 }
 // Ensure ZxdgExporterV1ExportRequest implements Message.
 var _ Message = ZxdgExporterV1ExportRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgExporterV1ExportRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgExporterV1ExportRequest implements Request.
+var _ Request = &ZxdgExporterV1ExportRequest{}
+
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_exporter_v1
 
 // ----------------------------------------------------------------------------
@@ -13996,6 +16379,14 @@ func (ZxdgImporterV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZxdgImporterV1DestroyRequest implements Message.
 var _ Message = ZxdgImporterV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgImporterV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgImporterV1DestroyRequest implements Request.
+var _ Request = &ZxdgImporterV1DestroyRequest{}
 
 // ZxdgImporterV1ImportRequest requests to import a surface
 //
@@ -14018,6 +16409,20 @@ func (ZxdgImporterV1ImportRequest) Opcode() uint16 { return 1 }
 // Ensure ZxdgImporterV1ImportRequest implements Message.
 var _ Message = ZxdgImporterV1ImportRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgImporterV1ImportRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutString(r.Handle); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgImporterV1ImportRequest implements Request.
+var _ Request = &ZxdgImporterV1ImportRequest{}
+
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_importer_v1
 
 // ----------------------------------------------------------------------------
@@ -14036,6 +16441,14 @@ func (ZxdgExportedV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZxdgExportedV1DestroyRequest implements Message.
 var _ Message = ZxdgExportedV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgExportedV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgExportedV1DestroyRequest implements Request.
+var _ Request = &ZxdgExportedV1DestroyRequest{}
 
 // ZxdgExportedV1HandleEvent signals when the exported surface handle
 //
@@ -14086,6 +16499,14 @@ func (ZxdgImportedV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZxdgImportedV1DestroyRequest implements Message.
 var _ Message = ZxdgImportedV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgImportedV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgImportedV1DestroyRequest implements Request.
+var _ Request = &ZxdgImportedV1DestroyRequest{}
+
 // ZxdgImportedV1SetParentOfRequest requests to set as the parent of some surface
 //
 // Set the imported surface as the parent of some surface of the client.
@@ -14102,6 +16523,17 @@ func (ZxdgImportedV1SetParentOfRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZxdgImportedV1SetParentOfRequest implements Message.
 var _ Message = ZxdgImportedV1SetParentOfRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgImportedV1SetParentOfRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgImportedV1SetParentOfRequest implements Request.
+var _ Request = &ZxdgImportedV1SetParentOfRequest{}
 
 // ZxdgImportedV1DestroyedEvent signals when the imported surface handle has been destroyed
 //
@@ -14161,6 +16593,14 @@ func (ZxdgExporterV2DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZxdgExporterV2DestroyRequest implements Message.
 var _ Message = ZxdgExporterV2DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgExporterV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgExporterV2DestroyRequest implements Request.
+var _ Request = &ZxdgExporterV2DestroyRequest{}
+
 // ZxdgExporterV2ExportToplevelRequest requests to export a toplevel surface
 //
 // The export_toplevel request exports the passed surface so that it can later be
@@ -14186,6 +16626,20 @@ func (ZxdgExporterV2ExportToplevelRequest) Opcode() uint16 { return 1 }
 // Ensure ZxdgExporterV2ExportToplevelRequest implements Message.
 var _ Message = ZxdgExporterV2ExportToplevelRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgExporterV2ExportToplevelRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgExporterV2ExportToplevelRequest implements Request.
+var _ Request = &ZxdgExporterV2ExportToplevelRequest{}
+
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_exporter_v2
 
 // ----------------------------------------------------------------------------
@@ -14203,6 +16657,14 @@ func (ZxdgImporterV2DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZxdgImporterV2DestroyRequest implements Message.
 var _ Message = ZxdgImporterV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgImporterV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgImporterV2DestroyRequest implements Request.
+var _ Request = &ZxdgImporterV2DestroyRequest{}
 
 // ZxdgImporterV2ImportToplevelRequest requests to import a toplevel surface
 //
@@ -14225,6 +16687,20 @@ func (ZxdgImporterV2ImportToplevelRequest) Opcode() uint16 { return 1 }
 // Ensure ZxdgImporterV2ImportToplevelRequest implements Message.
 var _ Message = ZxdgImporterV2ImportToplevelRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgImporterV2ImportToplevelRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutString(r.Handle); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgImporterV2ImportToplevelRequest implements Request.
+var _ Request = &ZxdgImporterV2ImportToplevelRequest{}
+
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_importer_v2
 
 // ----------------------------------------------------------------------------
@@ -14243,6 +16719,14 @@ func (ZxdgExportedV2DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZxdgExportedV2DestroyRequest implements Message.
 var _ Message = ZxdgExportedV2DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgExportedV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgExportedV2DestroyRequest implements Request.
+var _ Request = &ZxdgExportedV2DestroyRequest{}
 
 // ZxdgExportedV2HandleEvent signals when the exported surface handle
 //
@@ -14304,6 +16788,14 @@ func (ZxdgImportedV2DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZxdgImportedV2DestroyRequest implements Message.
 var _ Message = ZxdgImportedV2DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgImportedV2DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgImportedV2DestroyRequest implements Request.
+var _ Request = &ZxdgImportedV2DestroyRequest{}
+
 // ZxdgImportedV2SetParentOfRequest requests to set as the parent of some surface
 //
 // Set the imported surface as the parent of some surface of the client.
@@ -14321,6 +16813,17 @@ func (ZxdgImportedV2SetParentOfRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZxdgImportedV2SetParentOfRequest implements Message.
 var _ Message = ZxdgImportedV2SetParentOfRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgImportedV2SetParentOfRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgImportedV2SetParentOfRequest implements Request.
+var _ Request = &ZxdgImportedV2SetParentOfRequest{}
 
 // ZxdgImportedV2DestroyedEvent signals when the imported surface handle has been destroyed
 //
@@ -14371,6 +16874,14 @@ func (ZxdgOutputManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 // Ensure ZxdgOutputManagerV1DestroyRequest implements Message.
 var _ Message = ZxdgOutputManagerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZxdgOutputManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgOutputManagerV1DestroyRequest implements Request.
+var _ Request = &ZxdgOutputManagerV1DestroyRequest{}
+
 // ZxdgOutputManagerV1GetXdgOutputRequest requests to create an xdg output from a wl_output
 //
 // This creates a new xdg_output object for the given wl_output.
@@ -14385,6 +16896,20 @@ func (ZxdgOutputManagerV1GetXdgOutputRequest) Opcode() uint16 { return 1 }
 
 // Ensure ZxdgOutputManagerV1GetXdgOutputRequest implements Message.
 var _ Message = ZxdgOutputManagerV1GetXdgOutputRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgOutputManagerV1GetXdgOutputRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Output); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZxdgOutputManagerV1GetXdgOutputRequest implements Request.
+var _ Request = &ZxdgOutputManagerV1GetXdgOutputRequest{}
 
 // #endregion Interface xdg_output_unstable_v1.zxdg_output_manager_v1
 
@@ -14403,6 +16928,14 @@ func (ZxdgOutputV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZxdgOutputV1DestroyRequest implements Message.
 var _ Message = ZxdgOutputV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZxdgOutputV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZxdgOutputV1DestroyRequest implements Request.
+var _ Request = &ZxdgOutputV1DestroyRequest{}
 
 // ZxdgOutputV1LogicalPositionEvent signals when position of the output within the global compositor space
 //
@@ -14674,6 +17207,14 @@ func (XdgWmBaseDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure XdgWmBaseDestroyRequest implements Message.
 var _ Message = XdgWmBaseDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgWmBaseDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgWmBaseDestroyRequest implements Request.
+var _ Request = &XdgWmBaseDestroyRequest{}
+
 // XdgWmBaseCreatePositionerRequest requests to create a positioner object
 //
 // Create a positioner object. A positioner object is used to position
@@ -14688,6 +17229,17 @@ func (XdgWmBaseCreatePositionerRequest) Opcode() uint16 { return 1 }
 
 // Ensure XdgWmBaseCreatePositionerRequest implements Message.
 var _ Message = XdgWmBaseCreatePositionerRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgWmBaseCreatePositionerRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgWmBaseCreatePositionerRequest implements Request.
+var _ Request = &XdgWmBaseCreatePositionerRequest{}
 
 // XdgWmBaseGetXdgSurfaceRequest requests to create a shell surface from a surface
 //
@@ -14716,6 +17268,20 @@ func (XdgWmBaseGetXdgSurfaceRequest) Opcode() uint16 { return 2 }
 // Ensure XdgWmBaseGetXdgSurfaceRequest implements Message.
 var _ Message = XdgWmBaseGetXdgSurfaceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgWmBaseGetXdgSurfaceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgWmBaseGetXdgSurfaceRequest implements Request.
+var _ Request = &XdgWmBaseGetXdgSurfaceRequest{}
+
 // XdgWmBasePongRequest requests to respond to a ping event
 //
 // A client must respond to a ping event with a pong request or
@@ -14730,6 +17296,17 @@ func (XdgWmBasePongRequest) Opcode() uint16 { return 3 }
 
 // Ensure XdgWmBasePongRequest implements Message.
 var _ Message = XdgWmBasePongRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgWmBasePongRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgWmBasePongRequest implements Request.
+var _ Request = &XdgWmBasePongRequest{}
 
 // XdgWmBasePingEvent signals when check if the client is alive
 //
@@ -14867,6 +17444,14 @@ func (XdgPositionerDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure XdgPositionerDestroyRequest implements Message.
 var _ Message = XdgPositionerDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgPositionerDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgPositionerDestroyRequest implements Request.
+var _ Request = &XdgPositionerDestroyRequest{}
+
 // XdgPositionerSetSizeRequest requests to set the size of the to-be positioned rectangle
 //
 // Set the size of the surface that is to be positioned with the positioner
@@ -14887,6 +17472,20 @@ func (XdgPositionerSetSizeRequest) Opcode() uint16 { return 1 }
 
 // Ensure XdgPositionerSetSizeRequest implements Message.
 var _ Message = XdgPositionerSetSizeRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetSizeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetSizeRequest implements Request.
+var _ Request = &XdgPositionerSetSizeRequest{}
 
 // XdgPositionerSetAnchorRectRequest requests to set the anchor rectangle within the parent surface
 //
@@ -14920,6 +17519,26 @@ func (XdgPositionerSetAnchorRectRequest) Opcode() uint16 { return 2 }
 // Ensure XdgPositionerSetAnchorRectRequest implements Message.
 var _ Message = XdgPositionerSetAnchorRectRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetAnchorRectRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetAnchorRectRequest implements Request.
+var _ Request = &XdgPositionerSetAnchorRectRequest{}
+
 // XdgPositionerSetAnchorRequest requests to set anchor rectangle anchor
 //
 // Defines the anchor point for the anchor rectangle. The specified anchor
@@ -14939,6 +17558,17 @@ func (XdgPositionerSetAnchorRequest) Opcode() uint16 { return 3 }
 // Ensure XdgPositionerSetAnchorRequest implements Message.
 var _ Message = XdgPositionerSetAnchorRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetAnchorRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Anchor); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetAnchorRequest implements Request.
+var _ Request = &XdgPositionerSetAnchorRequest{}
+
 // XdgPositionerSetGravityRequest requests to set child surface gravity
 //
 // Defines in what direction a surface should be positioned, relative to
@@ -14957,6 +17587,17 @@ func (XdgPositionerSetGravityRequest) Opcode() uint16 { return 4 }
 
 // Ensure XdgPositionerSetGravityRequest implements Message.
 var _ Message = XdgPositionerSetGravityRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetGravityRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Gravity); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetGravityRequest implements Request.
+var _ Request = &XdgPositionerSetGravityRequest{}
 
 // XdgPositionerSetConstraintAdjustmentRequest requests to set the adjustment to be done when constrained
 //
@@ -14983,6 +17624,17 @@ func (XdgPositionerSetConstraintAdjustmentRequest) Opcode() uint16 { return 5 }
 
 // Ensure XdgPositionerSetConstraintAdjustmentRequest implements Message.
 var _ Message = XdgPositionerSetConstraintAdjustmentRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetConstraintAdjustmentRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.ConstraintAdjustment); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetConstraintAdjustmentRequest implements Request.
+var _ Request = &XdgPositionerSetConstraintAdjustmentRequest{}
 
 // XdgPositionerSetOffsetRequest requests to set surface position offset
 //
@@ -15011,6 +17663,20 @@ func (XdgPositionerSetOffsetRequest) Opcode() uint16 { return 6 }
 // Ensure XdgPositionerSetOffsetRequest implements Message.
 var _ Message = XdgPositionerSetOffsetRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetOffsetRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetOffsetRequest implements Request.
+var _ Request = &XdgPositionerSetOffsetRequest{}
+
 // XdgPositionerSetReactiveRequest requests to continuously reconstrain the surface
 //
 // When set reactive, the surface is reconstrained if the conditions used
@@ -15028,6 +17694,14 @@ func (XdgPositionerSetReactiveRequest) Opcode() uint16 { return 7 }
 // Ensure XdgPositionerSetReactiveRequest implements Message.
 var _ Message = XdgPositionerSetReactiveRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetReactiveRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgPositionerSetReactiveRequest implements Request.
+var _ Request = &XdgPositionerSetReactiveRequest{}
+
 type XdgPositionerSetParentSizeRequest struct {
 	// ParentWidth contains future window geometry width of parent
 	ParentWidth int32
@@ -15041,6 +17715,20 @@ func (XdgPositionerSetParentSizeRequest) Opcode() uint16 { return 8 }
 
 // Ensure XdgPositionerSetParentSizeRequest implements Message.
 var _ Message = XdgPositionerSetParentSizeRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetParentSizeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.ParentWidth); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.ParentHeight); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetParentSizeRequest implements Request.
+var _ Request = &XdgPositionerSetParentSizeRequest{}
 
 // XdgPositionerSetParentConfigureRequest requests to set parent configure this is a response to
 //
@@ -15058,6 +17746,17 @@ func (XdgPositionerSetParentConfigureRequest) Opcode() uint16 { return 9 }
 
 // Ensure XdgPositionerSetParentConfigureRequest implements Message.
 var _ Message = XdgPositionerSetParentConfigureRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgPositionerSetParentConfigureRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPositionerSetParentConfigureRequest implements Request.
+var _ Request = &XdgPositionerSetParentConfigureRequest{}
 
 // #endregion Interface xdg_shell.xdg_positioner
 
@@ -15087,6 +17786,14 @@ func (XdgSurfaceDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure XdgSurfaceDestroyRequest implements Message.
 var _ Message = XdgSurfaceDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgSurfaceDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgSurfaceDestroyRequest implements Request.
+var _ Request = &XdgSurfaceDestroyRequest{}
+
 // XdgSurfaceGetToplevelRequest requests to assign the xdg_toplevel surface role
 //
 // This creates an xdg_toplevel object for the given xdg_surface and gives
@@ -15103,6 +17810,17 @@ func (XdgSurfaceGetToplevelRequest) Opcode() uint16 { return 1 }
 
 // Ensure XdgSurfaceGetToplevelRequest implements Message.
 var _ Message = XdgSurfaceGetToplevelRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgSurfaceGetToplevelRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgSurfaceGetToplevelRequest implements Request.
+var _ Request = &XdgSurfaceGetToplevelRequest{}
 
 // XdgSurfaceGetPopupRequest requests to assign the xdg_popup surface role
 //
@@ -15127,6 +17845,23 @@ func (XdgSurfaceGetPopupRequest) Opcode() uint16 { return 2 }
 
 // Ensure XdgSurfaceGetPopupRequest implements Message.
 var _ Message = XdgSurfaceGetPopupRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgSurfaceGetPopupRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Parent); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Positioner); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgSurfaceGetPopupRequest implements Request.
+var _ Request = &XdgSurfaceGetPopupRequest{}
 
 // XdgSurfaceSetWindowGeometryRequest requests to set the new window geometry
 //
@@ -15175,6 +17910,26 @@ func (XdgSurfaceSetWindowGeometryRequest) Opcode() uint16 { return 3 }
 // Ensure XdgSurfaceSetWindowGeometryRequest implements Message.
 var _ Message = XdgSurfaceSetWindowGeometryRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgSurfaceSetWindowGeometryRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgSurfaceSetWindowGeometryRequest implements Request.
+var _ Request = &XdgSurfaceSetWindowGeometryRequest{}
+
 // XdgSurfaceAckConfigureRequest requests to ack a configure event
 //
 // When a configure event is received, if a client commits the
@@ -15206,6 +17961,17 @@ func (XdgSurfaceAckConfigureRequest) Opcode() uint16 { return 4 }
 
 // Ensure XdgSurfaceAckConfigureRequest implements Message.
 var _ Message = XdgSurfaceAckConfigureRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgSurfaceAckConfigureRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgSurfaceAckConfigureRequest implements Request.
+var _ Request = &XdgSurfaceAckConfigureRequest{}
 
 // XdgSurfaceConfigureEvent signals when suggest a surface change
 //
@@ -15326,6 +18092,14 @@ func (XdgToplevelDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure XdgToplevelDestroyRequest implements Message.
 var _ Message = XdgToplevelDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgToplevelDestroyRequest implements Request.
+var _ Request = &XdgToplevelDestroyRequest{}
+
 // XdgToplevelSetParentRequest requests to set the parent of this surface
 //
 // Set the "parent" of this surface. This surface should be stacked
@@ -15354,6 +18128,17 @@ func (XdgToplevelSetParentRequest) Opcode() uint16 { return 1 }
 // Ensure XdgToplevelSetParentRequest implements Message.
 var _ Message = XdgToplevelSetParentRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetParentRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Parent); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelSetParentRequest implements Request.
+var _ Request = &XdgToplevelSetParentRequest{}
+
 // XdgToplevelSetTitleRequest requests to set surface title
 //
 // Set a short title for the surface.
@@ -15372,6 +18157,17 @@ func (XdgToplevelSetTitleRequest) Opcode() uint16 { return 2 }
 
 // Ensure XdgToplevelSetTitleRequest implements Message.
 var _ Message = XdgToplevelSetTitleRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetTitleRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.Title); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelSetTitleRequest implements Request.
+var _ Request = &XdgToplevelSetTitleRequest{}
 
 // XdgToplevelSetAppIDRequest requests to set application ID
 //
@@ -15408,6 +18204,17 @@ func (XdgToplevelSetAppIDRequest) Opcode() uint16 { return 3 }
 // Ensure XdgToplevelSetAppIDRequest implements Message.
 var _ Message = XdgToplevelSetAppIDRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetAppIDRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutString(r.AppID); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelSetAppIDRequest implements Request.
+var _ Request = &XdgToplevelSetAppIDRequest{}
+
 // XdgToplevelShowWindowMenuRequest requests to show the window menu
 //
 // Clients implementing client-side decorations might want to show
@@ -15441,6 +18248,26 @@ func (XdgToplevelShowWindowMenuRequest) Opcode() uint16 { return 4 }
 // Ensure XdgToplevelShowWindowMenuRequest implements Message.
 var _ Message = XdgToplevelShowWindowMenuRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelShowWindowMenuRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.X); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Y); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelShowWindowMenuRequest implements Request.
+var _ Request = &XdgToplevelShowWindowMenuRequest{}
+
 // XdgToplevelMoveRequest requests to start an interactive move
 //
 // Start an interactive, user-driven move of the surface.
@@ -15472,6 +18299,20 @@ func (XdgToplevelMoveRequest) Opcode() uint16 { return 5 }
 
 // Ensure XdgToplevelMoveRequest implements Message.
 var _ Message = XdgToplevelMoveRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgToplevelMoveRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelMoveRequest implements Request.
+var _ Request = &XdgToplevelMoveRequest{}
 
 // XdgToplevelResizeRequest requests to start an interactive resize
 //
@@ -15522,6 +18363,23 @@ func (XdgToplevelResizeRequest) Opcode() uint16 { return 6 }
 // Ensure XdgToplevelResizeRequest implements Message.
 var _ Message = XdgToplevelResizeRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelResizeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Edges); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelResizeRequest implements Request.
+var _ Request = &XdgToplevelResizeRequest{}
+
 // XdgToplevelSetMaxSizeRequest requests to set the maximum size
 //
 // Set a maximum size for the window.
@@ -15569,6 +18427,20 @@ func (XdgToplevelSetMaxSizeRequest) Opcode() uint16 { return 7 }
 
 // Ensure XdgToplevelSetMaxSizeRequest implements Message.
 var _ Message = XdgToplevelSetMaxSizeRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetMaxSizeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelSetMaxSizeRequest implements Request.
+var _ Request = &XdgToplevelSetMaxSizeRequest{}
 
 // XdgToplevelSetMinSizeRequest requests to set the minimum size
 //
@@ -15618,6 +18490,20 @@ func (XdgToplevelSetMinSizeRequest) Opcode() uint16 { return 8 }
 // Ensure XdgToplevelSetMinSizeRequest implements Message.
 var _ Message = XdgToplevelSetMinSizeRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetMinSizeRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutInt(r.Width); err != nil {
+		return err
+	}
+	if err := e.PutInt(r.Height); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelSetMinSizeRequest implements Request.
+var _ Request = &XdgToplevelSetMinSizeRequest{}
+
 // XdgToplevelSetMaximizedRequest requests to maximize the window
 //
 // Maximize the surface.
@@ -15647,6 +18533,14 @@ func (XdgToplevelSetMaximizedRequest) Opcode() uint16 { return 9 }
 
 // Ensure XdgToplevelSetMaximizedRequest implements Message.
 var _ Message = XdgToplevelSetMaximizedRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetMaximizedRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgToplevelSetMaximizedRequest implements Request.
+var _ Request = &XdgToplevelSetMaximizedRequest{}
 
 // XdgToplevelUnsetMaximizedRequest requests to unmaximize the window
 //
@@ -15679,6 +18573,14 @@ func (XdgToplevelUnsetMaximizedRequest) Opcode() uint16 { return 10 }
 
 // Ensure XdgToplevelUnsetMaximizedRequest implements Message.
 var _ Message = XdgToplevelUnsetMaximizedRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgToplevelUnsetMaximizedRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgToplevelUnsetMaximizedRequest implements Request.
+var _ Request = &XdgToplevelUnsetMaximizedRequest{}
 
 // XdgToplevelSetFullscreenRequest requests to set the window as fullscreen on an output
 //
@@ -15715,6 +18617,17 @@ func (XdgToplevelSetFullscreenRequest) Opcode() uint16 { return 11 }
 // Ensure XdgToplevelSetFullscreenRequest implements Message.
 var _ Message = XdgToplevelSetFullscreenRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetFullscreenRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Output); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgToplevelSetFullscreenRequest implements Request.
+var _ Request = &XdgToplevelSetFullscreenRequest{}
+
 // XdgToplevelUnsetFullscreenRequest requests to unset the window as fullscreen
 //
 // Make the surface no longer fullscreen.
@@ -15743,6 +18656,14 @@ func (XdgToplevelUnsetFullscreenRequest) Opcode() uint16 { return 12 }
 // Ensure XdgToplevelUnsetFullscreenRequest implements Message.
 var _ Message = XdgToplevelUnsetFullscreenRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgToplevelUnsetFullscreenRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgToplevelUnsetFullscreenRequest implements Request.
+var _ Request = &XdgToplevelUnsetFullscreenRequest{}
+
 // XdgToplevelSetMinimizedRequest requests to set the window as minimized
 //
 // Request that the compositor minimize your surface. There is no
@@ -15761,6 +18682,14 @@ func (XdgToplevelSetMinimizedRequest) Opcode() uint16 { return 13 }
 
 // Ensure XdgToplevelSetMinimizedRequest implements Message.
 var _ Message = XdgToplevelSetMinimizedRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgToplevelSetMinimizedRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgToplevelSetMinimizedRequest implements Request.
+var _ Request = &XdgToplevelSetMinimizedRequest{}
 
 // XdgToplevelConfigureEvent signals when suggest a surface change
 //
@@ -15875,6 +18804,14 @@ func (XdgPopupDestroyRequest) Opcode() uint16 { return 0 }
 // Ensure XdgPopupDestroyRequest implements Message.
 var _ Message = XdgPopupDestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgPopupDestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure XdgPopupDestroyRequest implements Request.
+var _ Request = &XdgPopupDestroyRequest{}
+
 // XdgPopupGrabRequest requests to make the popup take an explicit grab
 //
 // This request makes the created popup take an explicit grab. An explicit
@@ -15932,6 +18869,20 @@ func (XdgPopupGrabRequest) Opcode() uint16 { return 1 }
 // Ensure XdgPopupGrabRequest implements Message.
 var _ Message = XdgPopupGrabRequest{}
 
+// Emit emits the message to the emitter.
+func (r *XdgPopupGrabRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Serial); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPopupGrabRequest implements Request.
+var _ Request = &XdgPopupGrabRequest{}
+
 // XdgPopupRepositionRequest requests to recalculate the popup's location
 //
 // Reposition an already-mapped popup. The popup will be placed given the
@@ -15969,6 +18920,20 @@ func (XdgPopupRepositionRequest) Opcode() uint16 { return 2 }
 
 // Ensure XdgPopupRepositionRequest implements Message.
 var _ Message = XdgPopupRepositionRequest{}
+
+// Emit emits the message to the emitter.
+func (r *XdgPopupRepositionRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Positioner); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.Token); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure XdgPopupRepositionRequest implements Request.
+var _ Request = &XdgPopupRepositionRequest{}
 
 // XdgPopupConfigureEvent signals when configure the popup surface
 //
@@ -16118,6 +19083,14 @@ func (ZwpXwaylandKeyboardGrabManagerV1DestroyRequest) Opcode() uint16 { return 0
 // Ensure ZwpXwaylandKeyboardGrabManagerV1DestroyRequest implements Message.
 var _ Message = ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpXwaylandKeyboardGrabManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpXwaylandKeyboardGrabManagerV1DestroyRequest implements Request.
+var _ Request = &ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}
+
 // ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest requests to grab the keyboard to a surface
 //
 // The grab_keyboard request asks for a grab of the keyboard, forcing
@@ -16155,6 +19128,23 @@ func (ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest) Opcode() uint16 { ret
 // Ensure ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest implements Message.
 var _ Message = ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Seat); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest implements Request.
+var _ Request = &ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}
+
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -16172,6 +19162,14 @@ func (ZwpXwaylandKeyboardGrabV1DestroyRequest) Opcode() uint16 { return 0 }
 
 // Ensure ZwpXwaylandKeyboardGrabV1DestroyRequest implements Message.
 var _ Message = ZwpXwaylandKeyboardGrabV1DestroyRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpXwaylandKeyboardGrabV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpXwaylandKeyboardGrabV1DestroyRequest implements Request.
+var _ Request = &ZwpXwaylandKeyboardGrabV1DestroyRequest{}
 
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_v1
 
@@ -16205,6 +19203,14 @@ func (ZwpLinuxExplicitSynchronizationV1DestroyRequest) Opcode() uint16 { return 
 // Ensure ZwpLinuxExplicitSynchronizationV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxExplicitSynchronizationV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxExplicitSynchronizationV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpLinuxExplicitSynchronizationV1DestroyRequest implements Request.
+var _ Request = &ZwpLinuxExplicitSynchronizationV1DestroyRequest{}
+
 // ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest requests to extend surface interface for explicit synchronization
 //
 // Instantiate an interface extension for the given wl_surface to provide
@@ -16231,6 +19237,20 @@ func (ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest) Opcode() uint1
 
 // Ensure ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest implements Message.
 var _ Message = ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.ID); err != nil {
+		return err
+	}
+	if err := e.PutObjectID(r.Surface); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest implements Request.
+var _ Request = &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_explicit_synchronization_v1
 
@@ -16278,6 +19298,14 @@ func (ZwpLinuxSurfaceSynchronizationV1DestroyRequest) Opcode() uint16 { return 0
 // Ensure ZwpLinuxSurfaceSynchronizationV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxSurfaceSynchronizationV1DestroyRequest) Emit(e *RequestEmitter) error {
+	return nil
+}
+
+// Ensure ZwpLinuxSurfaceSynchronizationV1DestroyRequest implements Request.
+var _ Request = &ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
+
 // ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest requests to set the acquire fence
 //
 // Set the acquire fence that must be signaled before the compositor
@@ -16314,6 +19342,17 @@ func (ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest) Opcode() uint16 { 
 // Ensure ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest implements Message.
 var _ Message = ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}
 
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutFD(r.FD); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest implements Request.
+var _ Request = &ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}
+
 // ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest requests to release fence for last-attached buffer
 //
 // Create a listener for the release of the buffer attached by the
@@ -16343,6 +19382,17 @@ func (ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest) Opcode() uint16 { retur
 
 // Ensure ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest implements Message.
 var _ Message = ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
+
+// Emit emits the message to the emitter.
+func (r *ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest) Emit(e *RequestEmitter) error {
+	if err := e.PutObjectID(r.Release); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Ensure ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest implements Request.
+var _ Request = &ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_surface_synchronization_v1
 

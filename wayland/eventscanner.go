@@ -62,74 +62,74 @@ func ReadEvent(socket *net.UnixConn) (*EventScanner, error) {
 	}, nil
 }
 
-func (e *EventScanner) Int() (int32, error) {
+func (s *EventScanner) Int() (int32, error) {
 	buf := [4]byte{}
-	if _, err := e.reader.Read(buf[:]); err != nil {
+	if _, err := s.reader.Read(buf[:]); err != nil {
 		return 0, err
 	}
 	return *(*int32)(unsafe.Pointer(&buf[0])), nil
 }
 
-func (e *EventScanner) Uint() (uint32, error) {
+func (s *EventScanner) Uint() (uint32, error) {
 	buf := [4]byte{}
-	if _, err := e.reader.Read(buf[:]); err != nil {
+	if _, err := s.reader.Read(buf[:]); err != nil {
 		return 0, err
 	}
 	return *(*uint32)(unsafe.Pointer(&buf[0])), nil
 }
 
-func (e *EventScanner) ObjectID() (ObjectID, error) {
+func (s *EventScanner) ObjectID() (ObjectID, error) {
 	buf := [4]byte{}
-	if _, err := e.reader.Read(buf[:]); err != nil {
+	if _, err := s.reader.Read(buf[:]); err != nil {
 		return 0, err
 	}
 	return *(*ObjectID)(unsafe.Pointer(&buf[0])), nil
 }
 
-func (e *EventScanner) Fixed() (Fixed, error) {
+func (s *EventScanner) Fixed() (Fixed, error) {
 	buf := [4]byte{}
-	if _, err := e.reader.Read(buf[:]); err != nil {
+	if _, err := s.reader.Read(buf[:]); err != nil {
 		return 0, err
 	}
 	return *(*Fixed)(unsafe.Pointer(&buf[0])), nil
 }
 
-func (e *EventScanner) String() (string, error) {
-	len, err := e.Uint()
+func (s *EventScanner) String() (string, error) {
+	len, err := s.Uint()
 	if err != nil {
 		return "", err
 	}
 
 	buf := make([]byte, len+(4-(len&3)))
-	if _, err := e.reader.Read(buf[:]); err != nil {
+	if _, err := s.reader.Read(buf[:]); err != nil {
 		return "", err
 	}
 
 	return string(bytes.TrimRight(buf[:len], "\x00")), nil
 }
 
-func (e *EventScanner) Array() ([]byte, error) {
-	len, err := e.Uint()
+func (s *EventScanner) Array() ([]byte, error) {
+	len, err := s.Uint()
 	if err != nil {
 		return nil, err
 	}
 
 	buf := make([]byte, len)
-	if _, err := e.reader.Read(buf[:]); err != nil {
+	if _, err := s.reader.Read(buf[:]); err != nil {
 		return nil, err
 	}
 
 	return buf, nil
 }
 
-func (e *EventScanner) FD() (FD, error) {
+func (s *EventScanner) FD() (FD, error) {
 	var control syscall.SocketControlMessage
 
-	if len(e.control) < 1 {
+	if len(s.control) < 1 {
 		return 0, ErrNoOutOfBand
 	}
 
-	control, e.control = e.control[0], e.control[1:]
+	control, s.control = s.control[0], s.control[1:]
 
 	fds, err := syscall.ParseUnixRights(&control)
 	if err != nil {

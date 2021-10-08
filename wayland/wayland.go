@@ -20,5 +20,12 @@ type Message interface {
 
 // Event is an interface implemented by all Wayland events.
 type Event interface {
+	Message
 	Scan(s *EventScanner) error
+}
+
+// Request is an interface implemented by all Wayland requests.
+type Request interface {
+	Message
+	Emit(e *RequestEmitter) error
 }
