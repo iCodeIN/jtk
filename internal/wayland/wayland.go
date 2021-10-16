@@ -1,6 +1,6 @@
 package wayland
 
-//go:generate go run ../cmd/waygen ../third_party/wayland/protocol ../third_party/wayland-protocols
+//go:generate go run ../../cmd/waygen ../../third_party/wayland/protocol ../../third_party/wayland-protocols
 
 // FD represents a UNIX file descriptor. This type is present inside Wayland
 // requests and events, but it is not sent over the main connection, and as

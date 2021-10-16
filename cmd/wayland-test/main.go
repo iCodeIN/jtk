@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/jchv/jtk/wayland"
+	"github.com/jchv/jtk/internal/wayland"
 )
 
 func main() {
