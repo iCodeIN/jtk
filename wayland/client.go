@@ -169,6 +169,12 @@ func (d *Display) PollEvent() (ObjectID, Event, error) {
 }
 
 func (d *Display) DispatchEvent(object ObjectID, event Event) {
+	switch t := event.(type) {
+	case *WlDisplayDeleteIDEvent:
+		d.UnregisterObject(ObjectID(t.ID))
+		d.UnregisterHandlers(ObjectID(t.ID))
+	}
+
 	d.handlersMutex.Lock()
 	handlers := append([]Handler{}, d.handlers[object]...)
 	d.handlersMutex.Unlock()
@@ -184,12 +190,6 @@ func (d *Display) EventLoop() error {
 		object, event, err := d.PollEvent()
 		if err != nil {
 			return err
-		}
-
-		switch t := event.(type) {
-		case *WlDisplayDeleteIDEvent:
-			d.UnregisterObject(ObjectID(t.ID))
-			d.UnregisterHandlers(ObjectID(t.ID))
 		}
 
 		d.DispatchEvent(object, event)
