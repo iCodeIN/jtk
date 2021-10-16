@@ -17,13 +17,14 @@ var _ Connection = &Display{}
 type Display struct {
 	socket  *net.UnixConn
 	display *WlDisplay
-	id      uint32
 
 	objects      map[ObjectID]Proxy
 	objectsMutex sync.RWMutex
 
 	handlers      map[ObjectID][]Handler
 	handlersMutex sync.RWMutex
+
+	id uint32
 }
 
 // Connect connects to a Wayland display.
@@ -45,16 +46,16 @@ func Connect(display string) (*Display, error) {
 	wldisplay := &WlDisplay{id: 1}
 
 	objects := make(map[ObjectID]Proxy)
-	objects[ObjectID(1)] = wldisplay
+	objects[wldisplay.id] = wldisplay
 
 	handlers := make(map[ObjectID][]Handler)
 
 	conn := &Display{
 		socket:   socket,
 		display:  wldisplay,
-		id:       1,
 		objects:  objects,
 		handlers: handlers,
+		id:       1,
 	}
 
 	return conn, nil
@@ -168,6 +169,7 @@ func (d *Display) PollEvent() (ObjectID, Event, error) {
 	return ObjectID(scanner.header.ObjectID), event, nil
 }
 
+// DispatchEvent dispatches the provided event.
 func (d *Display) DispatchEvent(object ObjectID, event Event) {
 	switch t := event.(type) {
 	case *WlDisplayDeleteIDEvent:
@@ -189,6 +191,11 @@ func (d *Display) EventLoop() error {
 	for {
 		object, event, err := d.PollEvent()
 		if err != nil {
+			// Treat closed socket as success.
+			if errors.Is(err, net.ErrClosed) {
+				return nil
+			}
+
 			return err
 		}
 

@@ -36,7 +36,9 @@ func main() {
 
 	log.Printf("registry ID: %d\n", registry.ID())
 
-	conn.EventLoop()
+	if err := conn.EventLoop(); err != nil {
+		log.Printf("Error in event loop: %v", err)
+	}
 
 	defer conn.Close()
 }
