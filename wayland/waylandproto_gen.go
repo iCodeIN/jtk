@@ -3,6 +3,89 @@
 package wayland
 
 ////////////////////////////////////////////////////////////////////////////////
+// Protocol Map
+var Protocols = map[string]ProtocolDescriptor{
+	"drm_lease_v1": {
+		Name: "drm_lease_v1",
+	},
+	"fullscreen_shell_unstable_v1": {
+		Name: "fullscreen_shell_unstable_v1",
+	},
+	"idle_inhibit_unstable_v1": {
+		Name: "idle_inhibit_unstable_v1",
+	},
+	"input_method_unstable_v1": {
+		Name: "input_method_unstable_v1",
+	},
+	"input_timestamps_unstable_v1": {
+		Name: "input_timestamps_unstable_v1",
+	},
+	"keyboard_shortcuts_inhibit_unstable_v1": {
+		Name: "keyboard_shortcuts_inhibit_unstable_v1",
+	},
+	"linux_dmabuf_unstable_v1": {
+		Name: "linux_dmabuf_unstable_v1",
+	},
+	"pointer_constraints_unstable_v1": {
+		Name: "pointer_constraints_unstable_v1",
+	},
+	"pointer_gestures_unstable_v1": {
+		Name: "pointer_gestures_unstable_v1",
+	},
+	"presentation_time": {
+		Name: "presentation_time",
+	},
+	"relative_pointer_unstable_v1": {
+		Name: "relative_pointer_unstable_v1",
+	},
+	"tablet_unstable_v1": {
+		Name: "tablet_unstable_v1",
+	},
+	"tablet_unstable_v2": {
+		Name: "tablet_unstable_v2",
+	},
+	"text_input_unstable_v1": {
+		Name: "text_input_unstable_v1",
+	},
+	"text_input_unstable_v3": {
+		Name: "text_input_unstable_v3",
+	},
+	"viewporter": {
+		Name: "viewporter",
+	},
+	"wayland": {
+		Name: "wayland",
+	},
+	"wp_primary_selection_unstable_v1": {
+		Name: "wp_primary_selection_unstable_v1",
+	},
+	"xdg_activation_v1": {
+		Name: "xdg_activation_v1",
+	},
+	"xdg_decoration_unstable_v1": {
+		Name: "xdg_decoration_unstable_v1",
+	},
+	"xdg_foreign_unstable_v1": {
+		Name: "xdg_foreign_unstable_v1",
+	},
+	"xdg_foreign_unstable_v2": {
+		Name: "xdg_foreign_unstable_v2",
+	},
+	"xdg_output_unstable_v1": {
+		Name: "xdg_output_unstable_v1",
+	},
+	"xdg_shell": {
+		Name: "xdg_shell",
+	},
+	"xwayland_keyboard_grab_unstable_v1": {
+		Name: "xwayland_keyboard_grab_unstable_v1",
+	},
+	"zwp_linux_explicit_synchronization_unstable_v1": {
+		Name: "zwp_linux_explicit_synchronization_unstable_v1",
+	},
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // #region Protocol drm_lease_v1
 
 // ----------------------------------------------------------------------------

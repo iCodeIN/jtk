@@ -212,6 +212,26 @@ func codegen(w io.Writer) error {
 		return fmt.Errorf("writing preamble: %w", err)
 	}
 
+	if _, err := fmt.Fprintf(w, "////////////////////////////////////////////////////////////////////////////////\n// Protocol Map\nvar Protocols = map[string]ProtocolDescriptor{\n"); err != nil {
+		return fmt.Errorf("writing protocol map header: %v", err)
+	}
+
+	for _, proto := range protos {
+		if _, err := fmt.Fprintf(w, "\t%q: {\n", proto.Name); err != nil {
+			return fmt.Errorf("writing protocol map entry %q header: %v", proto.Name, err)
+		}
+		if _, err := fmt.Fprintf(w, "\t\tName: %q,\n", proto.Name); err != nil {
+			return fmt.Errorf("writing protocol map entry %q name value: %v", proto.Name, err)
+		}
+		if _, err := fmt.Fprintf(w, "\t},\n"); err != nil {
+			return fmt.Errorf("writing protocol map entry %q footer: %v", proto.Name, err)
+		}
+	}
+
+	if _, err := fmt.Fprintf(w, "}\n\n"); err != nil {
+		return fmt.Errorf("writing protocol map footer: %v", err)
+	}
+
 	for _, proto := range protos {
 		if err := codegenproto(w, proto); err != nil {
 			return fmt.Errorf("generating code for proto %v: %w", proto.Name, err)
