@@ -130,6 +130,7 @@ func main() {
 	b, err := format.Source(buf.Bytes())
 	if err != nil {
 		log.Printf("Error: formatting code: %v", err)
+		b = buf.Bytes()
 	}
 
 	// Generate an output file containing all of our protocol data.
@@ -222,6 +223,45 @@ func codegen(w io.Writer) error {
 		}
 		if _, err := fmt.Fprintf(w, "\t\tName: %q,\n", proto.Name); err != nil {
 			return fmt.Errorf("writing protocol map entry %q name value: %v", proto.Name, err)
+		}
+		if _, err := fmt.Fprintf(w, "\t\tInterfaces: []InterfaceDescriptor{\n"); err != nil {
+			return fmt.Errorf("writing protocol map entry %q interface list header: %v", proto.Name, err)
+		}
+		for _, intf := range proto.Interfaces {
+			if _, err := fmt.Fprintf(w, "\t\t\t{\n\t\t\t\tName: %q,\n", intf.Name); err != nil {
+				return fmt.Errorf("writing protocol map entry %q interface %q entry header: %v", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "\t\t\t\tEvents: []EventDescriptor{\n"); err != nil {
+				return fmt.Errorf("writing protocol map entry %q interface %q entry events header: %v", proto.Name, intf.Name, err)
+			}
+			for opcode, event := range intf.Events {
+				if _, err := fmt.Fprintf(w, "\t\t\t\t\t{Name: %q, Opcode: %d, Type: &%s{}},\n", event.Name, opcode, namegen(intf.Name, event.Name, "event")); err != nil {
+					return fmt.Errorf("writing protocol map entry %q interface %q event %q entry: %v", proto.Name, intf.Name, event.Name, err)
+				}
+			}
+			if _, err := fmt.Fprintf(w, "\t\t\t\t},\n"); err != nil {
+				return fmt.Errorf("writing protocol map entry %q interface %q entry events footer: %v", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "\t\t\t\tRequests: []RequestDescriptor{\n"); err != nil {
+				return fmt.Errorf("writing protocol map entry %q interface %q entry requests header: %v", proto.Name, intf.Name, err)
+			}
+			for opcode, request := range intf.Requests {
+				if _, err := fmt.Fprintf(w, "\t\t\t\t\t{Name: %q, Opcode: %d, Type: &%s{}},\n", request.Name, opcode, namegen(intf.Name, request.Name, "request")); err != nil {
+					return fmt.Errorf("writing protocol map entry %q interface %q request %q entry: %v", proto.Name, intf.Name, request.Name, err)
+				}
+			}
+			if _, err := fmt.Fprintf(w, "\t\t\t\t},\n"); err != nil {
+				return fmt.Errorf("writing protocol map entry %q interface %q entry requests footer: %v", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "\t\t\t},\n"); err != nil {
+				return fmt.Errorf("writing protocol map entry %q interface %q entry footer: %v", proto.Name, intf.Name, err)
+			}
+		}
+		if _, err := fmt.Fprintf(w, "\t\t},\n"); err != nil {
+			return fmt.Errorf("writing protocol map entry %q interface list header: %v", proto.Name, err)
 		}
 		if _, err := fmt.Fprintf(w, "\t},\n"); err != nil {
 			return fmt.Errorf("writing protocol map entry %q footer: %v", proto.Name, err)

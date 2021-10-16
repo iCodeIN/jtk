@@ -7,81 +7,1248 @@ package wayland
 var Protocols = map[string]ProtocolDescriptor{
 	"drm_lease_v1": {
 		Name: "drm_lease_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "wp_drm_lease_device_v1",
+				Events: []EventDescriptor{
+					{Name: "drm_fd", Opcode: 0, Type: &WpDrmLeaseDeviceV1DrmFDEvent{}},
+					{Name: "connector", Opcode: 1, Type: &WpDrmLeaseDeviceV1ConnectorEvent{}},
+					{Name: "done", Opcode: 2, Type: &WpDrmLeaseDeviceV1DoneEvent{}},
+					{Name: "released", Opcode: 3, Type: &WpDrmLeaseDeviceV1ReleasedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "create_lease_request", Opcode: 0, Type: &WpDrmLeaseDeviceV1CreateLeaseRequestRequest{}},
+					{Name: "release", Opcode: 1, Type: &WpDrmLeaseDeviceV1ReleaseRequest{}},
+				},
+			},
+			{
+				Name: "wp_drm_lease_connector_v1",
+				Events: []EventDescriptor{
+					{Name: "name", Opcode: 0, Type: &WpDrmLeaseConnectorV1NameEvent{}},
+					{Name: "description", Opcode: 1, Type: &WpDrmLeaseConnectorV1DescriptionEvent{}},
+					{Name: "connector_id", Opcode: 2, Type: &WpDrmLeaseConnectorV1ConnectorIDEvent{}},
+					{Name: "done", Opcode: 3, Type: &WpDrmLeaseConnectorV1DoneEvent{}},
+					{Name: "withdrawn", Opcode: 4, Type: &WpDrmLeaseConnectorV1WithdrawnEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WpDrmLeaseConnectorV1DestroyRequest{}},
+				},
+			},
+			{
+				Name:   "wp_drm_lease_request_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "request_connector", Opcode: 0, Type: &WpDrmLeaseRequestV1RequestConnectorRequest{}},
+					{Name: "submit", Opcode: 1, Type: &WpDrmLeaseRequestV1SubmitRequest{}},
+				},
+			},
+			{
+				Name: "wp_drm_lease_v1",
+				Events: []EventDescriptor{
+					{Name: "lease_fd", Opcode: 0, Type: &WpDrmLeaseV1LeaseFDEvent{}},
+					{Name: "finished", Opcode: 1, Type: &WpDrmLeaseV1FinishedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WpDrmLeaseV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"fullscreen_shell_unstable_v1": {
 		Name: "fullscreen_shell_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "zwp_fullscreen_shell_v1",
+				Events: []EventDescriptor{
+					{Name: "capability", Opcode: 0, Type: &ZwpFullscreenShellV1CapabilityEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "release", Opcode: 0, Type: &ZwpFullscreenShellV1ReleaseRequest{}},
+					{Name: "present_surface", Opcode: 1, Type: &ZwpFullscreenShellV1PresentSurfaceRequest{}},
+					{Name: "present_surface_for_mode", Opcode: 2, Type: &ZwpFullscreenShellV1PresentSurfaceForModeRequest{}},
+				},
+			},
+			{
+				Name: "zwp_fullscreen_shell_mode_feedback_v1",
+				Events: []EventDescriptor{
+					{Name: "mode_successful", Opcode: 0, Type: &ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}},
+					{Name: "mode_failed", Opcode: 1, Type: &ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}},
+					{Name: "present_cancelled", Opcode: 2, Type: &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}},
+				},
+				Requests: []RequestDescriptor{},
+			},
+		},
 	},
 	"idle_inhibit_unstable_v1": {
 		Name: "idle_inhibit_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_idle_inhibit_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitManagerV1DestroyRequest{}},
+					{Name: "create_inhibitor", Opcode: 1, Type: &ZwpIdleInhibitManagerV1CreateInhibitorRequest{}},
+				},
+			},
+			{
+				Name:   "zwp_idle_inhibitor_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitorV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"input_method_unstable_v1": {
 		Name: "input_method_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "zwp_input_method_context_v1",
+				Events: []EventDescriptor{
+					{Name: "surrounding_text", Opcode: 0, Type: &ZwpInputMethodContextV1SurroundingTextEvent{}},
+					{Name: "reset", Opcode: 1, Type: &ZwpInputMethodContextV1ResetEvent{}},
+					{Name: "content_type", Opcode: 2, Type: &ZwpInputMethodContextV1ContentTypeEvent{}},
+					{Name: "invoke_action", Opcode: 3, Type: &ZwpInputMethodContextV1InvokeActionEvent{}},
+					{Name: "commit_state", Opcode: 4, Type: &ZwpInputMethodContextV1CommitStateEvent{}},
+					{Name: "preferred_language", Opcode: 5, Type: &ZwpInputMethodContextV1PreferredLanguageEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpInputMethodContextV1DestroyRequest{}},
+					{Name: "commit_string", Opcode: 1, Type: &ZwpInputMethodContextV1CommitStringRequest{}},
+					{Name: "preedit_string", Opcode: 2, Type: &ZwpInputMethodContextV1PreeditStringRequest{}},
+					{Name: "preedit_styling", Opcode: 3, Type: &ZwpInputMethodContextV1PreeditStylingRequest{}},
+					{Name: "preedit_cursor", Opcode: 4, Type: &ZwpInputMethodContextV1PreeditCursorRequest{}},
+					{Name: "delete_surrounding_text", Opcode: 5, Type: &ZwpInputMethodContextV1DeleteSurroundingTextRequest{}},
+					{Name: "cursor_position", Opcode: 6, Type: &ZwpInputMethodContextV1CursorPositionRequest{}},
+					{Name: "modifiers_map", Opcode: 7, Type: &ZwpInputMethodContextV1ModifiersMapRequest{}},
+					{Name: "keysym", Opcode: 8, Type: &ZwpInputMethodContextV1KeysymRequest{}},
+					{Name: "grab_keyboard", Opcode: 9, Type: &ZwpInputMethodContextV1GrabKeyboardRequest{}},
+					{Name: "key", Opcode: 10, Type: &ZwpInputMethodContextV1KeyRequest{}},
+					{Name: "modifiers", Opcode: 11, Type: &ZwpInputMethodContextV1ModifiersRequest{}},
+					{Name: "language", Opcode: 12, Type: &ZwpInputMethodContextV1LanguageRequest{}},
+					{Name: "text_direction", Opcode: 13, Type: &ZwpInputMethodContextV1TextDirectionRequest{}},
+				},
+			},
+			{
+				Name: "zwp_input_method_v1",
+				Events: []EventDescriptor{
+					{Name: "activate", Opcode: 0, Type: &ZwpInputMethodV1ActivateEvent{}},
+					{Name: "deactivate", Opcode: 1, Type: &ZwpInputMethodV1DeactivateEvent{}},
+				},
+				Requests: []RequestDescriptor{},
+			},
+			{
+				Name:   "zwp_input_panel_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "get_input_panel_surface", Opcode: 0, Type: &ZwpInputPanelV1GetInputPanelSurfaceRequest{}},
+				},
+			},
+			{
+				Name:   "zwp_input_panel_surface_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "set_toplevel", Opcode: 0, Type: &ZwpInputPanelSurfaceV1SetToplevelRequest{}},
+					{Name: "set_overlay_panel", Opcode: 1, Type: &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}},
+				},
+			},
+		},
 	},
 	"input_timestamps_unstable_v1": {
 		Name: "input_timestamps_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_input_timestamps_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpInputTimestampsManagerV1DestroyRequest{}},
+					{Name: "get_keyboard_timestamps", Opcode: 1, Type: &ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}},
+					{Name: "get_pointer_timestamps", Opcode: 2, Type: &ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}},
+					{Name: "get_touch_timestamps", Opcode: 3, Type: &ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}},
+				},
+			},
+			{
+				Name: "zwp_input_timestamps_v1",
+				Events: []EventDescriptor{
+					{Name: "timestamp", Opcode: 0, Type: &ZwpInputTimestampsV1TimestampEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpInputTimestampsV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"keyboard_shortcuts_inhibit_unstable_v1": {
 		Name: "keyboard_shortcuts_inhibit_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_keyboard_shortcuts_inhibit_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}},
+					{Name: "inhibit_shortcuts", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}},
+				},
+			},
+			{
+				Name: "zwp_keyboard_shortcuts_inhibitor_v1",
+				Events: []EventDescriptor{
+					{Name: "active", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}},
+					{Name: "inactive", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"linux_dmabuf_unstable_v1": {
 		Name: "linux_dmabuf_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "zwp_linux_dmabuf_v1",
+				Events: []EventDescriptor{
+					{Name: "format", Opcode: 0, Type: &ZwpLinuxDmabufV1FormatEvent{}},
+					{Name: "modifier", Opcode: 1, Type: &ZwpLinuxDmabufV1ModifierEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxDmabufV1DestroyRequest{}},
+					{Name: "create_params", Opcode: 1, Type: &ZwpLinuxDmabufV1CreateParamsRequest{}},
+				},
+			},
+			{
+				Name: "zwp_linux_buffer_params_v1",
+				Events: []EventDescriptor{
+					{Name: "created", Opcode: 0, Type: &ZwpLinuxBufferParamsV1CreatedEvent{}},
+					{Name: "failed", Opcode: 1, Type: &ZwpLinuxBufferParamsV1FailedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxBufferParamsV1DestroyRequest{}},
+					{Name: "add", Opcode: 1, Type: &ZwpLinuxBufferParamsV1AddRequest{}},
+					{Name: "create", Opcode: 2, Type: &ZwpLinuxBufferParamsV1CreateRequest{}},
+					{Name: "create_immed", Opcode: 3, Type: &ZwpLinuxBufferParamsV1CreateImmedRequest{}},
+				},
+			},
+		},
 	},
 	"pointer_constraints_unstable_v1": {
 		Name: "pointer_constraints_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_pointer_constraints_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpPointerConstraintsV1DestroyRequest{}},
+					{Name: "lock_pointer", Opcode: 1, Type: &ZwpPointerConstraintsV1LockPointerRequest{}},
+					{Name: "confine_pointer", Opcode: 2, Type: &ZwpPointerConstraintsV1ConfinePointerRequest{}},
+				},
+			},
+			{
+				Name: "zwp_locked_pointer_v1",
+				Events: []EventDescriptor{
+					{Name: "locked", Opcode: 0, Type: &ZwpLockedPointerV1LockedEvent{}},
+					{Name: "unlocked", Opcode: 1, Type: &ZwpLockedPointerV1UnlockedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpLockedPointerV1DestroyRequest{}},
+					{Name: "set_cursor_position_hint", Opcode: 1, Type: &ZwpLockedPointerV1SetCursorPositionHintRequest{}},
+					{Name: "set_region", Opcode: 2, Type: &ZwpLockedPointerV1SetRegionRequest{}},
+				},
+			},
+			{
+				Name: "zwp_confined_pointer_v1",
+				Events: []EventDescriptor{
+					{Name: "confined", Opcode: 0, Type: &ZwpConfinedPointerV1ConfinedEvent{}},
+					{Name: "unconfined", Opcode: 1, Type: &ZwpConfinedPointerV1UnconfinedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpConfinedPointerV1DestroyRequest{}},
+					{Name: "set_region", Opcode: 1, Type: &ZwpConfinedPointerV1SetRegionRequest{}},
+				},
+			},
+		},
 	},
 	"pointer_gestures_unstable_v1": {
 		Name: "pointer_gestures_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_pointer_gestures_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "get_swipe_gesture", Opcode: 0, Type: &ZwpPointerGesturesV1GetSwipeGestureRequest{}},
+					{Name: "get_pinch_gesture", Opcode: 1, Type: &ZwpPointerGesturesV1GetPinchGestureRequest{}},
+					{Name: "release", Opcode: 2, Type: &ZwpPointerGesturesV1ReleaseRequest{}},
+					{Name: "get_hold_gesture", Opcode: 3, Type: &ZwpPointerGesturesV1GetHoldGestureRequest{}},
+				},
+			},
+			{
+				Name: "zwp_pointer_gesture_swipe_v1",
+				Events: []EventDescriptor{
+					{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureSwipeV1BeginEvent{}},
+					{Name: "update", Opcode: 1, Type: &ZwpPointerGestureSwipeV1UpdateEvent{}},
+					{Name: "end", Opcode: 2, Type: &ZwpPointerGestureSwipeV1EndEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpPointerGestureSwipeV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_pointer_gesture_pinch_v1",
+				Events: []EventDescriptor{
+					{Name: "begin", Opcode: 0, Type: &ZwpPointerGesturePinchV1BeginEvent{}},
+					{Name: "update", Opcode: 1, Type: &ZwpPointerGesturePinchV1UpdateEvent{}},
+					{Name: "end", Opcode: 2, Type: &ZwpPointerGesturePinchV1EndEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpPointerGesturePinchV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_pointer_gesture_hold_v1",
+				Events: []EventDescriptor{
+					{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureHoldV1BeginEvent{}},
+					{Name: "end", Opcode: 1, Type: &ZwpPointerGestureHoldV1EndEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpPointerGestureHoldV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"presentation_time": {
 		Name: "presentation_time",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "wp_presentation",
+				Events: []EventDescriptor{
+					{Name: "clock_id", Opcode: 0, Type: &WpPresentationClockIDEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WpPresentationDestroyRequest{}},
+					{Name: "feedback", Opcode: 1, Type: &WpPresentationFeedbackRequest{}},
+				},
+			},
+			{
+				Name: "wp_presentation_feedback",
+				Events: []EventDescriptor{
+					{Name: "sync_output", Opcode: 0, Type: &WpPresentationFeedbackSyncOutputEvent{}},
+					{Name: "presented", Opcode: 1, Type: &WpPresentationFeedbackPresentedEvent{}},
+					{Name: "discarded", Opcode: 2, Type: &WpPresentationFeedbackDiscardedEvent{}},
+				},
+				Requests: []RequestDescriptor{},
+			},
+		},
 	},
 	"relative_pointer_unstable_v1": {
 		Name: "relative_pointer_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_relative_pointer_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpRelativePointerManagerV1DestroyRequest{}},
+					{Name: "get_relative_pointer", Opcode: 1, Type: &ZwpRelativePointerManagerV1GetRelativePointerRequest{}},
+				},
+			},
+			{
+				Name: "zwp_relative_pointer_v1",
+				Events: []EventDescriptor{
+					{Name: "relative_motion", Opcode: 0, Type: &ZwpRelativePointerV1RelativeMotionEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpRelativePointerV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"tablet_unstable_v1": {
 		Name: "tablet_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_tablet_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV1GetTabletSeatRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_seat_v1",
+				Events: []EventDescriptor{
+					{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV1TabletAddedEvent{}},
+					{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV1ToolAddedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpTabletSeatV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_tool_v1",
+				Events: []EventDescriptor{
+					{Name: "type", Opcode: 0, Type: &ZwpTabletToolV1TypeEvent{}},
+					{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV1HardwareSerialEvent{}},
+					{Name: "hardware_id_wacom", Opcode: 2, Type: &ZwpTabletToolV1HardwareIDWacomEvent{}},
+					{Name: "capability", Opcode: 3, Type: &ZwpTabletToolV1CapabilityEvent{}},
+					{Name: "done", Opcode: 4, Type: &ZwpTabletToolV1DoneEvent{}},
+					{Name: "removed", Opcode: 5, Type: &ZwpTabletToolV1RemovedEvent{}},
+					{Name: "proximity_in", Opcode: 6, Type: &ZwpTabletToolV1ProximityInEvent{}},
+					{Name: "proximity_out", Opcode: 7, Type: &ZwpTabletToolV1ProximityOutEvent{}},
+					{Name: "down", Opcode: 8, Type: &ZwpTabletToolV1DownEvent{}},
+					{Name: "up", Opcode: 9, Type: &ZwpTabletToolV1UpEvent{}},
+					{Name: "motion", Opcode: 10, Type: &ZwpTabletToolV1MotionEvent{}},
+					{Name: "pressure", Opcode: 11, Type: &ZwpTabletToolV1PressureEvent{}},
+					{Name: "distance", Opcode: 12, Type: &ZwpTabletToolV1DistanceEvent{}},
+					{Name: "tilt", Opcode: 13, Type: &ZwpTabletToolV1TiltEvent{}},
+					{Name: "rotation", Opcode: 14, Type: &ZwpTabletToolV1RotationEvent{}},
+					{Name: "slider", Opcode: 15, Type: &ZwpTabletToolV1SliderEvent{}},
+					{Name: "wheel", Opcode: 16, Type: &ZwpTabletToolV1WheelEvent{}},
+					{Name: "button", Opcode: 17, Type: &ZwpTabletToolV1ButtonEvent{}},
+					{Name: "frame", Opcode: 18, Type: &ZwpTabletToolV1FrameEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_cursor", Opcode: 0, Type: &ZwpTabletToolV1SetCursorRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpTabletToolV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_v1",
+				Events: []EventDescriptor{
+					{Name: "name", Opcode: 0, Type: &ZwpTabletV1NameEvent{}},
+					{Name: "id", Opcode: 1, Type: &ZwpTabletV1IDEvent{}},
+					{Name: "path", Opcode: 2, Type: &ZwpTabletV1PathEvent{}},
+					{Name: "done", Opcode: 3, Type: &ZwpTabletV1DoneEvent{}},
+					{Name: "removed", Opcode: 4, Type: &ZwpTabletV1RemovedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpTabletV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"tablet_unstable_v2": {
 		Name: "tablet_unstable_v2",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_tablet_manager_v2",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV2GetTabletSeatRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_seat_v2",
+				Events: []EventDescriptor{
+					{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV2TabletAddedEvent{}},
+					{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV2ToolAddedEvent{}},
+					{Name: "pad_added", Opcode: 2, Type: &ZwpTabletSeatV2PadAddedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpTabletSeatV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_tool_v2",
+				Events: []EventDescriptor{
+					{Name: "type", Opcode: 0, Type: &ZwpTabletToolV2TypeEvent{}},
+					{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV2HardwareSerialEvent{}},
+					{Name: "hardware_id_wacom", Opcode: 2, Type: &ZwpTabletToolV2HardwareIDWacomEvent{}},
+					{Name: "capability", Opcode: 3, Type: &ZwpTabletToolV2CapabilityEvent{}},
+					{Name: "done", Opcode: 4, Type: &ZwpTabletToolV2DoneEvent{}},
+					{Name: "removed", Opcode: 5, Type: &ZwpTabletToolV2RemovedEvent{}},
+					{Name: "proximity_in", Opcode: 6, Type: &ZwpTabletToolV2ProximityInEvent{}},
+					{Name: "proximity_out", Opcode: 7, Type: &ZwpTabletToolV2ProximityOutEvent{}},
+					{Name: "down", Opcode: 8, Type: &ZwpTabletToolV2DownEvent{}},
+					{Name: "up", Opcode: 9, Type: &ZwpTabletToolV2UpEvent{}},
+					{Name: "motion", Opcode: 10, Type: &ZwpTabletToolV2MotionEvent{}},
+					{Name: "pressure", Opcode: 11, Type: &ZwpTabletToolV2PressureEvent{}},
+					{Name: "distance", Opcode: 12, Type: &ZwpTabletToolV2DistanceEvent{}},
+					{Name: "tilt", Opcode: 13, Type: &ZwpTabletToolV2TiltEvent{}},
+					{Name: "rotation", Opcode: 14, Type: &ZwpTabletToolV2RotationEvent{}},
+					{Name: "slider", Opcode: 15, Type: &ZwpTabletToolV2SliderEvent{}},
+					{Name: "wheel", Opcode: 16, Type: &ZwpTabletToolV2WheelEvent{}},
+					{Name: "button", Opcode: 17, Type: &ZwpTabletToolV2ButtonEvent{}},
+					{Name: "frame", Opcode: 18, Type: &ZwpTabletToolV2FrameEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_cursor", Opcode: 0, Type: &ZwpTabletToolV2SetCursorRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpTabletToolV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_v2",
+				Events: []EventDescriptor{
+					{Name: "name", Opcode: 0, Type: &ZwpTabletV2NameEvent{}},
+					{Name: "id", Opcode: 1, Type: &ZwpTabletV2IDEvent{}},
+					{Name: "path", Opcode: 2, Type: &ZwpTabletV2PathEvent{}},
+					{Name: "done", Opcode: 3, Type: &ZwpTabletV2DoneEvent{}},
+					{Name: "removed", Opcode: 4, Type: &ZwpTabletV2RemovedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpTabletV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_pad_ring_v2",
+				Events: []EventDescriptor{
+					{Name: "source", Opcode: 0, Type: &ZwpTabletPadRingV2SourceEvent{}},
+					{Name: "angle", Opcode: 1, Type: &ZwpTabletPadRingV2AngleEvent{}},
+					{Name: "stop", Opcode: 2, Type: &ZwpTabletPadRingV2StopEvent{}},
+					{Name: "frame", Opcode: 3, Type: &ZwpTabletPadRingV2FrameEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadRingV2SetFeedbackRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadRingV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_pad_strip_v2",
+				Events: []EventDescriptor{
+					{Name: "source", Opcode: 0, Type: &ZwpTabletPadStripV2SourceEvent{}},
+					{Name: "position", Opcode: 1, Type: &ZwpTabletPadStripV2PositionEvent{}},
+					{Name: "stop", Opcode: 2, Type: &ZwpTabletPadStripV2StopEvent{}},
+					{Name: "frame", Opcode: 3, Type: &ZwpTabletPadStripV2FrameEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadStripV2SetFeedbackRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadStripV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_pad_group_v2",
+				Events: []EventDescriptor{
+					{Name: "buttons", Opcode: 0, Type: &ZwpTabletPadGroupV2ButtonsEvent{}},
+					{Name: "ring", Opcode: 1, Type: &ZwpTabletPadGroupV2RingEvent{}},
+					{Name: "strip", Opcode: 2, Type: &ZwpTabletPadGroupV2StripEvent{}},
+					{Name: "modes", Opcode: 3, Type: &ZwpTabletPadGroupV2ModesEvent{}},
+					{Name: "done", Opcode: 4, Type: &ZwpTabletPadGroupV2DoneEvent{}},
+					{Name: "mode_switch", Opcode: 5, Type: &ZwpTabletPadGroupV2ModeSwitchEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpTabletPadGroupV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_tablet_pad_v2",
+				Events: []EventDescriptor{
+					{Name: "group", Opcode: 0, Type: &ZwpTabletPadV2GroupEvent{}},
+					{Name: "path", Opcode: 1, Type: &ZwpTabletPadV2PathEvent{}},
+					{Name: "buttons", Opcode: 2, Type: &ZwpTabletPadV2ButtonsEvent{}},
+					{Name: "done", Opcode: 3, Type: &ZwpTabletPadV2DoneEvent{}},
+					{Name: "button", Opcode: 4, Type: &ZwpTabletPadV2ButtonEvent{}},
+					{Name: "enter", Opcode: 5, Type: &ZwpTabletPadV2EnterEvent{}},
+					{Name: "leave", Opcode: 6, Type: &ZwpTabletPadV2LeaveEvent{}},
+					{Name: "removed", Opcode: 7, Type: &ZwpTabletPadV2RemovedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadV2SetFeedbackRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadV2DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"text_input_unstable_v1": {
 		Name: "text_input_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "zwp_text_input_v1",
+				Events: []EventDescriptor{
+					{Name: "enter", Opcode: 0, Type: &ZwpTextInputV1EnterEvent{}},
+					{Name: "leave", Opcode: 1, Type: &ZwpTextInputV1LeaveEvent{}},
+					{Name: "modifiers_map", Opcode: 2, Type: &ZwpTextInputV1ModifiersMapEvent{}},
+					{Name: "input_panel_state", Opcode: 3, Type: &ZwpTextInputV1InputPanelStateEvent{}},
+					{Name: "preedit_string", Opcode: 4, Type: &ZwpTextInputV1PreeditStringEvent{}},
+					{Name: "preedit_styling", Opcode: 5, Type: &ZwpTextInputV1PreeditStylingEvent{}},
+					{Name: "preedit_cursor", Opcode: 6, Type: &ZwpTextInputV1PreeditCursorEvent{}},
+					{Name: "commit_string", Opcode: 7, Type: &ZwpTextInputV1CommitStringEvent{}},
+					{Name: "cursor_position", Opcode: 8, Type: &ZwpTextInputV1CursorPositionEvent{}},
+					{Name: "delete_surrounding_text", Opcode: 9, Type: &ZwpTextInputV1DeleteSurroundingTextEvent{}},
+					{Name: "keysym", Opcode: 10, Type: &ZwpTextInputV1KeysymEvent{}},
+					{Name: "language", Opcode: 11, Type: &ZwpTextInputV1LanguageEvent{}},
+					{Name: "text_direction", Opcode: 12, Type: &ZwpTextInputV1TextDirectionEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "activate", Opcode: 0, Type: &ZwpTextInputV1ActivateRequest{}},
+					{Name: "deactivate", Opcode: 1, Type: &ZwpTextInputV1DeactivateRequest{}},
+					{Name: "show_input_panel", Opcode: 2, Type: &ZwpTextInputV1ShowInputPanelRequest{}},
+					{Name: "hide_input_panel", Opcode: 3, Type: &ZwpTextInputV1HideInputPanelRequest{}},
+					{Name: "reset", Opcode: 4, Type: &ZwpTextInputV1ResetRequest{}},
+					{Name: "set_surrounding_text", Opcode: 5, Type: &ZwpTextInputV1SetSurroundingTextRequest{}},
+					{Name: "set_content_type", Opcode: 6, Type: &ZwpTextInputV1SetContentTypeRequest{}},
+					{Name: "set_cursor_rectangle", Opcode: 7, Type: &ZwpTextInputV1SetCursorRectangleRequest{}},
+					{Name: "set_preferred_language", Opcode: 8, Type: &ZwpTextInputV1SetPreferredLanguageRequest{}},
+					{Name: "commit_state", Opcode: 9, Type: &ZwpTextInputV1CommitStateRequest{}},
+					{Name: "invoke_action", Opcode: 10, Type: &ZwpTextInputV1InvokeActionRequest{}},
+				},
+			},
+			{
+				Name:   "zwp_text_input_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "create_text_input", Opcode: 0, Type: &ZwpTextInputManagerV1CreateTextInputRequest{}},
+				},
+			},
+		},
 	},
 	"text_input_unstable_v3": {
 		Name: "text_input_unstable_v3",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "zwp_text_input_v3",
+				Events: []EventDescriptor{
+					{Name: "enter", Opcode: 0, Type: &ZwpTextInputV3EnterEvent{}},
+					{Name: "leave", Opcode: 1, Type: &ZwpTextInputV3LeaveEvent{}},
+					{Name: "preedit_string", Opcode: 2, Type: &ZwpTextInputV3PreeditStringEvent{}},
+					{Name: "commit_string", Opcode: 3, Type: &ZwpTextInputV3CommitStringEvent{}},
+					{Name: "delete_surrounding_text", Opcode: 4, Type: &ZwpTextInputV3DeleteSurroundingTextEvent{}},
+					{Name: "done", Opcode: 5, Type: &ZwpTextInputV3DoneEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpTextInputV3DestroyRequest{}},
+					{Name: "enable", Opcode: 1, Type: &ZwpTextInputV3EnableRequest{}},
+					{Name: "disable", Opcode: 2, Type: &ZwpTextInputV3DisableRequest{}},
+					{Name: "set_surrounding_text", Opcode: 3, Type: &ZwpTextInputV3SetSurroundingTextRequest{}},
+					{Name: "set_text_change_cause", Opcode: 4, Type: &ZwpTextInputV3SetTextChangeCauseRequest{}},
+					{Name: "set_content_type", Opcode: 5, Type: &ZwpTextInputV3SetContentTypeRequest{}},
+					{Name: "set_cursor_rectangle", Opcode: 6, Type: &ZwpTextInputV3SetCursorRectangleRequest{}},
+					{Name: "commit", Opcode: 7, Type: &ZwpTextInputV3CommitRequest{}},
+				},
+			},
+			{
+				Name:   "zwp_text_input_manager_v3",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpTextInputManagerV3DestroyRequest{}},
+					{Name: "get_text_input", Opcode: 1, Type: &ZwpTextInputManagerV3GetTextInputRequest{}},
+				},
+			},
+		},
 	},
 	"viewporter": {
 		Name: "viewporter",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "wp_viewporter",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WpViewporterDestroyRequest{}},
+					{Name: "get_viewport", Opcode: 1, Type: &WpViewporterGetViewportRequest{}},
+				},
+			},
+			{
+				Name:   "wp_viewport",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WpViewportDestroyRequest{}},
+					{Name: "set_source", Opcode: 1, Type: &WpViewportSetSourceRequest{}},
+					{Name: "set_destination", Opcode: 2, Type: &WpViewportSetDestinationRequest{}},
+				},
+			},
+		},
 	},
 	"wayland": {
 		Name: "wayland",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "wl_display",
+				Events: []EventDescriptor{
+					{Name: "error", Opcode: 0, Type: &WlDisplayErrorEvent{}},
+					{Name: "delete_id", Opcode: 1, Type: &WlDisplayDeleteIDEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "sync", Opcode: 0, Type: &WlDisplaySyncRequest{}},
+					{Name: "get_registry", Opcode: 1, Type: &WlDisplayGetRegistryRequest{}},
+				},
+			},
+			{
+				Name: "wl_registry",
+				Events: []EventDescriptor{
+					{Name: "global", Opcode: 0, Type: &WlRegistryGlobalEvent{}},
+					{Name: "global_remove", Opcode: 1, Type: &WlRegistryGlobalRemoveEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "bind", Opcode: 0, Type: &WlRegistryBindRequest{}},
+				},
+			},
+			{
+				Name: "wl_callback",
+				Events: []EventDescriptor{
+					{Name: "done", Opcode: 0, Type: &WlCallbackDoneEvent{}},
+				},
+				Requests: []RequestDescriptor{},
+			},
+			{
+				Name:   "wl_compositor",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "create_surface", Opcode: 0, Type: &WlCompositorCreateSurfaceRequest{}},
+					{Name: "create_region", Opcode: 1, Type: &WlCompositorCreateRegionRequest{}},
+				},
+			},
+			{
+				Name:   "wl_shm_pool",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "create_buffer", Opcode: 0, Type: &WlShmPoolCreateBufferRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &WlShmPoolDestroyRequest{}},
+					{Name: "resize", Opcode: 2, Type: &WlShmPoolResizeRequest{}},
+				},
+			},
+			{
+				Name: "wl_shm",
+				Events: []EventDescriptor{
+					{Name: "format", Opcode: 0, Type: &WlShmFormatEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "create_pool", Opcode: 0, Type: &WlShmCreatePoolRequest{}},
+				},
+			},
+			{
+				Name: "wl_buffer",
+				Events: []EventDescriptor{
+					{Name: "release", Opcode: 0, Type: &WlBufferReleaseEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WlBufferDestroyRequest{}},
+				},
+			},
+			{
+				Name: "wl_data_offer",
+				Events: []EventDescriptor{
+					{Name: "offer", Opcode: 0, Type: &WlDataOfferOfferEvent{}},
+					{Name: "source_actions", Opcode: 1, Type: &WlDataOfferSourceActionsEvent{}},
+					{Name: "action", Opcode: 2, Type: &WlDataOfferActionEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "accept", Opcode: 0, Type: &WlDataOfferAcceptRequest{}},
+					{Name: "receive", Opcode: 1, Type: &WlDataOfferReceiveRequest{}},
+					{Name: "destroy", Opcode: 2, Type: &WlDataOfferDestroyRequest{}},
+					{Name: "finish", Opcode: 3, Type: &WlDataOfferFinishRequest{}},
+					{Name: "set_actions", Opcode: 4, Type: &WlDataOfferSetActionsRequest{}},
+				},
+			},
+			{
+				Name: "wl_data_source",
+				Events: []EventDescriptor{
+					{Name: "target", Opcode: 0, Type: &WlDataSourceTargetEvent{}},
+					{Name: "send", Opcode: 1, Type: &WlDataSourceSendEvent{}},
+					{Name: "cancelled", Opcode: 2, Type: &WlDataSourceCancelledEvent{}},
+					{Name: "dnd_drop_performed", Opcode: 3, Type: &WlDataSourceDndDropPerformedEvent{}},
+					{Name: "dnd_finished", Opcode: 4, Type: &WlDataSourceDndFinishedEvent{}},
+					{Name: "action", Opcode: 5, Type: &WlDataSourceActionEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "offer", Opcode: 0, Type: &WlDataSourceOfferRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &WlDataSourceDestroyRequest{}},
+					{Name: "set_actions", Opcode: 2, Type: &WlDataSourceSetActionsRequest{}},
+				},
+			},
+			{
+				Name: "wl_data_device",
+				Events: []EventDescriptor{
+					{Name: "data_offer", Opcode: 0, Type: &WlDataDeviceDataOfferEvent{}},
+					{Name: "enter", Opcode: 1, Type: &WlDataDeviceEnterEvent{}},
+					{Name: "leave", Opcode: 2, Type: &WlDataDeviceLeaveEvent{}},
+					{Name: "motion", Opcode: 3, Type: &WlDataDeviceMotionEvent{}},
+					{Name: "drop", Opcode: 4, Type: &WlDataDeviceDropEvent{}},
+					{Name: "selection", Opcode: 5, Type: &WlDataDeviceSelectionEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "start_drag", Opcode: 0, Type: &WlDataDeviceStartDragRequest{}},
+					{Name: "set_selection", Opcode: 1, Type: &WlDataDeviceSetSelectionRequest{}},
+					{Name: "release", Opcode: 2, Type: &WlDataDeviceReleaseRequest{}},
+				},
+			},
+			{
+				Name:   "wl_data_device_manager",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "create_data_source", Opcode: 0, Type: &WlDataDeviceManagerCreateDataSourceRequest{}},
+					{Name: "get_data_device", Opcode: 1, Type: &WlDataDeviceManagerGetDataDeviceRequest{}},
+				},
+			},
+			{
+				Name:   "wl_shell",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "get_shell_surface", Opcode: 0, Type: &WlShellGetShellSurfaceRequest{}},
+				},
+			},
+			{
+				Name: "wl_shell_surface",
+				Events: []EventDescriptor{
+					{Name: "ping", Opcode: 0, Type: &WlShellSurfacePingEvent{}},
+					{Name: "configure", Opcode: 1, Type: &WlShellSurfaceConfigureEvent{}},
+					{Name: "popup_done", Opcode: 2, Type: &WlShellSurfacePopupDoneEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "pong", Opcode: 0, Type: &WlShellSurfacePongRequest{}},
+					{Name: "move", Opcode: 1, Type: &WlShellSurfaceMoveRequest{}},
+					{Name: "resize", Opcode: 2, Type: &WlShellSurfaceResizeRequest{}},
+					{Name: "set_toplevel", Opcode: 3, Type: &WlShellSurfaceSetToplevelRequest{}},
+					{Name: "set_transient", Opcode: 4, Type: &WlShellSurfaceSetTransientRequest{}},
+					{Name: "set_fullscreen", Opcode: 5, Type: &WlShellSurfaceSetFullscreenRequest{}},
+					{Name: "set_popup", Opcode: 6, Type: &WlShellSurfaceSetPopupRequest{}},
+					{Name: "set_maximized", Opcode: 7, Type: &WlShellSurfaceSetMaximizedRequest{}},
+					{Name: "set_title", Opcode: 8, Type: &WlShellSurfaceSetTitleRequest{}},
+					{Name: "set_class", Opcode: 9, Type: &WlShellSurfaceSetClassRequest{}},
+				},
+			},
+			{
+				Name: "wl_surface",
+				Events: []EventDescriptor{
+					{Name: "enter", Opcode: 0, Type: &WlSurfaceEnterEvent{}},
+					{Name: "leave", Opcode: 1, Type: &WlSurfaceLeaveEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WlSurfaceDestroyRequest{}},
+					{Name: "attach", Opcode: 1, Type: &WlSurfaceAttachRequest{}},
+					{Name: "damage", Opcode: 2, Type: &WlSurfaceDamageRequest{}},
+					{Name: "frame", Opcode: 3, Type: &WlSurfaceFrameRequest{}},
+					{Name: "set_opaque_region", Opcode: 4, Type: &WlSurfaceSetOpaqueRegionRequest{}},
+					{Name: "set_input_region", Opcode: 5, Type: &WlSurfaceSetInputRegionRequest{}},
+					{Name: "commit", Opcode: 6, Type: &WlSurfaceCommitRequest{}},
+					{Name: "set_buffer_transform", Opcode: 7, Type: &WlSurfaceSetBufferTransformRequest{}},
+					{Name: "set_buffer_scale", Opcode: 8, Type: &WlSurfaceSetBufferScaleRequest{}},
+					{Name: "damage_buffer", Opcode: 9, Type: &WlSurfaceDamageBufferRequest{}},
+				},
+			},
+			{
+				Name: "wl_seat",
+				Events: []EventDescriptor{
+					{Name: "capabilities", Opcode: 0, Type: &WlSeatCapabilitiesEvent{}},
+					{Name: "name", Opcode: 1, Type: &WlSeatNameEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "get_pointer", Opcode: 0, Type: &WlSeatGetPointerRequest{}},
+					{Name: "get_keyboard", Opcode: 1, Type: &WlSeatGetKeyboardRequest{}},
+					{Name: "get_touch", Opcode: 2, Type: &WlSeatGetTouchRequest{}},
+					{Name: "release", Opcode: 3, Type: &WlSeatReleaseRequest{}},
+				},
+			},
+			{
+				Name: "wl_pointer",
+				Events: []EventDescriptor{
+					{Name: "enter", Opcode: 0, Type: &WlPointerEnterEvent{}},
+					{Name: "leave", Opcode: 1, Type: &WlPointerLeaveEvent{}},
+					{Name: "motion", Opcode: 2, Type: &WlPointerMotionEvent{}},
+					{Name: "button", Opcode: 3, Type: &WlPointerButtonEvent{}},
+					{Name: "axis", Opcode: 4, Type: &WlPointerAxisEvent{}},
+					{Name: "frame", Opcode: 5, Type: &WlPointerFrameEvent{}},
+					{Name: "axis_source", Opcode: 6, Type: &WlPointerAxisSourceEvent{}},
+					{Name: "axis_stop", Opcode: 7, Type: &WlPointerAxisStopEvent{}},
+					{Name: "axis_discrete", Opcode: 8, Type: &WlPointerAxisDiscreteEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_cursor", Opcode: 0, Type: &WlPointerSetCursorRequest{}},
+					{Name: "release", Opcode: 1, Type: &WlPointerReleaseRequest{}},
+				},
+			},
+			{
+				Name: "wl_keyboard",
+				Events: []EventDescriptor{
+					{Name: "keymap", Opcode: 0, Type: &WlKeyboardKeymapEvent{}},
+					{Name: "enter", Opcode: 1, Type: &WlKeyboardEnterEvent{}},
+					{Name: "leave", Opcode: 2, Type: &WlKeyboardLeaveEvent{}},
+					{Name: "key", Opcode: 3, Type: &WlKeyboardKeyEvent{}},
+					{Name: "modifiers", Opcode: 4, Type: &WlKeyboardModifiersEvent{}},
+					{Name: "repeat_info", Opcode: 5, Type: &WlKeyboardRepeatInfoEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "release", Opcode: 0, Type: &WlKeyboardReleaseRequest{}},
+				},
+			},
+			{
+				Name: "wl_touch",
+				Events: []EventDescriptor{
+					{Name: "down", Opcode: 0, Type: &WlTouchDownEvent{}},
+					{Name: "up", Opcode: 1, Type: &WlTouchUpEvent{}},
+					{Name: "motion", Opcode: 2, Type: &WlTouchMotionEvent{}},
+					{Name: "frame", Opcode: 3, Type: &WlTouchFrameEvent{}},
+					{Name: "cancel", Opcode: 4, Type: &WlTouchCancelEvent{}},
+					{Name: "shape", Opcode: 5, Type: &WlTouchShapeEvent{}},
+					{Name: "orientation", Opcode: 6, Type: &WlTouchOrientationEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "release", Opcode: 0, Type: &WlTouchReleaseRequest{}},
+				},
+			},
+			{
+				Name: "wl_output",
+				Events: []EventDescriptor{
+					{Name: "geometry", Opcode: 0, Type: &WlOutputGeometryEvent{}},
+					{Name: "mode", Opcode: 1, Type: &WlOutputModeEvent{}},
+					{Name: "done", Opcode: 2, Type: &WlOutputDoneEvent{}},
+					{Name: "scale", Opcode: 3, Type: &WlOutputScaleEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "release", Opcode: 0, Type: &WlOutputReleaseRequest{}},
+				},
+			},
+			{
+				Name:   "wl_region",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WlRegionDestroyRequest{}},
+					{Name: "add", Opcode: 1, Type: &WlRegionAddRequest{}},
+					{Name: "subtract", Opcode: 2, Type: &WlRegionSubtractRequest{}},
+				},
+			},
+			{
+				Name:   "wl_subcompositor",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WlSubcompositorDestroyRequest{}},
+					{Name: "get_subsurface", Opcode: 1, Type: &WlSubcompositorGetSubsurfaceRequest{}},
+				},
+			},
+			{
+				Name:   "wl_subsurface",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &WlSubsurfaceDestroyRequest{}},
+					{Name: "set_position", Opcode: 1, Type: &WlSubsurfaceSetPositionRequest{}},
+					{Name: "place_above", Opcode: 2, Type: &WlSubsurfacePlaceAboveRequest{}},
+					{Name: "place_below", Opcode: 3, Type: &WlSubsurfacePlaceBelowRequest{}},
+					{Name: "set_sync", Opcode: 4, Type: &WlSubsurfaceSetSyncRequest{}},
+					{Name: "set_desync", Opcode: 5, Type: &WlSubsurfaceSetDesyncRequest{}},
+				},
+			},
+		},
 	},
 	"wp_primary_selection_unstable_v1": {
 		Name: "wp_primary_selection_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_primary_selection_device_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "create_source", Opcode: 0, Type: &ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}},
+					{Name: "get_device", Opcode: 1, Type: &ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}},
+					{Name: "destroy", Opcode: 2, Type: &ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_primary_selection_device_v1",
+				Events: []EventDescriptor{
+					{Name: "data_offer", Opcode: 0, Type: &ZwpPrimarySelectionDeviceV1DataOfferEvent{}},
+					{Name: "selection", Opcode: 1, Type: &ZwpPrimarySelectionDeviceV1SelectionEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_selection", Opcode: 0, Type: &ZwpPrimarySelectionDeviceV1SetSelectionRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionDeviceV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_primary_selection_offer_v1",
+				Events: []EventDescriptor{
+					{Name: "offer", Opcode: 0, Type: &ZwpPrimarySelectionOfferV1OfferEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "receive", Opcode: 0, Type: &ZwpPrimarySelectionOfferV1ReceiveRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionOfferV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zwp_primary_selection_source_v1",
+				Events: []EventDescriptor{
+					{Name: "send", Opcode: 0, Type: &ZwpPrimarySelectionSourceV1SendEvent{}},
+					{Name: "cancelled", Opcode: 1, Type: &ZwpPrimarySelectionSourceV1CancelledEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "offer", Opcode: 0, Type: &ZwpPrimarySelectionSourceV1OfferRequest{}},
+					{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionSourceV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"xdg_activation_v1": {
 		Name: "xdg_activation_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "xdg_activation_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &XdgActivationV1DestroyRequest{}},
+					{Name: "get_activation_token", Opcode: 1, Type: &XdgActivationV1GetActivationTokenRequest{}},
+					{Name: "activate", Opcode: 2, Type: &XdgActivationV1ActivateRequest{}},
+				},
+			},
+			{
+				Name: "xdg_activation_token_v1",
+				Events: []EventDescriptor{
+					{Name: "done", Opcode: 0, Type: &XdgActivationTokenV1DoneEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "set_serial", Opcode: 0, Type: &XdgActivationTokenV1SetSerialRequest{}},
+					{Name: "set_app_id", Opcode: 1, Type: &XdgActivationTokenV1SetAppIDRequest{}},
+					{Name: "set_surface", Opcode: 2, Type: &XdgActivationTokenV1SetSurfaceRequest{}},
+					{Name: "commit", Opcode: 3, Type: &XdgActivationTokenV1CommitRequest{}},
+					{Name: "destroy", Opcode: 4, Type: &XdgActivationTokenV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"xdg_decoration_unstable_v1": {
 		Name: "xdg_decoration_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zxdg_decoration_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgDecorationManagerV1DestroyRequest{}},
+					{Name: "get_toplevel_decoration", Opcode: 1, Type: &ZxdgDecorationManagerV1GetToplevelDecorationRequest{}},
+				},
+			},
+			{
+				Name: "zxdg_toplevel_decoration_v1",
+				Events: []EventDescriptor{
+					{Name: "configure", Opcode: 0, Type: &ZxdgToplevelDecorationV1ConfigureEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgToplevelDecorationV1DestroyRequest{}},
+					{Name: "set_mode", Opcode: 1, Type: &ZxdgToplevelDecorationV1SetModeRequest{}},
+					{Name: "unset_mode", Opcode: 2, Type: &ZxdgToplevelDecorationV1UnsetModeRequest{}},
+				},
+			},
+		},
 	},
 	"xdg_foreign_unstable_v1": {
 		Name: "xdg_foreign_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zxdg_exporter_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV1DestroyRequest{}},
+					{Name: "export", Opcode: 1, Type: &ZxdgExporterV1ExportRequest{}},
+				},
+			},
+			{
+				Name:   "zxdg_importer_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV1DestroyRequest{}},
+					{Name: "import", Opcode: 1, Type: &ZxdgImporterV1ImportRequest{}},
+				},
+			},
+			{
+				Name: "zxdg_exported_v1",
+				Events: []EventDescriptor{
+					{Name: "handle", Opcode: 0, Type: &ZxdgExportedV1HandleEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgExportedV1DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zxdg_imported_v1",
+				Events: []EventDescriptor{
+					{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV1DestroyedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgImportedV1DestroyRequest{}},
+					{Name: "set_parent_of", Opcode: 1, Type: &ZxdgImportedV1SetParentOfRequest{}},
+				},
+			},
+		},
 	},
 	"xdg_foreign_unstable_v2": {
 		Name: "xdg_foreign_unstable_v2",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zxdg_exporter_v2",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV2DestroyRequest{}},
+					{Name: "export_toplevel", Opcode: 1, Type: &ZxdgExporterV2ExportToplevelRequest{}},
+				},
+			},
+			{
+				Name:   "zxdg_importer_v2",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV2DestroyRequest{}},
+					{Name: "import_toplevel", Opcode: 1, Type: &ZxdgImporterV2ImportToplevelRequest{}},
+				},
+			},
+			{
+				Name: "zxdg_exported_v2",
+				Events: []EventDescriptor{
+					{Name: "handle", Opcode: 0, Type: &ZxdgExportedV2HandleEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgExportedV2DestroyRequest{}},
+				},
+			},
+			{
+				Name: "zxdg_imported_v2",
+				Events: []EventDescriptor{
+					{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV2DestroyedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgImportedV2DestroyRequest{}},
+					{Name: "set_parent_of", Opcode: 1, Type: &ZxdgImportedV2SetParentOfRequest{}},
+				},
+			},
+		},
 	},
 	"xdg_output_unstable_v1": {
 		Name: "xdg_output_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zxdg_output_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgOutputManagerV1DestroyRequest{}},
+					{Name: "get_xdg_output", Opcode: 1, Type: &ZxdgOutputManagerV1GetXdgOutputRequest{}},
+				},
+			},
+			{
+				Name: "zxdg_output_v1",
+				Events: []EventDescriptor{
+					{Name: "logical_position", Opcode: 0, Type: &ZxdgOutputV1LogicalPositionEvent{}},
+					{Name: "logical_size", Opcode: 1, Type: &ZxdgOutputV1LogicalSizeEvent{}},
+					{Name: "done", Opcode: 2, Type: &ZxdgOutputV1DoneEvent{}},
+					{Name: "name", Opcode: 3, Type: &ZxdgOutputV1NameEvent{}},
+					{Name: "description", Opcode: 4, Type: &ZxdgOutputV1DescriptionEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZxdgOutputV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"xdg_shell": {
 		Name: "xdg_shell",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name: "xdg_wm_base",
+				Events: []EventDescriptor{
+					{Name: "ping", Opcode: 0, Type: &XdgWmBasePingEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &XdgWmBaseDestroyRequest{}},
+					{Name: "create_positioner", Opcode: 1, Type: &XdgWmBaseCreatePositionerRequest{}},
+					{Name: "get_xdg_surface", Opcode: 2, Type: &XdgWmBaseGetXdgSurfaceRequest{}},
+					{Name: "pong", Opcode: 3, Type: &XdgWmBasePongRequest{}},
+				},
+			},
+			{
+				Name:   "xdg_positioner",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &XdgPositionerDestroyRequest{}},
+					{Name: "set_size", Opcode: 1, Type: &XdgPositionerSetSizeRequest{}},
+					{Name: "set_anchor_rect", Opcode: 2, Type: &XdgPositionerSetAnchorRectRequest{}},
+					{Name: "set_anchor", Opcode: 3, Type: &XdgPositionerSetAnchorRequest{}},
+					{Name: "set_gravity", Opcode: 4, Type: &XdgPositionerSetGravityRequest{}},
+					{Name: "set_constraint_adjustment", Opcode: 5, Type: &XdgPositionerSetConstraintAdjustmentRequest{}},
+					{Name: "set_offset", Opcode: 6, Type: &XdgPositionerSetOffsetRequest{}},
+					{Name: "set_reactive", Opcode: 7, Type: &XdgPositionerSetReactiveRequest{}},
+					{Name: "set_parent_size", Opcode: 8, Type: &XdgPositionerSetParentSizeRequest{}},
+					{Name: "set_parent_configure", Opcode: 9, Type: &XdgPositionerSetParentConfigureRequest{}},
+				},
+			},
+			{
+				Name: "xdg_surface",
+				Events: []EventDescriptor{
+					{Name: "configure", Opcode: 0, Type: &XdgSurfaceConfigureEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &XdgSurfaceDestroyRequest{}},
+					{Name: "get_toplevel", Opcode: 1, Type: &XdgSurfaceGetToplevelRequest{}},
+					{Name: "get_popup", Opcode: 2, Type: &XdgSurfaceGetPopupRequest{}},
+					{Name: "set_window_geometry", Opcode: 3, Type: &XdgSurfaceSetWindowGeometryRequest{}},
+					{Name: "ack_configure", Opcode: 4, Type: &XdgSurfaceAckConfigureRequest{}},
+				},
+			},
+			{
+				Name: "xdg_toplevel",
+				Events: []EventDescriptor{
+					{Name: "configure", Opcode: 0, Type: &XdgToplevelConfigureEvent{}},
+					{Name: "close", Opcode: 1, Type: &XdgToplevelCloseEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &XdgToplevelDestroyRequest{}},
+					{Name: "set_parent", Opcode: 1, Type: &XdgToplevelSetParentRequest{}},
+					{Name: "set_title", Opcode: 2, Type: &XdgToplevelSetTitleRequest{}},
+					{Name: "set_app_id", Opcode: 3, Type: &XdgToplevelSetAppIDRequest{}},
+					{Name: "show_window_menu", Opcode: 4, Type: &XdgToplevelShowWindowMenuRequest{}},
+					{Name: "move", Opcode: 5, Type: &XdgToplevelMoveRequest{}},
+					{Name: "resize", Opcode: 6, Type: &XdgToplevelResizeRequest{}},
+					{Name: "set_max_size", Opcode: 7, Type: &XdgToplevelSetMaxSizeRequest{}},
+					{Name: "set_min_size", Opcode: 8, Type: &XdgToplevelSetMinSizeRequest{}},
+					{Name: "set_maximized", Opcode: 9, Type: &XdgToplevelSetMaximizedRequest{}},
+					{Name: "unset_maximized", Opcode: 10, Type: &XdgToplevelUnsetMaximizedRequest{}},
+					{Name: "set_fullscreen", Opcode: 11, Type: &XdgToplevelSetFullscreenRequest{}},
+					{Name: "unset_fullscreen", Opcode: 12, Type: &XdgToplevelUnsetFullscreenRequest{}},
+					{Name: "set_minimized", Opcode: 13, Type: &XdgToplevelSetMinimizedRequest{}},
+				},
+			},
+			{
+				Name: "xdg_popup",
+				Events: []EventDescriptor{
+					{Name: "configure", Opcode: 0, Type: &XdgPopupConfigureEvent{}},
+					{Name: "popup_done", Opcode: 1, Type: &XdgPopupPopupDoneEvent{}},
+					{Name: "repositioned", Opcode: 2, Type: &XdgPopupRepositionedEvent{}},
+				},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &XdgPopupDestroyRequest{}},
+					{Name: "grab", Opcode: 1, Type: &XdgPopupGrabRequest{}},
+					{Name: "reposition", Opcode: 2, Type: &XdgPopupRepositionRequest{}},
+				},
+			},
+		},
 	},
 	"xwayland_keyboard_grab_unstable_v1": {
 		Name: "xwayland_keyboard_grab_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_xwayland_keyboard_grab_manager_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}},
+					{Name: "grab_keyboard", Opcode: 1, Type: &ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}},
+				},
+			},
+			{
+				Name:   "zwp_xwayland_keyboard_grab_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabV1DestroyRequest{}},
+				},
+			},
+		},
 	},
 	"zwp_linux_explicit_synchronization_unstable_v1": {
 		Name: "zwp_linux_explicit_synchronization_unstable_v1",
+		Interfaces: []InterfaceDescriptor{
+			{
+				Name:   "zwp_linux_explicit_synchronization_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxExplicitSynchronizationV1DestroyRequest{}},
+					{Name: "get_synchronization", Opcode: 1, Type: &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}},
+				},
+			},
+			{
+				Name:   "zwp_linux_surface_synchronization_v1",
+				Events: []EventDescriptor{},
+				Requests: []RequestDescriptor{
+					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}},
+					{Name: "set_acquire_fence", Opcode: 1, Type: &ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}},
+					{Name: "get_release", Opcode: 2, Type: &ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}},
+				},
+			},
+			{
+				Name: "zwp_linux_buffer_release_v1",
+				Events: []EventDescriptor{
+					{Name: "fenced_release", Opcode: 0, Type: &ZwpLinuxBufferReleaseV1FencedReleaseEvent{}},
+					{Name: "immediate_release", Opcode: 1, Type: &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}},
+				},
+				Requests: []RequestDescriptor{},
+			},
+		},
 	},
 }
 
