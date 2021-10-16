@@ -1427,6 +1427,42 @@ func (e *WpDrmLeaseDeviceV1ReleasedEvent) Scan(s *EventScanner) error {
 // Ensure WpDrmLeaseDeviceV1ReleasedEvent implements Event.
 var _ Event = &WpDrmLeaseDeviceV1ReleasedEvent{}
 
+// WpDrmLeaseDeviceV1 lease device
+//
+// This protocol is used by Wayland compositors which act as Direct
+// Renderering Manager (DRM) masters to lease DRM resources to Wayland
+// clients.
+//
+// The compositor will advertise one wp_drm_lease_device_v1 global for each
+// DRM node. Some time after a client binds to the wp_drm_lease_device_v1
+// global, the compositor will send a drm_fd event followed by zero, one or
+// more connector events. After all currently available connectors have been
+// sent, the compositor will send a wp_drm_lease_device_v1.done event.
+//
+// When the list of connectors available for lease changes the compositor
+// will send wp_drm_lease_device_v1.connector events for added connectors and
+// wp_drm_lease_connector_v1.withdrawn events for removed connectors,
+// followed by a wp_drm_lease_device_v1.done event.
+//
+// The compositor will indicate when a device is gone by removing the global
+// via a wl_registry.global_remove event. Upon receiving this event, the
+// client should destroy any matching wp_drm_lease_device_v1 object.
+//
+// To destroy a wp_drm_lease_device_v1 object, the client must first issue
+// a release request. Upon receiving this request, the compositor will
+// immediately send a released event and destroy the object. The client must
+// continue to process and discard drm_fd and connector events until it
+// receives the released event. Upon receiving the released event, the
+// client can safely cleanup any client-side resources.
+//
+// Warning! The protocol described in this file is currently in the testing
+// phase. Backward compatible changes may be added together with the
+// corresponding interface version bump. Backward incompatible changes can
+// only be done by creating a new major version of the extension.
+type WpDrmLeaseDeviceV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface drm_lease_v1.wp_drm_lease_device_v1
 
 // ----------------------------------------------------------------------------
@@ -1594,6 +1630,19 @@ func (e *WpDrmLeaseConnectorV1WithdrawnEvent) Scan(s *EventScanner) error {
 // Ensure WpDrmLeaseConnectorV1WithdrawnEvent implements Event.
 var _ Event = &WpDrmLeaseConnectorV1WithdrawnEvent{}
 
+// WpDrmLeaseConnectorV1 a leasable DRM connector
+//
+// Represents a DRM connector which is available for lease. These objects are
+// created via wp_drm_lease_device_v1.connector events, and should be passed
+// to lease requests via wp_drm_lease_request_v1.request_connector.
+// Immediately after the wp_drm_lease_connector_v1 object is created the
+// compositor will send a name, a description, a connector_id and a done
+// event. When the description is updated the compositor will send a
+// description event followed by a done event.
+type WpDrmLeaseConnectorV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface drm_lease_v1.wp_drm_lease_connector_v1
 
 // ----------------------------------------------------------------------------
@@ -1674,6 +1723,16 @@ func (r *WpDrmLeaseRequestV1SubmitRequest) Emit(e *RequestEmitter) error {
 
 // Ensure WpDrmLeaseRequestV1SubmitRequest implements Request.
 var _ Request = &WpDrmLeaseRequestV1SubmitRequest{}
+
+// WpDrmLeaseRequestV1 DRM lease request
+//
+// A client that wishes to lease DRM resources will attach the list of
+// connectors advertised with wp_drm_lease_device_v1.connector that they
+// wish to lease, then use wp_drm_lease_request_v1.submit to submit the
+// request.
+type WpDrmLeaseRequestV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_request_v1
 
@@ -1764,6 +1823,20 @@ func (e *WpDrmLeaseV1FinishedEvent) Scan(s *EventScanner) error {
 
 // Ensure WpDrmLeaseV1FinishedEvent implements Event.
 var _ Event = &WpDrmLeaseV1FinishedEvent{}
+
+// WpDrmLeaseV1 a DRM lease
+//
+// A DRM lease object is used to transfer the DRM file descriptor to the
+// client and manage the lifetime of the lease.
+//
+// Some time after the wp_drm_lease_v1 object is created, the compositor
+// will reply with the lease request's result. If the lease request is
+// granted, the compositor will send a lease_fd event. If the lease request
+// is denied, the compositor will send a finished event without a lease_fd
+// event.
+type WpDrmLeaseV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_v1
 
@@ -2036,6 +2109,45 @@ func (e *ZwpFullscreenShellV1CapabilityEvent) Scan(s *EventScanner) error {
 // Ensure ZwpFullscreenShellV1CapabilityEvent implements Event.
 var _ Event = &ZwpFullscreenShellV1CapabilityEvent{}
 
+// ZwpFullscreenShellV1 displays a single surface per output
+//
+// Displays a single surface per output.
+//
+// This interface provides a mechanism for a single client to display
+// simple full-screen surfaces.  While there technically may be multiple
+// clients bound to this interface, only one of those clients should be
+// shown at a time.
+//
+// To present a surface, the client uses either the present_surface or
+// present_surface_for_mode requests.  Presenting a surface takes effect
+// on the next wl_surface.commit.  See the individual requests for
+// details about scaling and mode switches.
+//
+// The client can have at most one surface per output at any time.
+// Requesting a surface to be presented on an output that already has a
+// surface replaces the previously presented surface.  Presenting a null
+// surface removes its content and effectively disables the output.
+// Exactly what happens when an output is "disabled" is
+// compositor-specific.  The same surface may be presented on multiple
+// outputs simultaneously.
+//
+// Once a surface is presented on an output, it stays on that output
+// until either the client removes it or the compositor destroys the
+// output.  This way, the client can update the output's contents by
+// simply attaching a new buffer.
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZwpFullscreenShellV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_v1
 
 // ----------------------------------------------------------------------------
@@ -2116,6 +2228,10 @@ func (e *ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) Scan(s *EventSca
 // Ensure ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent implements Event.
 var _ Event = &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
 
+type ZwpFullscreenShellModeFeedbackV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_mode_feedback_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2177,6 +2293,24 @@ func (r *ZwpIdleInhibitManagerV1CreateInhibitorRequest) Emit(e *RequestEmitter) 
 // Ensure ZwpIdleInhibitManagerV1CreateInhibitorRequest implements Request.
 var _ Request = &ZwpIdleInhibitManagerV1CreateInhibitorRequest{}
 
+// ZwpIdleInhibitManagerV1 control behavior when display idles
+//
+// This interface permits inhibiting the idle behavior such as screen
+// blanking, locking, and screensaving.  The client binds the idle manager
+// globally, then creates idle-inhibitor objects for each surface.
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZwpIdleInhibitManagerV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibit_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -2201,6 +2335,24 @@ func (r *ZwpIdleInhibitorV1DestroyRequest) Emit(e *RequestEmitter) error {
 
 // Ensure ZwpIdleInhibitorV1DestroyRequest implements Request.
 var _ Request = &ZwpIdleInhibitorV1DestroyRequest{}
+
+// ZwpIdleInhibitorV1 context object for inhibiting idle behavior
+//
+// An idle inhibitor prevents the output that the associated surface is
+// visible on from being set to a state where it is not visually usable due
+// to lack of user interaction (e.g. blanked, dimmed, locked, set to power
+// save, etc.)  Any screensaver processes are also blocked from displaying.
+//
+// If the surface is destroyed, unmapped, becomes occluded, loses
+// visibility, or otherwise becomes not visually relevant for the user, the
+// idle inhibitor will not be honored by the compositor; if the surface
+// subsequently regains visibility the inhibitor takes effect once again.
+// Likewise, the inhibitor isn't honored if the system was already idled at
+// the time the inhibitor was established, although if the system later
+// de-idles and re-idles the inhibitor will take effect.
+type ZwpIdleInhibitorV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibitor_v1
 
@@ -2865,6 +3017,35 @@ func (e *ZwpInputMethodContextV1PreferredLanguageEvent) Scan(s *EventScanner) er
 // Ensure ZwpInputMethodContextV1PreferredLanguageEvent implements Event.
 var _ Event = &ZwpInputMethodContextV1PreferredLanguageEvent{}
 
+// ZwpInputMethodContextV1 input method context
+//
+// Corresponds to a text input on the input method side. An input method context
+// is created on text input activation on the input method side. It allows
+// receiving information about the text input from the application via events.
+// Input method contexts do not keep state after deactivation and should be
+// destroyed after deactivation is handled.
+//
+// Text is generally UTF-8 encoded, indices and lengths are in bytes.
+//
+// Serials are used to synchronize the state between the text input and
+// an input method. New serials are sent by the text input in the
+// commit_state request and are used by the input method to indicate
+// the known text input state in events like preedit_string, commit_string,
+// and keysym. The text input can then ignore events from the input method
+// which are based on an outdated state (for example after a reset).
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZwpInputMethodContextV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface input_method_unstable_v1.zwp_input_method_context_v1
 
 // ----------------------------------------------------------------------------
@@ -2925,6 +3106,16 @@ func (e *ZwpInputMethodV1DeactivateEvent) Scan(s *EventScanner) error {
 // Ensure ZwpInputMethodV1DeactivateEvent implements Event.
 var _ Event = &ZwpInputMethodV1DeactivateEvent{}
 
+// ZwpInputMethodV1 input method
+//
+// An input method object is responsible for composing text in response to
+// input from hardware or virtual keyboards. There is one input method
+// object per seat. On activate there is a new input method context object
+// created which allows the input method to communicate with the text input.
+type ZwpInputMethodV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface input_method_unstable_v1.zwp_input_method_v1
 
 // ----------------------------------------------------------------------------
@@ -2955,6 +3146,13 @@ func (r *ZwpInputPanelV1GetInputPanelSurfaceRequest) Emit(e *RequestEmitter) err
 
 // Ensure ZwpInputPanelV1GetInputPanelSurfaceRequest implements Request.
 var _ Request = &ZwpInputPanelV1GetInputPanelSurfaceRequest{}
+
+// ZwpInputPanelV1 interface for implementing keyboards
+//
+// Only one client can bind this interface at a time.
+type ZwpInputPanelV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_v1
 
@@ -3020,6 +3218,10 @@ func (r *ZwpInputPanelSurfaceV1SetOverlayPanelRequest) Emit(e *RequestEmitter) e
 
 // Ensure ZwpInputPanelSurfaceV1SetOverlayPanelRequest implements Request.
 var _ Request = &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
+
+type ZwpInputPanelSurfaceV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_surface_v1
 
@@ -3165,6 +3367,14 @@ func (r *ZwpInputTimestampsManagerV1GetTouchTimestampsRequest) Emit(e *RequestEm
 // Ensure ZwpInputTimestampsManagerV1GetTouchTimestampsRequest implements Request.
 var _ Request = &ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}
 
+// ZwpInputTimestampsManagerV1 context object for high-resolution input timestamps
+//
+// A global interface used for requesting high-resolution timestamps
+// for input events.
+type ZwpInputTimestampsManagerV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface input_timestamps_unstable_v1.zwp_input_timestamps_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -3248,6 +3458,15 @@ func (e *ZwpInputTimestampsV1TimestampEvent) Scan(s *EventScanner) error {
 // Ensure ZwpInputTimestampsV1TimestampEvent implements Event.
 var _ Event = &ZwpInputTimestampsV1TimestampEvent{}
 
+// ZwpInputTimestampsV1 context object for input timestamps
+//
+// Provides high-resolution timestamp events for a set of subscribed input
+// events. The set of subscribed input events is determined by the
+// zwp_input_timestamps_manager_v1 request used to create this object.
+type ZwpInputTimestampsV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface input_timestamps_unstable_v1.zwp_input_timestamps_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3326,6 +3545,13 @@ func (r *ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest) Emit(e *Re
 // Ensure ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest implements Request.
 var _ Request = &ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}
 
+// ZwpKeyboardShortcutsInhibitManagerV1 context object for keyboard grab_manager
+//
+// A global interface used for inhibiting the compositor keyboard shortcuts.
+type ZwpKeyboardShortcutsInhibitManagerV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibit_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -3401,6 +3627,45 @@ func (e *ZwpKeyboardShortcutsInhibitorV1InactiveEvent) Scan(s *EventScanner) err
 
 // Ensure ZwpKeyboardShortcutsInhibitorV1InactiveEvent implements Event.
 var _ Event = &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
+
+// ZwpKeyboardShortcutsInhibitorV1 context object for keyboard shortcuts inhibitor
+//
+// A keyboard shortcuts inhibitor instructs the compositor to ignore
+// its own keyboard shortcuts when the associated surface has keyboard
+// focus. As a result, when the surface has keyboard focus on the given
+// seat, it will receive all key events originating from the specified
+// seat, even those which would normally be caught by the compositor for
+// its own shortcuts.
+//
+// The Wayland compositor is however under no obligation to disable
+// all of its shortcuts, and may keep some special key combo for its own
+// use, including but not limited to one allowing the user to forcibly
+// restore normal keyboard events routing in the case of an unwilling
+// client. The compositor may also use the same key combo to reactivate
+// an existing shortcut inhibitor that was previously deactivated on
+// user request.
+//
+// When the compositor restores its own keyboard shortcuts, an
+// "inactive" event is emitted to notify the client that the keyboard
+// shortcuts inhibitor is not effectively active for the surface and
+// seat any more, and the client should not expect to receive all
+// keyboard events.
+//
+// When the keyboard shortcuts inhibitor is inactive, the client has
+// no way to forcibly reactivate the keyboard shortcuts inhibitor.
+//
+// The user can chose to re-enable a previously deactivated keyboard
+// shortcuts inhibitor using any mechanism the compositor may offer,
+// in which case the compositor will send an "active" event to notify
+// the client.
+//
+// If the surface is destroyed, unmapped, or loses the seat's keyboard
+// focus, the keyboard shortcuts inhibitor becomes irrelevant and the
+// compositor will restore its own keyboard shortcuts but no "inactive"
+// event is emitted in this case.
+type ZwpKeyboardShortcutsInhibitorV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibitor_v1
 
@@ -3560,6 +3825,76 @@ func (e *ZwpLinuxDmabufV1ModifierEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpLinuxDmabufV1ModifierEvent implements Event.
 var _ Event = &ZwpLinuxDmabufV1ModifierEvent{}
+
+// ZwpLinuxDmabufV1 factory for creating dmabuf-based wl_buffers
+//
+// Following the interfaces from:
+// https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_image_dma_buf_import.txt
+// https://www.khronos.org/registry/EGL/extensions/EXT/EGL_EXT_image_dma_buf_import_modifiers.txt
+// and the Linux DRM sub-system's AddFb2 ioctl.
+//
+// This interface offers ways to create generic dmabuf-based
+// wl_buffers. Immediately after a client binds to this interface,
+// the set of supported formats and format modifiers is sent with
+// 'format' and 'modifier' events.
+//
+// The following are required from clients:
+//
+// - Clients must ensure that either all data in the dma-buf is
+// coherent for all subsequent read access or that coherency is
+// correctly handled by the underlying kernel-side dma-buf
+// implementation.
+//
+// - Don't make any more attachments after sending the buffer to the
+// compositor. Making more attachments later increases the risk of
+// the compositor not being able to use (re-import) an existing
+// dmabuf-based wl_buffer.
+//
+// The underlying graphics stack must ensure the following:
+//
+// - The dmabuf file descriptors relayed to the server will stay valid
+// for the whole lifetime of the wl_buffer. This means the server may
+// at any time use those fds to import the dmabuf into any kernel
+// sub-system that might accept it.
+//
+// However, when the underlying graphics stack fails to deliver the
+// promise, because of e.g. a device hot-unplug which raises internal
+// errors, after the wl_buffer has been successfully created the
+// compositor must not raise protocol errors to the client when dmabuf
+// import later fails.
+//
+// To create a wl_buffer from one or more dmabufs, a client creates a
+// zwp_linux_dmabuf_params_v1 object with a zwp_linux_dmabuf_v1.create_params
+// request. All planes required by the intended format are added with
+// the 'add' request. Finally, a 'create' or 'create_immed' request is
+// issued, which has the following outcome depending on the import success.
+//
+// The 'create' request,
+// - on success, triggers a 'created' event which provides the final
+// wl_buffer to the client.
+// - on failure, triggers a 'failed' event to convey that the server
+// cannot use the dmabufs received from the client.
+//
+// For the 'create_immed' request,
+// - on success, the server immediately imports the added dmabufs to
+// create a wl_buffer. No event is sent from the server in this case.
+// - on failure, the server can choose to either:
+// - terminate the client by raising a fatal error.
+// - mark the wl_buffer as failed, and send a 'failed' event to the
+// client. If the client uses a failed wl_buffer as an argument to any
+// request, the behaviour is compositor implementation-defined.
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZwpLinuxDmabufV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface linux_dmabuf_unstable_v1.zwp_linux_dmabuf_v1
 
@@ -3928,6 +4263,26 @@ func (e *ZwpLinuxBufferParamsV1FailedEvent) Scan(s *EventScanner) error {
 // Ensure ZwpLinuxBufferParamsV1FailedEvent implements Event.
 var _ Event = &ZwpLinuxBufferParamsV1FailedEvent{}
 
+// ZwpLinuxBufferParamsV1 parameters for creating a dmabuf-based wl_buffer
+//
+// This temporary object is a collection of dmabufs and other
+// parameters that together form a single logical buffer. The temporary
+// object may eventually create one wl_buffer unless cancelled by
+// destroying it before requesting 'create'.
+//
+// Single-planar formats only require one dmabuf, however
+// multi-planar formats may require more than one dmabuf. For all
+// formats, an 'add' request must be called once per plane (even if the
+// underlying dmabuf fd is identical).
+//
+// You must use consecutive plane indices ('plane_idx' argument for 'add')
+// from zero to the number of planes used by the drm_fourcc format code.
+// All planes required by the format must be given exactly once, but can
+// be given in any order. Each plane index can be set only once.
+type ZwpLinuxBufferParamsV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface linux_dmabuf_unstable_v1.zwp_linux_buffer_params_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4129,6 +4484,25 @@ func (r *ZwpPointerConstraintsV1ConfinePointerRequest) Emit(e *RequestEmitter) e
 // Ensure ZwpPointerConstraintsV1ConfinePointerRequest implements Request.
 var _ Request = &ZwpPointerConstraintsV1ConfinePointerRequest{}
 
+// ZwpPointerConstraintsV1 constrain the movement of a pointer
+//
+// The global interface exposing pointer constraining functionality. It
+// exposes two requests: lock_pointer for locking the pointer to its
+// position, and confine_pointer for locking the pointer to a region.
+//
+// The lock_pointer and confine_pointer requests create the objects
+// wp_locked_pointer and wp_confined_pointer respectively, and the client can
+// use these objects to interact with the lock.
+//
+// For any surface, only one lock or confinement may be active across all
+// wl_pointer objects of the same seat. If a lock or confinement is requested
+// when another lock or confinement is active or requested on the same surface
+// and with any of the wl_pointer objects of the same seat, an
+// 'already_constrained' error will be raised.
+type ZwpPointerConstraintsV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface pointer_constraints_unstable_v1.zwp_pointer_constraints_v1
 
 // ----------------------------------------------------------------------------
@@ -4272,6 +4646,35 @@ func (e *ZwpLockedPointerV1UnlockedEvent) Scan(s *EventScanner) error {
 // Ensure ZwpLockedPointerV1UnlockedEvent implements Event.
 var _ Event = &ZwpLockedPointerV1UnlockedEvent{}
 
+// ZwpLockedPointerV1 receive relative pointer motion events
+//
+// The wp_locked_pointer interface represents a locked pointer state.
+//
+// While the lock of this object is active, the wl_pointer objects of the
+// associated seat will not emit any wl_pointer.motion events.
+//
+// This object will send the event 'locked' when the lock is activated.
+// Whenever the lock is activated, it is guaranteed that the locked surface
+// will already have received pointer focus and that the pointer will be
+// within the region passed to the request creating this object.
+//
+// To unlock the pointer, send the destroy request. This will also destroy
+// the wp_locked_pointer object.
+//
+// If the compositor decides to unlock the pointer the unlocked event is
+// sent. See wp_locked_pointer.unlock for details.
+//
+// When unlocking, the compositor may warp the cursor position to the set
+// cursor position hint. If it does, it will not result in any relative
+// motion events emitted via wp_relative_pointer.
+//
+// If the surface the lock was requested on is destroyed and the lock is not
+// yet activated, the wp_locked_pointer object is now defunct and must be
+// destroyed.
+type ZwpLockedPointerV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface pointer_constraints_unstable_v1.zwp_locked_pointer_v1
 
 // ----------------------------------------------------------------------------
@@ -4383,6 +4786,28 @@ func (e *ZwpConfinedPointerV1UnconfinedEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpConfinedPointerV1UnconfinedEvent implements Event.
 var _ Event = &ZwpConfinedPointerV1UnconfinedEvent{}
+
+// ZwpConfinedPointerV1 confined pointer object
+//
+// The wp_confined_pointer interface represents a confined pointer state.
+//
+// This object will send the event 'confined' when the confinement is
+// activated. Whenever the confinement is activated, it is guaranteed that
+// the surface the pointer is confined to will already have received pointer
+// focus and that the pointer will be within the region passed to the request
+// creating this object. It is up to the compositor to decide whether this
+// requires some user interaction and if the pointer will warp to within the
+// passed region if outside.
+//
+// To unconfine the pointer, send the destroy request. This will also destroy
+// the wp_confined_pointer object.
+//
+// If the compositor decides to unconfine the pointer the unconfined event is
+// sent. The wp_confined_pointer object is at this point defunct and should
+// be destroyed.
+type ZwpConfinedPointerV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface pointer_constraints_unstable_v1.zwp_confined_pointer_v1
 
@@ -4505,6 +4930,28 @@ func (r *ZwpPointerGesturesV1GetHoldGestureRequest) Emit(e *RequestEmitter) erro
 
 // Ensure ZwpPointerGesturesV1GetHoldGestureRequest implements Request.
 var _ Request = &ZwpPointerGesturesV1GetHoldGestureRequest{}
+
+// ZwpPointerGesturesV1 touchpad gestures
+//
+// A global interface to provide semantic touchpad gestures for a given
+// pointer.
+//
+// Three gestures are currently supported: swipe, pinch, and hold.
+// Pinch and swipe gestures follow a three-stage cycle: begin, update,
+// end, hold gestures follow a two-stage cycle: begin and end. All
+// gestures are identified by a unique id.
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZwpPointerGesturesV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gestures_v1
 
@@ -4673,6 +5120,27 @@ func (e *ZwpPointerGestureSwipeV1EndEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpPointerGestureSwipeV1EndEvent implements Event.
 var _ Event = &ZwpPointerGestureSwipeV1EndEvent{}
+
+// ZwpPointerGestureSwipeV1 a swipe gesture object
+//
+// A swipe gesture object notifies a client about a multi-finger swipe
+// gesture detected on an indirect input device such as a touchpad.
+// The gesture is usually initiated by multiple fingers moving in the
+// same direction but once initiated the direction may change.
+// The precise conditions of when such a gesture is detected are
+// implementation-dependent.
+//
+// A gesture consists of three stages: begin, update (optional) and end.
+// There cannot be multiple simultaneous hold, pinch or swipe gestures on a
+// same pointer/seat, how compositors prevent these situations is
+// implementation-dependent.
+//
+// A gesture may be cancelled by the compositor or the hardware.
+// Clients should not consider performing permanent or irreversible
+// actions until the end of a gesture has been received.
+type ZwpPointerGestureSwipeV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_swipe_v1
 
@@ -4865,6 +5333,27 @@ func (e *ZwpPointerGesturePinchV1EndEvent) Scan(s *EventScanner) error {
 // Ensure ZwpPointerGesturePinchV1EndEvent implements Event.
 var _ Event = &ZwpPointerGesturePinchV1EndEvent{}
 
+// ZwpPointerGesturePinchV1 a pinch gesture object
+//
+// A pinch gesture object notifies a client about a multi-finger pinch
+// gesture detected on an indirect input device such as a touchpad.
+// The gesture is usually initiated by multiple fingers moving towards
+// each other or away from each other, or by two or more fingers rotating
+// around a logical center of gravity. The precise conditions of when
+// such a gesture is detected are implementation-dependent.
+//
+// A gesture consists of three stages: begin, update (optional) and end.
+// There cannot be multiple simultaneous hold, pinch or swipe gestures on a
+// same pointer/seat, how compositors prevent these situations is
+// implementation-dependent.
+//
+// A gesture may be cancelled by the compositor or the hardware.
+// Clients should not consider performing permanent or irreversible
+// actions until the end of a gesture has been received.
+type ZwpPointerGesturePinchV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_pinch_v1
 
 // ----------------------------------------------------------------------------
@@ -4986,6 +5475,29 @@ func (e *ZwpPointerGestureHoldV1EndEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpPointerGestureHoldV1EndEvent implements Event.
 var _ Event = &ZwpPointerGestureHoldV1EndEvent{}
+
+// ZwpPointerGestureHoldV1 a hold gesture object
+//
+// A hold gesture object notifies a client about a single- or
+// multi-finger hold gesture detected on an indirect input device such as
+// a touchpad. The gesture is usually initiated by one or more fingers
+// being held down without significant movement. The precise conditions
+// of when such a gesture is detected are implementation-dependent.
+//
+// In particular, this gesture may be used to cancel kinetic scrolling.
+//
+// A hold gesture consists of two stages: begin and end. Unlike pinch and
+// swipe there is no update stage.
+// There cannot be multiple simultaneous hold, pinch or swipe gestures on a
+// same pointer/seat, how compositors prevent these situations is
+// implementation-dependent.
+//
+// A gesture may be cancelled by the compositor or the hardware.
+// Clients should not consider performing permanent or irreversible
+// actions until the end of a gesture has been received.
+type ZwpPointerGestureHoldV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_hold_v1
 
@@ -5126,6 +5638,31 @@ func (e *WpPresentationClockIDEvent) Scan(s *EventScanner) error {
 
 // Ensure WpPresentationClockIDEvent implements Event.
 var _ Event = &WpPresentationClockIDEvent{}
+
+// WpPresentation timed presentation related wl_surface requests
+//
+// The main feature of this interface is accurate presentation
+// timing feedback to ensure smooth video playback while maintaining
+// audio/video synchronization. Some features use the concept of a
+// presentation clock, which is defined in the
+// presentation.clock_id event.
+//
+// A content update for a wl_surface is submitted by a
+// wl_surface.commit request. Request 'feedback' associates with
+// the wl_surface.commit and provides feedback on the content
+// update, particularly the final realized presentation time.
+//
+//
+//
+// When the final realized presentation time is available, e.g.
+// after a framebuffer flip completes, the requested
+// presentation_feedback.presented events are sent. The final
+// presentation time can differ from the compositor's predicted
+// display update time and the update's target time, especially
+// when the compositor misses its target vertical blanking period.
+type WpPresentation struct {
+	id ObjectID
+}
 
 // #endregion Interface presentation_time.wp_presentation
 
@@ -5319,6 +5856,23 @@ func (e *WpPresentationFeedbackDiscardedEvent) Scan(s *EventScanner) error {
 // Ensure WpPresentationFeedbackDiscardedEvent implements Event.
 var _ Event = &WpPresentationFeedbackDiscardedEvent{}
 
+// WpPresentationFeedback presentation time feedback event
+//
+// A presentation_feedback object returns an indication that a
+// wl_surface content update has become visible to the user.
+// One object corresponds to one content update submission
+// (wl_surface.commit). There are two possible outcomes: the
+// content update is presented to the user, and a presentation
+// timestamp delivered; or, the user did not see the content
+// update because it was superseded or its surface destroyed,
+// and the content update is discarded.
+//
+// Once a presentation_feedback object has delivered a 'presented'
+// or 'discarded' event it is automatically destroyed.
+type WpPresentationFeedback struct {
+	id ObjectID
+}
+
 // #endregion Interface presentation_time.wp_presentation_feedback
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5380,6 +5934,14 @@ func (r *ZwpRelativePointerManagerV1GetRelativePointerRequest) Emit(e *RequestEm
 
 // Ensure ZwpRelativePointerManagerV1GetRelativePointerRequest implements Request.
 var _ Request = &ZwpRelativePointerManagerV1GetRelativePointerRequest{}
+
+// ZwpRelativePointerManagerV1 get relative pointer objects
+//
+// A global interface used for getting the relative pointer object for a
+// given pointer.
+type ZwpRelativePointerManagerV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface relative_pointer_unstable_v1.zwp_relative_pointer_manager_v1
 
@@ -5500,6 +6062,16 @@ func (e *ZwpRelativePointerV1RelativeMotionEvent) Scan(s *EventScanner) error {
 // Ensure ZwpRelativePointerV1RelativeMotionEvent implements Event.
 var _ Event = &ZwpRelativePointerV1RelativeMotionEvent{}
 
+// ZwpRelativePointerV1 relative pointer object
+//
+// A wp_relative_pointer object is an extension to the wl_pointer interface
+// used for emitting relative pointer events. It shares the same focus as
+// wl_pointer objects of the same seat and will only emit events when it has
+// focus.
+type ZwpRelativePointerV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface relative_pointer_unstable_v1.zwp_relative_pointer_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5562,6 +6134,15 @@ func (r *ZwpTabletManagerV1DestroyRequest) Emit(e *RequestEmitter) error {
 
 // Ensure ZwpTabletManagerV1DestroyRequest implements Request.
 var _ Request = &ZwpTabletManagerV1DestroyRequest{}
+
+// ZwpTabletManagerV1 controller object for graphic tablet devices
+//
+// An object that provides access to the graphics tablets available on this
+// system. All tablets are associated with a seat, to get access to the
+// actual tablets, use wp_tablet_manager.get_tablet_seat.
+type ZwpTabletManagerV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_manager_v1
 
@@ -5648,6 +6229,15 @@ func (e *ZwpTabletSeatV1ToolAddedEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpTabletSeatV1ToolAddedEvent implements Event.
 var _ Event = &ZwpTabletSeatV1ToolAddedEvent{}
+
+// ZwpTabletSeatV1 controller object for graphic tablet devices of a seat
+//
+// An object that provides access to the graphics tablets available on this
+// seat. After binding to this interface, the compositor sends a set of
+// wp_tablet_seat.tablet_added and wp_tablet_seat.tool_added events.
+type ZwpTabletSeatV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_seat_v1
 
@@ -6517,6 +7107,32 @@ func (e *ZwpTabletToolV1FrameEvent) Scan(s *EventScanner) error {
 // Ensure ZwpTabletToolV1FrameEvent implements Event.
 var _ Event = &ZwpTabletToolV1FrameEvent{}
 
+// ZwpTabletToolV1 a physical tablet tool
+//
+// An object that represents a physical tool that has been, or is
+// currently in use with a tablet in this seat. Each wp_tablet_tool
+// object stays valid until the client destroys it; the compositor
+// reuses the wp_tablet_tool object to indicate that the object's
+// respective physical tool has come into proximity of a tablet again.
+//
+// A wp_tablet_tool object's relation to a physical tool depends on the
+// tablet's ability to report serial numbers. If the tablet supports
+// this capability, then the object represents a specific physical tool
+// and can be identified even when used on multiple tablets.
+//
+// A tablet tool has a number of static characteristics, e.g. tool type,
+// hardware_serial and capabilities. These capabilities are sent in an
+// event sequence after the wp_tablet_seat.tool_added event before any
+// actual events from this tool. This initial event sequence is
+// terminated by a wp_tablet_tool.done event.
+//
+// Tablet tool events are grouped by wp_tablet_tool.frame events.
+// Any events received before a wp_tablet_tool.frame event should be
+// considered part of the same hardware state change.
+type ZwpTabletToolV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface tablet_unstable_v1.zwp_tablet_tool_v1
 
 // ----------------------------------------------------------------------------
@@ -6693,6 +7309,20 @@ func (e *ZwpTabletV1RemovedEvent) Scan(s *EventScanner) error {
 // Ensure ZwpTabletV1RemovedEvent implements Event.
 var _ Event = &ZwpTabletV1RemovedEvent{}
 
+// ZwpTabletV1 graphics tablet device
+//
+// The wp_tablet interface represents one graphics tablet device. The
+// tablet interface itself does not generate events; all events are
+// generated by wp_tablet_tool objects when in proximity above a tablet.
+//
+// A tablet has a number of static characteristics, e.g. device name and
+// pid/vid. These capabilities are sent in an event sequence after the
+// wp_tablet_seat.tablet_added event. This initial event sequence is
+// terminated by a wp_tablet.done event.
+type ZwpTabletV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface tablet_unstable_v1.zwp_tablet_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -6755,6 +7385,15 @@ func (r *ZwpTabletManagerV2DestroyRequest) Emit(e *RequestEmitter) error {
 
 // Ensure ZwpTabletManagerV2DestroyRequest implements Request.
 var _ Request = &ZwpTabletManagerV2DestroyRequest{}
+
+// ZwpTabletManagerV2 controller object for graphic tablet devices
+//
+// An object that provides access to the graphics tablets available on this
+// system. All tablets are associated with a seat, to get access to the
+// actual tablets, use wp_tablet_manager.get_tablet_seat.
+type ZwpTabletManagerV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_manager_v2
 
@@ -6877,6 +7516,15 @@ func (e *ZwpTabletSeatV2PadAddedEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpTabletSeatV2PadAddedEvent implements Event.
 var _ Event = &ZwpTabletSeatV2PadAddedEvent{}
+
+// ZwpTabletSeatV2 controller object for graphic tablet devices of a seat
+//
+// An object that provides access to the graphics tablets available on this
+// seat. After binding to this interface, the compositor sends a set of
+// wp_tablet_seat.tablet_added and wp_tablet_seat.tool_added events.
+type ZwpTabletSeatV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_seat_v2
 
@@ -7744,6 +8392,32 @@ func (e *ZwpTabletToolV2FrameEvent) Scan(s *EventScanner) error {
 // Ensure ZwpTabletToolV2FrameEvent implements Event.
 var _ Event = &ZwpTabletToolV2FrameEvent{}
 
+// ZwpTabletToolV2 a physical tablet tool
+//
+// An object that represents a physical tool that has been, or is
+// currently in use with a tablet in this seat. Each wp_tablet_tool
+// object stays valid until the client destroys it; the compositor
+// reuses the wp_tablet_tool object to indicate that the object's
+// respective physical tool has come into proximity of a tablet again.
+//
+// A wp_tablet_tool object's relation to a physical tool depends on the
+// tablet's ability to report serial numbers. If the tablet supports
+// this capability, then the object represents a specific physical tool
+// and can be identified even when used on multiple tablets.
+//
+// A tablet tool has a number of static characteristics, e.g. tool type,
+// hardware_serial and capabilities. These capabilities are sent in an
+// event sequence after the wp_tablet_seat.tool_added event before any
+// actual events from this tool. This initial event sequence is
+// terminated by a wp_tablet_tool.done event.
+//
+// Tablet tool events are grouped by wp_tablet_tool.frame events.
+// Any events received before a wp_tablet_tool.frame event should be
+// considered part of the same hardware state change.
+type ZwpTabletToolV2 struct {
+	id ObjectID
+}
+
 // #endregion Interface tablet_unstable_v2.zwp_tablet_tool_v2
 
 // ----------------------------------------------------------------------------
@@ -7919,6 +8593,20 @@ func (e *ZwpTabletV2RemovedEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpTabletV2RemovedEvent implements Event.
 var _ Event = &ZwpTabletV2RemovedEvent{}
+
+// ZwpTabletV2 graphics tablet device
+//
+// The wp_tablet interface represents one graphics tablet device. The
+// tablet interface itself does not generate events; all events are
+// generated by wp_tablet_tool objects when in proximity above a tablet.
+//
+// A tablet has a number of static characteristics, e.g. device name and
+// pid/vid. These capabilities are sent in an event sequence after the
+// wp_tablet_seat.tablet_added event. This initial event sequence is
+// terminated by a wp_tablet.done event.
+type ZwpTabletV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_v2
 
@@ -8142,6 +8830,17 @@ func (e *ZwpTabletPadRingV2FrameEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpTabletPadRingV2FrameEvent implements Event.
 var _ Event = &ZwpTabletPadRingV2FrameEvent{}
+
+// ZwpTabletPadRingV2 pad ring
+//
+// A circular interaction area, such as the touch ring on the Wacom Intuos
+// Pro series tablets.
+//
+// Events on a ring are logically grouped by the wl_tablet_pad_ring.frame
+// event.
+type ZwpTabletPadRingV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_ring_v2
 
@@ -8367,6 +9066,17 @@ func (e *ZwpTabletPadStripV2FrameEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpTabletPadStripV2FrameEvent implements Event.
 var _ Event = &ZwpTabletPadStripV2FrameEvent{}
+
+// ZwpTabletPadStripV2 pad strip
+//
+// A linear interaction area, such as the strips found in Wacom Cintiq
+// models.
+//
+// Events on a strip are logically grouped by the wl_tablet_pad_strip.frame
+// event.
+type ZwpTabletPadStripV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_strip_v2
 
@@ -8620,6 +9330,33 @@ func (e *ZwpTabletPadGroupV2ModeSwitchEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpTabletPadGroupV2ModeSwitchEvent implements Event.
 var _ Event = &ZwpTabletPadGroupV2ModeSwitchEvent{}
+
+// ZwpTabletPadGroupV2 a set of buttons, rings and strips
+//
+// A pad group describes a distinct (sub)set of buttons, rings and strips
+// present in the tablet. The criteria of this grouping is usually positional,
+// eg. if a tablet has buttons on the left and right side, 2 groups will be
+// presented. The physical arrangement of groups is undisclosed and may
+// change on the fly.
+//
+// Pad groups will announce their features during pad initialization. Between
+// the corresponding wp_tablet_pad.group event and wp_tablet_pad_group.done, the
+// pad group will announce the buttons, rings and strips contained in it,
+// plus the number of supported modes.
+//
+// Modes are a mechanism to allow multiple groups of actions for every element
+// in the pad group. The number of groups and available modes in each is
+// persistent across device plugs. The current mode is user-switchable, it
+// will be announced through the wp_tablet_pad_group.mode_switch event both
+// whenever it is switched, and after wp_tablet_pad.enter.
+//
+// The current mode logically applies to all elements in the pad group,
+// although it is at clients' discretion whether to actually perform different
+// actions, and/or issue the respective .set_feedback requests to notify the
+// compositor. See the wp_tablet_pad_group.mode_switch event for more details.
+type ZwpTabletPadGroupV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_group_v2
 
@@ -8986,6 +9723,34 @@ func (e *ZwpTabletPadV2RemovedEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpTabletPadV2RemovedEvent implements Event.
 var _ Event = &ZwpTabletPadV2RemovedEvent{}
+
+// ZwpTabletPadV2 a set of buttons, rings and strips
+//
+// A pad device is a set of buttons, rings and strips
+// usually physically present on the tablet device itself. Some
+// exceptions exist where the pad device is physically detached, e.g. the
+// Wacom ExpressKey Remote.
+//
+// Pad devices have no axes that control the cursor and are generally
+// auxiliary devices to the tool devices used on the tablet surface.
+//
+// A pad device has a number of static characteristics, e.g. the number
+// of rings. These capabilities are sent in an event sequence after the
+// wp_tablet_seat.pad_added event before any actual events from this pad.
+// This initial event sequence is terminated by a wp_tablet_pad.done
+// event.
+//
+// All pad features (buttons, rings and strips) are logically divided into
+// groups and all pads have at least one group. The available groups are
+// notified through the wp_tablet_pad.group event; the compositor will
+// emit one event per group before emitting wp_tablet_pad.done.
+//
+// Groups may have multiple modes. Modes allow clients to map multiple
+// actions to a single pad feature. Only one mode can be active per group,
+// although different groups may have different active modes.
+type ZwpTabletPadV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_v2
 
@@ -9917,6 +10682,41 @@ func (e *ZwpTextInputV1TextDirectionEvent) Scan(s *EventScanner) error {
 // Ensure ZwpTextInputV1TextDirectionEvent implements Event.
 var _ Event = &ZwpTextInputV1TextDirectionEvent{}
 
+// ZwpTextInputV1 text input
+//
+// An object used for text input. Adds support for text input and input
+// methods to applications. A text_input object is created from a
+// wl_text_input_manager and corresponds typically to a text entry in an
+// application.
+//
+// Requests are used to activate/deactivate the text_input object and set
+// state information like surrounding and selected text or the content type.
+// The information about entered text is sent to the text_input object via
+// the pre-edit and commit events. Using this interface removes the need
+// for applications to directly process hardware key events and compose text
+// out of them.
+//
+// Text is generally UTF-8 encoded, indices and lengths are in bytes.
+//
+// Serials are used to synchronize the state between the text input and
+// an input method. New serials are sent by the text input in the
+// commit_state request and are used by the input method to indicate
+// the known text input state in events like preedit_string, commit_string,
+// and keysym. The text input can then ignore events from the input method
+// which are based on an outdated state (for example after a reset).
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZwpTextInputV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface text_input_unstable_v1.zwp_text_input_v1
 
 // ----------------------------------------------------------------------------
@@ -9945,6 +10745,13 @@ func (r *ZwpTextInputManagerV1CreateTextInputRequest) Emit(e *RequestEmitter) er
 
 // Ensure ZwpTextInputManagerV1CreateTextInputRequest implements Request.
 var _ Request = &ZwpTextInputManagerV1CreateTextInputRequest{}
+
+// ZwpTextInputManagerV1 text input manager
+//
+// A factory for text_input objects. This object is a global singleton.
+type ZwpTextInputManagerV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface text_input_unstable_v1.zwp_text_input_manager_v1
 
@@ -10648,6 +11455,38 @@ func (e *ZwpTextInputV3DoneEvent) Scan(s *EventScanner) error {
 // Ensure ZwpTextInputV3DoneEvent implements Event.
 var _ Event = &ZwpTextInputV3DoneEvent{}
 
+// ZwpTextInputV3 text input
+//
+// The zwp_text_input_v3 interface represents text input and input methods
+// associated with a seat. It provides enter/leave events to follow the
+// text input focus for a seat.
+//
+// Requests are used to enable/disable the text-input object and set
+// state information like surrounding and selected text or the content type.
+// The information about the entered text is sent to the text-input object
+// via the preedit_string and commit_string events.
+//
+// Text is valid UTF-8 encoded, indices and lengths are in bytes. Indices
+// must not point to middle bytes inside a code point: they must either
+// point to the first byte of a code point or to the end of the buffer.
+// Lengths must be measured between two valid indices.
+//
+// Focus moving throughout surfaces will result in the emission of
+// zwp_text_input_v3.enter and zwp_text_input_v3.leave events. The focused
+// surface must commit zwp_text_input_v3.enable and
+// zwp_text_input_v3.disable requests as the keyboard focus moves across
+// editable and non-editable elements of the UI. Those two requests are not
+// expected to be paired with each other, the compositor must be able to
+// handle consecutive series of the same request.
+//
+// State is sent by the state requests (set_surrounding_text,
+// set_content_type and set_cursor_rectangle) and a commit request. After an
+// enter event or disable request all state information is invalidated and
+// needs to be resent by the client.
+type ZwpTextInputV3 struct {
+	id ObjectID
+}
+
 // #endregion Interface text_input_unstable_v3.zwp_text_input_v3
 
 // ----------------------------------------------------------------------------
@@ -10701,6 +11540,13 @@ func (r *ZwpTextInputManagerV3GetTextInputRequest) Emit(e *RequestEmitter) error
 
 // Ensure ZwpTextInputManagerV3GetTextInputRequest implements Request.
 var _ Request = &ZwpTextInputManagerV3GetTextInputRequest{}
+
+// ZwpTextInputManagerV3 text input manager
+//
+// A factory for text-input objects. This object is a global singleton.
+type ZwpTextInputManagerV3 struct {
+	id ObjectID
+}
 
 // #endregion Interface text_input_unstable_v3.zwp_text_input_manager_v3
 
@@ -10775,6 +11621,18 @@ func (r *WpViewporterGetViewportRequest) Emit(e *RequestEmitter) error {
 
 // Ensure WpViewporterGetViewportRequest implements Request.
 var _ Request = &WpViewporterGetViewportRequest{}
+
+// WpViewporter surface cropping and scaling
+//
+// The global interface exposing surface cropping and scaling
+// capabilities is used to instantiate an interface extension for a
+// wl_surface object. This extended interface will then allow
+// cropping and scaling the surface contents, effectively
+// disconnecting the direct relationship between the buffer and the
+// surface size.
+type WpViewporter struct {
+	id ObjectID
+}
 
 // #endregion Interface viewporter.wp_viewporter
 
@@ -10911,6 +11769,73 @@ func (r *WpViewportSetDestinationRequest) Emit(e *RequestEmitter) error {
 
 // Ensure WpViewportSetDestinationRequest implements Request.
 var _ Request = &WpViewportSetDestinationRequest{}
+
+// WpViewport crop and scale interface to a wl_surface
+//
+// An additional interface to a wl_surface object, which allows the
+// client to specify the cropping and scaling of the surface
+// contents.
+//
+// This interface works with two concepts: the source rectangle (src_x,
+// src_y, src_width, src_height), and the destination size (dst_width,
+// dst_height). The contents of the source rectangle are scaled to the
+// destination size, and content outside the source rectangle is ignored.
+// This state is double-buffered, and is applied on the next
+// wl_surface.commit.
+//
+// The two parts of crop and scale state are independent: the source
+// rectangle, and the destination size. Initially both are unset, that
+// is, no scaling is applied. The whole of the current wl_buffer is
+// used as the source, and the surface size is as defined in
+// wl_surface.attach.
+//
+// If the destination size is set, it causes the surface size to become
+// dst_width, dst_height. The source (rectangle) is scaled to exactly
+// this size. This overrides whatever the attached wl_buffer size is,
+// unless the wl_buffer is NULL. If the wl_buffer is NULL, the surface
+// has no content and therefore no size. Otherwise, the size is always
+// at least 1x1 in surface local coordinates.
+//
+// If the source rectangle is set, it defines what area of the wl_buffer is
+// taken as the source. If the source rectangle is set and the destination
+// size is not set, then src_width and src_height must be integers, and the
+// surface size becomes the source rectangle size. This results in cropping
+// without scaling. If src_width or src_height are not integers and
+// destination size is not set, the bad_size protocol error is raised when
+// the surface state is applied.
+//
+// The coordinate transformations from buffer pixel coordinates up to
+// the surface-local coordinates happen in the following order:
+// 1. buffer_transform (wl_surface.set_buffer_transform)
+// 2. buffer_scale (wl_surface.set_buffer_scale)
+// 3. crop and scale (wp_viewport.set*)
+// This means, that the source rectangle coordinates of crop and scale
+// are given in the coordinates after the buffer transform and scale,
+// i.e. in the coordinates that would be the surface-local coordinates
+// if the crop and scale was not applied.
+//
+// If src_x or src_y are negative, the bad_value protocol error is raised.
+// Otherwise, if the source rectangle is partially or completely outside of
+// the non-NULL wl_buffer, then the out_of_buffer protocol error is raised
+// when the surface state is applied. A NULL wl_buffer does not raise the
+// out_of_buffer error.
+//
+// The x, y arguments of wl_surface.attach are applied as normal to
+// the surface. They indicate how many pixels to remove from the
+// surface size from the left and the top. In other words, they are
+// still in the surface-local coordinate system, just like dst_width
+// and dst_height are.
+//
+// If the wl_surface associated with the wp_viewport is destroyed,
+// all wp_viewport requests except 'destroy' raise the protocol error
+// no_surface.
+//
+// If the wp_viewport object is destroyed, the crop and scale
+// state is removed from the wl_surface. The change will be applied
+// on the next wl_surface.commit.
+type WpViewport struct {
+	id ObjectID
+}
 
 // #endregion Interface viewporter.wp_viewport
 
@@ -11091,6 +12016,14 @@ func (e *WlDisplayDeleteIDEvent) Scan(s *EventScanner) error {
 // Ensure WlDisplayDeleteIDEvent implements Event.
 var _ Event = &WlDisplayDeleteIDEvent{}
 
+// WlDisplay core global object
+//
+// The core global object.  This is a special singleton object.  It
+// is used for internal Wayland protocol features.
+type WlDisplay struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_display
 
 // ----------------------------------------------------------------------------
@@ -11211,6 +12144,32 @@ func (e *WlRegistryGlobalRemoveEvent) Scan(s *EventScanner) error {
 // Ensure WlRegistryGlobalRemoveEvent implements Event.
 var _ Event = &WlRegistryGlobalRemoveEvent{}
 
+// WlRegistry global registry object
+//
+// The singleton global registry object.  The server has a number of
+// global objects that are available to all clients.  These objects
+// typically represent an actual object in the server (for example,
+// an input device) or they are singleton objects that provide
+// extension functionality.
+//
+// When a client creates a registry object, the registry object
+// will emit a global event for each global currently in the
+// registry.  Globals come and go as a result of device or
+// monitor hotplugs, reconfiguration or other events, and the
+// registry will send out global and global_remove events to
+// keep the client up to date with the changes.  To mark the end
+// of the initial burst of events, the client can use the
+// wl_display.sync request immediately after calling
+// wl_display.get_registry.
+//
+// A client can bind to a global object by using the bind
+// request.  This creates a client-side handle that lets the object
+// emit events to the client and lets the client invoke requests on
+// the object.
+type WlRegistry struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_registry
 
 // ----------------------------------------------------------------------------
@@ -11242,6 +12201,14 @@ func (e *WlCallbackDoneEvent) Scan(s *EventScanner) error {
 
 // Ensure WlCallbackDoneEvent implements Event.
 var _ Event = &WlCallbackDoneEvent{}
+
+// WlCallback callback object
+//
+// Clients can handle the 'done' event to get notified when
+// the related request is done.
+type WlCallback struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_callback
 
@@ -11297,6 +12264,15 @@ func (r *WlCompositorCreateRegionRequest) Emit(e *RequestEmitter) error {
 
 // Ensure WlCompositorCreateRegionRequest implements Request.
 var _ Request = &WlCompositorCreateRegionRequest{}
+
+// WlCompositor the compositor singleton
+//
+// A compositor.  This object is a singleton global.  The
+// compositor is in charge of combining the contents of multiple
+// surfaces into one displayable output.
+type WlCompositor struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_compositor
 
@@ -11419,6 +12395,19 @@ func (r *WlShmPoolResizeRequest) Emit(e *RequestEmitter) error {
 
 // Ensure WlShmPoolResizeRequest implements Request.
 var _ Request = &WlShmPoolResizeRequest{}
+
+// WlShmPool a shared memory pool
+//
+// The wl_shm_pool object encapsulates a piece of memory shared
+// between the compositor and client.  Through the wl_shm_pool
+// object, the client can allocate shared memory wl_buffer objects.
+// All objects created through the same pool share the same
+// underlying mapped memory. Reusing the mapped memory avoids the
+// setup/teardown overhead and is useful when interactively resizing
+// a surface or for many small buffers.
+type WlShmPool struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_shm_pool
 
@@ -11826,6 +12815,21 @@ func (e *WlShmFormatEvent) Scan(s *EventScanner) error {
 // Ensure WlShmFormatEvent implements Event.
 var _ Event = &WlShmFormatEvent{}
 
+// WlShm shared memory support
+//
+// A singleton global object that provides support for shared
+// memory.
+//
+// Clients can create wl_shm_pool objects using the create_pool
+// request.
+//
+// At connection setup time, the wl_shm object emits one or more
+// format events to inform clients about the valid pixel formats
+// that can be used for buffers.
+type WlShm struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_shm
 
 // ----------------------------------------------------------------------------
@@ -11884,6 +12888,22 @@ func (e *WlBufferReleaseEvent) Scan(s *EventScanner) error {
 
 // Ensure WlBufferReleaseEvent implements Event.
 var _ Event = &WlBufferReleaseEvent{}
+
+// WlBuffer content for a wl_surface
+//
+// A buffer provides the content for a wl_surface. Buffers are
+// created through factory interfaces such as wl_shm, wp_linux_buffer_params
+// (from the linux-dmabuf protocol extension) or similar. It has a width and
+// a height and can be attached to a wl_surface, but the mechanism by which a
+// client provides and updates the contents is defined by the buffer factory
+// interface.
+//
+// If the buffer uses a format that has an alpha channel, the alpha channel
+// is assumed to be premultiplied in the color channels unless otherwise
+// specified.
+type WlBuffer struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_buffer
 
@@ -12227,6 +13247,18 @@ func (e *WlDataOfferActionEvent) Scan(s *EventScanner) error {
 // Ensure WlDataOfferActionEvent implements Event.
 var _ Event = &WlDataOfferActionEvent{}
 
+// WlDataOffer offer to transfer data
+//
+// A wl_data_offer represents a piece of data offered for transfer
+// by another client (the source client).  It is used by the
+// copy-and-paste and drag-and-drop mechanisms.  The offer
+// describes the different mime types that the data can be
+// converted to and provides the mechanism for transferring the
+// data directly from the source client.
+type WlDataOffer struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_data_offer
 
 // ----------------------------------------------------------------------------
@@ -12535,6 +13567,16 @@ func (e *WlDataSourceActionEvent) Scan(s *EventScanner) error {
 
 // Ensure WlDataSourceActionEvent implements Event.
 var _ Event = &WlDataSourceActionEvent{}
+
+// WlDataSource offer to transfer data
+//
+// The wl_data_source object is the source side of a wl_data_offer.
+// It is created by the source client in a data transfer and
+// provides a way to describe the offered data and a way to respond
+// to requests to transfer the data.
+type WlDataSource struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_data_source
 
@@ -12904,6 +13946,17 @@ func (e *WlDataDeviceSelectionEvent) Scan(s *EventScanner) error {
 // Ensure WlDataDeviceSelectionEvent implements Event.
 var _ Event = &WlDataDeviceSelectionEvent{}
 
+// WlDataDevice data transfer device
+//
+// There is one wl_data_device per seat which can be obtained
+// from the global wl_data_device_manager singleton.
+//
+// A wl_data_device provides access to inter-client data transfer
+// mechanisms such as copy-and-paste and drag-and-drop.
+type WlDataDevice struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_data_device
 
 // ----------------------------------------------------------------------------
@@ -13006,6 +14059,22 @@ func (r *WlDataDeviceManagerGetDataDeviceRequest) Emit(e *RequestEmitter) error 
 // Ensure WlDataDeviceManagerGetDataDeviceRequest implements Request.
 var _ Request = &WlDataDeviceManagerGetDataDeviceRequest{}
 
+// WlDataDeviceManager data transfer interface
+//
+// The wl_data_device_manager is a singleton global object that
+// provides access to inter-client data transfer mechanisms such as
+// copy-and-paste and drag-and-drop.  These mechanisms are tied to
+// a wl_seat and this interface lets a client get a wl_data_device
+// corresponding to a wl_seat.
+//
+// Depending on the version bound, the objects created from the bound
+// wl_data_device_manager object will have different requirements for
+// functioning properly. See wl_data_source.set_actions,
+// wl_data_offer.accept and wl_data_offer.finish for details.
+type WlDataDeviceManager struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_data_device_manager
 
 // ----------------------------------------------------------------------------
@@ -13052,6 +14121,20 @@ func (r *WlShellGetShellSurfaceRequest) Emit(e *RequestEmitter) error {
 
 // Ensure WlShellGetShellSurfaceRequest implements Request.
 var _ Request = &WlShellGetShellSurfaceRequest{}
+
+// WlShell create desktop-style surfaces
+//
+// This interface is implemented by servers that provide
+// desktop-style user interfaces.
+//
+// It allows clients to associate a wl_shell_surface with
+// a basic surface.
+//
+// Note! This protocol is deprecated and not intended for production use.
+// For desktop-style user interfaces, use xdg_shell.
+type WlShell struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_shell
 
@@ -13653,6 +14736,23 @@ func (e *WlShellSurfacePopupDoneEvent) Scan(s *EventScanner) error {
 
 // Ensure WlShellSurfacePopupDoneEvent implements Event.
 var _ Event = &WlShellSurfacePopupDoneEvent{}
+
+// WlShellSurface desktop-style metadata interface
+//
+// An interface that may be implemented by a wl_surface, for
+// implementations that provide a desktop-style user interface.
+//
+// It provides requests to treat surfaces like toplevel, fullscreen
+// or popup windows, move, resize or maximize them, associate
+// metadata like title and class, etc.
+//
+// On the server side the object is automatically destroyed when
+// the related wl_surface is destroyed. On the client side,
+// wl_shell_surface_destroy() must be called before destroying
+// the wl_surface object.
+type WlShellSurface struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_shell_surface
 
@@ -14269,6 +15369,53 @@ func (e *WlSurfaceLeaveEvent) Scan(s *EventScanner) error {
 // Ensure WlSurfaceLeaveEvent implements Event.
 var _ Event = &WlSurfaceLeaveEvent{}
 
+// WlSurface an onscreen surface
+//
+// A surface is a rectangular area that may be displayed on zero
+// or more outputs, and shown any number of times at the compositor's
+// discretion. They can present wl_buffers, receive user input, and
+// define a local coordinate system.
+//
+// The size of a surface (and relative positions on it) is described
+// in surface-local coordinates, which may differ from the buffer
+// coordinates of the pixel content, in case a buffer_transform
+// or a buffer_scale is used.
+//
+// A surface without a "role" is fairly useless: a compositor does
+// not know where, when or how to present it. The role is the
+// purpose of a wl_surface. Examples of roles are a cursor for a
+// pointer (as set by wl_pointer.set_cursor), a drag icon
+// (wl_data_device.start_drag), a sub-surface
+// (wl_subcompositor.get_subsurface), and a window as defined by a
+// shell protocol (e.g. wl_shell.get_shell_surface).
+//
+// A surface can have only one role at a time. Initially a
+// wl_surface does not have a role. Once a wl_surface is given a
+// role, it is set permanently for the whole lifetime of the
+// wl_surface object. Giving the current role again is allowed,
+// unless explicitly forbidden by the relevant interface
+// specification.
+//
+// Surface roles are given by requests in other interfaces such as
+// wl_pointer.set_cursor. The request should explicitly mention
+// that this request gives a role to a wl_surface. Often, this
+// request also creates a new protocol object that represents the
+// role and adds additional functionality to wl_surface. When a
+// client wants to destroy a wl_surface, they must destroy this 'role
+// object' before the wl_surface.
+//
+// Destroying the role object does not remove the role from the
+// wl_surface, but it may stop the wl_surface from "playing the role".
+// For instance, if a wl_subsurface object is destroyed, the wl_surface
+// it was created for will be unmapped and forget its position and
+// z-order. It is allowed to create a wl_subsurface for the same
+// wl_surface again, but it is not allowed to use the wl_surface as
+// a cursor (cursor is a different role than sub-surface, and role
+// switching is not allowed).
+type WlSurface struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_surface
 
 // ----------------------------------------------------------------------------
@@ -14509,6 +15656,16 @@ func (e *WlSeatNameEvent) Scan(s *EventScanner) error {
 
 // Ensure WlSeatNameEvent implements Event.
 var _ Event = &WlSeatNameEvent{}
+
+// WlSeat group of input devices
+//
+// A seat is a group of keyboards, pointer and touch devices. This
+// object is published as a global during start up, or when such a
+// device is hot plugged.  A seat typically has a pointer and
+// maintains a keyboard focus and a pointer focus.
+type WlSeat struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_seat
 
@@ -15158,6 +16315,20 @@ func (e *WlPointerAxisDiscreteEvent) Scan(s *EventScanner) error {
 // Ensure WlPointerAxisDiscreteEvent implements Event.
 var _ Event = &WlPointerAxisDiscreteEvent{}
 
+// WlPointer pointer input device
+//
+// The wl_pointer interface represents one or more input devices,
+// such as mice, which control the pointer location and pointer_focus
+// of a seat.
+//
+// The wl_pointer interface generates motion, enter and leave
+// events for the surfaces that the pointer is located over,
+// and button and axis events for button presses, button releases
+// and scrolling.
+type WlPointer struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_pointer
 
 // ----------------------------------------------------------------------------
@@ -15509,6 +16680,14 @@ func (e *WlKeyboardRepeatInfoEvent) Scan(s *EventScanner) error {
 
 // Ensure WlKeyboardRepeatInfoEvent implements Event.
 var _ Event = &WlKeyboardRepeatInfoEvent{}
+
+// WlKeyboard keyboard input device
+//
+// The wl_keyboard interface represents one or more keyboards
+// associated with a seat.
+type WlKeyboard struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_keyboard
 
@@ -15875,6 +17054,20 @@ func (e *WlTouchOrientationEvent) Scan(s *EventScanner) error {
 // Ensure WlTouchOrientationEvent implements Event.
 var _ Event = &WlTouchOrientationEvent{}
 
+// WlTouch touchscreen input device
+//
+// The wl_touch interface represents a touchscreen
+// associated with a seat.
+//
+// Touch interactions can consist of one or more contacts.
+// For each contact, a series of events is generated, starting
+// with a down event, followed by zero or more motion events,
+// and ending with an up event. Events relating to the same
+// contact point can be identified by the ID of the sequence.
+type WlTouch struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_touch
 
 // ----------------------------------------------------------------------------
@@ -16225,6 +17418,18 @@ func (e *WlOutputScaleEvent) Scan(s *EventScanner) error {
 // Ensure WlOutputScaleEvent implements Event.
 var _ Event = &WlOutputScaleEvent{}
 
+// WlOutput compositor output region
+//
+// An output describes part of the compositor geometry.  The
+// compositor works in the 'compositor coordinate system' and an
+// output corresponds to a rectangular area in that space that is
+// actually visible.  This typically corresponds to a monitor that
+// displays part of the compositor space.  This object is published
+// as global during start up, or when a monitor is hotplugged.
+type WlOutput struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_output
 
 // ----------------------------------------------------------------------------
@@ -16336,6 +17541,16 @@ func (r *WlRegionSubtractRequest) Emit(e *RequestEmitter) error {
 // Ensure WlRegionSubtractRequest implements Request.
 var _ Request = &WlRegionSubtractRequest{}
 
+// WlRegion region interface
+//
+// A region object describes an area.
+//
+// Region objects are used to describe the opaque and input
+// regions of a surface.
+type WlRegion struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_region
 
 // ----------------------------------------------------------------------------
@@ -16420,6 +17635,31 @@ func (r *WlSubcompositorGetSubsurfaceRequest) Emit(e *RequestEmitter) error {
 
 // Ensure WlSubcompositorGetSubsurfaceRequest implements Request.
 var _ Request = &WlSubcompositorGetSubsurfaceRequest{}
+
+// WlSubcompositor sub-surface compositing
+//
+// The global interface exposing sub-surface compositing capabilities.
+// A wl_surface, that has sub-surfaces associated, is called the
+// parent surface. Sub-surfaces can be arbitrarily nested and create
+// a tree of sub-surfaces.
+//
+// The root surface in a tree of sub-surfaces is the main
+// surface. The main surface cannot be a sub-surface, because
+// sub-surfaces must always have a parent.
+//
+// A main surface with its sub-surfaces forms a (compound) window.
+// For window management purposes, this set of wl_surface objects is
+// to be considered as a single window, and it should also behave as
+// such.
+//
+// The aim of sub-surfaces is to offload some of the compositing work
+// within a window from clients to the compositor. A prime example is
+// a video player with decorations and video in separate wl_surface
+// objects. This should allow the compositor to pass YUV video buffer
+// processing to dedicated overlay hardware when possible.
+type WlSubcompositor struct {
+	id ObjectID
+}
 
 // #endregion Interface wayland.wl_subcompositor
 
@@ -16638,6 +17878,61 @@ func (r *WlSubsurfaceSetDesyncRequest) Emit(e *RequestEmitter) error {
 // Ensure WlSubsurfaceSetDesyncRequest implements Request.
 var _ Request = &WlSubsurfaceSetDesyncRequest{}
 
+// WlSubsurface sub-surface interface to a wl_surface
+//
+// An additional interface to a wl_surface object, which has been
+// made a sub-surface. A sub-surface has one parent surface. A
+// sub-surface's size and position are not limited to that of the parent.
+// Particularly, a sub-surface is not automatically clipped to its
+// parent's area.
+//
+// A sub-surface becomes mapped, when a non-NULL wl_buffer is applied
+// and the parent surface is mapped. The order of which one happens
+// first is irrelevant. A sub-surface is hidden if the parent becomes
+// hidden, or if a NULL wl_buffer is applied. These rules apply
+// recursively through the tree of surfaces.
+//
+// The behaviour of a wl_surface.commit request on a sub-surface
+// depends on the sub-surface's mode. The possible modes are
+// synchronized and desynchronized, see methods
+// wl_subsurface.set_sync and wl_subsurface.set_desync. Synchronized
+// mode caches the wl_surface state to be applied when the parent's
+// state gets applied, and desynchronized mode applies the pending
+// wl_surface state directly. A sub-surface is initially in the
+// synchronized mode.
+//
+// Sub-surfaces also have another kind of state, which is managed by
+// wl_subsurface requests, as opposed to wl_surface requests. This
+// state includes the sub-surface position relative to the parent
+// surface (wl_subsurface.set_position), and the stacking order of
+// the parent and its sub-surfaces (wl_subsurface.place_above and
+// .place_below). This state is applied when the parent surface's
+// wl_surface state is applied, regardless of the sub-surface's mode.
+// As the exception, set_sync and set_desync are effective immediately.
+//
+// The main surface can be thought to be always in desynchronized mode,
+// since it does not have a parent in the sub-surfaces sense.
+//
+// Even if a sub-surface is in desynchronized mode, it will behave as
+// in synchronized mode, if its parent surface behaves as in
+// synchronized mode. This rule is applied recursively throughout the
+// tree of surfaces. This means, that one can set a sub-surface into
+// synchronized mode, and then assume that all its child and grand-child
+// sub-surfaces are synchronized, too, without explicitly setting them.
+//
+// If the wl_surface associated with the wl_subsurface is destroyed, the
+// wl_subsurface object becomes inert. Note, that destroying either object
+// takes effect immediately. If you need to synchronize the removal
+// of a sub-surface to the parent surface update, unmap the sub-surface
+// first by attaching a NULL wl_buffer, update parent, and then destroy
+// the sub-surface.
+//
+// If the parent wl_surface object is destroyed, the sub-surface is
+// unmapped.
+type WlSubsurface struct {
+	id ObjectID
+}
+
 // #endregion Interface wayland.wl_subsurface
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -16721,6 +18016,16 @@ func (r *ZwpPrimarySelectionDeviceManagerV1DestroyRequest) Emit(e *RequestEmitte
 
 // Ensure ZwpPrimarySelectionDeviceManagerV1DestroyRequest implements Request.
 var _ Request = &ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
+
+// ZwpPrimarySelectionDeviceManagerV1 X primary selection emulation
+//
+// The primary selection device manager is a singleton global object that
+// provides access to the primary selection. It allows to create
+// wp_primary_selection_source objects, as well as retrieving the per-seat
+// wp_primary_selection_device objects.
+type ZwpPrimarySelectionDeviceManagerV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_manager_v1
 
@@ -16844,6 +18149,10 @@ func (e *ZwpPrimarySelectionDeviceV1SelectionEvent) Scan(s *EventScanner) error 
 // Ensure ZwpPrimarySelectionDeviceV1SelectionEvent implements Event.
 var _ Event = &ZwpPrimarySelectionDeviceV1SelectionEvent{}
 
+type ZwpPrimarySelectionDeviceV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_v1
 
 // ----------------------------------------------------------------------------
@@ -16934,6 +18243,17 @@ func (e *ZwpPrimarySelectionOfferV1OfferEvent) Scan(s *EventScanner) error {
 
 // Ensure ZwpPrimarySelectionOfferV1OfferEvent implements Event.
 var _ Event = &ZwpPrimarySelectionOfferV1OfferEvent{}
+
+// ZwpPrimarySelectionOfferV1 offer to transfer primary selection contents
+//
+// A wp_primary_selection_offer represents an offer to transfer the contents
+// of the primary selection clipboard to the client. Similar to
+// wl_data_offer, the offer also describes the mime types that the data can
+// be converted to and provides the mechanisms for transferring the data
+// directly to the client.
+type ZwpPrimarySelectionOfferV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_offer_v1
 
@@ -17041,6 +18361,15 @@ func (e *ZwpPrimarySelectionSourceV1CancelledEvent) Scan(s *EventScanner) error 
 // Ensure ZwpPrimarySelectionSourceV1CancelledEvent implements Event.
 var _ Event = &ZwpPrimarySelectionSourceV1CancelledEvent{}
 
+// ZwpPrimarySelectionSourceV1 offer to replace the contents of the primary selection
+//
+// The source side of a wp_primary_selection_offer, it provides a way to
+// describe the offered data and respond to requests to transfer the
+// requested contents of the primary selection clipboard.
+type ZwpPrimarySelectionSourceV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_source_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17141,6 +18470,15 @@ func (r *XdgActivationV1ActivateRequest) Emit(e *RequestEmitter) error {
 
 // Ensure XdgActivationV1ActivateRequest implements Request.
 var _ Request = &XdgActivationV1ActivateRequest{}
+
+// XdgActivationV1 interface for activating surfaces
+//
+// A global interface used for informing the compositor about applications
+// being activated or started, or for applications to request to be
+// activated.
+type XdgActivationV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_activation_v1.xdg_activation_v1
 
@@ -17325,6 +18663,20 @@ func (e *XdgActivationTokenV1DoneEvent) Scan(s *EventScanner) error {
 // Ensure XdgActivationTokenV1DoneEvent implements Event.
 var _ Event = &XdgActivationTokenV1DoneEvent{}
 
+// XdgActivationTokenV1 an exported activation handle
+//
+// An object for setting up a token and receiving a token handle that can
+// be passed as an activation token to another client.
+//
+// The object is created using the xdg_activation_v1.get_activation_token
+// request. This object should then be populated with the app_id, surface
+// and serial information and committed. The compositor shall then issue a
+// done event with the token. In case the request's parameters are invalid,
+// the compositor will provide an invalid token.
+type XdgActivationTokenV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_activation_v1.xdg_activation_token_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17391,6 +18743,34 @@ func (r *ZxdgDecorationManagerV1GetToplevelDecorationRequest) Emit(e *RequestEmi
 
 // Ensure ZxdgDecorationManagerV1GetToplevelDecorationRequest implements Request.
 var _ Request = &ZxdgDecorationManagerV1GetToplevelDecorationRequest{}
+
+// ZxdgDecorationManagerV1 window decoration manager
+//
+// This interface allows a compositor to announce support for server-side
+// decorations.
+//
+// A window decoration is a set of window controls as deemed appropriate by
+// the party managing them, such as user interface components used to move,
+// resize and change a window's state.
+//
+// A client can use this protocol to request being decorated by a supporting
+// compositor.
+//
+// If compositor and client do not negotiate the use of a server-side
+// decoration using this protocol, clients continue to self-decorate as they
+// see fit.
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZxdgDecorationManagerV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_decoration_unstable_v1.zxdg_decoration_manager_v1
 
@@ -17542,6 +18922,18 @@ func (e *ZxdgToplevelDecorationV1ConfigureEvent) Scan(s *EventScanner) error {
 // Ensure ZxdgToplevelDecorationV1ConfigureEvent implements Event.
 var _ Event = &ZxdgToplevelDecorationV1ConfigureEvent{}
 
+// ZxdgToplevelDecorationV1 decoration object for a toplevel surface
+//
+// The decoration object allows the compositor to toggle server-side window
+// decorations for a toplevel surface. The client can request to switch to
+// another mode.
+//
+// The xdg_toplevel_decoration object must be destroyed before its
+// xdg_toplevel.
+type ZxdgToplevelDecorationV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_decoration_unstable_v1.zxdg_toplevel_decoration_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17612,6 +19004,14 @@ func (r *ZxdgExporterV1ExportRequest) Emit(e *RequestEmitter) error {
 // Ensure ZxdgExporterV1ExportRequest implements Request.
 var _ Request = &ZxdgExporterV1ExportRequest{}
 
+// ZxdgExporterV1 interface for exporting surfaces
+//
+// A global interface used for exporting surfaces that can later be imported
+// using xdg_importer.
+type ZxdgExporterV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_exporter_v1
 
 // ----------------------------------------------------------------------------
@@ -17673,6 +19073,15 @@ func (r *ZxdgImporterV1ImportRequest) Emit(e *RequestEmitter) error {
 // Ensure ZxdgImporterV1ImportRequest implements Request.
 var _ Request = &ZxdgImporterV1ImportRequest{}
 
+// ZxdgImporterV1 interface for importing surfaces
+//
+// A global interface used for importing surfaces exported by xdg_exporter.
+// With this interface, a client can create a reference to a surface of
+// another client.
+type ZxdgImporterV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_importer_v1
 
 // ----------------------------------------------------------------------------
@@ -17729,6 +19138,16 @@ func (e *ZxdgExportedV1HandleEvent) Scan(s *EventScanner) error {
 
 // Ensure ZxdgExportedV1HandleEvent implements Event.
 var _ Event = &ZxdgExportedV1HandleEvent{}
+
+// ZxdgExportedV1 an exported surface handle
+//
+// An xdg_exported object represents an exported reference to a surface. The
+// exported surface may be referenced as long as the xdg_exported object not
+// destroyed. Destroying the xdg_exported invalidates any relationship the
+// importer may have established using xdg_imported.
+type ZxdgExportedV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_exported_v1
 
@@ -17807,6 +19226,15 @@ func (e *ZxdgImportedV1DestroyedEvent) Scan(s *EventScanner) error {
 
 // Ensure ZxdgImportedV1DestroyedEvent implements Event.
 var _ Event = &ZxdgImportedV1DestroyedEvent{}
+
+// ZxdgImportedV1 an imported surface handle
+//
+// An xdg_imported object represents an imported reference to surface exported
+// by some client. A client can use this interface to manipulate
+// relationships between its own surfaces and the imported surface.
+type ZxdgImportedV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_imported_v1
 
@@ -17890,6 +19318,14 @@ func (r *ZxdgExporterV2ExportToplevelRequest) Emit(e *RequestEmitter) error {
 // Ensure ZxdgExporterV2ExportToplevelRequest implements Request.
 var _ Request = &ZxdgExporterV2ExportToplevelRequest{}
 
+// ZxdgExporterV2 interface for exporting surfaces
+//
+// A global interface used for exporting surfaces that can later be imported
+// using xdg_importer.
+type ZxdgExporterV2 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_exporter_v2
 
 // ----------------------------------------------------------------------------
@@ -17951,6 +19387,15 @@ func (r *ZxdgImporterV2ImportToplevelRequest) Emit(e *RequestEmitter) error {
 // Ensure ZxdgImporterV2ImportToplevelRequest implements Request.
 var _ Request = &ZxdgImporterV2ImportToplevelRequest{}
 
+// ZxdgImporterV2 interface for importing surfaces
+//
+// A global interface used for importing surfaces exported by xdg_exporter.
+// With this interface, a client can create a reference to a surface of
+// another client.
+type ZxdgImporterV2 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_importer_v2
 
 // ----------------------------------------------------------------------------
@@ -18007,6 +19452,16 @@ func (e *ZxdgExportedV2HandleEvent) Scan(s *EventScanner) error {
 
 // Ensure ZxdgExportedV2HandleEvent implements Event.
 var _ Event = &ZxdgExportedV2HandleEvent{}
+
+// ZxdgExportedV2 an exported surface handle
+//
+// An xdg_exported object represents an exported reference to a surface. The
+// exported surface may be referenced as long as the xdg_exported object not
+// destroyed. Destroying the xdg_exported invalidates any relationship the
+// importer may have established using xdg_imported.
+type ZxdgExportedV2 struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_exported_v2
 
@@ -18098,6 +19553,15 @@ func (e *ZxdgImportedV2DestroyedEvent) Scan(s *EventScanner) error {
 // Ensure ZxdgImportedV2DestroyedEvent implements Event.
 var _ Event = &ZxdgImportedV2DestroyedEvent{}
 
+// ZxdgImportedV2 an imported surface handle
+//
+// An xdg_imported object represents an imported reference to surface exported
+// by some client. A client can use this interface to manipulate
+// relationships between its own surfaces and the imported surface.
+type ZxdgImportedV2 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_imported_v2
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18160,6 +19624,13 @@ func (r *ZxdgOutputManagerV1GetXdgOutputRequest) Emit(e *RequestEmitter) error {
 
 // Ensure ZxdgOutputManagerV1GetXdgOutputRequest implements Request.
 var _ Request = &ZxdgOutputManagerV1GetXdgOutputRequest{}
+
+// ZxdgOutputManagerV1 manage xdg_output objects
+//
+// A global factory interface for xdg_output objects.
+type ZxdgOutputManagerV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_output_unstable_v1.zxdg_output_manager_v1
 
@@ -18408,6 +19879,21 @@ func (e *ZxdgOutputV1DescriptionEvent) Scan(s *EventScanner) error {
 // Ensure ZxdgOutputV1DescriptionEvent implements Event.
 var _ Event = &ZxdgOutputV1DescriptionEvent{}
 
+// ZxdgOutputV1 compositor logical output region
+//
+// An xdg_output describes part of the compositor geometry.
+//
+// This typically corresponds to a monitor that displays part of the
+// compositor space.
+//
+// For objects version 3 onwards, after all xdg_output properties have been
+// sent (when the object is created and when properties are updated), a
+// wl_output.done event is sent. This allows changes to the output
+// properties to be seen as atomic, even if they happen via multiple events.
+type ZxdgOutputV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_output_unstable_v1.zxdg_output_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18594,6 +20080,17 @@ func (e *XdgWmBasePingEvent) Scan(s *EventScanner) error {
 
 // Ensure XdgWmBasePingEvent implements Event.
 var _ Event = &XdgWmBasePingEvent{}
+
+// XdgWmBase create desktop-style surfaces
+//
+// The xdg_wm_base interface is exposed as a global object enabling clients
+// to turn their wl_surfaces into windows in a desktop environment. It
+// defines the basic functionality needed for clients and the compositor to
+// create windows that can be dragged, resized, maximized, etc, as well as
+// creating transient windows such as popup menus.
+type XdgWmBase struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_shell.xdg_wm_base
 
@@ -19008,6 +20505,31 @@ func (r *XdgPositionerSetParentConfigureRequest) Emit(e *RequestEmitter) error {
 // Ensure XdgPositionerSetParentConfigureRequest implements Request.
 var _ Request = &XdgPositionerSetParentConfigureRequest{}
 
+// XdgPositioner child surface positioner
+//
+// The xdg_positioner provides a collection of rules for the placement of a
+// child surface relative to a parent surface. Rules can be defined to ensure
+// the child surface remains within the visible area's borders, and to
+// specify how the child surface changes its position, such as sliding along
+// an axis, or flipping around a rectangle. These positioner-created rules are
+// constrained by the requirement that a child surface must intersect with or
+// be at least partially adjacent to its parent surface.
+//
+// See the various requests for details about possible rules.
+//
+// At the time of the request, the compositor makes a copy of the rules
+// specified by the xdg_positioner. Thus, after the request is complete the
+// xdg_positioner object can be destroyed or reused; further changes to the
+// object will have no effect on previous usages.
+//
+// For an xdg_positioner object to be considered complete, it must have a
+// non-zero size set by set_size, and a non-zero anchor rectangle set by
+// set_anchor_rect. Passing an incomplete xdg_positioner object when
+// positioning a surface raises an error.
+type XdgPositioner struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_shell.xdg_positioner
 
 // ----------------------------------------------------------------------------
@@ -19264,6 +20786,56 @@ func (e *XdgSurfaceConfigureEvent) Scan(s *EventScanner) error {
 
 // Ensure XdgSurfaceConfigureEvent implements Event.
 var _ Event = &XdgSurfaceConfigureEvent{}
+
+// XdgSurface desktop user interface surface base interface
+//
+// An interface that may be implemented by a wl_surface, for
+// implementations that provide a desktop-style user interface.
+//
+// It provides a base set of functionality required to construct user
+// interface elements requiring management by the compositor, such as
+// toplevel windows, menus, etc. The types of functionality are split into
+// xdg_surface roles.
+//
+// Creating an xdg_surface does not set the role for a wl_surface. In order
+// to map an xdg_surface, the client must create a role-specific object
+// using, e.g., get_toplevel, get_popup. The wl_surface for any given
+// xdg_surface can have at most one role, and may not be assigned any role
+// not based on xdg_surface.
+//
+// A role must be assigned before any other requests are made to the
+// xdg_surface object.
+//
+// The client must call wl_surface.commit on the corresponding wl_surface
+// for the xdg_surface state to take effect.
+//
+// Creating an xdg_surface from a wl_surface which has a buffer attached or
+// committed is a client error, and any attempts by a client to attach or
+// manipulate a buffer prior to the first xdg_surface.configure call must
+// also be treated as errors.
+//
+// After creating a role-specific object and setting it up, the client must
+// perform an initial commit without any buffer attached. The compositor
+// will reply with an xdg_surface.configure event. The client must
+// acknowledge it and is then allowed to attach a buffer to map the surface.
+//
+// Mapping an xdg_surface-based role surface is defined as making it
+// possible for the surface to be shown by the compositor. Note that
+// a mapped surface is not guaranteed to be visible once it is mapped.
+//
+// For an xdg_surface to be mapped by the compositor, the following
+// conditions must be met:
+// (1) the client has assigned an xdg_surface-based role to the surface
+// (2) the client has set and committed the xdg_surface state and the
+// role-dependent state to the surface
+// (3) the client has committed a buffer to the surface
+//
+// A newly-unmapped surface is considered to have met condition (1) out
+// of the 3 required conditions for mapping a surface if its role surface
+// has not been destroyed.
+type XdgSurface struct {
+	id ObjectID
+}
 
 // #endregion Interface xdg_shell.xdg_surface
 
@@ -20026,6 +21598,29 @@ func (e *XdgToplevelCloseEvent) Scan(s *EventScanner) error {
 // Ensure XdgToplevelCloseEvent implements Event.
 var _ Event = &XdgToplevelCloseEvent{}
 
+// XdgToplevel toplevel surface
+//
+// This interface defines an xdg_surface role which allows a surface to,
+// among other things, set window-like properties such as maximize,
+// fullscreen, and minimize, set application-specific metadata like title and
+// id, and well as trigger user interactive operations such as interactive
+// resize and move.
+//
+// Unmapping an xdg_toplevel means that the surface cannot be shown
+// by the compositor until it is explicitly mapped again.
+// All active operations (e.g., move, resize) are canceled and all
+// attributes (e.g. title, state, stacking, ...) are discarded for
+// an xdg_toplevel surface when it is unmapped. The xdg_toplevel returns to
+// the state it had right after xdg_surface.get_toplevel. The client
+// can re-map the toplevel by perfoming a commit without any buffer
+// attached, waiting for a configure event and handling it as usual (see
+// xdg_surface description).
+//
+// Attaching a null buffer to a toplevel unmaps the surface.
+type XdgToplevel struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_shell.xdg_toplevel
 
 // ----------------------------------------------------------------------------
@@ -20310,6 +21905,36 @@ func (e *XdgPopupRepositionedEvent) Scan(s *EventScanner) error {
 // Ensure XdgPopupRepositionedEvent implements Event.
 var _ Event = &XdgPopupRepositionedEvent{}
 
+// XdgPopup short-lived, popup surfaces for menus
+//
+// A popup surface is a short-lived, temporary surface. It can be used to
+// implement for example menus, popovers, tooltips and other similar user
+// interface concepts.
+//
+// A popup can be made to take an explicit grab. See xdg_popup.grab for
+// details.
+//
+// When the popup is dismissed, a popup_done event will be sent out, and at
+// the same time the surface will be unmapped. See the xdg_popup.popup_done
+// event for details.
+//
+// Explicitly destroying the xdg_popup object will also dismiss the popup and
+// unmap the surface. Clients that want to dismiss the popup when another
+// surface of their own is clicked should dismiss the popup using the destroy
+// request.
+//
+// A newly created xdg_popup will be stacked on top of all previously created
+// xdg_popup surfaces associated with the same xdg_toplevel.
+//
+// The parent of an xdg_popup must be mapped (see the xdg_surface
+// description) before the xdg_popup itself.
+//
+// The client must call wl_surface.commit on the corresponding wl_surface
+// for the xdg_popup state to take effect.
+type XdgPopup struct {
+	id ObjectID
+}
+
 // #endregion Interface xdg_shell.xdg_popup
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -20395,6 +22020,13 @@ func (r *ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest) Emit(e *RequestEmi
 // Ensure ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest implements Request.
 var _ Request = &ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}
 
+// ZwpXwaylandKeyboardGrabManagerV1 context object for keyboard grab manager
+//
+// A global interface used for grabbing the keyboard.
+type ZwpXwaylandKeyboardGrabManagerV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -20420,6 +22052,13 @@ func (r *ZwpXwaylandKeyboardGrabV1DestroyRequest) Emit(e *RequestEmitter) error 
 
 // Ensure ZwpXwaylandKeyboardGrabV1DestroyRequest implements Request.
 var _ Request = &ZwpXwaylandKeyboardGrabV1DestroyRequest{}
+
+// ZwpXwaylandKeyboardGrabV1 interface for grabbing the keyboard
+//
+// A global interface used for grabbing the keyboard.
+type ZwpXwaylandKeyboardGrabV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_v1
 
@@ -20501,6 +22140,28 @@ func (r *ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest) Emit(e *Req
 
 // Ensure ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest implements Request.
 var _ Request = &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
+
+// ZwpLinuxExplicitSynchronizationV1 protocol for providing explicit synchronization
+//
+// This global is a factory interface, allowing clients to request
+// explicit synchronization for buffers on a per-surface basis.
+//
+// See zwp_linux_surface_synchronization_v1 for more information.
+//
+// This interface is derived from Chromium's
+// zcr_linux_explicit_synchronization_v1.
+//
+// Warning! The protocol described in this file is experimental and
+// backward incompatible changes may be made. Backward compatible changes
+// may be added together with the corresponding interface version bump.
+// Backward incompatible changes are done by bumping the version number in
+// the protocol and interface names and resetting the interface version.
+// Once the protocol is to be declared stable, the 'z' prefix and the
+// version number in the protocol and interface names are removed and the
+// interface version number is reset.
+type ZwpLinuxExplicitSynchronizationV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_explicit_synchronization_v1
 
@@ -20644,6 +22305,42 @@ func (r *ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest) Emit(e *RequestEmitt
 // Ensure ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest implements Request.
 var _ Request = &ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
 
+// ZwpLinuxSurfaceSynchronizationV1 per-surface explicit synchronization support
+//
+// This object implements per-surface explicit synchronization.
+//
+// Synchronization refers to co-ordination of pipelined operations performed
+// on buffers. Most GPU clients will schedule an asynchronous operation to
+// render to the buffer, then immediately send the buffer to the compositor
+// to be attached to a surface.
+//
+// In implicit synchronization, ensuring that the rendering operation is
+// complete before the compositor displays the buffer is an implementation
+// detail handled by either the kernel or userspace graphics driver.
+//
+// By contrast, in explicit synchronization, dma_fence objects mark when the
+// asynchronous operations are complete. When submitting a buffer, the
+// client provides an acquire fence which will be waited on before the
+// compositor accesses the buffer. The Wayland server, through a
+// zwp_linux_buffer_release_v1 object, will inform the client with an event
+// which may be accompanied by a release fence, when the compositor will no
+// longer access the buffer contents due to the specific commit that
+// requested the release event.
+//
+// Each surface can be associated with only one object of this interface at
+// any time.
+//
+// In version 1 of this interface, explicit synchronization is only
+// guaranteed to be supported for buffers created with any version of the
+// wp_linux_dmabuf buffer factory. Version 2 additionally guarantees
+// explicit synchronization support for opaque EGL buffers, which is a type
+// of platform specific buffers described in the EGL_WL_bind_wayland_display
+// extension. Compositors are free to support explicit synchronization for
+// additional buffer types.
+type ZwpLinuxSurfaceSynchronizationV1 struct {
+	id ObjectID
+}
+
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_surface_synchronization_v1
 
 // ----------------------------------------------------------------------------
@@ -20715,6 +22412,29 @@ func (e *ZwpLinuxBufferReleaseV1ImmediateReleaseEvent) Scan(s *EventScanner) err
 
 // Ensure ZwpLinuxBufferReleaseV1ImmediateReleaseEvent implements Event.
 var _ Event = &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
+
+// ZwpLinuxBufferReleaseV1 buffer release explicit synchronization
+//
+// This object is instantiated in response to a
+// zwp_linux_surface_synchronization_v1.get_release request.
+//
+// It provides an alternative to wl_buffer.release events, providing a
+// unique release from a single wl_surface.commit request. The release event
+// also supports explicit synchronization, providing a fence FD for the
+// client to synchronize against.
+//
+// Exactly one event, either a fenced_release or an immediate_release, will
+// be emitted for the wl_surface.commit request. The compositor can choose
+// release by release which event it uses.
+//
+// This event does not replace wl_buffer.release events; servers are still
+// required to send those events.
+//
+// Once a buffer release object has delivered a 'fenced_release' or an
+// 'immediate_release' event it is automatically destroyed.
+type ZwpLinuxBufferReleaseV1 struct {
+	id ObjectID
+}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_buffer_release_v1
 

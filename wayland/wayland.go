@@ -18,7 +18,22 @@ type Message interface {
 	Opcode() uint16
 }
 
-// Dispatcher is an interface implemented by all Wayland interfaces.
+// NewProxy is a function that can construct a new proxy with a given object ID.
+type NewProxy func(ObjectID) Proxy
+
+// Proxy is an interface implemented for proxying server objects.
+type Proxy interface {
+	// ID returns the object ID of the proxied object.
+	ID() ObjectID
+
+	// Descriptor returns the interface descriptor that corresponds to this
+	// proxy.
+	Descriptor() InterfaceDescriptor
+
+	Dispatcher
+}
+
+// Dispatcher is an interface for something that can dispatch Wayland events.
 type Dispatcher interface {
 	// Dispatch returns an event, given an event opcode.
 	Dispatch(uint16) Event
@@ -44,10 +59,10 @@ type ProtocolDescriptor struct {
 
 // InterfaceDescriptor contains runtime metadata about an interface.
 type InterfaceDescriptor struct {
-	Name       string
-	Events     []EventDescriptor
-	Requests   []RequestDescriptor
-	Dispatcher Dispatcher
+	Name     string
+	Events   []EventDescriptor
+	Requests []RequestDescriptor
+	NewProxy NewProxy
 }
 
 // EventDescriptor contains runtime metadata about an event.

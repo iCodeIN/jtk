@@ -304,7 +304,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 			enumname := namegen(intf.Name, enum.Name)
 
 			// Make doc comment.
-			if err := docgen(w, enumname, enum.Description, "represents", ""); err != nil {
+			if err := docgen(w, enumname, enum.Description, " represents ", ""); err != nil {
 				return fmt.Errorf("writing enum %s doc comment: %v", enumname, err)
 			}
 
@@ -318,7 +318,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 			for _, entry := range enum.Entries {
 				entryname := namegen(intf.Name, enum.Name, entry.Name)
 
-				if err := docgen(w, entryname, description{Summary: entry.Summary}, "corresponds to", "\t"); err != nil {
+				if err := docgen(w, entryname, description{Summary: entry.Summary}, " corresponds to ", "\t"); err != nil {
 					return fmt.Errorf("writing enum entry %s doc comment: %v", entryname, err)
 				}
 
@@ -334,7 +334,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 			structname := namegen(intf.Name, request.Name, "request")
 
 			// Make doc comment.
-			if err := docgen(w, structname, request.Description, "requests to", ""); err != nil {
+			if err := docgen(w, structname, request.Description, " requests to ", ""); err != nil {
 				return fmt.Errorf("writing request %s doc comment: %v", structname, err)
 			}
 
@@ -395,7 +395,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 			structname := namegen(intf.Name, event.Name, "event")
 
 			// Make doc comment.
-			if err := docgen(w, structname, event.Description, "signals when", ""); err != nil {
+			if err := docgen(w, structname, event.Description, " signals when ", ""); err != nil {
 				return fmt.Errorf("writing event %s doc comment: %v", structname, err)
 			}
 
@@ -451,6 +451,19 @@ func codegenproto(w io.Writer, proto protocol) error {
 			}
 		}
 
+		// Generate proxy.
+		structname := namegen(intf.Name)
+
+		// Make doc comment.
+		if err := docgen(w, structname, intf.Description, " ", ""); err != nil {
+			return fmt.Errorf("writing proxy %s doc comment: %v", structname, err)
+		}
+
+		// Proxy struct declaration.
+		if _, err := fmt.Fprintf(w, "type %s struct {\n\tid ObjectID\n}\n\n", structname); err != nil {
+			return fmt.Errorf("writing proxy %s struct: %v", structname, err)
+		}
+
 		if _, err := fmt.Fprintf(w, "// #endregion Interface %s.%s\n\n", proto.Name, intf.Name); err != nil {
 			return fmt.Errorf("writing protocol %s end region: %v", intf.Name, err)
 		}
@@ -467,7 +480,7 @@ func arggen(w io.Writer, arg arg) error {
 	argname := namegen(arg.Name)
 
 	// Make doc comment.
-	if err := docgen(w, argname, description{Summary: arg.Summary}, "contains", "\t"); err != nil {
+	if err := docgen(w, argname, description{Summary: arg.Summary}, " contains ", "\t"); err != nil {
 		return fmt.Errorf("writing argument %s doc comment: %v", argname, err)
 	}
 
@@ -500,27 +513,12 @@ func arggen(w io.Writer, arg arg) error {
 }
 
 func argscangen(w io.Writer, arg arg) error {
-	argname := namegen(arg.Name)
-
-	typ := ""
-	switch arg.Type {
-	case "int":
-		typ = "Int"
-	case "uint":
-		typ = "Uint"
-	case "fixed":
-		typ = "Fixed"
-	case "object", "new_id":
-		typ = "ObjectID"
-	case "string":
-		typ = "String"
-	case "array":
-		typ = "Array"
-	case "fd":
-		typ = "FD"
-	default:
-		return fmt.Errorf("argument %s: unknown argument type %q", argname, arg.Type)
+	typ, err := argtypfn(arg)
+	if err != nil {
+		return err
 	}
+
+	argname := namegen(arg.Name)
 
 	if _, err := fmt.Fprintf(w, "\tif v, err := s.%s(); err != nil {\n\t\treturn err\n\t} else {\n\t\te.%s = v\n\t}\n", typ, argname); err != nil {
 		return fmt.Errorf("writing argument scanner %s: %v", argname, err)
@@ -530,27 +528,12 @@ func argscangen(w io.Writer, arg arg) error {
 }
 
 func argemitgen(w io.Writer, arg arg) error {
-	argname := namegen(arg.Name)
-
-	typ := ""
-	switch arg.Type {
-	case "int":
-		typ = "Int"
-	case "uint":
-		typ = "Uint"
-	case "fixed":
-		typ = "Fixed"
-	case "object", "new_id":
-		typ = "ObjectID"
-	case "string":
-		typ = "String"
-	case "array":
-		typ = "Array"
-	case "fd":
-		typ = "FD"
-	default:
-		return fmt.Errorf("argument %s: unknown argument type %q", argname, arg.Type)
+	typ, err := argtypfn(arg)
+	if err != nil {
+		return err
 	}
+
+	argname := namegen(arg.Name)
 
 	if _, err := fmt.Fprintf(w, "\tif err := e.Put%s(r.%s); err != nil {\n\t\treturn err\n\t}\n", typ, argname); err != nil {
 		return fmt.Errorf("writing argument emitter %s: %v", argname, err)
@@ -559,12 +542,33 @@ func argemitgen(w io.Writer, arg arg) error {
 	return nil
 }
 
+func argtypfn(arg arg) (string, error) {
+	switch arg.Type {
+	case "int":
+		return "Int", nil
+	case "uint":
+		return "Uint", nil
+	case "fixed":
+		return "Fixed", nil
+	case "object", "new_id":
+		return "ObjectID", nil
+	case "string":
+		return "String", nil
+	case "array":
+		return "Array", nil
+	case "fd":
+		return "FD", nil
+	default:
+		return "", fmt.Errorf("argument %s: unknown argument type %q", namegen(arg.Name), arg.Type)
+	}
+}
+
 func docgen(w io.Writer, name string, desc description, filler string, prefix string) error {
 	// Make doc comment.
 	if desc.Summary != "" {
 		// Summary
 		summary := strings.TrimSpace(spacesRE.ReplaceAllString(desc.Summary, " "))
-		if _, err := fmt.Fprintf(w, "%s// %s %s %s\n", prefix, name, filler, summary); err != nil {
+		if _, err := fmt.Fprintf(w, "%s// %s%s%s\n", prefix, name, filler, summary); err != nil {
 			return err
 		}
 
