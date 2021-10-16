@@ -213,68 +213,84 @@ func codegen(w io.Writer) error {
 		return fmt.Errorf("writing preamble: %w", err)
 	}
 
+	if _, err := fmt.Fprintf(w, "////////////////////////////////////////////////////////////////////////////////\n// Interface Descriptors\n"); err != nil {
+		return fmt.Errorf("writing interface descriptors comment: %w", err)
+	}
+
+	for _, proto := range protos {
+		for _, intf := range proto.Interfaces {
+			if _, err := fmt.Fprintf(w, "var %s = InterfaceDescriptor{\n", namegen(intf.Name, "descriptor")); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q header: %w", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "\tName: %q,\n", intf.Name); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q name value: %w", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "\tEvents: []EventDescriptor{\n"); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q events header: %w", proto.Name, intf.Name, err)
+			}
+			for opcode, event := range intf.Events {
+				if _, err := fmt.Fprintf(w, "\t\t{Name: %q, Opcode: %d, Type: &%s{}},\n", event.Name, opcode, namegen(intf.Name, event.Name, "event")); err != nil {
+					return fmt.Errorf("writing protocol %q interface descriptor %q event %q entry: %w", proto.Name, intf.Name, event.Name, err)
+				}
+			}
+			if _, err := fmt.Fprintf(w, "\t},\n"); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q events footer: %w", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "\tRequests: []RequestDescriptor{\n"); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q requests header: %w", proto.Name, intf.Name, err)
+			}
+			for opcode, request := range intf.Requests {
+				if _, err := fmt.Fprintf(w, "\t\t{Name: %q, Opcode: %d, Type: &%s{}},\n", request.Name, opcode, namegen(intf.Name, request.Name, "request")); err != nil {
+					return fmt.Errorf("writing protocol %q interface descriptor %q request %q entry: %w", proto.Name, intf.Name, request.Name, err)
+				}
+			}
+			if _, err := fmt.Fprintf(w, "\t},\n"); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q requests footer: %w", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "}\n"); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q footer: %w", proto.Name, intf.Name, err)
+			}
+		}
+	}
+
 	if _, err := fmt.Fprintf(w, "////////////////////////////////////////////////////////////////////////////////\n// Protocol Map\nvar Protocols = map[string]ProtocolDescriptor{\n"); err != nil {
-		return fmt.Errorf("writing protocol map header: %v", err)
+		return fmt.Errorf("writing protocol map header: %w", err)
 	}
 
 	for _, proto := range protos {
 		if _, err := fmt.Fprintf(w, "\t%q: {\n", proto.Name); err != nil {
-			return fmt.Errorf("writing protocol map entry %q header: %v", proto.Name, err)
+			return fmt.Errorf("writing protocol map entry %q header: %w", proto.Name, err)
 		}
 		if _, err := fmt.Fprintf(w, "\t\tName: %q,\n", proto.Name); err != nil {
-			return fmt.Errorf("writing protocol map entry %q name value: %v", proto.Name, err)
+			return fmt.Errorf("writing protocol map entry %q name value: %w", proto.Name, err)
 		}
-		if _, err := fmt.Fprintf(w, "\t\tInterfaces: []InterfaceDescriptor{\n"); err != nil {
-			return fmt.Errorf("writing protocol map entry %q interface list header: %v", proto.Name, err)
+		if _, err := fmt.Fprintf(w, "\t\tInterfaces: []*InterfaceDescriptor{\n"); err != nil {
+			return fmt.Errorf("writing protocol map entry %q interface list header: %w", proto.Name, err)
 		}
 		for _, intf := range proto.Interfaces {
-			if _, err := fmt.Fprintf(w, "\t\t\t{\n\t\t\t\tName: %q,\n", intf.Name); err != nil {
-				return fmt.Errorf("writing protocol map entry %q interface %q entry header: %v", proto.Name, intf.Name, err)
-			}
-
-			if _, err := fmt.Fprintf(w, "\t\t\t\tEvents: []EventDescriptor{\n"); err != nil {
-				return fmt.Errorf("writing protocol map entry %q interface %q entry events header: %v", proto.Name, intf.Name, err)
-			}
-			for opcode, event := range intf.Events {
-				if _, err := fmt.Fprintf(w, "\t\t\t\t\t{Name: %q, Opcode: %d, Type: &%s{}},\n", event.Name, opcode, namegen(intf.Name, event.Name, "event")); err != nil {
-					return fmt.Errorf("writing protocol map entry %q interface %q event %q entry: %v", proto.Name, intf.Name, event.Name, err)
-				}
-			}
-			if _, err := fmt.Fprintf(w, "\t\t\t\t},\n"); err != nil {
-				return fmt.Errorf("writing protocol map entry %q interface %q entry events footer: %v", proto.Name, intf.Name, err)
-			}
-
-			if _, err := fmt.Fprintf(w, "\t\t\t\tRequests: []RequestDescriptor{\n"); err != nil {
-				return fmt.Errorf("writing protocol map entry %q interface %q entry requests header: %v", proto.Name, intf.Name, err)
-			}
-			for opcode, request := range intf.Requests {
-				if _, err := fmt.Fprintf(w, "\t\t\t\t\t{Name: %q, Opcode: %d, Type: &%s{}},\n", request.Name, opcode, namegen(intf.Name, request.Name, "request")); err != nil {
-					return fmt.Errorf("writing protocol map entry %q interface %q request %q entry: %v", proto.Name, intf.Name, request.Name, err)
-				}
-			}
-			if _, err := fmt.Fprintf(w, "\t\t\t\t},\n"); err != nil {
-				return fmt.Errorf("writing protocol map entry %q interface %q entry requests footer: %v", proto.Name, intf.Name, err)
-			}
-
-			if _, err := fmt.Fprintf(w, "\t\t\t},\n"); err != nil {
-				return fmt.Errorf("writing protocol map entry %q interface %q entry footer: %v", proto.Name, intf.Name, err)
+			if _, err := fmt.Fprintf(w, "\t\t\t&%s,\n", namegen(intf.Name, "descriptor")); err != nil {
+				return fmt.Errorf("writing protocol map entry %q interface %q entry header: %w", proto.Name, intf.Name, err)
 			}
 		}
 		if _, err := fmt.Fprintf(w, "\t\t},\n"); err != nil {
-			return fmt.Errorf("writing protocol map entry %q interface list header: %v", proto.Name, err)
+			return fmt.Errorf("writing protocol map entry %q interface list header: %w", proto.Name, err)
 		}
 		if _, err := fmt.Fprintf(w, "\t},\n"); err != nil {
-			return fmt.Errorf("writing protocol map entry %q footer: %v", proto.Name, err)
+			return fmt.Errorf("writing protocol map entry %q footer: %w", proto.Name, err)
 		}
 	}
 
 	if _, err := fmt.Fprintf(w, "}\n\n"); err != nil {
-		return fmt.Errorf("writing protocol map footer: %v", err)
+		return fmt.Errorf("writing protocol map footer: %w", err)
 	}
 
 	for _, proto := range protos {
 		if err := codegenproto(w, proto); err != nil {
-			return fmt.Errorf("generating code for proto %v: %w", proto.Name, err)
+			return fmt.Errorf("generating code for proto %s: %w", proto.Name, err)
 		}
 	}
 
@@ -285,12 +301,12 @@ var spacesRE = regexp.MustCompile(`\s+`)
 
 func codegenproto(w io.Writer, proto protocol) error {
 	if _, err := fmt.Fprintf(w, "////////////////////////////////////////////////////////////////////////////////\n// #region Protocol %s\n\n", proto.Name); err != nil {
-		return fmt.Errorf("writing protocol %s begin region: %v", proto.Name, err)
+		return fmt.Errorf("writing protocol %s begin region: %w", proto.Name, err)
 	}
 
 	for _, intf := range proto.Interfaces {
 		if _, err := fmt.Fprintf(w, "// ----------------------------------------------------------------------------\n// #region Interface %s.%s\n\n", proto.Name, intf.Name); err != nil {
-			return fmt.Errorf("writing protocol %s begin region: %v", intf.Name, err)
+			return fmt.Errorf("writing protocol %s begin region: %w", intf.Name, err)
 		}
 
 		// Generate enums
@@ -305,12 +321,12 @@ func codegenproto(w io.Writer, proto protocol) error {
 
 			// Make doc comment.
 			if err := docgen(w, enumname, enum.Description, " represents ", ""); err != nil {
-				return fmt.Errorf("writing enum %s doc comment: %v", enumname, err)
+				return fmt.Errorf("writing enum %s doc comment: %w", enumname, err)
 			}
 
 			// Make type declaration.
 			if _, err := fmt.Fprintf(w, "type %s %s\n", enumname, typ); err != nil {
-				return fmt.Errorf("writing enum %s type declaration: %v", enumname, err)
+				return fmt.Errorf("writing enum %s type declaration: %w", enumname, err)
 			}
 
 			// Make entry constants.
@@ -319,11 +335,11 @@ func codegenproto(w io.Writer, proto protocol) error {
 				entryname := namegen(intf.Name, enum.Name, entry.Name)
 
 				if err := docgen(w, entryname, description{Summary: entry.Summary}, " corresponds to ", "\t"); err != nil {
-					return fmt.Errorf("writing enum entry %s doc comment: %v", entryname, err)
+					return fmt.Errorf("writing enum entry %s doc comment: %w", entryname, err)
 				}
 
 				if _, err := fmt.Fprintf(w, "\t%s %s = %s\n\n", entryname, enumname, entry.Value); err != nil {
-					return fmt.Errorf("writing enum entry %s declaration: %v", entryname, err)
+					return fmt.Errorf("writing enum entry %s declaration: %w", entryname, err)
 				}
 			}
 			fmt.Fprint(w, ")\n\n")
@@ -335,42 +351,49 @@ func codegenproto(w io.Writer, proto protocol) error {
 
 			// Make doc comment.
 			if err := docgen(w, structname, request.Description, " requests to ", ""); err != nil {
-				return fmt.Errorf("writing request %s doc comment: %v", structname, err)
+				return fmt.Errorf("writing request %s doc comment: %w", structname, err)
 			}
 
 			// Open struct declaration.
 			if _, err := fmt.Fprintf(w, "type %s struct {\n", structname); err != nil {
-				return fmt.Errorf("writing request %s struct open: %v", structname, err)
+				return fmt.Errorf("writing request %s struct open: %w", structname, err)
 			}
 
 			// Write arguments.
 			for _, arg := range request.Args {
 				if err := arggen(w, arg); err != nil {
-					return fmt.Errorf("writing request %s struct: %v", structname, err)
+					return fmt.Errorf("writing request %s struct: %w", structname, err)
 				}
 			}
 
 			// Close struct declaration.
 			if _, err := fmt.Fprint(w, "}\n\n"); err != nil {
-				return fmt.Errorf("writing request %s struct close: %v", structname, err)
+				return fmt.Errorf("writing request %s struct close: %w", structname, err)
 			}
 
 			// Implement Opcode function.
 			if _, err := fmt.Fprintf(w,
 				"// Opcode returns the request opcode for %s.%s in %s\nfunc (%s) Opcode() uint16 { return %d }\n\n",
 				intf.Name, request.Name, proto.Name, structname, opcode); err != nil {
-				return fmt.Errorf("writing request %s Opcode implementation: %v", structname, err)
+				return fmt.Errorf("writing request %s Opcode implementation: %w", structname, err)
+			}
+
+			// Implement Name function.
+			if _, err := fmt.Fprintf(w,
+				"// MessageName returns the request name for %s.%s in %s\nfunc (%s) MessageName() string { return %q }\n\n",
+				intf.Name, request.Name, proto.Name, structname, request.Name); err != nil {
+				return fmt.Errorf("writing request %s MessageName implementation: %w", structname, err)
 			}
 
 			// Ensure implementation of Message
 			if _, err := fmt.Fprintf(w, "// Ensure %s implements Message.\nvar _ Message = %s{}\n\n", structname, structname); err != nil {
-				return fmt.Errorf("writing request %s Message interface check: %v", structname, err)
+				return fmt.Errorf("writing request %s Message interface check: %w", structname, err)
 			}
 
 			// Implement Emit function.
 			if _, err := fmt.Fprintf(w,
 				"// Emit emits the message to the emitter.\nfunc (r *%s) Emit(e *RequestEmitter) error {\n", structname); err != nil {
-				return fmt.Errorf("writing request %s Emit function header: %v", structname, err)
+				return fmt.Errorf("writing request %s Emit function header: %w", structname, err)
 			}
 
 			// Write argument emitters.
@@ -381,12 +404,12 @@ func codegenproto(w io.Writer, proto protocol) error {
 			}
 
 			if _, err := fmt.Fprintf(w, "\treturn nil\n}\n"); err != nil {
-				return fmt.Errorf("writing request %s Emit function footer: %v", structname, err)
+				return fmt.Errorf("writing request %s Emit function footer: %w", structname, err)
 			}
 
 			// Ensure implementation of Request
 			if _, err := fmt.Fprintf(w, "// Ensure %s implements Request.\nvar _ Request = &%s{}\n\n", structname, structname); err != nil {
-				return fmt.Errorf("writing request %s Request interface check: %v", structname, err)
+				return fmt.Errorf("writing request %s Request interface check: %w", structname, err)
 			}
 		}
 
@@ -396,42 +419,49 @@ func codegenproto(w io.Writer, proto protocol) error {
 
 			// Make doc comment.
 			if err := docgen(w, structname, event.Description, " signals when ", ""); err != nil {
-				return fmt.Errorf("writing event %s doc comment: %v", structname, err)
+				return fmt.Errorf("writing event %s doc comment: %w", structname, err)
 			}
 
 			// Open struct declaration.
 			if _, err := fmt.Fprintf(w, "type %s struct {\n", structname); err != nil {
-				return fmt.Errorf("writing event %s struct open: %v", structname, err)
+				return fmt.Errorf("writing event %s struct open: %w", structname, err)
 			}
 
 			// Write arguments.
 			for _, arg := range event.Args {
 				if err := arggen(w, arg); err != nil {
-					return fmt.Errorf("writing event %s struct: %v", structname, err)
+					return fmt.Errorf("writing event %s struct: %w", structname, err)
 				}
 			}
 
 			// Close struct declaration.
 			if _, err := fmt.Fprint(w, "}\n\n"); err != nil {
-				return fmt.Errorf("writing event %s struct close: %v", structname, err)
+				return fmt.Errorf("writing event %s struct close: %w", structname, err)
 			}
 
 			// Implement Opcode function.
 			if _, err := fmt.Fprintf(w,
 				"// Opcode returns the event opcode for %s.%s in %s\nfunc (%s) Opcode() uint16 { return %d }\n\n",
 				intf.Name, event.Name, proto.Name, structname, opcode); err != nil {
-				return fmt.Errorf("writing event %s Opcode implementation: %v", structname, err)
+				return fmt.Errorf("writing event %s Opcode implementation: %w", structname, err)
+			}
+
+			// Implement Name function.
+			if _, err := fmt.Fprintf(w,
+				"// MessageName returns the event name for %s.%s in %s\nfunc (%s) MessageName() string { return %q }\n\n",
+				intf.Name, event.Name, proto.Name, structname, event.Name); err != nil {
+				return fmt.Errorf("writing event %s MessageName implementation: %w", structname, err)
 			}
 
 			// Ensure implementation of Message
 			if _, err := fmt.Fprintf(w, "// Ensure %s implements Message.\nvar _ Message = %s{}\n\n", structname, structname); err != nil {
-				return fmt.Errorf("writing event %s Message interface check: %v", structname, err)
+				return fmt.Errorf("writing event %s Message interface check: %w", structname, err)
 			}
 
 			// Implement Scan function.
 			if _, err := fmt.Fprintf(w,
 				"// Scan scans the event from the socket.\nfunc (e *%s) Scan(s *EventScanner) error {\n", structname); err != nil {
-				return fmt.Errorf("writing event %s Scan function header: %v", structname, err)
+				return fmt.Errorf("writing event %s Scan function header: %w", structname, err)
 			}
 
 			// Write argument scanners.
@@ -442,12 +472,12 @@ func codegenproto(w io.Writer, proto protocol) error {
 			}
 
 			if _, err := fmt.Fprintf(w, "\treturn nil\n}\n"); err != nil {
-				return fmt.Errorf("writing event %s Scan function footer: %v", structname, err)
+				return fmt.Errorf("writing event %s Scan function footer: %w", structname, err)
 			}
 
 			// Ensure implementation of Event
 			if _, err := fmt.Fprintf(w, "// Ensure %s implements Event.\nvar _ Event = &%s{}\n\n", structname, structname); err != nil {
-				return fmt.Errorf("writing event %s Event interface check: %v", structname, err)
+				return fmt.Errorf("writing event %s Event interface check: %w", structname, err)
 			}
 		}
 
@@ -456,21 +486,208 @@ func codegenproto(w io.Writer, proto protocol) error {
 
 		// Make doc comment.
 		if err := docgen(w, structname, intf.Description, " ", ""); err != nil {
-			return fmt.Errorf("writing proxy %s doc comment: %v", structname, err)
+			return fmt.Errorf("writing proxy %s doc comment: %w", structname, err)
 		}
 
 		// Proxy struct declaration.
 		if _, err := fmt.Fprintf(w, "type %s struct {\n\tid ObjectID\n}\n\n", structname); err != nil {
-			return fmt.Errorf("writing proxy %s struct: %v", structname, err)
+			return fmt.Errorf("writing proxy %s struct: %w", structname, err)
+		}
+
+		// Implement ID function.
+		if _, err := fmt.Fprintf(w, "// ID returns the ID of the object.\nfunc (proxy *%s) ID() ObjectID {\n\treturn proxy.id\n}\n\n", structname); err != nil {
+			return fmt.Errorf("writing event %s Proxy interface Descriptor method: %w", structname, err)
+		}
+
+		// Implement Descriptor function.
+		if _, err := fmt.Fprintf(w, "// Descriptor returns the interface descriptor for the interface of the object.\nfunc (%s) Descriptor() *InterfaceDescriptor {\n\treturn &%s\n}\n\n", structname, namegen(intf.Name, "descriptor")); err != nil {
+			return fmt.Errorf("writing event %s Proxy interface Descriptor method: %w", structname, err)
+		}
+
+		// Write Dispatch function header.
+		if _, err := fmt.Fprintf(w, "// Dispatch returns an Event object for a given opcode.\nfunc (%s) Dispatch(opcode uint16) Event {\n\tswitch opcode {\n", structname); err != nil {
+			return fmt.Errorf("writing event %s Proxy interface Dispatch method header: %w", structname, err)
+		}
+
+		for opcode, event := range intf.Events {
+			if _, err := fmt.Fprintf(w, "\tcase %d:\n\t\treturn &%s{}\n", opcode, namegen(intf.Name, event.Name, "event")); err != nil {
+				return fmt.Errorf("writing event %s Proxy interface Dispatch method %s case: %w", structname, event.Name, err)
+			}
+		}
+
+		// Write Dispatch function footer.
+		if _, err := fmt.Fprintf(w, "\tdefault:\n\t\treturn nil\n\t}\n}\n"); err != nil {
+			return fmt.Errorf("writing event %s Proxy interface Dispatch method footer: %w", structname, err)
+		}
+
+		for _, request := range intf.Requests {
+			funcname := namegen(request.Name)
+
+			// Make doc comment.
+			if err := docgen(w, funcname, request.Description, " requests to ", ""); err != nil {
+				return fmt.Errorf("writing request %s doc comment: %w", funcname, err)
+			}
+
+			// Make function declaration.
+			if _, err := fmt.Fprintf(w, "func (proxy *%s) %s(connection Connection", structname, funcname); err != nil {
+				return fmt.Errorf("writing request %s function part 1: %w", funcname, err)
+			}
+
+			// Write input arguments.
+			for _, arg := range request.Args {
+				var err error
+
+				argname := "a" + namegen(arg.Name)
+
+				switch arg.Type {
+				case "int":
+					_, err = fmt.Fprintf(w, ", %s int32", argname)
+				case "uint":
+					_, err = fmt.Fprintf(w, ", %s uint32", argname)
+				case "fixed":
+					_, err = fmt.Fprintf(w, ", %s Fixed", argname)
+				case "object":
+					_, err = fmt.Fprintf(w, ", %s ObjectID", argname)
+				case "string":
+					_, err = fmt.Fprintf(w, ", %s string", argname)
+				case "array":
+					_, err = fmt.Fprintf(w, ", %s []byte", argname)
+				case "fd":
+					_, err = fmt.Fprintf(w, ", %s FD", argname)
+				case "new_id":
+					// Skip, leave for output.
+					continue
+				default:
+					err = fmt.Errorf("invalid type %s", arg.Type)
+				}
+				if err != nil {
+					return fmt.Errorf("writing function %s arg %s: %w", funcname, argname, err)
+				}
+			}
+
+			if _, err := fmt.Fprintf(w, ") ("); err != nil {
+				return fmt.Errorf("writing request %s function part 2: %w", funcname, err)
+			}
+
+			// Write output arguments.
+			for _, arg := range request.Args {
+				argname := "a" + namegen(arg.Name)
+
+				switch arg.Type {
+				case "int", "uint", "fixed", "object", "string", "array", "fd":
+					// Skip, leave for input.
+					continue
+				case "new_id":
+					if arg.Interface != "" {
+						if _, err := fmt.Fprintf(w, "%s *%s", argname, namegen(arg.Interface)); err != nil {
+							return fmt.Errorf("writing function %s output %s: %w", funcname, argname, err)
+						}
+					} else {
+						if _, err := fmt.Fprintf(w, "%s ObjectID", argname); err != nil {
+							return fmt.Errorf("writing function %s output %s: %w", funcname, argname, err)
+						}
+					}
+				default:
+					return fmt.Errorf("writing function %s output %s: invalid type %s", funcname, argname, arg.Type)
+				}
+				if _, err := fmt.Fprint(w, ", "); err != nil {
+					return fmt.Errorf("writing comma between args in %s function: %w", funcname, err)
+				}
+			}
+
+			if _, err := fmt.Fprintf(w, "err error) {\n"); err != nil {
+				return fmt.Errorf("writing request %s function part 3: %w", funcname, err)
+			}
+
+			// Setup new object IDs/proxies.
+			for _, arg := range request.Args {
+				argname := "a" + namegen(arg.Name)
+
+				switch arg.Type {
+				case "int", "uint", "fixed", "object", "string", "array", "fd":
+					continue
+				case "new_id":
+					if arg.Interface != "" {
+						if _, err := fmt.Fprintf(w, "\t%s = &%s{connection.NewID()}\n", argname, namegen(arg.Interface)); err != nil {
+							return fmt.Errorf("writing function %s id assignment %s: %w", funcname, argname, err)
+						}
+					} else {
+						if _, err := fmt.Fprintf(w, "\t%s = connection.NewID()\n", argname); err != nil {
+							return fmt.Errorf("writing function %s id assignment %s: %w", funcname, argname, err)
+						}
+					}
+				default:
+					return fmt.Errorf("writing function %s id assignment %s: invalid type %s", funcname, argname, arg.Type)
+				}
+			}
+
+			reqname := namegen(intf.Name, request.Name, "request")
+
+			// Construct request object.
+			if _, err := fmt.Fprintf(w, "\trequest := %s{\n", reqname); err != nil {
+				return fmt.Errorf("writing request function %s request struct open: %w", funcname, err)
+			}
+
+			hasProxies := false
+			for _, arg := range request.Args {
+				argname := namegen(arg.Name)
+				if arg.Type == "new_id" && arg.Interface != "" {
+					hasProxies = true
+					if _, err := fmt.Fprintf(w, "\t\t%s: a%s.id,\n", argname, argname); err != nil {
+						return fmt.Errorf("writing function %s request arg %s assignment: %w", funcname, argname, err)
+					}
+				} else {
+					if _, err := fmt.Fprintf(w, "\t\t%s: a%s,\n", argname, argname); err != nil {
+						return fmt.Errorf("writing function %s request arg %s assignment: %w", funcname, argname, err)
+					}
+				}
+			}
+
+			if _, err := fmt.Fprint(w, "\t}\n"); err != nil {
+				return fmt.Errorf("writing request function %s request struct open: %w", funcname, err)
+			}
+
+			// Send request.
+			if _, err := fmt.Fprintf(w, "\terr = connection.SendRequest(proxy.id, &request)\n"); err != nil {
+				return fmt.Errorf("writing request function %s request call: %w", funcname, err)
+			}
+
+			// Register new proxies.
+			if hasProxies {
+				if _, err := fmt.Fprintf(w, "\tif err == nil {\n"); err != nil {
+					return fmt.Errorf("writing request function %s request call: %w", funcname, err)
+				}
+				for _, arg := range request.Args {
+					argname := "a" + namegen(arg.Name)
+
+					if arg.Type == "new_id" && arg.Interface != "" {
+						if _, err := fmt.Fprintf(w, "\t\tconnection.RegisterProxy(%s)\n", argname); err != nil {
+							return fmt.Errorf("writing function %s request arg %s assignment: %w", funcname, argname, err)
+						}
+					}
+				}
+				if _, err := fmt.Fprintf(w, "\t}\n"); err != nil {
+					return fmt.Errorf("writing request function %s request call: %w", funcname, err)
+				}
+			}
+
+			if _, err := fmt.Fprint(w, "\treturn\n}\n\n"); err != nil {
+				return fmt.Errorf("writing request %s function tail: %w", funcname, err)
+			}
+		}
+
+		// Ensure implementation of Proxy
+		if _, err := fmt.Fprintf(w, "// Ensure %s implements Proxy.\nvar _ Proxy = &%s{}\n\n", structname, structname); err != nil {
+			return fmt.Errorf("writing event %s Proxy interface check: %w", structname, err)
 		}
 
 		if _, err := fmt.Fprintf(w, "// #endregion Interface %s.%s\n\n", proto.Name, intf.Name); err != nil {
-			return fmt.Errorf("writing protocol %s end region: %v", intf.Name, err)
+			return fmt.Errorf("writing protocol %s end region: %w", intf.Name, err)
 		}
 	}
 
 	if _, err := fmt.Fprintf(w, "////////////////////////////////////////////////////////////////////////////////\n// #endregion Protocol %s\n\n", proto.Name); err != nil {
-		return fmt.Errorf("writing protocol %s end region: %v", proto.Name, err)
+		return fmt.Errorf("writing protocol %s end region: %w", proto.Name, err)
 	}
 
 	return nil
@@ -481,7 +698,7 @@ func arggen(w io.Writer, arg arg) error {
 
 	// Make doc comment.
 	if err := docgen(w, argname, description{Summary: arg.Summary}, " contains ", "\t"); err != nil {
-		return fmt.Errorf("writing argument %s doc comment: %v", argname, err)
+		return fmt.Errorf("writing argument %s doc comment: %w", argname, err)
 	}
 
 	typ := ""
@@ -506,7 +723,7 @@ func arggen(w io.Writer, arg arg) error {
 
 	// Write actual arg.
 	if _, err := fmt.Fprintf(w, "\t%s %s\n\n", argname, typ); err != nil {
-		return fmt.Errorf("writing argument %s: %v", argname, err)
+		return fmt.Errorf("writing argument %s: %w", argname, err)
 	}
 
 	return nil
@@ -521,7 +738,7 @@ func argscangen(w io.Writer, arg arg) error {
 	argname := namegen(arg.Name)
 
 	if _, err := fmt.Fprintf(w, "\tif v, err := s.%s(); err != nil {\n\t\treturn err\n\t} else {\n\t\te.%s = v\n\t}\n", typ, argname); err != nil {
-		return fmt.Errorf("writing argument scanner %s: %v", argname, err)
+		return fmt.Errorf("writing argument scanner %s: %w", argname, err)
 	}
 
 	return nil
@@ -536,7 +753,7 @@ func argemitgen(w io.Writer, arg arg) error {
 	argname := namegen(arg.Name)
 
 	if _, err := fmt.Fprintf(w, "\tif err := e.Put%s(r.%s); err != nil {\n\t\treturn err\n\t}\n", typ, argname); err != nil {
-		return fmt.Errorf("writing argument emitter %s: %v", argname, err)
+		return fmt.Errorf("writing argument emitter %s: %w", argname, err)
 	}
 
 	return nil

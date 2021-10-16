@@ -3,1251 +3,1351 @@
 package wayland
 
 ////////////////////////////////////////////////////////////////////////////////
+// Interface Descriptors
+var WpDrmLeaseDeviceV1Descriptor = InterfaceDescriptor{
+	Name: "wp_drm_lease_device_v1",
+	Events: []EventDescriptor{
+		{Name: "drm_fd", Opcode: 0, Type: &WpDrmLeaseDeviceV1DrmFDEvent{}},
+		{Name: "connector", Opcode: 1, Type: &WpDrmLeaseDeviceV1ConnectorEvent{}},
+		{Name: "done", Opcode: 2, Type: &WpDrmLeaseDeviceV1DoneEvent{}},
+		{Name: "released", Opcode: 3, Type: &WpDrmLeaseDeviceV1ReleasedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "create_lease_request", Opcode: 0, Type: &WpDrmLeaseDeviceV1CreateLeaseRequestRequest{}},
+		{Name: "release", Opcode: 1, Type: &WpDrmLeaseDeviceV1ReleaseRequest{}},
+	},
+}
+var WpDrmLeaseConnectorV1Descriptor = InterfaceDescriptor{
+	Name: "wp_drm_lease_connector_v1",
+	Events: []EventDescriptor{
+		{Name: "name", Opcode: 0, Type: &WpDrmLeaseConnectorV1NameEvent{}},
+		{Name: "description", Opcode: 1, Type: &WpDrmLeaseConnectorV1DescriptionEvent{}},
+		{Name: "connector_id", Opcode: 2, Type: &WpDrmLeaseConnectorV1ConnectorIDEvent{}},
+		{Name: "done", Opcode: 3, Type: &WpDrmLeaseConnectorV1DoneEvent{}},
+		{Name: "withdrawn", Opcode: 4, Type: &WpDrmLeaseConnectorV1WithdrawnEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WpDrmLeaseConnectorV1DestroyRequest{}},
+	},
+}
+var WpDrmLeaseRequestV1Descriptor = InterfaceDescriptor{
+	Name:   "wp_drm_lease_request_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "request_connector", Opcode: 0, Type: &WpDrmLeaseRequestV1RequestConnectorRequest{}},
+		{Name: "submit", Opcode: 1, Type: &WpDrmLeaseRequestV1SubmitRequest{}},
+	},
+}
+var WpDrmLeaseV1Descriptor = InterfaceDescriptor{
+	Name: "wp_drm_lease_v1",
+	Events: []EventDescriptor{
+		{Name: "lease_fd", Opcode: 0, Type: &WpDrmLeaseV1LeaseFDEvent{}},
+		{Name: "finished", Opcode: 1, Type: &WpDrmLeaseV1FinishedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WpDrmLeaseV1DestroyRequest{}},
+	},
+}
+var ZwpFullscreenShellV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_fullscreen_shell_v1",
+	Events: []EventDescriptor{
+		{Name: "capability", Opcode: 0, Type: &ZwpFullscreenShellV1CapabilityEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "release", Opcode: 0, Type: &ZwpFullscreenShellV1ReleaseRequest{}},
+		{Name: "present_surface", Opcode: 1, Type: &ZwpFullscreenShellV1PresentSurfaceRequest{}},
+		{Name: "present_surface_for_mode", Opcode: 2, Type: &ZwpFullscreenShellV1PresentSurfaceForModeRequest{}},
+	},
+}
+var ZwpFullscreenShellModeFeedbackV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_fullscreen_shell_mode_feedback_v1",
+	Events: []EventDescriptor{
+		{Name: "mode_successful", Opcode: 0, Type: &ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}},
+		{Name: "mode_failed", Opcode: 1, Type: &ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}},
+		{Name: "present_cancelled", Opcode: 2, Type: &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}},
+	},
+	Requests: []RequestDescriptor{},
+}
+var ZwpIdleInhibitManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_idle_inhibit_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitManagerV1DestroyRequest{}},
+		{Name: "create_inhibitor", Opcode: 1, Type: &ZwpIdleInhibitManagerV1CreateInhibitorRequest{}},
+	},
+}
+var ZwpIdleInhibitorV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_idle_inhibitor_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitorV1DestroyRequest{}},
+	},
+}
+var ZwpInputMethodContextV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_input_method_context_v1",
+	Events: []EventDescriptor{
+		{Name: "surrounding_text", Opcode: 0, Type: &ZwpInputMethodContextV1SurroundingTextEvent{}},
+		{Name: "reset", Opcode: 1, Type: &ZwpInputMethodContextV1ResetEvent{}},
+		{Name: "content_type", Opcode: 2, Type: &ZwpInputMethodContextV1ContentTypeEvent{}},
+		{Name: "invoke_action", Opcode: 3, Type: &ZwpInputMethodContextV1InvokeActionEvent{}},
+		{Name: "commit_state", Opcode: 4, Type: &ZwpInputMethodContextV1CommitStateEvent{}},
+		{Name: "preferred_language", Opcode: 5, Type: &ZwpInputMethodContextV1PreferredLanguageEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpInputMethodContextV1DestroyRequest{}},
+		{Name: "commit_string", Opcode: 1, Type: &ZwpInputMethodContextV1CommitStringRequest{}},
+		{Name: "preedit_string", Opcode: 2, Type: &ZwpInputMethodContextV1PreeditStringRequest{}},
+		{Name: "preedit_styling", Opcode: 3, Type: &ZwpInputMethodContextV1PreeditStylingRequest{}},
+		{Name: "preedit_cursor", Opcode: 4, Type: &ZwpInputMethodContextV1PreeditCursorRequest{}},
+		{Name: "delete_surrounding_text", Opcode: 5, Type: &ZwpInputMethodContextV1DeleteSurroundingTextRequest{}},
+		{Name: "cursor_position", Opcode: 6, Type: &ZwpInputMethodContextV1CursorPositionRequest{}},
+		{Name: "modifiers_map", Opcode: 7, Type: &ZwpInputMethodContextV1ModifiersMapRequest{}},
+		{Name: "keysym", Opcode: 8, Type: &ZwpInputMethodContextV1KeysymRequest{}},
+		{Name: "grab_keyboard", Opcode: 9, Type: &ZwpInputMethodContextV1GrabKeyboardRequest{}},
+		{Name: "key", Opcode: 10, Type: &ZwpInputMethodContextV1KeyRequest{}},
+		{Name: "modifiers", Opcode: 11, Type: &ZwpInputMethodContextV1ModifiersRequest{}},
+		{Name: "language", Opcode: 12, Type: &ZwpInputMethodContextV1LanguageRequest{}},
+		{Name: "text_direction", Opcode: 13, Type: &ZwpInputMethodContextV1TextDirectionRequest{}},
+	},
+}
+var ZwpInputMethodV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_input_method_v1",
+	Events: []EventDescriptor{
+		{Name: "activate", Opcode: 0, Type: &ZwpInputMethodV1ActivateEvent{}},
+		{Name: "deactivate", Opcode: 1, Type: &ZwpInputMethodV1DeactivateEvent{}},
+	},
+	Requests: []RequestDescriptor{},
+}
+var ZwpInputPanelV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_input_panel_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "get_input_panel_surface", Opcode: 0, Type: &ZwpInputPanelV1GetInputPanelSurfaceRequest{}},
+	},
+}
+var ZwpInputPanelSurfaceV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_input_panel_surface_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "set_toplevel", Opcode: 0, Type: &ZwpInputPanelSurfaceV1SetToplevelRequest{}},
+		{Name: "set_overlay_panel", Opcode: 1, Type: &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}},
+	},
+}
+var ZwpInputTimestampsManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_input_timestamps_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpInputTimestampsManagerV1DestroyRequest{}},
+		{Name: "get_keyboard_timestamps", Opcode: 1, Type: &ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}},
+		{Name: "get_pointer_timestamps", Opcode: 2, Type: &ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}},
+		{Name: "get_touch_timestamps", Opcode: 3, Type: &ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}},
+	},
+}
+var ZwpInputTimestampsV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_input_timestamps_v1",
+	Events: []EventDescriptor{
+		{Name: "timestamp", Opcode: 0, Type: &ZwpInputTimestampsV1TimestampEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpInputTimestampsV1DestroyRequest{}},
+	},
+}
+var ZwpKeyboardShortcutsInhibitManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_keyboard_shortcuts_inhibit_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}},
+		{Name: "inhibit_shortcuts", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}},
+	},
+}
+var ZwpKeyboardShortcutsInhibitorV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_keyboard_shortcuts_inhibitor_v1",
+	Events: []EventDescriptor{
+		{Name: "active", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}},
+		{Name: "inactive", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}},
+	},
+}
+var ZwpLinuxDmabufV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_linux_dmabuf_v1",
+	Events: []EventDescriptor{
+		{Name: "format", Opcode: 0, Type: &ZwpLinuxDmabufV1FormatEvent{}},
+		{Name: "modifier", Opcode: 1, Type: &ZwpLinuxDmabufV1ModifierEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpLinuxDmabufV1DestroyRequest{}},
+		{Name: "create_params", Opcode: 1, Type: &ZwpLinuxDmabufV1CreateParamsRequest{}},
+	},
+}
+var ZwpLinuxBufferParamsV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_linux_buffer_params_v1",
+	Events: []EventDescriptor{
+		{Name: "created", Opcode: 0, Type: &ZwpLinuxBufferParamsV1CreatedEvent{}},
+		{Name: "failed", Opcode: 1, Type: &ZwpLinuxBufferParamsV1FailedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpLinuxBufferParamsV1DestroyRequest{}},
+		{Name: "add", Opcode: 1, Type: &ZwpLinuxBufferParamsV1AddRequest{}},
+		{Name: "create", Opcode: 2, Type: &ZwpLinuxBufferParamsV1CreateRequest{}},
+		{Name: "create_immed", Opcode: 3, Type: &ZwpLinuxBufferParamsV1CreateImmedRequest{}},
+	},
+}
+var ZwpPointerConstraintsV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_pointer_constraints_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpPointerConstraintsV1DestroyRequest{}},
+		{Name: "lock_pointer", Opcode: 1, Type: &ZwpPointerConstraintsV1LockPointerRequest{}},
+		{Name: "confine_pointer", Opcode: 2, Type: &ZwpPointerConstraintsV1ConfinePointerRequest{}},
+	},
+}
+var ZwpLockedPointerV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_locked_pointer_v1",
+	Events: []EventDescriptor{
+		{Name: "locked", Opcode: 0, Type: &ZwpLockedPointerV1LockedEvent{}},
+		{Name: "unlocked", Opcode: 1, Type: &ZwpLockedPointerV1UnlockedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpLockedPointerV1DestroyRequest{}},
+		{Name: "set_cursor_position_hint", Opcode: 1, Type: &ZwpLockedPointerV1SetCursorPositionHintRequest{}},
+		{Name: "set_region", Opcode: 2, Type: &ZwpLockedPointerV1SetRegionRequest{}},
+	},
+}
+var ZwpConfinedPointerV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_confined_pointer_v1",
+	Events: []EventDescriptor{
+		{Name: "confined", Opcode: 0, Type: &ZwpConfinedPointerV1ConfinedEvent{}},
+		{Name: "unconfined", Opcode: 1, Type: &ZwpConfinedPointerV1UnconfinedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpConfinedPointerV1DestroyRequest{}},
+		{Name: "set_region", Opcode: 1, Type: &ZwpConfinedPointerV1SetRegionRequest{}},
+	},
+}
+var ZwpPointerGesturesV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_pointer_gestures_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "get_swipe_gesture", Opcode: 0, Type: &ZwpPointerGesturesV1GetSwipeGestureRequest{}},
+		{Name: "get_pinch_gesture", Opcode: 1, Type: &ZwpPointerGesturesV1GetPinchGestureRequest{}},
+		{Name: "release", Opcode: 2, Type: &ZwpPointerGesturesV1ReleaseRequest{}},
+		{Name: "get_hold_gesture", Opcode: 3, Type: &ZwpPointerGesturesV1GetHoldGestureRequest{}},
+	},
+}
+var ZwpPointerGestureSwipeV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_pointer_gesture_swipe_v1",
+	Events: []EventDescriptor{
+		{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureSwipeV1BeginEvent{}},
+		{Name: "update", Opcode: 1, Type: &ZwpPointerGestureSwipeV1UpdateEvent{}},
+		{Name: "end", Opcode: 2, Type: &ZwpPointerGestureSwipeV1EndEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpPointerGestureSwipeV1DestroyRequest{}},
+	},
+}
+var ZwpPointerGesturePinchV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_pointer_gesture_pinch_v1",
+	Events: []EventDescriptor{
+		{Name: "begin", Opcode: 0, Type: &ZwpPointerGesturePinchV1BeginEvent{}},
+		{Name: "update", Opcode: 1, Type: &ZwpPointerGesturePinchV1UpdateEvent{}},
+		{Name: "end", Opcode: 2, Type: &ZwpPointerGesturePinchV1EndEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpPointerGesturePinchV1DestroyRequest{}},
+	},
+}
+var ZwpPointerGestureHoldV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_pointer_gesture_hold_v1",
+	Events: []EventDescriptor{
+		{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureHoldV1BeginEvent{}},
+		{Name: "end", Opcode: 1, Type: &ZwpPointerGestureHoldV1EndEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpPointerGestureHoldV1DestroyRequest{}},
+	},
+}
+var WpPresentationDescriptor = InterfaceDescriptor{
+	Name: "wp_presentation",
+	Events: []EventDescriptor{
+		{Name: "clock_id", Opcode: 0, Type: &WpPresentationClockIDEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WpPresentationDestroyRequest{}},
+		{Name: "feedback", Opcode: 1, Type: &WpPresentationFeedbackRequest{}},
+	},
+}
+var WpPresentationFeedbackDescriptor = InterfaceDescriptor{
+	Name: "wp_presentation_feedback",
+	Events: []EventDescriptor{
+		{Name: "sync_output", Opcode: 0, Type: &WpPresentationFeedbackSyncOutputEvent{}},
+		{Name: "presented", Opcode: 1, Type: &WpPresentationFeedbackPresentedEvent{}},
+		{Name: "discarded", Opcode: 2, Type: &WpPresentationFeedbackDiscardedEvent{}},
+	},
+	Requests: []RequestDescriptor{},
+}
+var ZwpRelativePointerManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_relative_pointer_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpRelativePointerManagerV1DestroyRequest{}},
+		{Name: "get_relative_pointer", Opcode: 1, Type: &ZwpRelativePointerManagerV1GetRelativePointerRequest{}},
+	},
+}
+var ZwpRelativePointerV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_relative_pointer_v1",
+	Events: []EventDescriptor{
+		{Name: "relative_motion", Opcode: 0, Type: &ZwpRelativePointerV1RelativeMotionEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpRelativePointerV1DestroyRequest{}},
+	},
+}
+var ZwpTabletManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_tablet_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV1GetTabletSeatRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV1DestroyRequest{}},
+	},
+}
+var ZwpTabletSeatV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_seat_v1",
+	Events: []EventDescriptor{
+		{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV1TabletAddedEvent{}},
+		{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV1ToolAddedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpTabletSeatV1DestroyRequest{}},
+	},
+}
+var ZwpTabletToolV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_tool_v1",
+	Events: []EventDescriptor{
+		{Name: "type", Opcode: 0, Type: &ZwpTabletToolV1TypeEvent{}},
+		{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV1HardwareSerialEvent{}},
+		{Name: "hardware_id_wacom", Opcode: 2, Type: &ZwpTabletToolV1HardwareIDWacomEvent{}},
+		{Name: "capability", Opcode: 3, Type: &ZwpTabletToolV1CapabilityEvent{}},
+		{Name: "done", Opcode: 4, Type: &ZwpTabletToolV1DoneEvent{}},
+		{Name: "removed", Opcode: 5, Type: &ZwpTabletToolV1RemovedEvent{}},
+		{Name: "proximity_in", Opcode: 6, Type: &ZwpTabletToolV1ProximityInEvent{}},
+		{Name: "proximity_out", Opcode: 7, Type: &ZwpTabletToolV1ProximityOutEvent{}},
+		{Name: "down", Opcode: 8, Type: &ZwpTabletToolV1DownEvent{}},
+		{Name: "up", Opcode: 9, Type: &ZwpTabletToolV1UpEvent{}},
+		{Name: "motion", Opcode: 10, Type: &ZwpTabletToolV1MotionEvent{}},
+		{Name: "pressure", Opcode: 11, Type: &ZwpTabletToolV1PressureEvent{}},
+		{Name: "distance", Opcode: 12, Type: &ZwpTabletToolV1DistanceEvent{}},
+		{Name: "tilt", Opcode: 13, Type: &ZwpTabletToolV1TiltEvent{}},
+		{Name: "rotation", Opcode: 14, Type: &ZwpTabletToolV1RotationEvent{}},
+		{Name: "slider", Opcode: 15, Type: &ZwpTabletToolV1SliderEvent{}},
+		{Name: "wheel", Opcode: 16, Type: &ZwpTabletToolV1WheelEvent{}},
+		{Name: "button", Opcode: 17, Type: &ZwpTabletToolV1ButtonEvent{}},
+		{Name: "frame", Opcode: 18, Type: &ZwpTabletToolV1FrameEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_cursor", Opcode: 0, Type: &ZwpTabletToolV1SetCursorRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpTabletToolV1DestroyRequest{}},
+	},
+}
+var ZwpTabletV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_v1",
+	Events: []EventDescriptor{
+		{Name: "name", Opcode: 0, Type: &ZwpTabletV1NameEvent{}},
+		{Name: "id", Opcode: 1, Type: &ZwpTabletV1IDEvent{}},
+		{Name: "path", Opcode: 2, Type: &ZwpTabletV1PathEvent{}},
+		{Name: "done", Opcode: 3, Type: &ZwpTabletV1DoneEvent{}},
+		{Name: "removed", Opcode: 4, Type: &ZwpTabletV1RemovedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpTabletV1DestroyRequest{}},
+	},
+}
+var ZwpTabletManagerV2Descriptor = InterfaceDescriptor{
+	Name:   "zwp_tablet_manager_v2",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV2GetTabletSeatRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV2DestroyRequest{}},
+	},
+}
+var ZwpTabletSeatV2Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_seat_v2",
+	Events: []EventDescriptor{
+		{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV2TabletAddedEvent{}},
+		{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV2ToolAddedEvent{}},
+		{Name: "pad_added", Opcode: 2, Type: &ZwpTabletSeatV2PadAddedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpTabletSeatV2DestroyRequest{}},
+	},
+}
+var ZwpTabletToolV2Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_tool_v2",
+	Events: []EventDescriptor{
+		{Name: "type", Opcode: 0, Type: &ZwpTabletToolV2TypeEvent{}},
+		{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV2HardwareSerialEvent{}},
+		{Name: "hardware_id_wacom", Opcode: 2, Type: &ZwpTabletToolV2HardwareIDWacomEvent{}},
+		{Name: "capability", Opcode: 3, Type: &ZwpTabletToolV2CapabilityEvent{}},
+		{Name: "done", Opcode: 4, Type: &ZwpTabletToolV2DoneEvent{}},
+		{Name: "removed", Opcode: 5, Type: &ZwpTabletToolV2RemovedEvent{}},
+		{Name: "proximity_in", Opcode: 6, Type: &ZwpTabletToolV2ProximityInEvent{}},
+		{Name: "proximity_out", Opcode: 7, Type: &ZwpTabletToolV2ProximityOutEvent{}},
+		{Name: "down", Opcode: 8, Type: &ZwpTabletToolV2DownEvent{}},
+		{Name: "up", Opcode: 9, Type: &ZwpTabletToolV2UpEvent{}},
+		{Name: "motion", Opcode: 10, Type: &ZwpTabletToolV2MotionEvent{}},
+		{Name: "pressure", Opcode: 11, Type: &ZwpTabletToolV2PressureEvent{}},
+		{Name: "distance", Opcode: 12, Type: &ZwpTabletToolV2DistanceEvent{}},
+		{Name: "tilt", Opcode: 13, Type: &ZwpTabletToolV2TiltEvent{}},
+		{Name: "rotation", Opcode: 14, Type: &ZwpTabletToolV2RotationEvent{}},
+		{Name: "slider", Opcode: 15, Type: &ZwpTabletToolV2SliderEvent{}},
+		{Name: "wheel", Opcode: 16, Type: &ZwpTabletToolV2WheelEvent{}},
+		{Name: "button", Opcode: 17, Type: &ZwpTabletToolV2ButtonEvent{}},
+		{Name: "frame", Opcode: 18, Type: &ZwpTabletToolV2FrameEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_cursor", Opcode: 0, Type: &ZwpTabletToolV2SetCursorRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpTabletToolV2DestroyRequest{}},
+	},
+}
+var ZwpTabletV2Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_v2",
+	Events: []EventDescriptor{
+		{Name: "name", Opcode: 0, Type: &ZwpTabletV2NameEvent{}},
+		{Name: "id", Opcode: 1, Type: &ZwpTabletV2IDEvent{}},
+		{Name: "path", Opcode: 2, Type: &ZwpTabletV2PathEvent{}},
+		{Name: "done", Opcode: 3, Type: &ZwpTabletV2DoneEvent{}},
+		{Name: "removed", Opcode: 4, Type: &ZwpTabletV2RemovedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpTabletV2DestroyRequest{}},
+	},
+}
+var ZwpTabletPadRingV2Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_pad_ring_v2",
+	Events: []EventDescriptor{
+		{Name: "source", Opcode: 0, Type: &ZwpTabletPadRingV2SourceEvent{}},
+		{Name: "angle", Opcode: 1, Type: &ZwpTabletPadRingV2AngleEvent{}},
+		{Name: "stop", Opcode: 2, Type: &ZwpTabletPadRingV2StopEvent{}},
+		{Name: "frame", Opcode: 3, Type: &ZwpTabletPadRingV2FrameEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadRingV2SetFeedbackRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadRingV2DestroyRequest{}},
+	},
+}
+var ZwpTabletPadStripV2Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_pad_strip_v2",
+	Events: []EventDescriptor{
+		{Name: "source", Opcode: 0, Type: &ZwpTabletPadStripV2SourceEvent{}},
+		{Name: "position", Opcode: 1, Type: &ZwpTabletPadStripV2PositionEvent{}},
+		{Name: "stop", Opcode: 2, Type: &ZwpTabletPadStripV2StopEvent{}},
+		{Name: "frame", Opcode: 3, Type: &ZwpTabletPadStripV2FrameEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadStripV2SetFeedbackRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadStripV2DestroyRequest{}},
+	},
+}
+var ZwpTabletPadGroupV2Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_pad_group_v2",
+	Events: []EventDescriptor{
+		{Name: "buttons", Opcode: 0, Type: &ZwpTabletPadGroupV2ButtonsEvent{}},
+		{Name: "ring", Opcode: 1, Type: &ZwpTabletPadGroupV2RingEvent{}},
+		{Name: "strip", Opcode: 2, Type: &ZwpTabletPadGroupV2StripEvent{}},
+		{Name: "modes", Opcode: 3, Type: &ZwpTabletPadGroupV2ModesEvent{}},
+		{Name: "done", Opcode: 4, Type: &ZwpTabletPadGroupV2DoneEvent{}},
+		{Name: "mode_switch", Opcode: 5, Type: &ZwpTabletPadGroupV2ModeSwitchEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpTabletPadGroupV2DestroyRequest{}},
+	},
+}
+var ZwpTabletPadV2Descriptor = InterfaceDescriptor{
+	Name: "zwp_tablet_pad_v2",
+	Events: []EventDescriptor{
+		{Name: "group", Opcode: 0, Type: &ZwpTabletPadV2GroupEvent{}},
+		{Name: "path", Opcode: 1, Type: &ZwpTabletPadV2PathEvent{}},
+		{Name: "buttons", Opcode: 2, Type: &ZwpTabletPadV2ButtonsEvent{}},
+		{Name: "done", Opcode: 3, Type: &ZwpTabletPadV2DoneEvent{}},
+		{Name: "button", Opcode: 4, Type: &ZwpTabletPadV2ButtonEvent{}},
+		{Name: "enter", Opcode: 5, Type: &ZwpTabletPadV2EnterEvent{}},
+		{Name: "leave", Opcode: 6, Type: &ZwpTabletPadV2LeaveEvent{}},
+		{Name: "removed", Opcode: 7, Type: &ZwpTabletPadV2RemovedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadV2SetFeedbackRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadV2DestroyRequest{}},
+	},
+}
+var ZwpTextInputV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_text_input_v1",
+	Events: []EventDescriptor{
+		{Name: "enter", Opcode: 0, Type: &ZwpTextInputV1EnterEvent{}},
+		{Name: "leave", Opcode: 1, Type: &ZwpTextInputV1LeaveEvent{}},
+		{Name: "modifiers_map", Opcode: 2, Type: &ZwpTextInputV1ModifiersMapEvent{}},
+		{Name: "input_panel_state", Opcode: 3, Type: &ZwpTextInputV1InputPanelStateEvent{}},
+		{Name: "preedit_string", Opcode: 4, Type: &ZwpTextInputV1PreeditStringEvent{}},
+		{Name: "preedit_styling", Opcode: 5, Type: &ZwpTextInputV1PreeditStylingEvent{}},
+		{Name: "preedit_cursor", Opcode: 6, Type: &ZwpTextInputV1PreeditCursorEvent{}},
+		{Name: "commit_string", Opcode: 7, Type: &ZwpTextInputV1CommitStringEvent{}},
+		{Name: "cursor_position", Opcode: 8, Type: &ZwpTextInputV1CursorPositionEvent{}},
+		{Name: "delete_surrounding_text", Opcode: 9, Type: &ZwpTextInputV1DeleteSurroundingTextEvent{}},
+		{Name: "keysym", Opcode: 10, Type: &ZwpTextInputV1KeysymEvent{}},
+		{Name: "language", Opcode: 11, Type: &ZwpTextInputV1LanguageEvent{}},
+		{Name: "text_direction", Opcode: 12, Type: &ZwpTextInputV1TextDirectionEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "activate", Opcode: 0, Type: &ZwpTextInputV1ActivateRequest{}},
+		{Name: "deactivate", Opcode: 1, Type: &ZwpTextInputV1DeactivateRequest{}},
+		{Name: "show_input_panel", Opcode: 2, Type: &ZwpTextInputV1ShowInputPanelRequest{}},
+		{Name: "hide_input_panel", Opcode: 3, Type: &ZwpTextInputV1HideInputPanelRequest{}},
+		{Name: "reset", Opcode: 4, Type: &ZwpTextInputV1ResetRequest{}},
+		{Name: "set_surrounding_text", Opcode: 5, Type: &ZwpTextInputV1SetSurroundingTextRequest{}},
+		{Name: "set_content_type", Opcode: 6, Type: &ZwpTextInputV1SetContentTypeRequest{}},
+		{Name: "set_cursor_rectangle", Opcode: 7, Type: &ZwpTextInputV1SetCursorRectangleRequest{}},
+		{Name: "set_preferred_language", Opcode: 8, Type: &ZwpTextInputV1SetPreferredLanguageRequest{}},
+		{Name: "commit_state", Opcode: 9, Type: &ZwpTextInputV1CommitStateRequest{}},
+		{Name: "invoke_action", Opcode: 10, Type: &ZwpTextInputV1InvokeActionRequest{}},
+	},
+}
+var ZwpTextInputManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_text_input_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "create_text_input", Opcode: 0, Type: &ZwpTextInputManagerV1CreateTextInputRequest{}},
+	},
+}
+var ZwpTextInputV3Descriptor = InterfaceDescriptor{
+	Name: "zwp_text_input_v3",
+	Events: []EventDescriptor{
+		{Name: "enter", Opcode: 0, Type: &ZwpTextInputV3EnterEvent{}},
+		{Name: "leave", Opcode: 1, Type: &ZwpTextInputV3LeaveEvent{}},
+		{Name: "preedit_string", Opcode: 2, Type: &ZwpTextInputV3PreeditStringEvent{}},
+		{Name: "commit_string", Opcode: 3, Type: &ZwpTextInputV3CommitStringEvent{}},
+		{Name: "delete_surrounding_text", Opcode: 4, Type: &ZwpTextInputV3DeleteSurroundingTextEvent{}},
+		{Name: "done", Opcode: 5, Type: &ZwpTextInputV3DoneEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpTextInputV3DestroyRequest{}},
+		{Name: "enable", Opcode: 1, Type: &ZwpTextInputV3EnableRequest{}},
+		{Name: "disable", Opcode: 2, Type: &ZwpTextInputV3DisableRequest{}},
+		{Name: "set_surrounding_text", Opcode: 3, Type: &ZwpTextInputV3SetSurroundingTextRequest{}},
+		{Name: "set_text_change_cause", Opcode: 4, Type: &ZwpTextInputV3SetTextChangeCauseRequest{}},
+		{Name: "set_content_type", Opcode: 5, Type: &ZwpTextInputV3SetContentTypeRequest{}},
+		{Name: "set_cursor_rectangle", Opcode: 6, Type: &ZwpTextInputV3SetCursorRectangleRequest{}},
+		{Name: "commit", Opcode: 7, Type: &ZwpTextInputV3CommitRequest{}},
+	},
+}
+var ZwpTextInputManagerV3Descriptor = InterfaceDescriptor{
+	Name:   "zwp_text_input_manager_v3",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpTextInputManagerV3DestroyRequest{}},
+		{Name: "get_text_input", Opcode: 1, Type: &ZwpTextInputManagerV3GetTextInputRequest{}},
+	},
+}
+var WpViewporterDescriptor = InterfaceDescriptor{
+	Name:   "wp_viewporter",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WpViewporterDestroyRequest{}},
+		{Name: "get_viewport", Opcode: 1, Type: &WpViewporterGetViewportRequest{}},
+	},
+}
+var WpViewportDescriptor = InterfaceDescriptor{
+	Name:   "wp_viewport",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WpViewportDestroyRequest{}},
+		{Name: "set_source", Opcode: 1, Type: &WpViewportSetSourceRequest{}},
+		{Name: "set_destination", Opcode: 2, Type: &WpViewportSetDestinationRequest{}},
+	},
+}
+var WlDisplayDescriptor = InterfaceDescriptor{
+	Name: "wl_display",
+	Events: []EventDescriptor{
+		{Name: "error", Opcode: 0, Type: &WlDisplayErrorEvent{}},
+		{Name: "delete_id", Opcode: 1, Type: &WlDisplayDeleteIDEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "sync", Opcode: 0, Type: &WlDisplaySyncRequest{}},
+		{Name: "get_registry", Opcode: 1, Type: &WlDisplayGetRegistryRequest{}},
+	},
+}
+var WlRegistryDescriptor = InterfaceDescriptor{
+	Name: "wl_registry",
+	Events: []EventDescriptor{
+		{Name: "global", Opcode: 0, Type: &WlRegistryGlobalEvent{}},
+		{Name: "global_remove", Opcode: 1, Type: &WlRegistryGlobalRemoveEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "bind", Opcode: 0, Type: &WlRegistryBindRequest{}},
+	},
+}
+var WlCallbackDescriptor = InterfaceDescriptor{
+	Name: "wl_callback",
+	Events: []EventDescriptor{
+		{Name: "done", Opcode: 0, Type: &WlCallbackDoneEvent{}},
+	},
+	Requests: []RequestDescriptor{},
+}
+var WlCompositorDescriptor = InterfaceDescriptor{
+	Name:   "wl_compositor",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "create_surface", Opcode: 0, Type: &WlCompositorCreateSurfaceRequest{}},
+		{Name: "create_region", Opcode: 1, Type: &WlCompositorCreateRegionRequest{}},
+	},
+}
+var WlShmPoolDescriptor = InterfaceDescriptor{
+	Name:   "wl_shm_pool",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "create_buffer", Opcode: 0, Type: &WlShmPoolCreateBufferRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &WlShmPoolDestroyRequest{}},
+		{Name: "resize", Opcode: 2, Type: &WlShmPoolResizeRequest{}},
+	},
+}
+var WlShmDescriptor = InterfaceDescriptor{
+	Name: "wl_shm",
+	Events: []EventDescriptor{
+		{Name: "format", Opcode: 0, Type: &WlShmFormatEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "create_pool", Opcode: 0, Type: &WlShmCreatePoolRequest{}},
+	},
+}
+var WlBufferDescriptor = InterfaceDescriptor{
+	Name: "wl_buffer",
+	Events: []EventDescriptor{
+		{Name: "release", Opcode: 0, Type: &WlBufferReleaseEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WlBufferDestroyRequest{}},
+	},
+}
+var WlDataOfferDescriptor = InterfaceDescriptor{
+	Name: "wl_data_offer",
+	Events: []EventDescriptor{
+		{Name: "offer", Opcode: 0, Type: &WlDataOfferOfferEvent{}},
+		{Name: "source_actions", Opcode: 1, Type: &WlDataOfferSourceActionsEvent{}},
+		{Name: "action", Opcode: 2, Type: &WlDataOfferActionEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "accept", Opcode: 0, Type: &WlDataOfferAcceptRequest{}},
+		{Name: "receive", Opcode: 1, Type: &WlDataOfferReceiveRequest{}},
+		{Name: "destroy", Opcode: 2, Type: &WlDataOfferDestroyRequest{}},
+		{Name: "finish", Opcode: 3, Type: &WlDataOfferFinishRequest{}},
+		{Name: "set_actions", Opcode: 4, Type: &WlDataOfferSetActionsRequest{}},
+	},
+}
+var WlDataSourceDescriptor = InterfaceDescriptor{
+	Name: "wl_data_source",
+	Events: []EventDescriptor{
+		{Name: "target", Opcode: 0, Type: &WlDataSourceTargetEvent{}},
+		{Name: "send", Opcode: 1, Type: &WlDataSourceSendEvent{}},
+		{Name: "cancelled", Opcode: 2, Type: &WlDataSourceCancelledEvent{}},
+		{Name: "dnd_drop_performed", Opcode: 3, Type: &WlDataSourceDndDropPerformedEvent{}},
+		{Name: "dnd_finished", Opcode: 4, Type: &WlDataSourceDndFinishedEvent{}},
+		{Name: "action", Opcode: 5, Type: &WlDataSourceActionEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "offer", Opcode: 0, Type: &WlDataSourceOfferRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &WlDataSourceDestroyRequest{}},
+		{Name: "set_actions", Opcode: 2, Type: &WlDataSourceSetActionsRequest{}},
+	},
+}
+var WlDataDeviceDescriptor = InterfaceDescriptor{
+	Name: "wl_data_device",
+	Events: []EventDescriptor{
+		{Name: "data_offer", Opcode: 0, Type: &WlDataDeviceDataOfferEvent{}},
+		{Name: "enter", Opcode: 1, Type: &WlDataDeviceEnterEvent{}},
+		{Name: "leave", Opcode: 2, Type: &WlDataDeviceLeaveEvent{}},
+		{Name: "motion", Opcode: 3, Type: &WlDataDeviceMotionEvent{}},
+		{Name: "drop", Opcode: 4, Type: &WlDataDeviceDropEvent{}},
+		{Name: "selection", Opcode: 5, Type: &WlDataDeviceSelectionEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "start_drag", Opcode: 0, Type: &WlDataDeviceStartDragRequest{}},
+		{Name: "set_selection", Opcode: 1, Type: &WlDataDeviceSetSelectionRequest{}},
+		{Name: "release", Opcode: 2, Type: &WlDataDeviceReleaseRequest{}},
+	},
+}
+var WlDataDeviceManagerDescriptor = InterfaceDescriptor{
+	Name:   "wl_data_device_manager",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "create_data_source", Opcode: 0, Type: &WlDataDeviceManagerCreateDataSourceRequest{}},
+		{Name: "get_data_device", Opcode: 1, Type: &WlDataDeviceManagerGetDataDeviceRequest{}},
+	},
+}
+var WlShellDescriptor = InterfaceDescriptor{
+	Name:   "wl_shell",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "get_shell_surface", Opcode: 0, Type: &WlShellGetShellSurfaceRequest{}},
+	},
+}
+var WlShellSurfaceDescriptor = InterfaceDescriptor{
+	Name: "wl_shell_surface",
+	Events: []EventDescriptor{
+		{Name: "ping", Opcode: 0, Type: &WlShellSurfacePingEvent{}},
+		{Name: "configure", Opcode: 1, Type: &WlShellSurfaceConfigureEvent{}},
+		{Name: "popup_done", Opcode: 2, Type: &WlShellSurfacePopupDoneEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "pong", Opcode: 0, Type: &WlShellSurfacePongRequest{}},
+		{Name: "move", Opcode: 1, Type: &WlShellSurfaceMoveRequest{}},
+		{Name: "resize", Opcode: 2, Type: &WlShellSurfaceResizeRequest{}},
+		{Name: "set_toplevel", Opcode: 3, Type: &WlShellSurfaceSetToplevelRequest{}},
+		{Name: "set_transient", Opcode: 4, Type: &WlShellSurfaceSetTransientRequest{}},
+		{Name: "set_fullscreen", Opcode: 5, Type: &WlShellSurfaceSetFullscreenRequest{}},
+		{Name: "set_popup", Opcode: 6, Type: &WlShellSurfaceSetPopupRequest{}},
+		{Name: "set_maximized", Opcode: 7, Type: &WlShellSurfaceSetMaximizedRequest{}},
+		{Name: "set_title", Opcode: 8, Type: &WlShellSurfaceSetTitleRequest{}},
+		{Name: "set_class", Opcode: 9, Type: &WlShellSurfaceSetClassRequest{}},
+	},
+}
+var WlSurfaceDescriptor = InterfaceDescriptor{
+	Name: "wl_surface",
+	Events: []EventDescriptor{
+		{Name: "enter", Opcode: 0, Type: &WlSurfaceEnterEvent{}},
+		{Name: "leave", Opcode: 1, Type: &WlSurfaceLeaveEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WlSurfaceDestroyRequest{}},
+		{Name: "attach", Opcode: 1, Type: &WlSurfaceAttachRequest{}},
+		{Name: "damage", Opcode: 2, Type: &WlSurfaceDamageRequest{}},
+		{Name: "frame", Opcode: 3, Type: &WlSurfaceFrameRequest{}},
+		{Name: "set_opaque_region", Opcode: 4, Type: &WlSurfaceSetOpaqueRegionRequest{}},
+		{Name: "set_input_region", Opcode: 5, Type: &WlSurfaceSetInputRegionRequest{}},
+		{Name: "commit", Opcode: 6, Type: &WlSurfaceCommitRequest{}},
+		{Name: "set_buffer_transform", Opcode: 7, Type: &WlSurfaceSetBufferTransformRequest{}},
+		{Name: "set_buffer_scale", Opcode: 8, Type: &WlSurfaceSetBufferScaleRequest{}},
+		{Name: "damage_buffer", Opcode: 9, Type: &WlSurfaceDamageBufferRequest{}},
+	},
+}
+var WlSeatDescriptor = InterfaceDescriptor{
+	Name: "wl_seat",
+	Events: []EventDescriptor{
+		{Name: "capabilities", Opcode: 0, Type: &WlSeatCapabilitiesEvent{}},
+		{Name: "name", Opcode: 1, Type: &WlSeatNameEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "get_pointer", Opcode: 0, Type: &WlSeatGetPointerRequest{}},
+		{Name: "get_keyboard", Opcode: 1, Type: &WlSeatGetKeyboardRequest{}},
+		{Name: "get_touch", Opcode: 2, Type: &WlSeatGetTouchRequest{}},
+		{Name: "release", Opcode: 3, Type: &WlSeatReleaseRequest{}},
+	},
+}
+var WlPointerDescriptor = InterfaceDescriptor{
+	Name: "wl_pointer",
+	Events: []EventDescriptor{
+		{Name: "enter", Opcode: 0, Type: &WlPointerEnterEvent{}},
+		{Name: "leave", Opcode: 1, Type: &WlPointerLeaveEvent{}},
+		{Name: "motion", Opcode: 2, Type: &WlPointerMotionEvent{}},
+		{Name: "button", Opcode: 3, Type: &WlPointerButtonEvent{}},
+		{Name: "axis", Opcode: 4, Type: &WlPointerAxisEvent{}},
+		{Name: "frame", Opcode: 5, Type: &WlPointerFrameEvent{}},
+		{Name: "axis_source", Opcode: 6, Type: &WlPointerAxisSourceEvent{}},
+		{Name: "axis_stop", Opcode: 7, Type: &WlPointerAxisStopEvent{}},
+		{Name: "axis_discrete", Opcode: 8, Type: &WlPointerAxisDiscreteEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_cursor", Opcode: 0, Type: &WlPointerSetCursorRequest{}},
+		{Name: "release", Opcode: 1, Type: &WlPointerReleaseRequest{}},
+	},
+}
+var WlKeyboardDescriptor = InterfaceDescriptor{
+	Name: "wl_keyboard",
+	Events: []EventDescriptor{
+		{Name: "keymap", Opcode: 0, Type: &WlKeyboardKeymapEvent{}},
+		{Name: "enter", Opcode: 1, Type: &WlKeyboardEnterEvent{}},
+		{Name: "leave", Opcode: 2, Type: &WlKeyboardLeaveEvent{}},
+		{Name: "key", Opcode: 3, Type: &WlKeyboardKeyEvent{}},
+		{Name: "modifiers", Opcode: 4, Type: &WlKeyboardModifiersEvent{}},
+		{Name: "repeat_info", Opcode: 5, Type: &WlKeyboardRepeatInfoEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "release", Opcode: 0, Type: &WlKeyboardReleaseRequest{}},
+	},
+}
+var WlTouchDescriptor = InterfaceDescriptor{
+	Name: "wl_touch",
+	Events: []EventDescriptor{
+		{Name: "down", Opcode: 0, Type: &WlTouchDownEvent{}},
+		{Name: "up", Opcode: 1, Type: &WlTouchUpEvent{}},
+		{Name: "motion", Opcode: 2, Type: &WlTouchMotionEvent{}},
+		{Name: "frame", Opcode: 3, Type: &WlTouchFrameEvent{}},
+		{Name: "cancel", Opcode: 4, Type: &WlTouchCancelEvent{}},
+		{Name: "shape", Opcode: 5, Type: &WlTouchShapeEvent{}},
+		{Name: "orientation", Opcode: 6, Type: &WlTouchOrientationEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "release", Opcode: 0, Type: &WlTouchReleaseRequest{}},
+	},
+}
+var WlOutputDescriptor = InterfaceDescriptor{
+	Name: "wl_output",
+	Events: []EventDescriptor{
+		{Name: "geometry", Opcode: 0, Type: &WlOutputGeometryEvent{}},
+		{Name: "mode", Opcode: 1, Type: &WlOutputModeEvent{}},
+		{Name: "done", Opcode: 2, Type: &WlOutputDoneEvent{}},
+		{Name: "scale", Opcode: 3, Type: &WlOutputScaleEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "release", Opcode: 0, Type: &WlOutputReleaseRequest{}},
+	},
+}
+var WlRegionDescriptor = InterfaceDescriptor{
+	Name:   "wl_region",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WlRegionDestroyRequest{}},
+		{Name: "add", Opcode: 1, Type: &WlRegionAddRequest{}},
+		{Name: "subtract", Opcode: 2, Type: &WlRegionSubtractRequest{}},
+	},
+}
+var WlSubcompositorDescriptor = InterfaceDescriptor{
+	Name:   "wl_subcompositor",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WlSubcompositorDestroyRequest{}},
+		{Name: "get_subsurface", Opcode: 1, Type: &WlSubcompositorGetSubsurfaceRequest{}},
+	},
+}
+var WlSubsurfaceDescriptor = InterfaceDescriptor{
+	Name:   "wl_subsurface",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &WlSubsurfaceDestroyRequest{}},
+		{Name: "set_position", Opcode: 1, Type: &WlSubsurfaceSetPositionRequest{}},
+		{Name: "place_above", Opcode: 2, Type: &WlSubsurfacePlaceAboveRequest{}},
+		{Name: "place_below", Opcode: 3, Type: &WlSubsurfacePlaceBelowRequest{}},
+		{Name: "set_sync", Opcode: 4, Type: &WlSubsurfaceSetSyncRequest{}},
+		{Name: "set_desync", Opcode: 5, Type: &WlSubsurfaceSetDesyncRequest{}},
+	},
+}
+var ZwpPrimarySelectionDeviceManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_primary_selection_device_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "create_source", Opcode: 0, Type: &ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}},
+		{Name: "get_device", Opcode: 1, Type: &ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}},
+		{Name: "destroy", Opcode: 2, Type: &ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}},
+	},
+}
+var ZwpPrimarySelectionDeviceV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_primary_selection_device_v1",
+	Events: []EventDescriptor{
+		{Name: "data_offer", Opcode: 0, Type: &ZwpPrimarySelectionDeviceV1DataOfferEvent{}},
+		{Name: "selection", Opcode: 1, Type: &ZwpPrimarySelectionDeviceV1SelectionEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_selection", Opcode: 0, Type: &ZwpPrimarySelectionDeviceV1SetSelectionRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionDeviceV1DestroyRequest{}},
+	},
+}
+var ZwpPrimarySelectionOfferV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_primary_selection_offer_v1",
+	Events: []EventDescriptor{
+		{Name: "offer", Opcode: 0, Type: &ZwpPrimarySelectionOfferV1OfferEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "receive", Opcode: 0, Type: &ZwpPrimarySelectionOfferV1ReceiveRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionOfferV1DestroyRequest{}},
+	},
+}
+var ZwpPrimarySelectionSourceV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_primary_selection_source_v1",
+	Events: []EventDescriptor{
+		{Name: "send", Opcode: 0, Type: &ZwpPrimarySelectionSourceV1SendEvent{}},
+		{Name: "cancelled", Opcode: 1, Type: &ZwpPrimarySelectionSourceV1CancelledEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "offer", Opcode: 0, Type: &ZwpPrimarySelectionSourceV1OfferRequest{}},
+		{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionSourceV1DestroyRequest{}},
+	},
+}
+var XdgActivationV1Descriptor = InterfaceDescriptor{
+	Name:   "xdg_activation_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &XdgActivationV1DestroyRequest{}},
+		{Name: "get_activation_token", Opcode: 1, Type: &XdgActivationV1GetActivationTokenRequest{}},
+		{Name: "activate", Opcode: 2, Type: &XdgActivationV1ActivateRequest{}},
+	},
+}
+var XdgActivationTokenV1Descriptor = InterfaceDescriptor{
+	Name: "xdg_activation_token_v1",
+	Events: []EventDescriptor{
+		{Name: "done", Opcode: 0, Type: &XdgActivationTokenV1DoneEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "set_serial", Opcode: 0, Type: &XdgActivationTokenV1SetSerialRequest{}},
+		{Name: "set_app_id", Opcode: 1, Type: &XdgActivationTokenV1SetAppIDRequest{}},
+		{Name: "set_surface", Opcode: 2, Type: &XdgActivationTokenV1SetSurfaceRequest{}},
+		{Name: "commit", Opcode: 3, Type: &XdgActivationTokenV1CommitRequest{}},
+		{Name: "destroy", Opcode: 4, Type: &XdgActivationTokenV1DestroyRequest{}},
+	},
+}
+var ZxdgDecorationManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zxdg_decoration_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgDecorationManagerV1DestroyRequest{}},
+		{Name: "get_toplevel_decoration", Opcode: 1, Type: &ZxdgDecorationManagerV1GetToplevelDecorationRequest{}},
+	},
+}
+var ZxdgToplevelDecorationV1Descriptor = InterfaceDescriptor{
+	Name: "zxdg_toplevel_decoration_v1",
+	Events: []EventDescriptor{
+		{Name: "configure", Opcode: 0, Type: &ZxdgToplevelDecorationV1ConfigureEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgToplevelDecorationV1DestroyRequest{}},
+		{Name: "set_mode", Opcode: 1, Type: &ZxdgToplevelDecorationV1SetModeRequest{}},
+		{Name: "unset_mode", Opcode: 2, Type: &ZxdgToplevelDecorationV1UnsetModeRequest{}},
+	},
+}
+var ZxdgExporterV1Descriptor = InterfaceDescriptor{
+	Name:   "zxdg_exporter_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV1DestroyRequest{}},
+		{Name: "export", Opcode: 1, Type: &ZxdgExporterV1ExportRequest{}},
+	},
+}
+var ZxdgImporterV1Descriptor = InterfaceDescriptor{
+	Name:   "zxdg_importer_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV1DestroyRequest{}},
+		{Name: "import", Opcode: 1, Type: &ZxdgImporterV1ImportRequest{}},
+	},
+}
+var ZxdgExportedV1Descriptor = InterfaceDescriptor{
+	Name: "zxdg_exported_v1",
+	Events: []EventDescriptor{
+		{Name: "handle", Opcode: 0, Type: &ZxdgExportedV1HandleEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgExportedV1DestroyRequest{}},
+	},
+}
+var ZxdgImportedV1Descriptor = InterfaceDescriptor{
+	Name: "zxdg_imported_v1",
+	Events: []EventDescriptor{
+		{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV1DestroyedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgImportedV1DestroyRequest{}},
+		{Name: "set_parent_of", Opcode: 1, Type: &ZxdgImportedV1SetParentOfRequest{}},
+	},
+}
+var ZxdgExporterV2Descriptor = InterfaceDescriptor{
+	Name:   "zxdg_exporter_v2",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV2DestroyRequest{}},
+		{Name: "export_toplevel", Opcode: 1, Type: &ZxdgExporterV2ExportToplevelRequest{}},
+	},
+}
+var ZxdgImporterV2Descriptor = InterfaceDescriptor{
+	Name:   "zxdg_importer_v2",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV2DestroyRequest{}},
+		{Name: "import_toplevel", Opcode: 1, Type: &ZxdgImporterV2ImportToplevelRequest{}},
+	},
+}
+var ZxdgExportedV2Descriptor = InterfaceDescriptor{
+	Name: "zxdg_exported_v2",
+	Events: []EventDescriptor{
+		{Name: "handle", Opcode: 0, Type: &ZxdgExportedV2HandleEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgExportedV2DestroyRequest{}},
+	},
+}
+var ZxdgImportedV2Descriptor = InterfaceDescriptor{
+	Name: "zxdg_imported_v2",
+	Events: []EventDescriptor{
+		{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV2DestroyedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgImportedV2DestroyRequest{}},
+		{Name: "set_parent_of", Opcode: 1, Type: &ZxdgImportedV2SetParentOfRequest{}},
+	},
+}
+var ZxdgOutputManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zxdg_output_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgOutputManagerV1DestroyRequest{}},
+		{Name: "get_xdg_output", Opcode: 1, Type: &ZxdgOutputManagerV1GetXdgOutputRequest{}},
+	},
+}
+var ZxdgOutputV1Descriptor = InterfaceDescriptor{
+	Name: "zxdg_output_v1",
+	Events: []EventDescriptor{
+		{Name: "logical_position", Opcode: 0, Type: &ZxdgOutputV1LogicalPositionEvent{}},
+		{Name: "logical_size", Opcode: 1, Type: &ZxdgOutputV1LogicalSizeEvent{}},
+		{Name: "done", Opcode: 2, Type: &ZxdgOutputV1DoneEvent{}},
+		{Name: "name", Opcode: 3, Type: &ZxdgOutputV1NameEvent{}},
+		{Name: "description", Opcode: 4, Type: &ZxdgOutputV1DescriptionEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZxdgOutputV1DestroyRequest{}},
+	},
+}
+var XdgWmBaseDescriptor = InterfaceDescriptor{
+	Name: "xdg_wm_base",
+	Events: []EventDescriptor{
+		{Name: "ping", Opcode: 0, Type: &XdgWmBasePingEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &XdgWmBaseDestroyRequest{}},
+		{Name: "create_positioner", Opcode: 1, Type: &XdgWmBaseCreatePositionerRequest{}},
+		{Name: "get_xdg_surface", Opcode: 2, Type: &XdgWmBaseGetXdgSurfaceRequest{}},
+		{Name: "pong", Opcode: 3, Type: &XdgWmBasePongRequest{}},
+	},
+}
+var XdgPositionerDescriptor = InterfaceDescriptor{
+	Name:   "xdg_positioner",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &XdgPositionerDestroyRequest{}},
+		{Name: "set_size", Opcode: 1, Type: &XdgPositionerSetSizeRequest{}},
+		{Name: "set_anchor_rect", Opcode: 2, Type: &XdgPositionerSetAnchorRectRequest{}},
+		{Name: "set_anchor", Opcode: 3, Type: &XdgPositionerSetAnchorRequest{}},
+		{Name: "set_gravity", Opcode: 4, Type: &XdgPositionerSetGravityRequest{}},
+		{Name: "set_constraint_adjustment", Opcode: 5, Type: &XdgPositionerSetConstraintAdjustmentRequest{}},
+		{Name: "set_offset", Opcode: 6, Type: &XdgPositionerSetOffsetRequest{}},
+		{Name: "set_reactive", Opcode: 7, Type: &XdgPositionerSetReactiveRequest{}},
+		{Name: "set_parent_size", Opcode: 8, Type: &XdgPositionerSetParentSizeRequest{}},
+		{Name: "set_parent_configure", Opcode: 9, Type: &XdgPositionerSetParentConfigureRequest{}},
+	},
+}
+var XdgSurfaceDescriptor = InterfaceDescriptor{
+	Name: "xdg_surface",
+	Events: []EventDescriptor{
+		{Name: "configure", Opcode: 0, Type: &XdgSurfaceConfigureEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &XdgSurfaceDestroyRequest{}},
+		{Name: "get_toplevel", Opcode: 1, Type: &XdgSurfaceGetToplevelRequest{}},
+		{Name: "get_popup", Opcode: 2, Type: &XdgSurfaceGetPopupRequest{}},
+		{Name: "set_window_geometry", Opcode: 3, Type: &XdgSurfaceSetWindowGeometryRequest{}},
+		{Name: "ack_configure", Opcode: 4, Type: &XdgSurfaceAckConfigureRequest{}},
+	},
+}
+var XdgToplevelDescriptor = InterfaceDescriptor{
+	Name: "xdg_toplevel",
+	Events: []EventDescriptor{
+		{Name: "configure", Opcode: 0, Type: &XdgToplevelConfigureEvent{}},
+		{Name: "close", Opcode: 1, Type: &XdgToplevelCloseEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &XdgToplevelDestroyRequest{}},
+		{Name: "set_parent", Opcode: 1, Type: &XdgToplevelSetParentRequest{}},
+		{Name: "set_title", Opcode: 2, Type: &XdgToplevelSetTitleRequest{}},
+		{Name: "set_app_id", Opcode: 3, Type: &XdgToplevelSetAppIDRequest{}},
+		{Name: "show_window_menu", Opcode: 4, Type: &XdgToplevelShowWindowMenuRequest{}},
+		{Name: "move", Opcode: 5, Type: &XdgToplevelMoveRequest{}},
+		{Name: "resize", Opcode: 6, Type: &XdgToplevelResizeRequest{}},
+		{Name: "set_max_size", Opcode: 7, Type: &XdgToplevelSetMaxSizeRequest{}},
+		{Name: "set_min_size", Opcode: 8, Type: &XdgToplevelSetMinSizeRequest{}},
+		{Name: "set_maximized", Opcode: 9, Type: &XdgToplevelSetMaximizedRequest{}},
+		{Name: "unset_maximized", Opcode: 10, Type: &XdgToplevelUnsetMaximizedRequest{}},
+		{Name: "set_fullscreen", Opcode: 11, Type: &XdgToplevelSetFullscreenRequest{}},
+		{Name: "unset_fullscreen", Opcode: 12, Type: &XdgToplevelUnsetFullscreenRequest{}},
+		{Name: "set_minimized", Opcode: 13, Type: &XdgToplevelSetMinimizedRequest{}},
+	},
+}
+var XdgPopupDescriptor = InterfaceDescriptor{
+	Name: "xdg_popup",
+	Events: []EventDescriptor{
+		{Name: "configure", Opcode: 0, Type: &XdgPopupConfigureEvent{}},
+		{Name: "popup_done", Opcode: 1, Type: &XdgPopupPopupDoneEvent{}},
+		{Name: "repositioned", Opcode: 2, Type: &XdgPopupRepositionedEvent{}},
+	},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &XdgPopupDestroyRequest{}},
+		{Name: "grab", Opcode: 1, Type: &XdgPopupGrabRequest{}},
+		{Name: "reposition", Opcode: 2, Type: &XdgPopupRepositionRequest{}},
+	},
+}
+var ZwpXwaylandKeyboardGrabManagerV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_xwayland_keyboard_grab_manager_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}},
+		{Name: "grab_keyboard", Opcode: 1, Type: &ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}},
+	},
+}
+var ZwpXwaylandKeyboardGrabV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_xwayland_keyboard_grab_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabV1DestroyRequest{}},
+	},
+}
+var ZwpLinuxExplicitSynchronizationV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_linux_explicit_synchronization_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpLinuxExplicitSynchronizationV1DestroyRequest{}},
+		{Name: "get_synchronization", Opcode: 1, Type: &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}},
+	},
+}
+var ZwpLinuxSurfaceSynchronizationV1Descriptor = InterfaceDescriptor{
+	Name:   "zwp_linux_surface_synchronization_v1",
+	Events: []EventDescriptor{},
+	Requests: []RequestDescriptor{
+		{Name: "destroy", Opcode: 0, Type: &ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}},
+		{Name: "set_acquire_fence", Opcode: 1, Type: &ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}},
+		{Name: "get_release", Opcode: 2, Type: &ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}},
+	},
+}
+var ZwpLinuxBufferReleaseV1Descriptor = InterfaceDescriptor{
+	Name: "zwp_linux_buffer_release_v1",
+	Events: []EventDescriptor{
+		{Name: "fenced_release", Opcode: 0, Type: &ZwpLinuxBufferReleaseV1FencedReleaseEvent{}},
+		{Name: "immediate_release", Opcode: 1, Type: &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}},
+	},
+	Requests: []RequestDescriptor{},
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Protocol Map
 var Protocols = map[string]ProtocolDescriptor{
 	"drm_lease_v1": {
 		Name: "drm_lease_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "wp_drm_lease_device_v1",
-				Events: []EventDescriptor{
-					{Name: "drm_fd", Opcode: 0, Type: &WpDrmLeaseDeviceV1DrmFDEvent{}},
-					{Name: "connector", Opcode: 1, Type: &WpDrmLeaseDeviceV1ConnectorEvent{}},
-					{Name: "done", Opcode: 2, Type: &WpDrmLeaseDeviceV1DoneEvent{}},
-					{Name: "released", Opcode: 3, Type: &WpDrmLeaseDeviceV1ReleasedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "create_lease_request", Opcode: 0, Type: &WpDrmLeaseDeviceV1CreateLeaseRequestRequest{}},
-					{Name: "release", Opcode: 1, Type: &WpDrmLeaseDeviceV1ReleaseRequest{}},
-				},
-			},
-			{
-				Name: "wp_drm_lease_connector_v1",
-				Events: []EventDescriptor{
-					{Name: "name", Opcode: 0, Type: &WpDrmLeaseConnectorV1NameEvent{}},
-					{Name: "description", Opcode: 1, Type: &WpDrmLeaseConnectorV1DescriptionEvent{}},
-					{Name: "connector_id", Opcode: 2, Type: &WpDrmLeaseConnectorV1ConnectorIDEvent{}},
-					{Name: "done", Opcode: 3, Type: &WpDrmLeaseConnectorV1DoneEvent{}},
-					{Name: "withdrawn", Opcode: 4, Type: &WpDrmLeaseConnectorV1WithdrawnEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WpDrmLeaseConnectorV1DestroyRequest{}},
-				},
-			},
-			{
-				Name:   "wp_drm_lease_request_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "request_connector", Opcode: 0, Type: &WpDrmLeaseRequestV1RequestConnectorRequest{}},
-					{Name: "submit", Opcode: 1, Type: &WpDrmLeaseRequestV1SubmitRequest{}},
-				},
-			},
-			{
-				Name: "wp_drm_lease_v1",
-				Events: []EventDescriptor{
-					{Name: "lease_fd", Opcode: 0, Type: &WpDrmLeaseV1LeaseFDEvent{}},
-					{Name: "finished", Opcode: 1, Type: &WpDrmLeaseV1FinishedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WpDrmLeaseV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&WpDrmLeaseDeviceV1Descriptor,
+			&WpDrmLeaseConnectorV1Descriptor,
+			&WpDrmLeaseRequestV1Descriptor,
+			&WpDrmLeaseV1Descriptor,
 		},
 	},
 	"fullscreen_shell_unstable_v1": {
 		Name: "fullscreen_shell_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "zwp_fullscreen_shell_v1",
-				Events: []EventDescriptor{
-					{Name: "capability", Opcode: 0, Type: &ZwpFullscreenShellV1CapabilityEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "release", Opcode: 0, Type: &ZwpFullscreenShellV1ReleaseRequest{}},
-					{Name: "present_surface", Opcode: 1, Type: &ZwpFullscreenShellV1PresentSurfaceRequest{}},
-					{Name: "present_surface_for_mode", Opcode: 2, Type: &ZwpFullscreenShellV1PresentSurfaceForModeRequest{}},
-				},
-			},
-			{
-				Name: "zwp_fullscreen_shell_mode_feedback_v1",
-				Events: []EventDescriptor{
-					{Name: "mode_successful", Opcode: 0, Type: &ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}},
-					{Name: "mode_failed", Opcode: 1, Type: &ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}},
-					{Name: "present_cancelled", Opcode: 2, Type: &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}},
-				},
-				Requests: []RequestDescriptor{},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpFullscreenShellV1Descriptor,
+			&ZwpFullscreenShellModeFeedbackV1Descriptor,
 		},
 	},
 	"idle_inhibit_unstable_v1": {
 		Name: "idle_inhibit_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_idle_inhibit_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitManagerV1DestroyRequest{}},
-					{Name: "create_inhibitor", Opcode: 1, Type: &ZwpIdleInhibitManagerV1CreateInhibitorRequest{}},
-				},
-			},
-			{
-				Name:   "zwp_idle_inhibitor_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitorV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpIdleInhibitManagerV1Descriptor,
+			&ZwpIdleInhibitorV1Descriptor,
 		},
 	},
 	"input_method_unstable_v1": {
 		Name: "input_method_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "zwp_input_method_context_v1",
-				Events: []EventDescriptor{
-					{Name: "surrounding_text", Opcode: 0, Type: &ZwpInputMethodContextV1SurroundingTextEvent{}},
-					{Name: "reset", Opcode: 1, Type: &ZwpInputMethodContextV1ResetEvent{}},
-					{Name: "content_type", Opcode: 2, Type: &ZwpInputMethodContextV1ContentTypeEvent{}},
-					{Name: "invoke_action", Opcode: 3, Type: &ZwpInputMethodContextV1InvokeActionEvent{}},
-					{Name: "commit_state", Opcode: 4, Type: &ZwpInputMethodContextV1CommitStateEvent{}},
-					{Name: "preferred_language", Opcode: 5, Type: &ZwpInputMethodContextV1PreferredLanguageEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpInputMethodContextV1DestroyRequest{}},
-					{Name: "commit_string", Opcode: 1, Type: &ZwpInputMethodContextV1CommitStringRequest{}},
-					{Name: "preedit_string", Opcode: 2, Type: &ZwpInputMethodContextV1PreeditStringRequest{}},
-					{Name: "preedit_styling", Opcode: 3, Type: &ZwpInputMethodContextV1PreeditStylingRequest{}},
-					{Name: "preedit_cursor", Opcode: 4, Type: &ZwpInputMethodContextV1PreeditCursorRequest{}},
-					{Name: "delete_surrounding_text", Opcode: 5, Type: &ZwpInputMethodContextV1DeleteSurroundingTextRequest{}},
-					{Name: "cursor_position", Opcode: 6, Type: &ZwpInputMethodContextV1CursorPositionRequest{}},
-					{Name: "modifiers_map", Opcode: 7, Type: &ZwpInputMethodContextV1ModifiersMapRequest{}},
-					{Name: "keysym", Opcode: 8, Type: &ZwpInputMethodContextV1KeysymRequest{}},
-					{Name: "grab_keyboard", Opcode: 9, Type: &ZwpInputMethodContextV1GrabKeyboardRequest{}},
-					{Name: "key", Opcode: 10, Type: &ZwpInputMethodContextV1KeyRequest{}},
-					{Name: "modifiers", Opcode: 11, Type: &ZwpInputMethodContextV1ModifiersRequest{}},
-					{Name: "language", Opcode: 12, Type: &ZwpInputMethodContextV1LanguageRequest{}},
-					{Name: "text_direction", Opcode: 13, Type: &ZwpInputMethodContextV1TextDirectionRequest{}},
-				},
-			},
-			{
-				Name: "zwp_input_method_v1",
-				Events: []EventDescriptor{
-					{Name: "activate", Opcode: 0, Type: &ZwpInputMethodV1ActivateEvent{}},
-					{Name: "deactivate", Opcode: 1, Type: &ZwpInputMethodV1DeactivateEvent{}},
-				},
-				Requests: []RequestDescriptor{},
-			},
-			{
-				Name:   "zwp_input_panel_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "get_input_panel_surface", Opcode: 0, Type: &ZwpInputPanelV1GetInputPanelSurfaceRequest{}},
-				},
-			},
-			{
-				Name:   "zwp_input_panel_surface_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "set_toplevel", Opcode: 0, Type: &ZwpInputPanelSurfaceV1SetToplevelRequest{}},
-					{Name: "set_overlay_panel", Opcode: 1, Type: &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpInputMethodContextV1Descriptor,
+			&ZwpInputMethodV1Descriptor,
+			&ZwpInputPanelV1Descriptor,
+			&ZwpInputPanelSurfaceV1Descriptor,
 		},
 	},
 	"input_timestamps_unstable_v1": {
 		Name: "input_timestamps_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_input_timestamps_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpInputTimestampsManagerV1DestroyRequest{}},
-					{Name: "get_keyboard_timestamps", Opcode: 1, Type: &ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}},
-					{Name: "get_pointer_timestamps", Opcode: 2, Type: &ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}},
-					{Name: "get_touch_timestamps", Opcode: 3, Type: &ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}},
-				},
-			},
-			{
-				Name: "zwp_input_timestamps_v1",
-				Events: []EventDescriptor{
-					{Name: "timestamp", Opcode: 0, Type: &ZwpInputTimestampsV1TimestampEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpInputTimestampsV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpInputTimestampsManagerV1Descriptor,
+			&ZwpInputTimestampsV1Descriptor,
 		},
 	},
 	"keyboard_shortcuts_inhibit_unstable_v1": {
 		Name: "keyboard_shortcuts_inhibit_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_keyboard_shortcuts_inhibit_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}},
-					{Name: "inhibit_shortcuts", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}},
-				},
-			},
-			{
-				Name: "zwp_keyboard_shortcuts_inhibitor_v1",
-				Events: []EventDescriptor{
-					{Name: "active", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}},
-					{Name: "inactive", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpKeyboardShortcutsInhibitManagerV1Descriptor,
+			&ZwpKeyboardShortcutsInhibitorV1Descriptor,
 		},
 	},
 	"linux_dmabuf_unstable_v1": {
 		Name: "linux_dmabuf_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "zwp_linux_dmabuf_v1",
-				Events: []EventDescriptor{
-					{Name: "format", Opcode: 0, Type: &ZwpLinuxDmabufV1FormatEvent{}},
-					{Name: "modifier", Opcode: 1, Type: &ZwpLinuxDmabufV1ModifierEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxDmabufV1DestroyRequest{}},
-					{Name: "create_params", Opcode: 1, Type: &ZwpLinuxDmabufV1CreateParamsRequest{}},
-				},
-			},
-			{
-				Name: "zwp_linux_buffer_params_v1",
-				Events: []EventDescriptor{
-					{Name: "created", Opcode: 0, Type: &ZwpLinuxBufferParamsV1CreatedEvent{}},
-					{Name: "failed", Opcode: 1, Type: &ZwpLinuxBufferParamsV1FailedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxBufferParamsV1DestroyRequest{}},
-					{Name: "add", Opcode: 1, Type: &ZwpLinuxBufferParamsV1AddRequest{}},
-					{Name: "create", Opcode: 2, Type: &ZwpLinuxBufferParamsV1CreateRequest{}},
-					{Name: "create_immed", Opcode: 3, Type: &ZwpLinuxBufferParamsV1CreateImmedRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpLinuxDmabufV1Descriptor,
+			&ZwpLinuxBufferParamsV1Descriptor,
 		},
 	},
 	"pointer_constraints_unstable_v1": {
 		Name: "pointer_constraints_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_pointer_constraints_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpPointerConstraintsV1DestroyRequest{}},
-					{Name: "lock_pointer", Opcode: 1, Type: &ZwpPointerConstraintsV1LockPointerRequest{}},
-					{Name: "confine_pointer", Opcode: 2, Type: &ZwpPointerConstraintsV1ConfinePointerRequest{}},
-				},
-			},
-			{
-				Name: "zwp_locked_pointer_v1",
-				Events: []EventDescriptor{
-					{Name: "locked", Opcode: 0, Type: &ZwpLockedPointerV1LockedEvent{}},
-					{Name: "unlocked", Opcode: 1, Type: &ZwpLockedPointerV1UnlockedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpLockedPointerV1DestroyRequest{}},
-					{Name: "set_cursor_position_hint", Opcode: 1, Type: &ZwpLockedPointerV1SetCursorPositionHintRequest{}},
-					{Name: "set_region", Opcode: 2, Type: &ZwpLockedPointerV1SetRegionRequest{}},
-				},
-			},
-			{
-				Name: "zwp_confined_pointer_v1",
-				Events: []EventDescriptor{
-					{Name: "confined", Opcode: 0, Type: &ZwpConfinedPointerV1ConfinedEvent{}},
-					{Name: "unconfined", Opcode: 1, Type: &ZwpConfinedPointerV1UnconfinedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpConfinedPointerV1DestroyRequest{}},
-					{Name: "set_region", Opcode: 1, Type: &ZwpConfinedPointerV1SetRegionRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpPointerConstraintsV1Descriptor,
+			&ZwpLockedPointerV1Descriptor,
+			&ZwpConfinedPointerV1Descriptor,
 		},
 	},
 	"pointer_gestures_unstable_v1": {
 		Name: "pointer_gestures_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_pointer_gestures_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "get_swipe_gesture", Opcode: 0, Type: &ZwpPointerGesturesV1GetSwipeGestureRequest{}},
-					{Name: "get_pinch_gesture", Opcode: 1, Type: &ZwpPointerGesturesV1GetPinchGestureRequest{}},
-					{Name: "release", Opcode: 2, Type: &ZwpPointerGesturesV1ReleaseRequest{}},
-					{Name: "get_hold_gesture", Opcode: 3, Type: &ZwpPointerGesturesV1GetHoldGestureRequest{}},
-				},
-			},
-			{
-				Name: "zwp_pointer_gesture_swipe_v1",
-				Events: []EventDescriptor{
-					{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureSwipeV1BeginEvent{}},
-					{Name: "update", Opcode: 1, Type: &ZwpPointerGestureSwipeV1UpdateEvent{}},
-					{Name: "end", Opcode: 2, Type: &ZwpPointerGestureSwipeV1EndEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpPointerGestureSwipeV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_pointer_gesture_pinch_v1",
-				Events: []EventDescriptor{
-					{Name: "begin", Opcode: 0, Type: &ZwpPointerGesturePinchV1BeginEvent{}},
-					{Name: "update", Opcode: 1, Type: &ZwpPointerGesturePinchV1UpdateEvent{}},
-					{Name: "end", Opcode: 2, Type: &ZwpPointerGesturePinchV1EndEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpPointerGesturePinchV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_pointer_gesture_hold_v1",
-				Events: []EventDescriptor{
-					{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureHoldV1BeginEvent{}},
-					{Name: "end", Opcode: 1, Type: &ZwpPointerGestureHoldV1EndEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpPointerGestureHoldV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpPointerGesturesV1Descriptor,
+			&ZwpPointerGestureSwipeV1Descriptor,
+			&ZwpPointerGesturePinchV1Descriptor,
+			&ZwpPointerGestureHoldV1Descriptor,
 		},
 	},
 	"presentation_time": {
 		Name: "presentation_time",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "wp_presentation",
-				Events: []EventDescriptor{
-					{Name: "clock_id", Opcode: 0, Type: &WpPresentationClockIDEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WpPresentationDestroyRequest{}},
-					{Name: "feedback", Opcode: 1, Type: &WpPresentationFeedbackRequest{}},
-				},
-			},
-			{
-				Name: "wp_presentation_feedback",
-				Events: []EventDescriptor{
-					{Name: "sync_output", Opcode: 0, Type: &WpPresentationFeedbackSyncOutputEvent{}},
-					{Name: "presented", Opcode: 1, Type: &WpPresentationFeedbackPresentedEvent{}},
-					{Name: "discarded", Opcode: 2, Type: &WpPresentationFeedbackDiscardedEvent{}},
-				},
-				Requests: []RequestDescriptor{},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&WpPresentationDescriptor,
+			&WpPresentationFeedbackDescriptor,
 		},
 	},
 	"relative_pointer_unstable_v1": {
 		Name: "relative_pointer_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_relative_pointer_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpRelativePointerManagerV1DestroyRequest{}},
-					{Name: "get_relative_pointer", Opcode: 1, Type: &ZwpRelativePointerManagerV1GetRelativePointerRequest{}},
-				},
-			},
-			{
-				Name: "zwp_relative_pointer_v1",
-				Events: []EventDescriptor{
-					{Name: "relative_motion", Opcode: 0, Type: &ZwpRelativePointerV1RelativeMotionEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpRelativePointerV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpRelativePointerManagerV1Descriptor,
+			&ZwpRelativePointerV1Descriptor,
 		},
 	},
 	"tablet_unstable_v1": {
 		Name: "tablet_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_tablet_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV1GetTabletSeatRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_seat_v1",
-				Events: []EventDescriptor{
-					{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV1TabletAddedEvent{}},
-					{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV1ToolAddedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpTabletSeatV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_tool_v1",
-				Events: []EventDescriptor{
-					{Name: "type", Opcode: 0, Type: &ZwpTabletToolV1TypeEvent{}},
-					{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV1HardwareSerialEvent{}},
-					{Name: "hardware_id_wacom", Opcode: 2, Type: &ZwpTabletToolV1HardwareIDWacomEvent{}},
-					{Name: "capability", Opcode: 3, Type: &ZwpTabletToolV1CapabilityEvent{}},
-					{Name: "done", Opcode: 4, Type: &ZwpTabletToolV1DoneEvent{}},
-					{Name: "removed", Opcode: 5, Type: &ZwpTabletToolV1RemovedEvent{}},
-					{Name: "proximity_in", Opcode: 6, Type: &ZwpTabletToolV1ProximityInEvent{}},
-					{Name: "proximity_out", Opcode: 7, Type: &ZwpTabletToolV1ProximityOutEvent{}},
-					{Name: "down", Opcode: 8, Type: &ZwpTabletToolV1DownEvent{}},
-					{Name: "up", Opcode: 9, Type: &ZwpTabletToolV1UpEvent{}},
-					{Name: "motion", Opcode: 10, Type: &ZwpTabletToolV1MotionEvent{}},
-					{Name: "pressure", Opcode: 11, Type: &ZwpTabletToolV1PressureEvent{}},
-					{Name: "distance", Opcode: 12, Type: &ZwpTabletToolV1DistanceEvent{}},
-					{Name: "tilt", Opcode: 13, Type: &ZwpTabletToolV1TiltEvent{}},
-					{Name: "rotation", Opcode: 14, Type: &ZwpTabletToolV1RotationEvent{}},
-					{Name: "slider", Opcode: 15, Type: &ZwpTabletToolV1SliderEvent{}},
-					{Name: "wheel", Opcode: 16, Type: &ZwpTabletToolV1WheelEvent{}},
-					{Name: "button", Opcode: 17, Type: &ZwpTabletToolV1ButtonEvent{}},
-					{Name: "frame", Opcode: 18, Type: &ZwpTabletToolV1FrameEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_cursor", Opcode: 0, Type: &ZwpTabletToolV1SetCursorRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpTabletToolV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_v1",
-				Events: []EventDescriptor{
-					{Name: "name", Opcode: 0, Type: &ZwpTabletV1NameEvent{}},
-					{Name: "id", Opcode: 1, Type: &ZwpTabletV1IDEvent{}},
-					{Name: "path", Opcode: 2, Type: &ZwpTabletV1PathEvent{}},
-					{Name: "done", Opcode: 3, Type: &ZwpTabletV1DoneEvent{}},
-					{Name: "removed", Opcode: 4, Type: &ZwpTabletV1RemovedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpTabletV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpTabletManagerV1Descriptor,
+			&ZwpTabletSeatV1Descriptor,
+			&ZwpTabletToolV1Descriptor,
+			&ZwpTabletV1Descriptor,
 		},
 	},
 	"tablet_unstable_v2": {
 		Name: "tablet_unstable_v2",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_tablet_manager_v2",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV2GetTabletSeatRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_seat_v2",
-				Events: []EventDescriptor{
-					{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV2TabletAddedEvent{}},
-					{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV2ToolAddedEvent{}},
-					{Name: "pad_added", Opcode: 2, Type: &ZwpTabletSeatV2PadAddedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpTabletSeatV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_tool_v2",
-				Events: []EventDescriptor{
-					{Name: "type", Opcode: 0, Type: &ZwpTabletToolV2TypeEvent{}},
-					{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV2HardwareSerialEvent{}},
-					{Name: "hardware_id_wacom", Opcode: 2, Type: &ZwpTabletToolV2HardwareIDWacomEvent{}},
-					{Name: "capability", Opcode: 3, Type: &ZwpTabletToolV2CapabilityEvent{}},
-					{Name: "done", Opcode: 4, Type: &ZwpTabletToolV2DoneEvent{}},
-					{Name: "removed", Opcode: 5, Type: &ZwpTabletToolV2RemovedEvent{}},
-					{Name: "proximity_in", Opcode: 6, Type: &ZwpTabletToolV2ProximityInEvent{}},
-					{Name: "proximity_out", Opcode: 7, Type: &ZwpTabletToolV2ProximityOutEvent{}},
-					{Name: "down", Opcode: 8, Type: &ZwpTabletToolV2DownEvent{}},
-					{Name: "up", Opcode: 9, Type: &ZwpTabletToolV2UpEvent{}},
-					{Name: "motion", Opcode: 10, Type: &ZwpTabletToolV2MotionEvent{}},
-					{Name: "pressure", Opcode: 11, Type: &ZwpTabletToolV2PressureEvent{}},
-					{Name: "distance", Opcode: 12, Type: &ZwpTabletToolV2DistanceEvent{}},
-					{Name: "tilt", Opcode: 13, Type: &ZwpTabletToolV2TiltEvent{}},
-					{Name: "rotation", Opcode: 14, Type: &ZwpTabletToolV2RotationEvent{}},
-					{Name: "slider", Opcode: 15, Type: &ZwpTabletToolV2SliderEvent{}},
-					{Name: "wheel", Opcode: 16, Type: &ZwpTabletToolV2WheelEvent{}},
-					{Name: "button", Opcode: 17, Type: &ZwpTabletToolV2ButtonEvent{}},
-					{Name: "frame", Opcode: 18, Type: &ZwpTabletToolV2FrameEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_cursor", Opcode: 0, Type: &ZwpTabletToolV2SetCursorRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpTabletToolV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_v2",
-				Events: []EventDescriptor{
-					{Name: "name", Opcode: 0, Type: &ZwpTabletV2NameEvent{}},
-					{Name: "id", Opcode: 1, Type: &ZwpTabletV2IDEvent{}},
-					{Name: "path", Opcode: 2, Type: &ZwpTabletV2PathEvent{}},
-					{Name: "done", Opcode: 3, Type: &ZwpTabletV2DoneEvent{}},
-					{Name: "removed", Opcode: 4, Type: &ZwpTabletV2RemovedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpTabletV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_pad_ring_v2",
-				Events: []EventDescriptor{
-					{Name: "source", Opcode: 0, Type: &ZwpTabletPadRingV2SourceEvent{}},
-					{Name: "angle", Opcode: 1, Type: &ZwpTabletPadRingV2AngleEvent{}},
-					{Name: "stop", Opcode: 2, Type: &ZwpTabletPadRingV2StopEvent{}},
-					{Name: "frame", Opcode: 3, Type: &ZwpTabletPadRingV2FrameEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadRingV2SetFeedbackRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadRingV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_pad_strip_v2",
-				Events: []EventDescriptor{
-					{Name: "source", Opcode: 0, Type: &ZwpTabletPadStripV2SourceEvent{}},
-					{Name: "position", Opcode: 1, Type: &ZwpTabletPadStripV2PositionEvent{}},
-					{Name: "stop", Opcode: 2, Type: &ZwpTabletPadStripV2StopEvent{}},
-					{Name: "frame", Opcode: 3, Type: &ZwpTabletPadStripV2FrameEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadStripV2SetFeedbackRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadStripV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_pad_group_v2",
-				Events: []EventDescriptor{
-					{Name: "buttons", Opcode: 0, Type: &ZwpTabletPadGroupV2ButtonsEvent{}},
-					{Name: "ring", Opcode: 1, Type: &ZwpTabletPadGroupV2RingEvent{}},
-					{Name: "strip", Opcode: 2, Type: &ZwpTabletPadGroupV2StripEvent{}},
-					{Name: "modes", Opcode: 3, Type: &ZwpTabletPadGroupV2ModesEvent{}},
-					{Name: "done", Opcode: 4, Type: &ZwpTabletPadGroupV2DoneEvent{}},
-					{Name: "mode_switch", Opcode: 5, Type: &ZwpTabletPadGroupV2ModeSwitchEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpTabletPadGroupV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_tablet_pad_v2",
-				Events: []EventDescriptor{
-					{Name: "group", Opcode: 0, Type: &ZwpTabletPadV2GroupEvent{}},
-					{Name: "path", Opcode: 1, Type: &ZwpTabletPadV2PathEvent{}},
-					{Name: "buttons", Opcode: 2, Type: &ZwpTabletPadV2ButtonsEvent{}},
-					{Name: "done", Opcode: 3, Type: &ZwpTabletPadV2DoneEvent{}},
-					{Name: "button", Opcode: 4, Type: &ZwpTabletPadV2ButtonEvent{}},
-					{Name: "enter", Opcode: 5, Type: &ZwpTabletPadV2EnterEvent{}},
-					{Name: "leave", Opcode: 6, Type: &ZwpTabletPadV2LeaveEvent{}},
-					{Name: "removed", Opcode: 7, Type: &ZwpTabletPadV2RemovedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_feedback", Opcode: 0, Type: &ZwpTabletPadV2SetFeedbackRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpTabletPadV2DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpTabletManagerV2Descriptor,
+			&ZwpTabletSeatV2Descriptor,
+			&ZwpTabletToolV2Descriptor,
+			&ZwpTabletV2Descriptor,
+			&ZwpTabletPadRingV2Descriptor,
+			&ZwpTabletPadStripV2Descriptor,
+			&ZwpTabletPadGroupV2Descriptor,
+			&ZwpTabletPadV2Descriptor,
 		},
 	},
 	"text_input_unstable_v1": {
 		Name: "text_input_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "zwp_text_input_v1",
-				Events: []EventDescriptor{
-					{Name: "enter", Opcode: 0, Type: &ZwpTextInputV1EnterEvent{}},
-					{Name: "leave", Opcode: 1, Type: &ZwpTextInputV1LeaveEvent{}},
-					{Name: "modifiers_map", Opcode: 2, Type: &ZwpTextInputV1ModifiersMapEvent{}},
-					{Name: "input_panel_state", Opcode: 3, Type: &ZwpTextInputV1InputPanelStateEvent{}},
-					{Name: "preedit_string", Opcode: 4, Type: &ZwpTextInputV1PreeditStringEvent{}},
-					{Name: "preedit_styling", Opcode: 5, Type: &ZwpTextInputV1PreeditStylingEvent{}},
-					{Name: "preedit_cursor", Opcode: 6, Type: &ZwpTextInputV1PreeditCursorEvent{}},
-					{Name: "commit_string", Opcode: 7, Type: &ZwpTextInputV1CommitStringEvent{}},
-					{Name: "cursor_position", Opcode: 8, Type: &ZwpTextInputV1CursorPositionEvent{}},
-					{Name: "delete_surrounding_text", Opcode: 9, Type: &ZwpTextInputV1DeleteSurroundingTextEvent{}},
-					{Name: "keysym", Opcode: 10, Type: &ZwpTextInputV1KeysymEvent{}},
-					{Name: "language", Opcode: 11, Type: &ZwpTextInputV1LanguageEvent{}},
-					{Name: "text_direction", Opcode: 12, Type: &ZwpTextInputV1TextDirectionEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "activate", Opcode: 0, Type: &ZwpTextInputV1ActivateRequest{}},
-					{Name: "deactivate", Opcode: 1, Type: &ZwpTextInputV1DeactivateRequest{}},
-					{Name: "show_input_panel", Opcode: 2, Type: &ZwpTextInputV1ShowInputPanelRequest{}},
-					{Name: "hide_input_panel", Opcode: 3, Type: &ZwpTextInputV1HideInputPanelRequest{}},
-					{Name: "reset", Opcode: 4, Type: &ZwpTextInputV1ResetRequest{}},
-					{Name: "set_surrounding_text", Opcode: 5, Type: &ZwpTextInputV1SetSurroundingTextRequest{}},
-					{Name: "set_content_type", Opcode: 6, Type: &ZwpTextInputV1SetContentTypeRequest{}},
-					{Name: "set_cursor_rectangle", Opcode: 7, Type: &ZwpTextInputV1SetCursorRectangleRequest{}},
-					{Name: "set_preferred_language", Opcode: 8, Type: &ZwpTextInputV1SetPreferredLanguageRequest{}},
-					{Name: "commit_state", Opcode: 9, Type: &ZwpTextInputV1CommitStateRequest{}},
-					{Name: "invoke_action", Opcode: 10, Type: &ZwpTextInputV1InvokeActionRequest{}},
-				},
-			},
-			{
-				Name:   "zwp_text_input_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "create_text_input", Opcode: 0, Type: &ZwpTextInputManagerV1CreateTextInputRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpTextInputV1Descriptor,
+			&ZwpTextInputManagerV1Descriptor,
 		},
 	},
 	"text_input_unstable_v3": {
 		Name: "text_input_unstable_v3",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "zwp_text_input_v3",
-				Events: []EventDescriptor{
-					{Name: "enter", Opcode: 0, Type: &ZwpTextInputV3EnterEvent{}},
-					{Name: "leave", Opcode: 1, Type: &ZwpTextInputV3LeaveEvent{}},
-					{Name: "preedit_string", Opcode: 2, Type: &ZwpTextInputV3PreeditStringEvent{}},
-					{Name: "commit_string", Opcode: 3, Type: &ZwpTextInputV3CommitStringEvent{}},
-					{Name: "delete_surrounding_text", Opcode: 4, Type: &ZwpTextInputV3DeleteSurroundingTextEvent{}},
-					{Name: "done", Opcode: 5, Type: &ZwpTextInputV3DoneEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpTextInputV3DestroyRequest{}},
-					{Name: "enable", Opcode: 1, Type: &ZwpTextInputV3EnableRequest{}},
-					{Name: "disable", Opcode: 2, Type: &ZwpTextInputV3DisableRequest{}},
-					{Name: "set_surrounding_text", Opcode: 3, Type: &ZwpTextInputV3SetSurroundingTextRequest{}},
-					{Name: "set_text_change_cause", Opcode: 4, Type: &ZwpTextInputV3SetTextChangeCauseRequest{}},
-					{Name: "set_content_type", Opcode: 5, Type: &ZwpTextInputV3SetContentTypeRequest{}},
-					{Name: "set_cursor_rectangle", Opcode: 6, Type: &ZwpTextInputV3SetCursorRectangleRequest{}},
-					{Name: "commit", Opcode: 7, Type: &ZwpTextInputV3CommitRequest{}},
-				},
-			},
-			{
-				Name:   "zwp_text_input_manager_v3",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpTextInputManagerV3DestroyRequest{}},
-					{Name: "get_text_input", Opcode: 1, Type: &ZwpTextInputManagerV3GetTextInputRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpTextInputV3Descriptor,
+			&ZwpTextInputManagerV3Descriptor,
 		},
 	},
 	"viewporter": {
 		Name: "viewporter",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "wp_viewporter",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WpViewporterDestroyRequest{}},
-					{Name: "get_viewport", Opcode: 1, Type: &WpViewporterGetViewportRequest{}},
-				},
-			},
-			{
-				Name:   "wp_viewport",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WpViewportDestroyRequest{}},
-					{Name: "set_source", Opcode: 1, Type: &WpViewportSetSourceRequest{}},
-					{Name: "set_destination", Opcode: 2, Type: &WpViewportSetDestinationRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&WpViewporterDescriptor,
+			&WpViewportDescriptor,
 		},
 	},
 	"wayland": {
 		Name: "wayland",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "wl_display",
-				Events: []EventDescriptor{
-					{Name: "error", Opcode: 0, Type: &WlDisplayErrorEvent{}},
-					{Name: "delete_id", Opcode: 1, Type: &WlDisplayDeleteIDEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "sync", Opcode: 0, Type: &WlDisplaySyncRequest{}},
-					{Name: "get_registry", Opcode: 1, Type: &WlDisplayGetRegistryRequest{}},
-				},
-			},
-			{
-				Name: "wl_registry",
-				Events: []EventDescriptor{
-					{Name: "global", Opcode: 0, Type: &WlRegistryGlobalEvent{}},
-					{Name: "global_remove", Opcode: 1, Type: &WlRegistryGlobalRemoveEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "bind", Opcode: 0, Type: &WlRegistryBindRequest{}},
-				},
-			},
-			{
-				Name: "wl_callback",
-				Events: []EventDescriptor{
-					{Name: "done", Opcode: 0, Type: &WlCallbackDoneEvent{}},
-				},
-				Requests: []RequestDescriptor{},
-			},
-			{
-				Name:   "wl_compositor",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "create_surface", Opcode: 0, Type: &WlCompositorCreateSurfaceRequest{}},
-					{Name: "create_region", Opcode: 1, Type: &WlCompositorCreateRegionRequest{}},
-				},
-			},
-			{
-				Name:   "wl_shm_pool",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "create_buffer", Opcode: 0, Type: &WlShmPoolCreateBufferRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &WlShmPoolDestroyRequest{}},
-					{Name: "resize", Opcode: 2, Type: &WlShmPoolResizeRequest{}},
-				},
-			},
-			{
-				Name: "wl_shm",
-				Events: []EventDescriptor{
-					{Name: "format", Opcode: 0, Type: &WlShmFormatEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "create_pool", Opcode: 0, Type: &WlShmCreatePoolRequest{}},
-				},
-			},
-			{
-				Name: "wl_buffer",
-				Events: []EventDescriptor{
-					{Name: "release", Opcode: 0, Type: &WlBufferReleaseEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WlBufferDestroyRequest{}},
-				},
-			},
-			{
-				Name: "wl_data_offer",
-				Events: []EventDescriptor{
-					{Name: "offer", Opcode: 0, Type: &WlDataOfferOfferEvent{}},
-					{Name: "source_actions", Opcode: 1, Type: &WlDataOfferSourceActionsEvent{}},
-					{Name: "action", Opcode: 2, Type: &WlDataOfferActionEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "accept", Opcode: 0, Type: &WlDataOfferAcceptRequest{}},
-					{Name: "receive", Opcode: 1, Type: &WlDataOfferReceiveRequest{}},
-					{Name: "destroy", Opcode: 2, Type: &WlDataOfferDestroyRequest{}},
-					{Name: "finish", Opcode: 3, Type: &WlDataOfferFinishRequest{}},
-					{Name: "set_actions", Opcode: 4, Type: &WlDataOfferSetActionsRequest{}},
-				},
-			},
-			{
-				Name: "wl_data_source",
-				Events: []EventDescriptor{
-					{Name: "target", Opcode: 0, Type: &WlDataSourceTargetEvent{}},
-					{Name: "send", Opcode: 1, Type: &WlDataSourceSendEvent{}},
-					{Name: "cancelled", Opcode: 2, Type: &WlDataSourceCancelledEvent{}},
-					{Name: "dnd_drop_performed", Opcode: 3, Type: &WlDataSourceDndDropPerformedEvent{}},
-					{Name: "dnd_finished", Opcode: 4, Type: &WlDataSourceDndFinishedEvent{}},
-					{Name: "action", Opcode: 5, Type: &WlDataSourceActionEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "offer", Opcode: 0, Type: &WlDataSourceOfferRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &WlDataSourceDestroyRequest{}},
-					{Name: "set_actions", Opcode: 2, Type: &WlDataSourceSetActionsRequest{}},
-				},
-			},
-			{
-				Name: "wl_data_device",
-				Events: []EventDescriptor{
-					{Name: "data_offer", Opcode: 0, Type: &WlDataDeviceDataOfferEvent{}},
-					{Name: "enter", Opcode: 1, Type: &WlDataDeviceEnterEvent{}},
-					{Name: "leave", Opcode: 2, Type: &WlDataDeviceLeaveEvent{}},
-					{Name: "motion", Opcode: 3, Type: &WlDataDeviceMotionEvent{}},
-					{Name: "drop", Opcode: 4, Type: &WlDataDeviceDropEvent{}},
-					{Name: "selection", Opcode: 5, Type: &WlDataDeviceSelectionEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "start_drag", Opcode: 0, Type: &WlDataDeviceStartDragRequest{}},
-					{Name: "set_selection", Opcode: 1, Type: &WlDataDeviceSetSelectionRequest{}},
-					{Name: "release", Opcode: 2, Type: &WlDataDeviceReleaseRequest{}},
-				},
-			},
-			{
-				Name:   "wl_data_device_manager",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "create_data_source", Opcode: 0, Type: &WlDataDeviceManagerCreateDataSourceRequest{}},
-					{Name: "get_data_device", Opcode: 1, Type: &WlDataDeviceManagerGetDataDeviceRequest{}},
-				},
-			},
-			{
-				Name:   "wl_shell",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "get_shell_surface", Opcode: 0, Type: &WlShellGetShellSurfaceRequest{}},
-				},
-			},
-			{
-				Name: "wl_shell_surface",
-				Events: []EventDescriptor{
-					{Name: "ping", Opcode: 0, Type: &WlShellSurfacePingEvent{}},
-					{Name: "configure", Opcode: 1, Type: &WlShellSurfaceConfigureEvent{}},
-					{Name: "popup_done", Opcode: 2, Type: &WlShellSurfacePopupDoneEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "pong", Opcode: 0, Type: &WlShellSurfacePongRequest{}},
-					{Name: "move", Opcode: 1, Type: &WlShellSurfaceMoveRequest{}},
-					{Name: "resize", Opcode: 2, Type: &WlShellSurfaceResizeRequest{}},
-					{Name: "set_toplevel", Opcode: 3, Type: &WlShellSurfaceSetToplevelRequest{}},
-					{Name: "set_transient", Opcode: 4, Type: &WlShellSurfaceSetTransientRequest{}},
-					{Name: "set_fullscreen", Opcode: 5, Type: &WlShellSurfaceSetFullscreenRequest{}},
-					{Name: "set_popup", Opcode: 6, Type: &WlShellSurfaceSetPopupRequest{}},
-					{Name: "set_maximized", Opcode: 7, Type: &WlShellSurfaceSetMaximizedRequest{}},
-					{Name: "set_title", Opcode: 8, Type: &WlShellSurfaceSetTitleRequest{}},
-					{Name: "set_class", Opcode: 9, Type: &WlShellSurfaceSetClassRequest{}},
-				},
-			},
-			{
-				Name: "wl_surface",
-				Events: []EventDescriptor{
-					{Name: "enter", Opcode: 0, Type: &WlSurfaceEnterEvent{}},
-					{Name: "leave", Opcode: 1, Type: &WlSurfaceLeaveEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WlSurfaceDestroyRequest{}},
-					{Name: "attach", Opcode: 1, Type: &WlSurfaceAttachRequest{}},
-					{Name: "damage", Opcode: 2, Type: &WlSurfaceDamageRequest{}},
-					{Name: "frame", Opcode: 3, Type: &WlSurfaceFrameRequest{}},
-					{Name: "set_opaque_region", Opcode: 4, Type: &WlSurfaceSetOpaqueRegionRequest{}},
-					{Name: "set_input_region", Opcode: 5, Type: &WlSurfaceSetInputRegionRequest{}},
-					{Name: "commit", Opcode: 6, Type: &WlSurfaceCommitRequest{}},
-					{Name: "set_buffer_transform", Opcode: 7, Type: &WlSurfaceSetBufferTransformRequest{}},
-					{Name: "set_buffer_scale", Opcode: 8, Type: &WlSurfaceSetBufferScaleRequest{}},
-					{Name: "damage_buffer", Opcode: 9, Type: &WlSurfaceDamageBufferRequest{}},
-				},
-			},
-			{
-				Name: "wl_seat",
-				Events: []EventDescriptor{
-					{Name: "capabilities", Opcode: 0, Type: &WlSeatCapabilitiesEvent{}},
-					{Name: "name", Opcode: 1, Type: &WlSeatNameEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "get_pointer", Opcode: 0, Type: &WlSeatGetPointerRequest{}},
-					{Name: "get_keyboard", Opcode: 1, Type: &WlSeatGetKeyboardRequest{}},
-					{Name: "get_touch", Opcode: 2, Type: &WlSeatGetTouchRequest{}},
-					{Name: "release", Opcode: 3, Type: &WlSeatReleaseRequest{}},
-				},
-			},
-			{
-				Name: "wl_pointer",
-				Events: []EventDescriptor{
-					{Name: "enter", Opcode: 0, Type: &WlPointerEnterEvent{}},
-					{Name: "leave", Opcode: 1, Type: &WlPointerLeaveEvent{}},
-					{Name: "motion", Opcode: 2, Type: &WlPointerMotionEvent{}},
-					{Name: "button", Opcode: 3, Type: &WlPointerButtonEvent{}},
-					{Name: "axis", Opcode: 4, Type: &WlPointerAxisEvent{}},
-					{Name: "frame", Opcode: 5, Type: &WlPointerFrameEvent{}},
-					{Name: "axis_source", Opcode: 6, Type: &WlPointerAxisSourceEvent{}},
-					{Name: "axis_stop", Opcode: 7, Type: &WlPointerAxisStopEvent{}},
-					{Name: "axis_discrete", Opcode: 8, Type: &WlPointerAxisDiscreteEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_cursor", Opcode: 0, Type: &WlPointerSetCursorRequest{}},
-					{Name: "release", Opcode: 1, Type: &WlPointerReleaseRequest{}},
-				},
-			},
-			{
-				Name: "wl_keyboard",
-				Events: []EventDescriptor{
-					{Name: "keymap", Opcode: 0, Type: &WlKeyboardKeymapEvent{}},
-					{Name: "enter", Opcode: 1, Type: &WlKeyboardEnterEvent{}},
-					{Name: "leave", Opcode: 2, Type: &WlKeyboardLeaveEvent{}},
-					{Name: "key", Opcode: 3, Type: &WlKeyboardKeyEvent{}},
-					{Name: "modifiers", Opcode: 4, Type: &WlKeyboardModifiersEvent{}},
-					{Name: "repeat_info", Opcode: 5, Type: &WlKeyboardRepeatInfoEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "release", Opcode: 0, Type: &WlKeyboardReleaseRequest{}},
-				},
-			},
-			{
-				Name: "wl_touch",
-				Events: []EventDescriptor{
-					{Name: "down", Opcode: 0, Type: &WlTouchDownEvent{}},
-					{Name: "up", Opcode: 1, Type: &WlTouchUpEvent{}},
-					{Name: "motion", Opcode: 2, Type: &WlTouchMotionEvent{}},
-					{Name: "frame", Opcode: 3, Type: &WlTouchFrameEvent{}},
-					{Name: "cancel", Opcode: 4, Type: &WlTouchCancelEvent{}},
-					{Name: "shape", Opcode: 5, Type: &WlTouchShapeEvent{}},
-					{Name: "orientation", Opcode: 6, Type: &WlTouchOrientationEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "release", Opcode: 0, Type: &WlTouchReleaseRequest{}},
-				},
-			},
-			{
-				Name: "wl_output",
-				Events: []EventDescriptor{
-					{Name: "geometry", Opcode: 0, Type: &WlOutputGeometryEvent{}},
-					{Name: "mode", Opcode: 1, Type: &WlOutputModeEvent{}},
-					{Name: "done", Opcode: 2, Type: &WlOutputDoneEvent{}},
-					{Name: "scale", Opcode: 3, Type: &WlOutputScaleEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "release", Opcode: 0, Type: &WlOutputReleaseRequest{}},
-				},
-			},
-			{
-				Name:   "wl_region",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WlRegionDestroyRequest{}},
-					{Name: "add", Opcode: 1, Type: &WlRegionAddRequest{}},
-					{Name: "subtract", Opcode: 2, Type: &WlRegionSubtractRequest{}},
-				},
-			},
-			{
-				Name:   "wl_subcompositor",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WlSubcompositorDestroyRequest{}},
-					{Name: "get_subsurface", Opcode: 1, Type: &WlSubcompositorGetSubsurfaceRequest{}},
-				},
-			},
-			{
-				Name:   "wl_subsurface",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &WlSubsurfaceDestroyRequest{}},
-					{Name: "set_position", Opcode: 1, Type: &WlSubsurfaceSetPositionRequest{}},
-					{Name: "place_above", Opcode: 2, Type: &WlSubsurfacePlaceAboveRequest{}},
-					{Name: "place_below", Opcode: 3, Type: &WlSubsurfacePlaceBelowRequest{}},
-					{Name: "set_sync", Opcode: 4, Type: &WlSubsurfaceSetSyncRequest{}},
-					{Name: "set_desync", Opcode: 5, Type: &WlSubsurfaceSetDesyncRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&WlDisplayDescriptor,
+			&WlRegistryDescriptor,
+			&WlCallbackDescriptor,
+			&WlCompositorDescriptor,
+			&WlShmPoolDescriptor,
+			&WlShmDescriptor,
+			&WlBufferDescriptor,
+			&WlDataOfferDescriptor,
+			&WlDataSourceDescriptor,
+			&WlDataDeviceDescriptor,
+			&WlDataDeviceManagerDescriptor,
+			&WlShellDescriptor,
+			&WlShellSurfaceDescriptor,
+			&WlSurfaceDescriptor,
+			&WlSeatDescriptor,
+			&WlPointerDescriptor,
+			&WlKeyboardDescriptor,
+			&WlTouchDescriptor,
+			&WlOutputDescriptor,
+			&WlRegionDescriptor,
+			&WlSubcompositorDescriptor,
+			&WlSubsurfaceDescriptor,
 		},
 	},
 	"wp_primary_selection_unstable_v1": {
 		Name: "wp_primary_selection_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_primary_selection_device_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "create_source", Opcode: 0, Type: &ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}},
-					{Name: "get_device", Opcode: 1, Type: &ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}},
-					{Name: "destroy", Opcode: 2, Type: &ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_primary_selection_device_v1",
-				Events: []EventDescriptor{
-					{Name: "data_offer", Opcode: 0, Type: &ZwpPrimarySelectionDeviceV1DataOfferEvent{}},
-					{Name: "selection", Opcode: 1, Type: &ZwpPrimarySelectionDeviceV1SelectionEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_selection", Opcode: 0, Type: &ZwpPrimarySelectionDeviceV1SetSelectionRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionDeviceV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_primary_selection_offer_v1",
-				Events: []EventDescriptor{
-					{Name: "offer", Opcode: 0, Type: &ZwpPrimarySelectionOfferV1OfferEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "receive", Opcode: 0, Type: &ZwpPrimarySelectionOfferV1ReceiveRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionOfferV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zwp_primary_selection_source_v1",
-				Events: []EventDescriptor{
-					{Name: "send", Opcode: 0, Type: &ZwpPrimarySelectionSourceV1SendEvent{}},
-					{Name: "cancelled", Opcode: 1, Type: &ZwpPrimarySelectionSourceV1CancelledEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "offer", Opcode: 0, Type: &ZwpPrimarySelectionSourceV1OfferRequest{}},
-					{Name: "destroy", Opcode: 1, Type: &ZwpPrimarySelectionSourceV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpPrimarySelectionDeviceManagerV1Descriptor,
+			&ZwpPrimarySelectionDeviceV1Descriptor,
+			&ZwpPrimarySelectionOfferV1Descriptor,
+			&ZwpPrimarySelectionSourceV1Descriptor,
 		},
 	},
 	"xdg_activation_v1": {
 		Name: "xdg_activation_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "xdg_activation_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &XdgActivationV1DestroyRequest{}},
-					{Name: "get_activation_token", Opcode: 1, Type: &XdgActivationV1GetActivationTokenRequest{}},
-					{Name: "activate", Opcode: 2, Type: &XdgActivationV1ActivateRequest{}},
-				},
-			},
-			{
-				Name: "xdg_activation_token_v1",
-				Events: []EventDescriptor{
-					{Name: "done", Opcode: 0, Type: &XdgActivationTokenV1DoneEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "set_serial", Opcode: 0, Type: &XdgActivationTokenV1SetSerialRequest{}},
-					{Name: "set_app_id", Opcode: 1, Type: &XdgActivationTokenV1SetAppIDRequest{}},
-					{Name: "set_surface", Opcode: 2, Type: &XdgActivationTokenV1SetSurfaceRequest{}},
-					{Name: "commit", Opcode: 3, Type: &XdgActivationTokenV1CommitRequest{}},
-					{Name: "destroy", Opcode: 4, Type: &XdgActivationTokenV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&XdgActivationV1Descriptor,
+			&XdgActivationTokenV1Descriptor,
 		},
 	},
 	"xdg_decoration_unstable_v1": {
 		Name: "xdg_decoration_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zxdg_decoration_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgDecorationManagerV1DestroyRequest{}},
-					{Name: "get_toplevel_decoration", Opcode: 1, Type: &ZxdgDecorationManagerV1GetToplevelDecorationRequest{}},
-				},
-			},
-			{
-				Name: "zxdg_toplevel_decoration_v1",
-				Events: []EventDescriptor{
-					{Name: "configure", Opcode: 0, Type: &ZxdgToplevelDecorationV1ConfigureEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgToplevelDecorationV1DestroyRequest{}},
-					{Name: "set_mode", Opcode: 1, Type: &ZxdgToplevelDecorationV1SetModeRequest{}},
-					{Name: "unset_mode", Opcode: 2, Type: &ZxdgToplevelDecorationV1UnsetModeRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZxdgDecorationManagerV1Descriptor,
+			&ZxdgToplevelDecorationV1Descriptor,
 		},
 	},
 	"xdg_foreign_unstable_v1": {
 		Name: "xdg_foreign_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zxdg_exporter_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV1DestroyRequest{}},
-					{Name: "export", Opcode: 1, Type: &ZxdgExporterV1ExportRequest{}},
-				},
-			},
-			{
-				Name:   "zxdg_importer_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV1DestroyRequest{}},
-					{Name: "import", Opcode: 1, Type: &ZxdgImporterV1ImportRequest{}},
-				},
-			},
-			{
-				Name: "zxdg_exported_v1",
-				Events: []EventDescriptor{
-					{Name: "handle", Opcode: 0, Type: &ZxdgExportedV1HandleEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgExportedV1DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zxdg_imported_v1",
-				Events: []EventDescriptor{
-					{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV1DestroyedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgImportedV1DestroyRequest{}},
-					{Name: "set_parent_of", Opcode: 1, Type: &ZxdgImportedV1SetParentOfRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZxdgExporterV1Descriptor,
+			&ZxdgImporterV1Descriptor,
+			&ZxdgExportedV1Descriptor,
+			&ZxdgImportedV1Descriptor,
 		},
 	},
 	"xdg_foreign_unstable_v2": {
 		Name: "xdg_foreign_unstable_v2",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zxdg_exporter_v2",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV2DestroyRequest{}},
-					{Name: "export_toplevel", Opcode: 1, Type: &ZxdgExporterV2ExportToplevelRequest{}},
-				},
-			},
-			{
-				Name:   "zxdg_importer_v2",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV2DestroyRequest{}},
-					{Name: "import_toplevel", Opcode: 1, Type: &ZxdgImporterV2ImportToplevelRequest{}},
-				},
-			},
-			{
-				Name: "zxdg_exported_v2",
-				Events: []EventDescriptor{
-					{Name: "handle", Opcode: 0, Type: &ZxdgExportedV2HandleEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgExportedV2DestroyRequest{}},
-				},
-			},
-			{
-				Name: "zxdg_imported_v2",
-				Events: []EventDescriptor{
-					{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV2DestroyedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgImportedV2DestroyRequest{}},
-					{Name: "set_parent_of", Opcode: 1, Type: &ZxdgImportedV2SetParentOfRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZxdgExporterV2Descriptor,
+			&ZxdgImporterV2Descriptor,
+			&ZxdgExportedV2Descriptor,
+			&ZxdgImportedV2Descriptor,
 		},
 	},
 	"xdg_output_unstable_v1": {
 		Name: "xdg_output_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zxdg_output_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgOutputManagerV1DestroyRequest{}},
-					{Name: "get_xdg_output", Opcode: 1, Type: &ZxdgOutputManagerV1GetXdgOutputRequest{}},
-				},
-			},
-			{
-				Name: "zxdg_output_v1",
-				Events: []EventDescriptor{
-					{Name: "logical_position", Opcode: 0, Type: &ZxdgOutputV1LogicalPositionEvent{}},
-					{Name: "logical_size", Opcode: 1, Type: &ZxdgOutputV1LogicalSizeEvent{}},
-					{Name: "done", Opcode: 2, Type: &ZxdgOutputV1DoneEvent{}},
-					{Name: "name", Opcode: 3, Type: &ZxdgOutputV1NameEvent{}},
-					{Name: "description", Opcode: 4, Type: &ZxdgOutputV1DescriptionEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZxdgOutputV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZxdgOutputManagerV1Descriptor,
+			&ZxdgOutputV1Descriptor,
 		},
 	},
 	"xdg_shell": {
 		Name: "xdg_shell",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name: "xdg_wm_base",
-				Events: []EventDescriptor{
-					{Name: "ping", Opcode: 0, Type: &XdgWmBasePingEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &XdgWmBaseDestroyRequest{}},
-					{Name: "create_positioner", Opcode: 1, Type: &XdgWmBaseCreatePositionerRequest{}},
-					{Name: "get_xdg_surface", Opcode: 2, Type: &XdgWmBaseGetXdgSurfaceRequest{}},
-					{Name: "pong", Opcode: 3, Type: &XdgWmBasePongRequest{}},
-				},
-			},
-			{
-				Name:   "xdg_positioner",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &XdgPositionerDestroyRequest{}},
-					{Name: "set_size", Opcode: 1, Type: &XdgPositionerSetSizeRequest{}},
-					{Name: "set_anchor_rect", Opcode: 2, Type: &XdgPositionerSetAnchorRectRequest{}},
-					{Name: "set_anchor", Opcode: 3, Type: &XdgPositionerSetAnchorRequest{}},
-					{Name: "set_gravity", Opcode: 4, Type: &XdgPositionerSetGravityRequest{}},
-					{Name: "set_constraint_adjustment", Opcode: 5, Type: &XdgPositionerSetConstraintAdjustmentRequest{}},
-					{Name: "set_offset", Opcode: 6, Type: &XdgPositionerSetOffsetRequest{}},
-					{Name: "set_reactive", Opcode: 7, Type: &XdgPositionerSetReactiveRequest{}},
-					{Name: "set_parent_size", Opcode: 8, Type: &XdgPositionerSetParentSizeRequest{}},
-					{Name: "set_parent_configure", Opcode: 9, Type: &XdgPositionerSetParentConfigureRequest{}},
-				},
-			},
-			{
-				Name: "xdg_surface",
-				Events: []EventDescriptor{
-					{Name: "configure", Opcode: 0, Type: &XdgSurfaceConfigureEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &XdgSurfaceDestroyRequest{}},
-					{Name: "get_toplevel", Opcode: 1, Type: &XdgSurfaceGetToplevelRequest{}},
-					{Name: "get_popup", Opcode: 2, Type: &XdgSurfaceGetPopupRequest{}},
-					{Name: "set_window_geometry", Opcode: 3, Type: &XdgSurfaceSetWindowGeometryRequest{}},
-					{Name: "ack_configure", Opcode: 4, Type: &XdgSurfaceAckConfigureRequest{}},
-				},
-			},
-			{
-				Name: "xdg_toplevel",
-				Events: []EventDescriptor{
-					{Name: "configure", Opcode: 0, Type: &XdgToplevelConfigureEvent{}},
-					{Name: "close", Opcode: 1, Type: &XdgToplevelCloseEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &XdgToplevelDestroyRequest{}},
-					{Name: "set_parent", Opcode: 1, Type: &XdgToplevelSetParentRequest{}},
-					{Name: "set_title", Opcode: 2, Type: &XdgToplevelSetTitleRequest{}},
-					{Name: "set_app_id", Opcode: 3, Type: &XdgToplevelSetAppIDRequest{}},
-					{Name: "show_window_menu", Opcode: 4, Type: &XdgToplevelShowWindowMenuRequest{}},
-					{Name: "move", Opcode: 5, Type: &XdgToplevelMoveRequest{}},
-					{Name: "resize", Opcode: 6, Type: &XdgToplevelResizeRequest{}},
-					{Name: "set_max_size", Opcode: 7, Type: &XdgToplevelSetMaxSizeRequest{}},
-					{Name: "set_min_size", Opcode: 8, Type: &XdgToplevelSetMinSizeRequest{}},
-					{Name: "set_maximized", Opcode: 9, Type: &XdgToplevelSetMaximizedRequest{}},
-					{Name: "unset_maximized", Opcode: 10, Type: &XdgToplevelUnsetMaximizedRequest{}},
-					{Name: "set_fullscreen", Opcode: 11, Type: &XdgToplevelSetFullscreenRequest{}},
-					{Name: "unset_fullscreen", Opcode: 12, Type: &XdgToplevelUnsetFullscreenRequest{}},
-					{Name: "set_minimized", Opcode: 13, Type: &XdgToplevelSetMinimizedRequest{}},
-				},
-			},
-			{
-				Name: "xdg_popup",
-				Events: []EventDescriptor{
-					{Name: "configure", Opcode: 0, Type: &XdgPopupConfigureEvent{}},
-					{Name: "popup_done", Opcode: 1, Type: &XdgPopupPopupDoneEvent{}},
-					{Name: "repositioned", Opcode: 2, Type: &XdgPopupRepositionedEvent{}},
-				},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &XdgPopupDestroyRequest{}},
-					{Name: "grab", Opcode: 1, Type: &XdgPopupGrabRequest{}},
-					{Name: "reposition", Opcode: 2, Type: &XdgPopupRepositionRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&XdgWmBaseDescriptor,
+			&XdgPositionerDescriptor,
+			&XdgSurfaceDescriptor,
+			&XdgToplevelDescriptor,
+			&XdgPopupDescriptor,
 		},
 	},
 	"xwayland_keyboard_grab_unstable_v1": {
 		Name: "xwayland_keyboard_grab_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_xwayland_keyboard_grab_manager_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}},
-					{Name: "grab_keyboard", Opcode: 1, Type: &ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}},
-				},
-			},
-			{
-				Name:   "zwp_xwayland_keyboard_grab_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabV1DestroyRequest{}},
-				},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpXwaylandKeyboardGrabManagerV1Descriptor,
+			&ZwpXwaylandKeyboardGrabV1Descriptor,
 		},
 	},
 	"zwp_linux_explicit_synchronization_unstable_v1": {
 		Name: "zwp_linux_explicit_synchronization_unstable_v1",
-		Interfaces: []InterfaceDescriptor{
-			{
-				Name:   "zwp_linux_explicit_synchronization_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxExplicitSynchronizationV1DestroyRequest{}},
-					{Name: "get_synchronization", Opcode: 1, Type: &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}},
-				},
-			},
-			{
-				Name:   "zwp_linux_surface_synchronization_v1",
-				Events: []EventDescriptor{},
-				Requests: []RequestDescriptor{
-					{Name: "destroy", Opcode: 0, Type: &ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}},
-					{Name: "set_acquire_fence", Opcode: 1, Type: &ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}},
-					{Name: "get_release", Opcode: 2, Type: &ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}},
-				},
-			},
-			{
-				Name: "zwp_linux_buffer_release_v1",
-				Events: []EventDescriptor{
-					{Name: "fenced_release", Opcode: 0, Type: &ZwpLinuxBufferReleaseV1FencedReleaseEvent{}},
-					{Name: "immediate_release", Opcode: 1, Type: &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}},
-				},
-				Requests: []RequestDescriptor{},
-			},
+		Interfaces: []*InterfaceDescriptor{
+			&ZwpLinuxExplicitSynchronizationV1Descriptor,
+			&ZwpLinuxSurfaceSynchronizationV1Descriptor,
+			&ZwpLinuxBufferReleaseV1Descriptor,
 		},
 	},
 }
@@ -1269,6 +1369,11 @@ type WpDrmLeaseDeviceV1CreateLeaseRequestRequest struct {
 
 // Opcode returns the request opcode for wp_drm_lease_device_v1.create_lease_request in drm_lease_v1
 func (WpDrmLeaseDeviceV1CreateLeaseRequestRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wp_drm_lease_device_v1.create_lease_request in drm_lease_v1
+func (WpDrmLeaseDeviceV1CreateLeaseRequestRequest) MessageName() string {
+	return "create_lease_request"
+}
 
 // Ensure WpDrmLeaseDeviceV1CreateLeaseRequestRequest implements Message.
 var _ Message = WpDrmLeaseDeviceV1CreateLeaseRequestRequest{}
@@ -1298,6 +1403,9 @@ type WpDrmLeaseDeviceV1ReleaseRequest struct {
 // Opcode returns the request opcode for wp_drm_lease_device_v1.release in drm_lease_v1
 func (WpDrmLeaseDeviceV1ReleaseRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wp_drm_lease_device_v1.release in drm_lease_v1
+func (WpDrmLeaseDeviceV1ReleaseRequest) MessageName() string { return "release" }
+
 // Ensure WpDrmLeaseDeviceV1ReleaseRequest implements Message.
 var _ Message = WpDrmLeaseDeviceV1ReleaseRequest{}
 
@@ -1326,6 +1434,9 @@ type WpDrmLeaseDeviceV1DrmFDEvent struct {
 
 // Opcode returns the event opcode for wp_drm_lease_device_v1.drm_fd in drm_lease_v1
 func (WpDrmLeaseDeviceV1DrmFDEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wp_drm_lease_device_v1.drm_fd in drm_lease_v1
+func (WpDrmLeaseDeviceV1DrmFDEvent) MessageName() string { return "drm_fd" }
 
 // Ensure WpDrmLeaseDeviceV1DrmFDEvent implements Message.
 var _ Message = WpDrmLeaseDeviceV1DrmFDEvent{}
@@ -1362,6 +1473,9 @@ type WpDrmLeaseDeviceV1ConnectorEvent struct {
 // Opcode returns the event opcode for wp_drm_lease_device_v1.connector in drm_lease_v1
 func (WpDrmLeaseDeviceV1ConnectorEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wp_drm_lease_device_v1.connector in drm_lease_v1
+func (WpDrmLeaseDeviceV1ConnectorEvent) MessageName() string { return "connector" }
+
 // Ensure WpDrmLeaseDeviceV1ConnectorEvent implements Message.
 var _ Message = WpDrmLeaseDeviceV1ConnectorEvent{}
 
@@ -1392,6 +1506,9 @@ type WpDrmLeaseDeviceV1DoneEvent struct {
 // Opcode returns the event opcode for wp_drm_lease_device_v1.done in drm_lease_v1
 func (WpDrmLeaseDeviceV1DoneEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wp_drm_lease_device_v1.done in drm_lease_v1
+func (WpDrmLeaseDeviceV1DoneEvent) MessageName() string { return "done" }
+
 // Ensure WpDrmLeaseDeviceV1DoneEvent implements Message.
 var _ Message = WpDrmLeaseDeviceV1DoneEvent{}
 
@@ -1415,6 +1532,9 @@ type WpDrmLeaseDeviceV1ReleasedEvent struct {
 
 // Opcode returns the event opcode for wp_drm_lease_device_v1.released in drm_lease_v1
 func (WpDrmLeaseDeviceV1ReleasedEvent) Opcode() uint16 { return 3 }
+
+// MessageName returns the event name for wp_drm_lease_device_v1.released in drm_lease_v1
+func (WpDrmLeaseDeviceV1ReleasedEvent) MessageName() string { return "released" }
 
 // Ensure WpDrmLeaseDeviceV1ReleasedEvent implements Message.
 var _ Message = WpDrmLeaseDeviceV1ReleasedEvent{}
@@ -1463,6 +1583,66 @@ type WpDrmLeaseDeviceV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WpDrmLeaseDeviceV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpDrmLeaseDeviceV1) Descriptor() *InterfaceDescriptor {
+	return &WpDrmLeaseDeviceV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpDrmLeaseDeviceV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WpDrmLeaseDeviceV1DrmFDEvent{}
+	case 1:
+		return &WpDrmLeaseDeviceV1ConnectorEvent{}
+	case 2:
+		return &WpDrmLeaseDeviceV1DoneEvent{}
+	case 3:
+		return &WpDrmLeaseDeviceV1ReleasedEvent{}
+	default:
+		return nil
+	}
+}
+
+// CreateLeaseRequest requests to create a lease request object
+//
+// Creates a lease request object.
+//
+// See the documentation for wp_drm_lease_request_v1 for details.
+func (proxy *WpDrmLeaseDeviceV1) CreateLeaseRequest(connection Connection) (aID *WpDrmLeaseRequestV1, err error) {
+	aID = &WpDrmLeaseRequestV1{connection.NewID()}
+	request := WpDrmLeaseDeviceV1CreateLeaseRequestRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Release requests to release this object
+//
+// Indicates the client no longer wishes to use this object. In response
+// the compositor will immediately send the released event and destroy
+// this object. It can however not guarantee that the client won't receive
+// connector events before the released event. The client must not send any
+// requests after this one, doing so will raise a wl_display error.
+// Existing connectors, lease request and leases will not be affected.
+func (proxy *WpDrmLeaseDeviceV1) Release(connection Connection) (err error) {
+	request := WpDrmLeaseDeviceV1ReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WpDrmLeaseDeviceV1 implements Proxy.
+var _ Proxy = &WpDrmLeaseDeviceV1{}
+
 // #endregion Interface drm_lease_v1.wp_drm_lease_device_v1
 
 // ----------------------------------------------------------------------------
@@ -1480,6 +1660,9 @@ type WpDrmLeaseConnectorV1DestroyRequest struct {
 
 // Opcode returns the request opcode for wp_drm_lease_connector_v1.destroy in drm_lease_v1
 func (WpDrmLeaseConnectorV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wp_drm_lease_connector_v1.destroy in drm_lease_v1
+func (WpDrmLeaseConnectorV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WpDrmLeaseConnectorV1DestroyRequest implements Message.
 var _ Message = WpDrmLeaseConnectorV1DestroyRequest{}
@@ -1505,6 +1688,9 @@ type WpDrmLeaseConnectorV1NameEvent struct {
 
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.name in drm_lease_v1
 func (WpDrmLeaseConnectorV1NameEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wp_drm_lease_connector_v1.name in drm_lease_v1
+func (WpDrmLeaseConnectorV1NameEvent) MessageName() string { return "name" }
 
 // Ensure WpDrmLeaseConnectorV1NameEvent implements Message.
 var _ Message = WpDrmLeaseConnectorV1NameEvent{}
@@ -1536,6 +1722,9 @@ type WpDrmLeaseConnectorV1DescriptionEvent struct {
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.description in drm_lease_v1
 func (WpDrmLeaseConnectorV1DescriptionEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wp_drm_lease_connector_v1.description in drm_lease_v1
+func (WpDrmLeaseConnectorV1DescriptionEvent) MessageName() string { return "description" }
+
 // Ensure WpDrmLeaseConnectorV1DescriptionEvent implements Message.
 var _ Message = WpDrmLeaseConnectorV1DescriptionEvent{}
 
@@ -1566,6 +1755,9 @@ type WpDrmLeaseConnectorV1ConnectorIDEvent struct {
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.connector_id in drm_lease_v1
 func (WpDrmLeaseConnectorV1ConnectorIDEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wp_drm_lease_connector_v1.connector_id in drm_lease_v1
+func (WpDrmLeaseConnectorV1ConnectorIDEvent) MessageName() string { return "connector_id" }
+
 // Ensure WpDrmLeaseConnectorV1ConnectorIDEvent implements Message.
 var _ Message = WpDrmLeaseConnectorV1ConnectorIDEvent{}
 
@@ -1593,6 +1785,9 @@ type WpDrmLeaseConnectorV1DoneEvent struct {
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.done in drm_lease_v1
 func (WpDrmLeaseConnectorV1DoneEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for wp_drm_lease_connector_v1.done in drm_lease_v1
+func (WpDrmLeaseConnectorV1DoneEvent) MessageName() string { return "done" }
+
 // Ensure WpDrmLeaseConnectorV1DoneEvent implements Message.
 var _ Message = WpDrmLeaseConnectorV1DoneEvent{}
 
@@ -1619,6 +1814,9 @@ type WpDrmLeaseConnectorV1WithdrawnEvent struct {
 // Opcode returns the event opcode for wp_drm_lease_connector_v1.withdrawn in drm_lease_v1
 func (WpDrmLeaseConnectorV1WithdrawnEvent) Opcode() uint16 { return 4 }
 
+// MessageName returns the event name for wp_drm_lease_connector_v1.withdrawn in drm_lease_v1
+func (WpDrmLeaseConnectorV1WithdrawnEvent) MessageName() string { return "withdrawn" }
+
 // Ensure WpDrmLeaseConnectorV1WithdrawnEvent implements Message.
 var _ Message = WpDrmLeaseConnectorV1WithdrawnEvent{}
 
@@ -1642,6 +1840,50 @@ var _ Event = &WpDrmLeaseConnectorV1WithdrawnEvent{}
 type WpDrmLeaseConnectorV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WpDrmLeaseConnectorV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpDrmLeaseConnectorV1) Descriptor() *InterfaceDescriptor {
+	return &WpDrmLeaseConnectorV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpDrmLeaseConnectorV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WpDrmLeaseConnectorV1NameEvent{}
+	case 1:
+		return &WpDrmLeaseConnectorV1DescriptionEvent{}
+	case 2:
+		return &WpDrmLeaseConnectorV1ConnectorIDEvent{}
+	case 3:
+		return &WpDrmLeaseConnectorV1DoneEvent{}
+	case 4:
+		return &WpDrmLeaseConnectorV1WithdrawnEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy connector
+//
+// The client may send this request to indicate that it will not use this
+// connector. Clients are encouraged to send this after receiving the
+// "withdrawn" event so that the server can release the resources
+// associated with this connector offer. Neither existing lease requests
+// nor leases will be affected.
+func (proxy *WpDrmLeaseConnectorV1) Destroy(connection Connection) (err error) {
+	request := WpDrmLeaseConnectorV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WpDrmLeaseConnectorV1 implements Proxy.
+var _ Proxy = &WpDrmLeaseConnectorV1{}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_connector_v1
 
@@ -1680,6 +1922,9 @@ type WpDrmLeaseRequestV1RequestConnectorRequest struct {
 // Opcode returns the request opcode for wp_drm_lease_request_v1.request_connector in drm_lease_v1
 func (WpDrmLeaseRequestV1RequestConnectorRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wp_drm_lease_request_v1.request_connector in drm_lease_v1
+func (WpDrmLeaseRequestV1RequestConnectorRequest) MessageName() string { return "request_connector" }
+
 // Ensure WpDrmLeaseRequestV1RequestConnectorRequest implements Message.
 var _ Message = WpDrmLeaseRequestV1RequestConnectorRequest{}
 
@@ -1710,6 +1955,9 @@ type WpDrmLeaseRequestV1SubmitRequest struct {
 // Opcode returns the request opcode for wp_drm_lease_request_v1.submit in drm_lease_v1
 func (WpDrmLeaseRequestV1SubmitRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wp_drm_lease_request_v1.submit in drm_lease_v1
+func (WpDrmLeaseRequestV1SubmitRequest) MessageName() string { return "submit" }
+
 // Ensure WpDrmLeaseRequestV1SubmitRequest implements Message.
 var _ Message = WpDrmLeaseRequestV1SubmitRequest{}
 
@@ -1734,6 +1982,68 @@ type WpDrmLeaseRequestV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WpDrmLeaseRequestV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpDrmLeaseRequestV1) Descriptor() *InterfaceDescriptor {
+	return &WpDrmLeaseRequestV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpDrmLeaseRequestV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// RequestConnector requests to request a connector for this lease
+//
+// Indicates that the client would like to lease the given connector.
+// This is only used as a suggestion, the compositor may choose to
+// include any resources in the lease it issues, or change the set of
+// leased resources at any time. Compositors are however encouraged to
+// include the requested connector and other resources necessary
+// to drive the connected output in the lease.
+//
+// Requesting a connector that was created from a different lease device
+// than this lease request raises the wrong_device error. Requesting a
+// connector twice will raise the duplicate_connector error.
+func (proxy *WpDrmLeaseRequestV1) RequestConnector(connection Connection, aConnector ObjectID) (err error) {
+	request := WpDrmLeaseRequestV1RequestConnectorRequest{
+		Connector: aConnector,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Submit requests to submit the lease request
+//
+// Submits the lease request and creates a new wp_drm_lease_v1 object.
+// After calling submit the compositor will immediately destroy this
+// object, issuing any more requests will cause a wl_diplay error.
+// The compositor doesn't make any guarantees about the events of the
+// lease object, clients cannot expect an immediate response.
+// Not requesting any connectors before submitting the lease request
+// will raise the empty_lease error.
+func (proxy *WpDrmLeaseRequestV1) Submit(connection Connection) (aID *WpDrmLeaseV1, err error) {
+	aID = &WpDrmLeaseV1{connection.NewID()}
+	request := WpDrmLeaseRequestV1SubmitRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure WpDrmLeaseRequestV1 implements Proxy.
+var _ Proxy = &WpDrmLeaseRequestV1{}
+
 // #endregion Interface drm_lease_v1.wp_drm_lease_request_v1
 
 // ----------------------------------------------------------------------------
@@ -1749,6 +2059,9 @@ type WpDrmLeaseV1DestroyRequest struct {
 
 // Opcode returns the request opcode for wp_drm_lease_v1.destroy in drm_lease_v1
 func (WpDrmLeaseV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wp_drm_lease_v1.destroy in drm_lease_v1
+func (WpDrmLeaseV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WpDrmLeaseV1DestroyRequest implements Message.
 var _ Message = WpDrmLeaseV1DestroyRequest{}
@@ -1780,6 +2093,9 @@ type WpDrmLeaseV1LeaseFDEvent struct {
 
 // Opcode returns the event opcode for wp_drm_lease_v1.lease_fd in drm_lease_v1
 func (WpDrmLeaseV1LeaseFDEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wp_drm_lease_v1.lease_fd in drm_lease_v1
+func (WpDrmLeaseV1LeaseFDEvent) MessageName() string { return "lease_fd" }
 
 // Ensure WpDrmLeaseV1LeaseFDEvent implements Message.
 var _ Message = WpDrmLeaseV1LeaseFDEvent{}
@@ -1813,6 +2129,9 @@ type WpDrmLeaseV1FinishedEvent struct {
 // Opcode returns the event opcode for wp_drm_lease_v1.finished in drm_lease_v1
 func (WpDrmLeaseV1FinishedEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wp_drm_lease_v1.finished in drm_lease_v1
+func (WpDrmLeaseV1FinishedEvent) MessageName() string { return "finished" }
+
 // Ensure WpDrmLeaseV1FinishedEvent implements Message.
 var _ Message = WpDrmLeaseV1FinishedEvent{}
 
@@ -1837,6 +2156,42 @@ var _ Event = &WpDrmLeaseV1FinishedEvent{}
 type WpDrmLeaseV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WpDrmLeaseV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpDrmLeaseV1) Descriptor() *InterfaceDescriptor {
+	return &WpDrmLeaseV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpDrmLeaseV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WpDrmLeaseV1LeaseFDEvent{}
+	case 1:
+		return &WpDrmLeaseV1FinishedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroys the lease object
+//
+// The client should send this to indicate that it no longer wishes to use
+// this lease. The compositor should use drmModeRevokeLease on the
+// appropriate file descriptor, if necessary.
+func (proxy *WpDrmLeaseV1) Destroy(connection Connection) (err error) {
+	request := WpDrmLeaseV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WpDrmLeaseV1 implements Proxy.
+var _ Proxy = &WpDrmLeaseV1{}
 
 // #endregion Interface drm_lease_v1.wp_drm_lease_v1
 
@@ -1932,6 +2287,9 @@ type ZwpFullscreenShellV1ReleaseRequest struct {
 // Opcode returns the request opcode for zwp_fullscreen_shell_v1.release in fullscreen_shell_unstable_v1
 func (ZwpFullscreenShellV1ReleaseRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_fullscreen_shell_v1.release in fullscreen_shell_unstable_v1
+func (ZwpFullscreenShellV1ReleaseRequest) MessageName() string { return "release" }
+
 // Ensure ZwpFullscreenShellV1ReleaseRequest implements Message.
 var _ Message = ZwpFullscreenShellV1ReleaseRequest{}
 
@@ -1976,6 +2334,9 @@ type ZwpFullscreenShellV1PresentSurfaceRequest struct {
 
 // Opcode returns the request opcode for zwp_fullscreen_shell_v1.present_surface in fullscreen_shell_unstable_v1
 func (ZwpFullscreenShellV1PresentSurfaceRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_fullscreen_shell_v1.present_surface in fullscreen_shell_unstable_v1
+func (ZwpFullscreenShellV1PresentSurfaceRequest) MessageName() string { return "present_surface" }
 
 // Ensure ZwpFullscreenShellV1PresentSurfaceRequest implements Message.
 var _ Message = ZwpFullscreenShellV1PresentSurfaceRequest{}
@@ -2053,6 +2414,11 @@ type ZwpFullscreenShellV1PresentSurfaceForModeRequest struct {
 // Opcode returns the request opcode for zwp_fullscreen_shell_v1.present_surface_for_mode in fullscreen_shell_unstable_v1
 func (ZwpFullscreenShellV1PresentSurfaceForModeRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_fullscreen_shell_v1.present_surface_for_mode in fullscreen_shell_unstable_v1
+func (ZwpFullscreenShellV1PresentSurfaceForModeRequest) MessageName() string {
+	return "present_surface_for_mode"
+}
+
 // Ensure ZwpFullscreenShellV1PresentSurfaceForModeRequest implements Message.
 var _ Message = ZwpFullscreenShellV1PresentSurfaceForModeRequest{}
 
@@ -2092,6 +2458,9 @@ type ZwpFullscreenShellV1CapabilityEvent struct {
 
 // Opcode returns the event opcode for zwp_fullscreen_shell_v1.capability in fullscreen_shell_unstable_v1
 func (ZwpFullscreenShellV1CapabilityEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_fullscreen_shell_v1.capability in fullscreen_shell_unstable_v1
+func (ZwpFullscreenShellV1CapabilityEvent) MessageName() string { return "capability" }
 
 // Ensure ZwpFullscreenShellV1CapabilityEvent implements Message.
 var _ Message = ZwpFullscreenShellV1CapabilityEvent{}
@@ -2148,6 +2517,133 @@ type ZwpFullscreenShellV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpFullscreenShellV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpFullscreenShellV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpFullscreenShellV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpFullscreenShellV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpFullscreenShellV1CapabilityEvent{}
+	default:
+		return nil
+	}
+}
+
+// Release requests to release the wl_fullscreen_shell interface
+//
+// Release the binding from the wl_fullscreen_shell interface.
+//
+// This destroys the server-side object and frees this binding.  If
+// the client binds to wl_fullscreen_shell multiple times, it may wish
+// to free some of those bindings.
+func (proxy *ZwpFullscreenShellV1) Release(connection Connection) (err error) {
+	request := ZwpFullscreenShellV1ReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// PresentSurface requests to present surface for display
+//
+// Present a surface on the given output.
+//
+// If the output is null, the compositor will present the surface on
+// whatever display (or displays) it thinks best.  In particular, this
+// may replace any or all surfaces currently presented so it should
+// not be used in combination with placing surfaces on specific
+// outputs.
+//
+// The method parameter is a hint to the compositor for how the surface
+// is to be presented.  In particular, it tells the compositor how to
+// handle a size mismatch between the presented surface and the
+// output.  The compositor is free to ignore this parameter.
+//
+// The "zoom", "zoom_crop", and "stretch" methods imply a scaling
+// operation on the surface.  This will override any kind of output
+// scaling, so the buffer_scale property of the surface is effectively
+// ignored.
+//
+// This request gives the surface the role of a fullscreen shell surface.
+// If the surface already has another role, it raises a role protocol
+// error.
+func (proxy *ZwpFullscreenShellV1) PresentSurface(connection Connection, aSurface ObjectID, aMethod uint32, aOutput ObjectID) (err error) {
+	request := ZwpFullscreenShellV1PresentSurfaceRequest{
+		Surface: aSurface,
+		Method:  aMethod,
+		Output:  aOutput,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// PresentSurfaceForMode requests to present surface for display at a particular mode
+//
+// Presents a surface on the given output for a particular mode.
+//
+// If the current size of the output differs from that of the surface,
+// the compositor will attempt to change the size of the output to
+// match the surface.  The result of the mode-switch operation will be
+// returned via the provided wl_fullscreen_shell_mode_feedback object.
+//
+// If the current output mode matches the one requested or if the
+// compositor successfully switches the mode to match the surface,
+// then the mode_successful event will be sent and the output will
+// contain the contents of the given surface.  If the compositor
+// cannot match the output size to the surface size, the mode_failed
+// will be sent and the output will contain the contents of the
+// previously presented surface (if any).  If another surface is
+// presented on the given output before either of these has a chance
+// to happen, the present_cancelled event will be sent.
+//
+// Due to race conditions and other issues unknown to the client, no
+// mode-switch operation is guaranteed to succeed.  However, if the
+// mode is one advertised by wl_output.mode or if the compositor
+// advertises the ARBITRARY_MODES capability, then the client should
+// expect that the mode-switch operation will usually succeed.
+//
+// If the size of the presented surface changes, the resulting output
+// is undefined.  The compositor may attempt to change the output mode
+// to compensate.  However, there is no guarantee that a suitable mode
+// will be found and the client has no way to be notified of success
+// or failure.
+//
+// The framerate parameter specifies the desired framerate for the
+// output in mHz.  The compositor is free to ignore this parameter.  A
+// value of 0 indicates that the client has no preference.
+//
+// If the value of wl_output.scale differs from wl_surface.buffer_scale,
+// then the compositor may choose a mode that matches either the buffer
+// size or the surface size.  In either case, the surface will fill the
+// output.
+//
+// This request gives the surface the role of a fullscreen shell surface.
+// If the surface already has another role, it raises a role protocol
+// error.
+func (proxy *ZwpFullscreenShellV1) PresentSurfaceForMode(connection Connection, aSurface ObjectID, aOutput ObjectID, aFramerate int32) (aFeedback *ZwpFullscreenShellModeFeedbackV1, err error) {
+	aFeedback = &ZwpFullscreenShellModeFeedbackV1{connection.NewID()}
+	request := ZwpFullscreenShellV1PresentSurfaceForModeRequest{
+		Surface:   aSurface,
+		Output:    aOutput,
+		Framerate: aFramerate,
+		Feedback:  aFeedback.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aFeedback)
+	}
+	return
+}
+
+// Ensure ZwpFullscreenShellV1 implements Proxy.
+var _ Proxy = &ZwpFullscreenShellV1{}
+
 // #endregion Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_v1
 
 // ----------------------------------------------------------------------------
@@ -2166,6 +2662,11 @@ type ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent struct {
 
 // Opcode returns the event opcode for zwp_fullscreen_shell_mode_feedback_v1.mode_successful in fullscreen_shell_unstable_v1
 func (ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_fullscreen_shell_mode_feedback_v1.mode_successful in fullscreen_shell_unstable_v1
+func (ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent) MessageName() string {
+	return "mode_successful"
+}
 
 // Ensure ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent implements Message.
 var _ Message = ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}
@@ -2192,6 +2693,9 @@ type ZwpFullscreenShellModeFeedbackV1ModeFailedEvent struct {
 // Opcode returns the event opcode for zwp_fullscreen_shell_mode_feedback_v1.mode_failed in fullscreen_shell_unstable_v1
 func (ZwpFullscreenShellModeFeedbackV1ModeFailedEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_fullscreen_shell_mode_feedback_v1.mode_failed in fullscreen_shell_unstable_v1
+func (ZwpFullscreenShellModeFeedbackV1ModeFailedEvent) MessageName() string { return "mode_failed" }
+
 // Ensure ZwpFullscreenShellModeFeedbackV1ModeFailedEvent implements Message.
 var _ Message = ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}
 
@@ -2217,6 +2721,11 @@ type ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent struct {
 // Opcode returns the event opcode for zwp_fullscreen_shell_mode_feedback_v1.present_cancelled in fullscreen_shell_unstable_v1
 func (ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_fullscreen_shell_mode_feedback_v1.present_cancelled in fullscreen_shell_unstable_v1
+func (ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) MessageName() string {
+	return "present_cancelled"
+}
+
 // Ensure ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent implements Message.
 var _ Message = ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
 
@@ -2231,6 +2740,33 @@ var _ Event = &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
 type ZwpFullscreenShellModeFeedbackV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpFullscreenShellModeFeedbackV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpFullscreenShellModeFeedbackV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpFullscreenShellModeFeedbackV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpFullscreenShellModeFeedbackV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}
+	case 1:
+		return &ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}
+	case 2:
+		return &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
+	default:
+		return nil
+	}
+}
+
+// Ensure ZwpFullscreenShellModeFeedbackV1 implements Proxy.
+var _ Proxy = &ZwpFullscreenShellModeFeedbackV1{}
 
 // #endregion Interface fullscreen_shell_unstable_v1.zwp_fullscreen_shell_mode_feedback_v1
 
@@ -2251,6 +2787,9 @@ type ZwpIdleInhibitManagerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_idle_inhibit_manager_v1.destroy in idle_inhibit_unstable_v1
 func (ZwpIdleInhibitManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_idle_inhibit_manager_v1.destroy in idle_inhibit_unstable_v1
+func (ZwpIdleInhibitManagerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpIdleInhibitManagerV1DestroyRequest implements Message.
 var _ Message = ZwpIdleInhibitManagerV1DestroyRequest{}
@@ -2275,6 +2814,9 @@ type ZwpIdleInhibitManagerV1CreateInhibitorRequest struct {
 
 // Opcode returns the request opcode for zwp_idle_inhibit_manager_v1.create_inhibitor in idle_inhibit_unstable_v1
 func (ZwpIdleInhibitManagerV1CreateInhibitorRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_idle_inhibit_manager_v1.create_inhibitor in idle_inhibit_unstable_v1
+func (ZwpIdleInhibitManagerV1CreateInhibitorRequest) MessageName() string { return "create_inhibitor" }
 
 // Ensure ZwpIdleInhibitManagerV1CreateInhibitorRequest implements Message.
 var _ Message = ZwpIdleInhibitManagerV1CreateInhibitorRequest{}
@@ -2311,6 +2853,52 @@ type ZwpIdleInhibitManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpIdleInhibitManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpIdleInhibitManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpIdleInhibitManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpIdleInhibitManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the idle inhibitor object
+//
+// Destroy the inhibit manager.
+func (proxy *ZwpIdleInhibitManagerV1) Destroy(connection Connection) (err error) {
+	request := ZwpIdleInhibitManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// CreateInhibitor requests to create a new inhibitor object
+//
+// Create a new inhibitor object associated with the given surface.
+func (proxy *ZwpIdleInhibitManagerV1) CreateInhibitor(connection Connection, aSurface ObjectID) (aID *ZwpIdleInhibitorV1, err error) {
+	aID = &ZwpIdleInhibitorV1{connection.NewID()}
+	request := ZwpIdleInhibitManagerV1CreateInhibitorRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpIdleInhibitManagerV1 implements Proxy.
+var _ Proxy = &ZwpIdleInhibitManagerV1{}
+
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibit_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -2324,6 +2912,9 @@ type ZwpIdleInhibitorV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_idle_inhibitor_v1.destroy in idle_inhibit_unstable_v1
 func (ZwpIdleInhibitorV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_idle_inhibitor_v1.destroy in idle_inhibit_unstable_v1
+func (ZwpIdleInhibitorV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpIdleInhibitorV1DestroyRequest implements Message.
 var _ Message = ZwpIdleInhibitorV1DestroyRequest{}
@@ -2354,6 +2945,36 @@ type ZwpIdleInhibitorV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpIdleInhibitorV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpIdleInhibitorV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpIdleInhibitorV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpIdleInhibitorV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the idle inhibitor object
+//
+// Remove the inhibitor effect from the associated wl_surface.
+func (proxy *ZwpIdleInhibitorV1) Destroy(connection Connection) (err error) {
+	request := ZwpIdleInhibitorV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpIdleInhibitorV1 implements Proxy.
+var _ Proxy = &ZwpIdleInhibitorV1{}
+
 // #endregion Interface idle_inhibit_unstable_v1.zwp_idle_inhibitor_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2370,6 +2991,9 @@ type ZwpInputMethodContextV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.destroy in input_method_unstable_v1
 func (ZwpInputMethodContextV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.destroy in input_method_unstable_v1
+func (ZwpInputMethodContextV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpInputMethodContextV1DestroyRequest implements Message.
 var _ Message = ZwpInputMethodContextV1DestroyRequest{}
@@ -2402,6 +3026,9 @@ type ZwpInputMethodContextV1CommitStringRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.commit_string in input_method_unstable_v1
 func (ZwpInputMethodContextV1CommitStringRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.commit_string in input_method_unstable_v1
+func (ZwpInputMethodContextV1CommitStringRequest) MessageName() string { return "commit_string" }
 
 // Ensure ZwpInputMethodContextV1CommitStringRequest implements Message.
 var _ Message = ZwpInputMethodContextV1CommitStringRequest{}
@@ -2440,6 +3067,9 @@ type ZwpInputMethodContextV1PreeditStringRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.preedit_string in input_method_unstable_v1
 func (ZwpInputMethodContextV1PreeditStringRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.preedit_string in input_method_unstable_v1
+func (ZwpInputMethodContextV1PreeditStringRequest) MessageName() string { return "preedit_string" }
 
 // Ensure ZwpInputMethodContextV1PreeditStringRequest implements Message.
 var _ Message = ZwpInputMethodContextV1PreeditStringRequest{}
@@ -2480,6 +3110,9 @@ type ZwpInputMethodContextV1PreeditStylingRequest struct {
 // Opcode returns the request opcode for zwp_input_method_context_v1.preedit_styling in input_method_unstable_v1
 func (ZwpInputMethodContextV1PreeditStylingRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for zwp_input_method_context_v1.preedit_styling in input_method_unstable_v1
+func (ZwpInputMethodContextV1PreeditStylingRequest) MessageName() string { return "preedit_styling" }
+
 // Ensure ZwpInputMethodContextV1PreeditStylingRequest implements Message.
 var _ Message = ZwpInputMethodContextV1PreeditStylingRequest{}
 
@@ -2515,6 +3148,9 @@ type ZwpInputMethodContextV1PreeditCursorRequest struct {
 // Opcode returns the request opcode for zwp_input_method_context_v1.preedit_cursor in input_method_unstable_v1
 func (ZwpInputMethodContextV1PreeditCursorRequest) Opcode() uint16 { return 4 }
 
+// MessageName returns the request name for zwp_input_method_context_v1.preedit_cursor in input_method_unstable_v1
+func (ZwpInputMethodContextV1PreeditCursorRequest) MessageName() string { return "preedit_cursor" }
+
 // Ensure ZwpInputMethodContextV1PreeditCursorRequest implements Message.
 var _ Message = ZwpInputMethodContextV1PreeditCursorRequest{}
 
@@ -2543,6 +3179,11 @@ type ZwpInputMethodContextV1DeleteSurroundingTextRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.delete_surrounding_text in input_method_unstable_v1
 func (ZwpInputMethodContextV1DeleteSurroundingTextRequest) Opcode() uint16 { return 5 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.delete_surrounding_text in input_method_unstable_v1
+func (ZwpInputMethodContextV1DeleteSurroundingTextRequest) MessageName() string {
+	return "delete_surrounding_text"
+}
 
 // Ensure ZwpInputMethodContextV1DeleteSurroundingTextRequest implements Message.
 var _ Message = ZwpInputMethodContextV1DeleteSurroundingTextRequest{}
@@ -2582,6 +3223,9 @@ type ZwpInputMethodContextV1CursorPositionRequest struct {
 // Opcode returns the request opcode for zwp_input_method_context_v1.cursor_position in input_method_unstable_v1
 func (ZwpInputMethodContextV1CursorPositionRequest) Opcode() uint16 { return 6 }
 
+// MessageName returns the request name for zwp_input_method_context_v1.cursor_position in input_method_unstable_v1
+func (ZwpInputMethodContextV1CursorPositionRequest) MessageName() string { return "cursor_position" }
+
 // Ensure ZwpInputMethodContextV1CursorPositionRequest implements Message.
 var _ Message = ZwpInputMethodContextV1CursorPositionRequest{}
 
@@ -2605,6 +3249,9 @@ type ZwpInputMethodContextV1ModifiersMapRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.modifiers_map in input_method_unstable_v1
 func (ZwpInputMethodContextV1ModifiersMapRequest) Opcode() uint16 { return 7 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.modifiers_map in input_method_unstable_v1
+func (ZwpInputMethodContextV1ModifiersMapRequest) MessageName() string { return "modifiers_map" }
 
 // Ensure ZwpInputMethodContextV1ModifiersMapRequest implements Message.
 var _ Message = ZwpInputMethodContextV1ModifiersMapRequest{}
@@ -2641,6 +3288,9 @@ type ZwpInputMethodContextV1KeysymRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.keysym in input_method_unstable_v1
 func (ZwpInputMethodContextV1KeysymRequest) Opcode() uint16 { return 8 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.keysym in input_method_unstable_v1
+func (ZwpInputMethodContextV1KeysymRequest) MessageName() string { return "keysym" }
 
 // Ensure ZwpInputMethodContextV1KeysymRequest implements Message.
 var _ Message = ZwpInputMethodContextV1KeysymRequest{}
@@ -2681,6 +3331,9 @@ type ZwpInputMethodContextV1GrabKeyboardRequest struct {
 // Opcode returns the request opcode for zwp_input_method_context_v1.grab_keyboard in input_method_unstable_v1
 func (ZwpInputMethodContextV1GrabKeyboardRequest) Opcode() uint16 { return 9 }
 
+// MessageName returns the request name for zwp_input_method_context_v1.grab_keyboard in input_method_unstable_v1
+func (ZwpInputMethodContextV1GrabKeyboardRequest) MessageName() string { return "grab_keyboard" }
+
 // Ensure ZwpInputMethodContextV1GrabKeyboardRequest implements Message.
 var _ Message = ZwpInputMethodContextV1GrabKeyboardRequest{}
 
@@ -2719,6 +3372,9 @@ type ZwpInputMethodContextV1KeyRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.key in input_method_unstable_v1
 func (ZwpInputMethodContextV1KeyRequest) Opcode() uint16 { return 10 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.key in input_method_unstable_v1
+func (ZwpInputMethodContextV1KeyRequest) MessageName() string { return "key" }
 
 // Ensure ZwpInputMethodContextV1KeyRequest implements Message.
 var _ Message = ZwpInputMethodContextV1KeyRequest{}
@@ -2769,6 +3425,9 @@ type ZwpInputMethodContextV1ModifiersRequest struct {
 // Opcode returns the request opcode for zwp_input_method_context_v1.modifiers in input_method_unstable_v1
 func (ZwpInputMethodContextV1ModifiersRequest) Opcode() uint16 { return 11 }
 
+// MessageName returns the request name for zwp_input_method_context_v1.modifiers in input_method_unstable_v1
+func (ZwpInputMethodContextV1ModifiersRequest) MessageName() string { return "modifiers" }
+
 // Ensure ZwpInputMethodContextV1ModifiersRequest implements Message.
 var _ Message = ZwpInputMethodContextV1ModifiersRequest{}
 
@@ -2805,6 +3464,9 @@ type ZwpInputMethodContextV1LanguageRequest struct {
 // Opcode returns the request opcode for zwp_input_method_context_v1.language in input_method_unstable_v1
 func (ZwpInputMethodContextV1LanguageRequest) Opcode() uint16 { return 12 }
 
+// MessageName returns the request name for zwp_input_method_context_v1.language in input_method_unstable_v1
+func (ZwpInputMethodContextV1LanguageRequest) MessageName() string { return "language" }
+
 // Ensure ZwpInputMethodContextV1LanguageRequest implements Message.
 var _ Message = ZwpInputMethodContextV1LanguageRequest{}
 
@@ -2831,6 +3493,9 @@ type ZwpInputMethodContextV1TextDirectionRequest struct {
 
 // Opcode returns the request opcode for zwp_input_method_context_v1.text_direction in input_method_unstable_v1
 func (ZwpInputMethodContextV1TextDirectionRequest) Opcode() uint16 { return 13 }
+
+// MessageName returns the request name for zwp_input_method_context_v1.text_direction in input_method_unstable_v1
+func (ZwpInputMethodContextV1TextDirectionRequest) MessageName() string { return "text_direction" }
 
 // Ensure ZwpInputMethodContextV1TextDirectionRequest implements Message.
 var _ Message = ZwpInputMethodContextV1TextDirectionRequest{}
@@ -2867,6 +3532,9 @@ type ZwpInputMethodContextV1SurroundingTextEvent struct {
 // Opcode returns the event opcode for zwp_input_method_context_v1.surrounding_text in input_method_unstable_v1
 func (ZwpInputMethodContextV1SurroundingTextEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_input_method_context_v1.surrounding_text in input_method_unstable_v1
+func (ZwpInputMethodContextV1SurroundingTextEvent) MessageName() string { return "surrounding_text" }
+
 // Ensure ZwpInputMethodContextV1SurroundingTextEvent implements Message.
 var _ Message = ZwpInputMethodContextV1SurroundingTextEvent{}
 
@@ -2899,6 +3567,9 @@ type ZwpInputMethodContextV1ResetEvent struct {
 // Opcode returns the event opcode for zwp_input_method_context_v1.reset in input_method_unstable_v1
 func (ZwpInputMethodContextV1ResetEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_input_method_context_v1.reset in input_method_unstable_v1
+func (ZwpInputMethodContextV1ResetEvent) MessageName() string { return "reset" }
+
 // Ensure ZwpInputMethodContextV1ResetEvent implements Message.
 var _ Message = ZwpInputMethodContextV1ResetEvent{}
 
@@ -2918,6 +3589,9 @@ type ZwpInputMethodContextV1ContentTypeEvent struct {
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.content_type in input_method_unstable_v1
 func (ZwpInputMethodContextV1ContentTypeEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for zwp_input_method_context_v1.content_type in input_method_unstable_v1
+func (ZwpInputMethodContextV1ContentTypeEvent) MessageName() string { return "content_type" }
 
 // Ensure ZwpInputMethodContextV1ContentTypeEvent implements Message.
 var _ Message = ZwpInputMethodContextV1ContentTypeEvent{}
@@ -2949,6 +3623,9 @@ type ZwpInputMethodContextV1InvokeActionEvent struct {
 // Opcode returns the event opcode for zwp_input_method_context_v1.invoke_action in input_method_unstable_v1
 func (ZwpInputMethodContextV1InvokeActionEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_input_method_context_v1.invoke_action in input_method_unstable_v1
+func (ZwpInputMethodContextV1InvokeActionEvent) MessageName() string { return "invoke_action" }
+
 // Ensure ZwpInputMethodContextV1InvokeActionEvent implements Message.
 var _ Message = ZwpInputMethodContextV1InvokeActionEvent{}
 
@@ -2978,6 +3655,9 @@ type ZwpInputMethodContextV1CommitStateEvent struct {
 // Opcode returns the event opcode for zwp_input_method_context_v1.commit_state in input_method_unstable_v1
 func (ZwpInputMethodContextV1CommitStateEvent) Opcode() uint16 { return 4 }
 
+// MessageName returns the event name for zwp_input_method_context_v1.commit_state in input_method_unstable_v1
+func (ZwpInputMethodContextV1CommitStateEvent) MessageName() string { return "commit_state" }
+
 // Ensure ZwpInputMethodContextV1CommitStateEvent implements Message.
 var _ Message = ZwpInputMethodContextV1CommitStateEvent{}
 
@@ -3000,6 +3680,11 @@ type ZwpInputMethodContextV1PreferredLanguageEvent struct {
 
 // Opcode returns the event opcode for zwp_input_method_context_v1.preferred_language in input_method_unstable_v1
 func (ZwpInputMethodContextV1PreferredLanguageEvent) Opcode() uint16 { return 5 }
+
+// MessageName returns the event name for zwp_input_method_context_v1.preferred_language in input_method_unstable_v1
+func (ZwpInputMethodContextV1PreferredLanguageEvent) MessageName() string {
+	return "preferred_language"
+}
 
 // Ensure ZwpInputMethodContextV1PreferredLanguageEvent implements Message.
 var _ Message = ZwpInputMethodContextV1PreferredLanguageEvent{}
@@ -3046,6 +3731,252 @@ type ZwpInputMethodContextV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpInputMethodContextV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpInputMethodContextV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpInputMethodContextV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpInputMethodContextV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpInputMethodContextV1SurroundingTextEvent{}
+	case 1:
+		return &ZwpInputMethodContextV1ResetEvent{}
+	case 2:
+		return &ZwpInputMethodContextV1ContentTypeEvent{}
+	case 3:
+		return &ZwpInputMethodContextV1InvokeActionEvent{}
+	case 4:
+		return &ZwpInputMethodContextV1CommitStateEvent{}
+	case 5:
+		return &ZwpInputMethodContextV1PreferredLanguageEvent{}
+	default:
+		return nil
+	}
+}
+func (proxy *ZwpInputMethodContextV1) Destroy(connection Connection) (err error) {
+	request := ZwpInputMethodContextV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// CommitString requests to commit string
+//
+// Send the commit string text for insertion to the application.
+//
+// The text to commit could be either just a single character after a key
+// press or the result of some composing (pre-edit). It could be also an
+// empty text when some text should be removed (see
+// delete_surrounding_text) or when the input cursor should be moved (see
+// cursor_position).
+//
+// Any previously set composing text will be removed.
+func (proxy *ZwpInputMethodContextV1) CommitString(connection Connection, aSerial uint32, aText string) (err error) {
+	request := ZwpInputMethodContextV1CommitStringRequest{
+		Serial: aSerial,
+		Text:   aText,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// PreeditString requests to pre-edit string
+//
+// Send the pre-edit string text to the application text input.
+//
+// The commit text can be used to replace the pre-edit text on reset (for
+// example on unfocus).
+//
+// Previously sent preedit_style and preedit_cursor requests are also
+// processed by the text_input.
+func (proxy *ZwpInputMethodContextV1) PreeditString(connection Connection, aSerial uint32, aText string, aCommit string) (err error) {
+	request := ZwpInputMethodContextV1PreeditStringRequest{
+		Serial: aSerial,
+		Text:   aText,
+		Commit: aCommit,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// PreeditStyling requests to pre-edit styling
+//
+// Set the styling information on composing text. The style is applied for
+// length in bytes from index relative to the beginning of
+// the composing text (as byte offset). Multiple styles can
+// be applied to a composing text.
+//
+// This request should be sent before sending a preedit_string request.
+func (proxy *ZwpInputMethodContextV1) PreeditStyling(connection Connection, aIndex uint32, aLength uint32, aStyle uint32) (err error) {
+	request := ZwpInputMethodContextV1PreeditStylingRequest{
+		Index:  aIndex,
+		Length: aLength,
+		Style:  aStyle,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// PreeditCursor requests to pre-edit cursor
+//
+// Set the cursor position inside the composing text (as byte offset)
+// relative to the start of the composing text.
+//
+// When index is negative no cursor should be displayed.
+//
+// This request should be sent before sending a preedit_string request.
+func (proxy *ZwpInputMethodContextV1) PreeditCursor(connection Connection, aIndex int32) (err error) {
+	request := ZwpInputMethodContextV1PreeditCursorRequest{
+		Index: aIndex,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// DeleteSurroundingText requests to delete text
+//
+// Remove the surrounding text.
+//
+// This request will be handled on the text_input side directly following
+// a commit_string request.
+func (proxy *ZwpInputMethodContextV1) DeleteSurroundingText(connection Connection, aIndex int32, aLength uint32) (err error) {
+	request := ZwpInputMethodContextV1DeleteSurroundingTextRequest{
+		Index:  aIndex,
+		Length: aLength,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// CursorPosition requests to set cursor to a new position
+//
+// Set the cursor and anchor to a new position. Index is the new cursor
+// position in bytes (when >= 0 this is relative to the end of the inserted text,
+// otherwise it is relative to the beginning of the inserted text). Anchor is
+// the new anchor position in bytes (when >= 0 this is relative to the end of the
+// inserted text, otherwise it is relative to the beginning of the inserted
+// text). When there should be no selected text, anchor should be the same
+// as index.
+//
+// This request will be handled on the text_input side directly following
+// a commit_string request.
+func (proxy *ZwpInputMethodContextV1) CursorPosition(connection Connection, aIndex int32, aAnchor int32) (err error) {
+	request := ZwpInputMethodContextV1CursorPositionRequest{
+		Index:  aIndex,
+		Anchor: aAnchor,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+func (proxy *ZwpInputMethodContextV1) ModifiersMap(connection Connection, aMap []byte) (err error) {
+	request := ZwpInputMethodContextV1ModifiersMapRequest{
+		Map: aMap,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Keysym requests to keysym
+//
+// Notify when a key event was sent. Key events should not be used for
+// normal text input operations, which should be done with commit_string,
+// delete_surrounding_text, etc. The key event follows the wl_keyboard key
+// event convention. Sym is an XKB keysym, state is a wl_keyboard key_state.
+func (proxy *ZwpInputMethodContextV1) Keysym(connection Connection, aSerial uint32, aTime uint32, aSym uint32, aState uint32, aModifiers uint32) (err error) {
+	request := ZwpInputMethodContextV1KeysymRequest{
+		Serial:    aSerial,
+		Time:      aTime,
+		Sym:       aSym,
+		State:     aState,
+		Modifiers: aModifiers,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GrabKeyboard requests to grab hardware keyboard
+//
+// Allow an input method to receive hardware keyboard input and process
+// key events to generate text events (with pre-edit) over the wire. This
+// allows input methods which compose multiple key events for inputting
+// text like it is done for CJK languages.
+func (proxy *ZwpInputMethodContextV1) GrabKeyboard(connection Connection) (aKeyboard *WlKeyboard, err error) {
+	aKeyboard = &WlKeyboard{connection.NewID()}
+	request := ZwpInputMethodContextV1GrabKeyboardRequest{
+		Keyboard: aKeyboard.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aKeyboard)
+	}
+	return
+}
+
+// Key requests to forward key event
+//
+// Forward a wl_keyboard::key event to the client that was not processed
+// by the input method itself. Should be used when filtering key events
+// with grab_keyboard.  The arguments should be the ones from the
+// wl_keyboard::key event.
+//
+// For generating custom key events use the keysym request instead.
+func (proxy *ZwpInputMethodContextV1) Key(connection Connection, aSerial uint32, aTime uint32, aKey uint32, aState uint32) (err error) {
+	request := ZwpInputMethodContextV1KeyRequest{
+		Serial: aSerial,
+		Time:   aTime,
+		Key:    aKey,
+		State:  aState,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Modifiers requests to forward modifiers event
+//
+// Forward a wl_keyboard::modifiers event to the client that was not
+// processed by the input method itself.  Should be used when filtering
+// key events with grab_keyboard. The arguments should be the ones
+// from the wl_keyboard::modifiers event.
+func (proxy *ZwpInputMethodContextV1) Modifiers(connection Connection, aSerial uint32, aModsDepressed uint32, aModsLatched uint32, aModsLocked uint32, aGroup uint32) (err error) {
+	request := ZwpInputMethodContextV1ModifiersRequest{
+		Serial:        aSerial,
+		ModsDepressed: aModsDepressed,
+		ModsLatched:   aModsLatched,
+		ModsLocked:    aModsLocked,
+		Group:         aGroup,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+func (proxy *ZwpInputMethodContextV1) Language(connection Connection, aSerial uint32, aLanguage string) (err error) {
+	request := ZwpInputMethodContextV1LanguageRequest{
+		Serial:   aSerial,
+		Language: aLanguage,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+func (proxy *ZwpInputMethodContextV1) TextDirection(connection Connection, aSerial uint32, aDirection uint32) (err error) {
+	request := ZwpInputMethodContextV1TextDirectionRequest{
+		Serial:    aSerial,
+		Direction: aDirection,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpInputMethodContextV1 implements Proxy.
+var _ Proxy = &ZwpInputMethodContextV1{}
+
 // #endregion Interface input_method_unstable_v1.zwp_input_method_context_v1
 
 // ----------------------------------------------------------------------------
@@ -3061,6 +3992,9 @@ type ZwpInputMethodV1ActivateEvent struct {
 
 // Opcode returns the event opcode for zwp_input_method_v1.activate in input_method_unstable_v1
 func (ZwpInputMethodV1ActivateEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_input_method_v1.activate in input_method_unstable_v1
+func (ZwpInputMethodV1ActivateEvent) MessageName() string { return "activate" }
 
 // Ensure ZwpInputMethodV1ActivateEvent implements Message.
 var _ Message = ZwpInputMethodV1ActivateEvent{}
@@ -3090,6 +4024,9 @@ type ZwpInputMethodV1DeactivateEvent struct {
 // Opcode returns the event opcode for zwp_input_method_v1.deactivate in input_method_unstable_v1
 func (ZwpInputMethodV1DeactivateEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_input_method_v1.deactivate in input_method_unstable_v1
+func (ZwpInputMethodV1DeactivateEvent) MessageName() string { return "deactivate" }
+
 // Ensure ZwpInputMethodV1DeactivateEvent implements Message.
 var _ Message = ZwpInputMethodV1DeactivateEvent{}
 
@@ -3116,6 +4053,31 @@ type ZwpInputMethodV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpInputMethodV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpInputMethodV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpInputMethodV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpInputMethodV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpInputMethodV1ActivateEvent{}
+	case 1:
+		return &ZwpInputMethodV1DeactivateEvent{}
+	default:
+		return nil
+	}
+}
+
+// Ensure ZwpInputMethodV1 implements Proxy.
+var _ Proxy = &ZwpInputMethodV1{}
+
 // #endregion Interface input_method_unstable_v1.zwp_input_method_v1
 
 // ----------------------------------------------------------------------------
@@ -3129,6 +4091,11 @@ type ZwpInputPanelV1GetInputPanelSurfaceRequest struct {
 
 // Opcode returns the request opcode for zwp_input_panel_v1.get_input_panel_surface in input_method_unstable_v1
 func (ZwpInputPanelV1GetInputPanelSurfaceRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_input_panel_v1.get_input_panel_surface in input_method_unstable_v1
+func (ZwpInputPanelV1GetInputPanelSurfaceRequest) MessageName() string {
+	return "get_input_panel_surface"
+}
 
 // Ensure ZwpInputPanelV1GetInputPanelSurfaceRequest implements Message.
 var _ Message = ZwpInputPanelV1GetInputPanelSurfaceRequest{}
@@ -3154,6 +4121,39 @@ type ZwpInputPanelV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpInputPanelV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpInputPanelV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpInputPanelV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpInputPanelV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+func (proxy *ZwpInputPanelV1) GetInputPanelSurface(connection Connection, aSurface ObjectID) (aID *ZwpInputPanelSurfaceV1, err error) {
+	aID = &ZwpInputPanelSurfaceV1{connection.NewID()}
+	request := ZwpInputPanelV1GetInputPanelSurfaceRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpInputPanelV1 implements Proxy.
+var _ Proxy = &ZwpInputPanelV1{}
+
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_v1
 
 // ----------------------------------------------------------------------------
@@ -3178,6 +4178,9 @@ type ZwpInputPanelSurfaceV1SetToplevelRequest struct {
 
 // Opcode returns the request opcode for zwp_input_panel_surface_v1.set_toplevel in input_method_unstable_v1
 func (ZwpInputPanelSurfaceV1SetToplevelRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_input_panel_surface_v1.set_toplevel in input_method_unstable_v1
+func (ZwpInputPanelSurfaceV1SetToplevelRequest) MessageName() string { return "set_toplevel" }
 
 // Ensure ZwpInputPanelSurfaceV1SetToplevelRequest implements Message.
 var _ Message = ZwpInputPanelSurfaceV1SetToplevelRequest{}
@@ -3208,6 +4211,9 @@ type ZwpInputPanelSurfaceV1SetOverlayPanelRequest struct {
 // Opcode returns the request opcode for zwp_input_panel_surface_v1.set_overlay_panel in input_method_unstable_v1
 func (ZwpInputPanelSurfaceV1SetOverlayPanelRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_input_panel_surface_v1.set_overlay_panel in input_method_unstable_v1
+func (ZwpInputPanelSurfaceV1SetOverlayPanelRequest) MessageName() string { return "set_overlay_panel" }
+
 // Ensure ZwpInputPanelSurfaceV1SetOverlayPanelRequest implements Message.
 var _ Message = ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
 
@@ -3222,6 +4228,53 @@ var _ Request = &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
 type ZwpInputPanelSurfaceV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpInputPanelSurfaceV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpInputPanelSurfaceV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpInputPanelSurfaceV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpInputPanelSurfaceV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// SetToplevel requests to set the surface type as a keyboard
+//
+// Set the input_panel_surface type to keyboard.
+//
+// A keyboard surface is only shown when a text input is active.
+func (proxy *ZwpInputPanelSurfaceV1) SetToplevel(connection Connection, aOutput ObjectID, aPosition uint32) (err error) {
+	request := ZwpInputPanelSurfaceV1SetToplevelRequest{
+		Output:   aOutput,
+		Position: aPosition,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetOverlayPanel requests to set the surface type as an overlay panel
+//
+// Set the input_panel_surface to be an overlay panel.
+//
+// This is shown near the input cursor above the application window when
+// a text input is active.
+func (proxy *ZwpInputPanelSurfaceV1) SetOverlayPanel(connection Connection) (err error) {
+	request := ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpInputPanelSurfaceV1 implements Proxy.
+var _ Proxy = &ZwpInputPanelSurfaceV1{}
 
 // #endregion Interface input_method_unstable_v1.zwp_input_panel_surface_v1
 
@@ -3244,6 +4297,9 @@ type ZwpInputTimestampsManagerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.destroy in input_timestamps_unstable_v1
 func (ZwpInputTimestampsManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_input_timestamps_manager_v1.destroy in input_timestamps_unstable_v1
+func (ZwpInputTimestampsManagerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpInputTimestampsManagerV1DestroyRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1DestroyRequest{}
@@ -3275,6 +4331,11 @@ type ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest struct {
 
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.get_keyboard_timestamps in input_timestamps_unstable_v1
 func (ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_input_timestamps_manager_v1.get_keyboard_timestamps in input_timestamps_unstable_v1
+func (ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest) MessageName() string {
+	return "get_keyboard_timestamps"
+}
 
 // Ensure ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}
@@ -3313,6 +4374,11 @@ type ZwpInputTimestampsManagerV1GetPointerTimestampsRequest struct {
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.get_pointer_timestamps in input_timestamps_unstable_v1
 func (ZwpInputTimestampsManagerV1GetPointerTimestampsRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_input_timestamps_manager_v1.get_pointer_timestamps in input_timestamps_unstable_v1
+func (ZwpInputTimestampsManagerV1GetPointerTimestampsRequest) MessageName() string {
+	return "get_pointer_timestamps"
+}
+
 // Ensure ZwpInputTimestampsManagerV1GetPointerTimestampsRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{}
 
@@ -3350,6 +4416,11 @@ type ZwpInputTimestampsManagerV1GetTouchTimestampsRequest struct {
 // Opcode returns the request opcode for zwp_input_timestamps_manager_v1.get_touch_timestamps in input_timestamps_unstable_v1
 func (ZwpInputTimestampsManagerV1GetTouchTimestampsRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for zwp_input_timestamps_manager_v1.get_touch_timestamps in input_timestamps_unstable_v1
+func (ZwpInputTimestampsManagerV1GetTouchTimestampsRequest) MessageName() string {
+	return "get_touch_timestamps"
+}
+
 // Ensure ZwpInputTimestampsManagerV1GetTouchTimestampsRequest implements Message.
 var _ Message = ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}
 
@@ -3375,6 +4446,107 @@ type ZwpInputTimestampsManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpInputTimestampsManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpInputTimestampsManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpInputTimestampsManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpInputTimestampsManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the input timestamps manager object
+//
+// Informs the server that the client will no longer be using this
+// protocol object. Existing objects created by this object are not
+// affected.
+func (proxy *ZwpInputTimestampsManagerV1) Destroy(connection Connection) (err error) {
+	request := ZwpInputTimestampsManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetKeyboardTimestamps requests to subscribe to high-resolution keyboard timestamp events
+//
+// Creates a new input timestamps object that represents a subscription
+// to high-resolution timestamp events for all wl_keyboard events that
+// carry a timestamp.
+//
+// If the associated wl_keyboard object is invalidated, either through
+// client action (e.g. release) or server-side changes, the input
+// timestamps object becomes inert and the client should destroy it
+// by calling zwp_input_timestamps_v1.destroy.
+func (proxy *ZwpInputTimestampsManagerV1) GetKeyboardTimestamps(connection Connection, aKeyboard ObjectID) (aID *ZwpInputTimestampsV1, err error) {
+	aID = &ZwpInputTimestampsV1{connection.NewID()}
+	request := ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{
+		ID:       aID.id,
+		Keyboard: aKeyboard,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetPointerTimestamps requests to subscribe to high-resolution pointer timestamp events
+//
+// Creates a new input timestamps object that represents a subscription
+// to high-resolution timestamp events for all wl_pointer events that
+// carry a timestamp.
+//
+// If the associated wl_pointer object is invalidated, either through
+// client action (e.g. release) or server-side changes, the input
+// timestamps object becomes inert and the client should destroy it
+// by calling zwp_input_timestamps_v1.destroy.
+func (proxy *ZwpInputTimestampsManagerV1) GetPointerTimestamps(connection Connection, aPointer ObjectID) (aID *ZwpInputTimestampsV1, err error) {
+	aID = &ZwpInputTimestampsV1{connection.NewID()}
+	request := ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{
+		ID:      aID.id,
+		Pointer: aPointer,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetTouchTimestamps requests to subscribe to high-resolution touch timestamp events
+//
+// Creates a new input timestamps object that represents a subscription
+// to high-resolution timestamp events for all wl_touch events that
+// carry a timestamp.
+//
+// If the associated wl_touch object becomes invalid, either through
+// client action (e.g. release) or server-side changes, the input
+// timestamps object becomes inert and the client should destroy it
+// by calling zwp_input_timestamps_v1.destroy.
+func (proxy *ZwpInputTimestampsManagerV1) GetTouchTimestamps(connection Connection, aTouch ObjectID) (aID *ZwpInputTimestampsV1, err error) {
+	aID = &ZwpInputTimestampsV1{connection.NewID()}
+	request := ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{
+		ID:    aID.id,
+		Touch: aTouch,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpInputTimestampsManagerV1 implements Proxy.
+var _ Proxy = &ZwpInputTimestampsManagerV1{}
+
 // #endregion Interface input_timestamps_unstable_v1.zwp_input_timestamps_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -3390,6 +4562,9 @@ type ZwpInputTimestampsV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_input_timestamps_v1.destroy in input_timestamps_unstable_v1
 func (ZwpInputTimestampsV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_input_timestamps_v1.destroy in input_timestamps_unstable_v1
+func (ZwpInputTimestampsV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpInputTimestampsV1DestroyRequest implements Message.
 var _ Message = ZwpInputTimestampsV1DestroyRequest{}
@@ -3432,6 +4607,9 @@ type ZwpInputTimestampsV1TimestampEvent struct {
 // Opcode returns the event opcode for zwp_input_timestamps_v1.timestamp in input_timestamps_unstable_v1
 func (ZwpInputTimestampsV1TimestampEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_input_timestamps_v1.timestamp in input_timestamps_unstable_v1
+func (ZwpInputTimestampsV1TimestampEvent) MessageName() string { return "timestamp" }
+
 // Ensure ZwpInputTimestampsV1TimestampEvent implements Message.
 var _ Message = ZwpInputTimestampsV1TimestampEvent{}
 
@@ -3467,6 +4645,40 @@ type ZwpInputTimestampsV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpInputTimestampsV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpInputTimestampsV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpInputTimestampsV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpInputTimestampsV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpInputTimestampsV1TimestampEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the input timestamps object
+//
+// Informs the server that the client will no longer be using this
+// protocol object. After the server processes the request, no more
+// timestamp events will be emitted.
+func (proxy *ZwpInputTimestampsV1) Destroy(connection Connection) (err error) {
+	request := ZwpInputTimestampsV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpInputTimestampsV1 implements Proxy.
+var _ Proxy = &ZwpInputTimestampsV1{}
+
 // #endregion Interface input_timestamps_unstable_v1.zwp_input_timestamps_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3493,6 +4705,9 @@ type ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_keyboard_shortcuts_inhibit_manager_v1.destroy in keyboard_shortcuts_inhibit_unstable_v1
 func (ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_keyboard_shortcuts_inhibit_manager_v1.destroy in keyboard_shortcuts_inhibit_unstable_v1
+func (ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}
@@ -3525,6 +4740,11 @@ type ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest struct {
 // Opcode returns the request opcode for zwp_keyboard_shortcuts_inhibit_manager_v1.inhibit_shortcuts in keyboard_shortcuts_inhibit_unstable_v1
 func (ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_keyboard_shortcuts_inhibit_manager_v1.inhibit_shortcuts in keyboard_shortcuts_inhibit_unstable_v1
+func (ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest) MessageName() string {
+	return "inhibit_shortcuts"
+}
+
 // Ensure ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}
 
@@ -3552,6 +4772,57 @@ type ZwpKeyboardShortcutsInhibitManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpKeyboardShortcutsInhibitManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpKeyboardShortcutsInhibitManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpKeyboardShortcutsInhibitManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpKeyboardShortcutsInhibitManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the keyboard shortcuts inhibitor object
+//
+// Destroy the keyboard shortcuts inhibitor manager.
+func (proxy *ZwpKeyboardShortcutsInhibitManagerV1) Destroy(connection Connection) (err error) {
+	request := ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// InhibitShortcuts requests to create a new keyboard shortcuts inhibitor object
+//
+// Create a new keyboard shortcuts inhibitor object associated with
+// the given surface for the given seat.
+//
+// If shortcuts are already inhibited for the specified seat and surface,
+// a protocol error "already_inhibited" is raised by the compositor.
+func (proxy *ZwpKeyboardShortcutsInhibitManagerV1) InhibitShortcuts(connection Connection, aSurface ObjectID, aSeat ObjectID) (aID *ZwpKeyboardShortcutsInhibitorV1, err error) {
+	aID = &ZwpKeyboardShortcutsInhibitorV1{connection.NewID()}
+	request := ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+		Seat:    aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpKeyboardShortcutsInhibitManagerV1 implements Proxy.
+var _ Proxy = &ZwpKeyboardShortcutsInhibitManagerV1{}
+
 // #endregion Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibit_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -3565,6 +4836,9 @@ type ZwpKeyboardShortcutsInhibitorV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_keyboard_shortcuts_inhibitor_v1.destroy in keyboard_shortcuts_inhibit_unstable_v1
 func (ZwpKeyboardShortcutsInhibitorV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_keyboard_shortcuts_inhibitor_v1.destroy in keyboard_shortcuts_inhibit_unstable_v1
+func (ZwpKeyboardShortcutsInhibitorV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpKeyboardShortcutsInhibitorV1DestroyRequest implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}
@@ -3596,6 +4870,9 @@ type ZwpKeyboardShortcutsInhibitorV1ActiveEvent struct {
 // Opcode returns the event opcode for zwp_keyboard_shortcuts_inhibitor_v1.active in keyboard_shortcuts_inhibit_unstable_v1
 func (ZwpKeyboardShortcutsInhibitorV1ActiveEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_keyboard_shortcuts_inhibitor_v1.active in keyboard_shortcuts_inhibit_unstable_v1
+func (ZwpKeyboardShortcutsInhibitorV1ActiveEvent) MessageName() string { return "active" }
+
 // Ensure ZwpKeyboardShortcutsInhibitorV1ActiveEvent implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}
 
@@ -3616,6 +4893,9 @@ type ZwpKeyboardShortcutsInhibitorV1InactiveEvent struct {
 
 // Opcode returns the event opcode for zwp_keyboard_shortcuts_inhibitor_v1.inactive in keyboard_shortcuts_inhibit_unstable_v1
 func (ZwpKeyboardShortcutsInhibitorV1InactiveEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_keyboard_shortcuts_inhibitor_v1.inactive in keyboard_shortcuts_inhibit_unstable_v1
+func (ZwpKeyboardShortcutsInhibitorV1InactiveEvent) MessageName() string { return "inactive" }
 
 // Ensure ZwpKeyboardShortcutsInhibitorV1InactiveEvent implements Message.
 var _ Message = ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
@@ -3667,6 +4947,40 @@ type ZwpKeyboardShortcutsInhibitorV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpKeyboardShortcutsInhibitorV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpKeyboardShortcutsInhibitorV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpKeyboardShortcutsInhibitorV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpKeyboardShortcutsInhibitorV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}
+	case 1:
+		return &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the keyboard shortcuts inhibitor object
+//
+// Remove the keyboard shortcuts inhibitor from the associated wl_surface.
+func (proxy *ZwpKeyboardShortcutsInhibitorV1) Destroy(connection Connection) (err error) {
+	request := ZwpKeyboardShortcutsInhibitorV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpKeyboardShortcutsInhibitorV1 implements Proxy.
+var _ Proxy = &ZwpKeyboardShortcutsInhibitorV1{}
+
 // #endregion Interface keyboard_shortcuts_inhibit_unstable_v1.zwp_keyboard_shortcuts_inhibitor_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3687,6 +5001,9 @@ type ZwpLinuxDmabufV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_linux_dmabuf_v1.destroy in linux_dmabuf_unstable_v1
 func (ZwpLinuxDmabufV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_linux_dmabuf_v1.destroy in linux_dmabuf_unstable_v1
+func (ZwpLinuxDmabufV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpLinuxDmabufV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxDmabufV1DestroyRequest{}
@@ -3712,6 +5029,9 @@ type ZwpLinuxDmabufV1CreateParamsRequest struct {
 
 // Opcode returns the request opcode for zwp_linux_dmabuf_v1.create_params in linux_dmabuf_unstable_v1
 func (ZwpLinuxDmabufV1CreateParamsRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_linux_dmabuf_v1.create_params in linux_dmabuf_unstable_v1
+func (ZwpLinuxDmabufV1CreateParamsRequest) MessageName() string { return "create_params" }
 
 // Ensure ZwpLinuxDmabufV1CreateParamsRequest implements Message.
 var _ Message = ZwpLinuxDmabufV1CreateParamsRequest{}
@@ -3748,6 +5068,9 @@ type ZwpLinuxDmabufV1FormatEvent struct {
 
 // Opcode returns the event opcode for zwp_linux_dmabuf_v1.format in linux_dmabuf_unstable_v1
 func (ZwpLinuxDmabufV1FormatEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_linux_dmabuf_v1.format in linux_dmabuf_unstable_v1
+func (ZwpLinuxDmabufV1FormatEvent) MessageName() string { return "format" }
 
 // Ensure ZwpLinuxDmabufV1FormatEvent implements Message.
 var _ Message = ZwpLinuxDmabufV1FormatEvent{}
@@ -3799,6 +5122,9 @@ type ZwpLinuxDmabufV1ModifierEvent struct {
 
 // Opcode returns the event opcode for zwp_linux_dmabuf_v1.modifier in linux_dmabuf_unstable_v1
 func (ZwpLinuxDmabufV1ModifierEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_linux_dmabuf_v1.modifier in linux_dmabuf_unstable_v1
+func (ZwpLinuxDmabufV1ModifierEvent) MessageName() string { return "modifier" }
 
 // Ensure ZwpLinuxDmabufV1ModifierEvent implements Message.
 var _ Message = ZwpLinuxDmabufV1ModifierEvent{}
@@ -3896,6 +5222,59 @@ type ZwpLinuxDmabufV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpLinuxDmabufV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpLinuxDmabufV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpLinuxDmabufV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpLinuxDmabufV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpLinuxDmabufV1FormatEvent{}
+	case 1:
+		return &ZwpLinuxDmabufV1ModifierEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to unbind the factory
+//
+// Objects created through this interface, especially wl_buffers, will
+// remain valid.
+func (proxy *ZwpLinuxDmabufV1) Destroy(connection Connection) (err error) {
+	request := ZwpLinuxDmabufV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// CreateParams requests to create a temporary object for buffer parameters
+//
+// This temporary object is used to collect multiple dmabuf handles into
+// a single batch to create a wl_buffer. It can only be used once and
+// should be destroyed after a 'created' or 'failed' event has been
+// received.
+func (proxy *ZwpLinuxDmabufV1) CreateParams(connection Connection) (aParamsID *ZwpLinuxBufferParamsV1, err error) {
+	aParamsID = &ZwpLinuxBufferParamsV1{connection.NewID()}
+	request := ZwpLinuxDmabufV1CreateParamsRequest{
+		ParamsID: aParamsID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aParamsID)
+	}
+	return
+}
+
+// Ensure ZwpLinuxDmabufV1 implements Proxy.
+var _ Proxy = &ZwpLinuxDmabufV1{}
+
 // #endregion Interface linux_dmabuf_unstable_v1.zwp_linux_dmabuf_v1
 
 // ----------------------------------------------------------------------------
@@ -3952,6 +5331,9 @@ type ZwpLinuxBufferParamsV1DestroyRequest struct {
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.destroy in linux_dmabuf_unstable_v1
 func (ZwpLinuxBufferParamsV1DestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_linux_buffer_params_v1.destroy in linux_dmabuf_unstable_v1
+func (ZwpLinuxBufferParamsV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpLinuxBufferParamsV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1DestroyRequest{}
 
@@ -4005,6 +5387,9 @@ type ZwpLinuxBufferParamsV1AddRequest struct {
 
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.add in linux_dmabuf_unstable_v1
 func (ZwpLinuxBufferParamsV1AddRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_linux_buffer_params_v1.add in linux_dmabuf_unstable_v1
+func (ZwpLinuxBufferParamsV1AddRequest) MessageName() string { return "add" }
 
 // Ensure ZwpLinuxBufferParamsV1AddRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1AddRequest{}
@@ -4113,6 +5498,9 @@ type ZwpLinuxBufferParamsV1CreateRequest struct {
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.create in linux_dmabuf_unstable_v1
 func (ZwpLinuxBufferParamsV1CreateRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_linux_buffer_params_v1.create in linux_dmabuf_unstable_v1
+func (ZwpLinuxBufferParamsV1CreateRequest) MessageName() string { return "create" }
+
 // Ensure ZwpLinuxBufferParamsV1CreateRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1CreateRequest{}
 
@@ -4181,6 +5569,9 @@ type ZwpLinuxBufferParamsV1CreateImmedRequest struct {
 // Opcode returns the request opcode for zwp_linux_buffer_params_v1.create_immed in linux_dmabuf_unstable_v1
 func (ZwpLinuxBufferParamsV1CreateImmedRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for zwp_linux_buffer_params_v1.create_immed in linux_dmabuf_unstable_v1
+func (ZwpLinuxBufferParamsV1CreateImmedRequest) MessageName() string { return "create_immed" }
+
 // Ensure ZwpLinuxBufferParamsV1CreateImmedRequest implements Message.
 var _ Message = ZwpLinuxBufferParamsV1CreateImmedRequest{}
 
@@ -4222,6 +5613,9 @@ type ZwpLinuxBufferParamsV1CreatedEvent struct {
 // Opcode returns the event opcode for zwp_linux_buffer_params_v1.created in linux_dmabuf_unstable_v1
 func (ZwpLinuxBufferParamsV1CreatedEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_linux_buffer_params_v1.created in linux_dmabuf_unstable_v1
+func (ZwpLinuxBufferParamsV1CreatedEvent) MessageName() string { return "created" }
+
 // Ensure ZwpLinuxBufferParamsV1CreatedEvent implements Message.
 var _ Message = ZwpLinuxBufferParamsV1CreatedEvent{}
 
@@ -4251,6 +5645,9 @@ type ZwpLinuxBufferParamsV1FailedEvent struct {
 
 // Opcode returns the event opcode for zwp_linux_buffer_params_v1.failed in linux_dmabuf_unstable_v1
 func (ZwpLinuxBufferParamsV1FailedEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_linux_buffer_params_v1.failed in linux_dmabuf_unstable_v1
+func (ZwpLinuxBufferParamsV1FailedEvent) MessageName() string { return "failed" }
 
 // Ensure ZwpLinuxBufferParamsV1FailedEvent implements Message.
 var _ Message = ZwpLinuxBufferParamsV1FailedEvent{}
@@ -4282,6 +5679,187 @@ var _ Event = &ZwpLinuxBufferParamsV1FailedEvent{}
 type ZwpLinuxBufferParamsV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpLinuxBufferParamsV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpLinuxBufferParamsV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpLinuxBufferParamsV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpLinuxBufferParamsV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpLinuxBufferParamsV1CreatedEvent{}
+	case 1:
+		return &ZwpLinuxBufferParamsV1FailedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to delete this object, used or not
+//
+// Cleans up the temporary data sent to the server for dmabuf-based
+// wl_buffer creation.
+func (proxy *ZwpLinuxBufferParamsV1) Destroy(connection Connection) (err error) {
+	request := ZwpLinuxBufferParamsV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Add requests to add a dmabuf to the temporary set
+//
+// This request adds one dmabuf to the set in this
+// zwp_linux_buffer_params_v1.
+//
+// The 64-bit unsigned value combined from modifier_hi and modifier_lo
+// is the dmabuf layout modifier. DRM AddFB2 ioctl calls this the
+// fb modifier, which is defined in drm_mode.h of Linux UAPI.
+// This is an opaque token. Drivers use this token to express tiling,
+// compression, etc. driver-specific modifications to the base format
+// defined by the DRM fourcc code.
+//
+// Warning: It should be an error if the format/modifier pair was not
+// advertised with the modifier event. This is not enforced yet because
+// some implementations always accept DRM_FORMAT_MOD_INVALID. Also
+// version 2 of this protocol does not have the modifier event.
+//
+// This request raises the PLANE_IDX error if plane_idx is too large.
+// The error PLANE_SET is raised if attempting to set a plane that
+// was already set.
+func (proxy *ZwpLinuxBufferParamsV1) Add(connection Connection, aFD FD, aPlaneIdx uint32, aOffset uint32, aStride uint32, aModifierHi uint32, aModifierLo uint32) (err error) {
+	request := ZwpLinuxBufferParamsV1AddRequest{
+		FD:         aFD,
+		PlaneIdx:   aPlaneIdx,
+		Offset:     aOffset,
+		Stride:     aStride,
+		ModifierHi: aModifierHi,
+		ModifierLo: aModifierLo,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Create requests to create a wl_buffer from the given dmabufs
+//
+// This asks for creation of a wl_buffer from the added dmabuf
+// buffers. The wl_buffer is not created immediately but returned via
+// the 'created' event if the dmabuf sharing succeeds. The sharing
+// may fail at runtime for reasons a client cannot predict, in
+// which case the 'failed' event is triggered.
+//
+// The 'format' argument is a DRM_FORMAT code, as defined by the
+// libdrm's drm_fourcc.h. The Linux kernel's DRM sub-system is the
+// authoritative source on how the format codes should work.
+//
+// The 'flags' is a bitfield of the flags defined in enum "flags".
+// 'y_invert' means the that the image needs to be y-flipped.
+//
+// Flag 'interlaced' means that the frame in the buffer is not
+// progressive as usual, but interlaced. An interlaced buffer as
+// supported here must always contain both top and bottom fields.
+// The top field always begins on the first pixel row. The temporal
+// ordering between the two fields is top field first, unless
+// 'bottom_first' is specified. It is undefined whether 'bottom_first'
+// is ignored if 'interlaced' is not set.
+//
+// This protocol does not convey any information about field rate,
+// duration, or timing, other than the relative ordering between the
+// two fields in one buffer. A compositor may have to estimate the
+// intended field rate from the incoming buffer rate. It is undefined
+// whether the time of receiving wl_surface.commit with a new buffer
+// attached, applying the wl_surface state, wl_surface.frame callback
+// trigger, presentation, or any other point in the compositor cycle
+// is used to measure the frame or field times. There is no support
+// for detecting missed or late frames/fields/buffers either, and
+// there is no support whatsoever for cooperating with interlaced
+// compositor output.
+//
+// The composited image quality resulting from the use of interlaced
+// buffers is explicitly undefined. A compositor may use elaborate
+// hardware features or software to deinterlace and create progressive
+// output frames from a sequence of interlaced input buffers, or it
+// may produce substandard image quality. However, compositors that
+// cannot guarantee reasonable image quality in all cases are recommended
+// to just reject all interlaced buffers.
+//
+// Any argument errors, including non-positive width or height,
+// mismatch between the number of planes and the format, bad
+// format, bad offset or stride, may be indicated by fatal protocol
+// errors: INCOMPLETE, INVALID_FORMAT, INVALID_DIMENSIONS,
+// OUT_OF_BOUNDS.
+//
+// Dmabuf import errors in the server that are not obvious client
+// bugs are returned via the 'failed' event as non-fatal. This
+// allows attempting dmabuf sharing and falling back in the client
+// if it fails.
+//
+// This request can be sent only once in the object's lifetime, after
+// which the only legal request is destroy. This object should be
+// destroyed after issuing a 'create' request. Attempting to use this
+// object after issuing 'create' raises ALREADY_USED protocol error.
+//
+// It is not mandatory to issue 'create'. If a client wants to
+// cancel the buffer creation, it can just destroy this object.
+func (proxy *ZwpLinuxBufferParamsV1) Create(connection Connection, aWidth int32, aHeight int32, aFormat uint32, aFlags uint32) (err error) {
+	request := ZwpLinuxBufferParamsV1CreateRequest{
+		Width:  aWidth,
+		Height: aHeight,
+		Format: aFormat,
+		Flags:  aFlags,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// CreateImmed requests to immediately create a wl_buffer from the given dmabufs
+//
+// This asks for immediate creation of a wl_buffer by importing the
+// added dmabufs.
+//
+// In case of import success, no event is sent from the server, and the
+// wl_buffer is ready to be used by the client.
+//
+// Upon import failure, either of the following may happen, as seen fit
+// by the implementation:
+// - the client is terminated with one of the following fatal protocol
+// errors:
+// - INCOMPLETE, INVALID_FORMAT, INVALID_DIMENSIONS, OUT_OF_BOUNDS,
+// in case of argument errors such as mismatch between the number
+// of planes and the format, bad format, non-positive width or
+// height, or bad offset or stride.
+// - INVALID_WL_BUFFER, in case the cause for failure is unknown or
+// plaform specific.
+// - the server creates an invalid wl_buffer, marks it as failed and
+// sends a 'failed' event to the client. The result of using this
+// invalid wl_buffer as an argument in any request by the client is
+// defined by the compositor implementation.
+//
+// This takes the same arguments as a 'create' request, and obeys the
+// same restrictions.
+func (proxy *ZwpLinuxBufferParamsV1) CreateImmed(connection Connection, aWidth int32, aHeight int32, aFormat uint32, aFlags uint32) (aBufferID *WlBuffer, err error) {
+	aBufferID = &WlBuffer{connection.NewID()}
+	request := ZwpLinuxBufferParamsV1CreateImmedRequest{
+		BufferID: aBufferID.id,
+		Width:    aWidth,
+		Height:   aHeight,
+		Format:   aFormat,
+		Flags:    aFlags,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aBufferID)
+	}
+	return
+}
+
+// Ensure ZwpLinuxBufferParamsV1 implements Proxy.
+var _ Proxy = &ZwpLinuxBufferParamsV1{}
 
 // #endregion Interface linux_dmabuf_unstable_v1.zwp_linux_buffer_params_v1
 
@@ -4327,6 +5905,9 @@ type ZwpPointerConstraintsV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_pointer_constraints_v1.destroy in pointer_constraints_unstable_v1
 func (ZwpPointerConstraintsV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_pointer_constraints_v1.destroy in pointer_constraints_unstable_v1
+func (ZwpPointerConstraintsV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpPointerConstraintsV1DestroyRequest implements Message.
 var _ Message = ZwpPointerConstraintsV1DestroyRequest{}
@@ -4394,6 +5975,9 @@ type ZwpPointerConstraintsV1LockPointerRequest struct {
 // Opcode returns the request opcode for zwp_pointer_constraints_v1.lock_pointer in pointer_constraints_unstable_v1
 func (ZwpPointerConstraintsV1LockPointerRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_pointer_constraints_v1.lock_pointer in pointer_constraints_unstable_v1
+func (ZwpPointerConstraintsV1LockPointerRequest) MessageName() string { return "lock_pointer" }
+
 // Ensure ZwpPointerConstraintsV1LockPointerRequest implements Message.
 var _ Message = ZwpPointerConstraintsV1LockPointerRequest{}
 
@@ -4458,6 +6042,9 @@ type ZwpPointerConstraintsV1ConfinePointerRequest struct {
 // Opcode returns the request opcode for zwp_pointer_constraints_v1.confine_pointer in pointer_constraints_unstable_v1
 func (ZwpPointerConstraintsV1ConfinePointerRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_pointer_constraints_v1.confine_pointer in pointer_constraints_unstable_v1
+func (ZwpPointerConstraintsV1ConfinePointerRequest) MessageName() string { return "confine_pointer" }
+
 // Ensure ZwpPointerConstraintsV1ConfinePointerRequest implements Message.
 var _ Message = ZwpPointerConstraintsV1ConfinePointerRequest{}
 
@@ -4503,6 +6090,124 @@ type ZwpPointerConstraintsV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpPointerConstraintsV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPointerConstraintsV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPointerConstraintsV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPointerConstraintsV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the pointer constraints manager object
+//
+// Used by the client to notify the server that it will no longer use this
+// pointer constraints object.
+func (proxy *ZwpPointerConstraintsV1) Destroy(connection Connection) (err error) {
+	request := ZwpPointerConstraintsV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// LockPointer requests to lock pointer to a position
+//
+// The lock_pointer request lets the client request to disable movements of
+// the virtual pointer (i.e. the cursor), effectively locking the pointer
+// to a position. This request may not take effect immediately; in the
+// future, when the compositor deems implementation-specific constraints
+// are satisfied, the pointer lock will be activated and the compositor
+// sends a locked event.
+//
+// The protocol provides no guarantee that the constraints are ever
+// satisfied, and does not require the compositor to send an error if the
+// constraints cannot ever be satisfied. It is thus possible to request a
+// lock that will never activate.
+//
+// There may not be another pointer constraint of any kind requested or
+// active on the surface for any of the wl_pointer objects of the seat of
+// the passed pointer when requesting a lock. If there is, an error will be
+// raised. See general pointer lock documentation for more details.
+//
+// The intersection of the region passed with this request and the input
+// region of the surface is used to determine where the pointer must be
+// in order for the lock to activate. It is up to the compositor whether to
+// warp the pointer or require some kind of user interaction for the lock
+// to activate. If the region is null the surface input region is used.
+//
+// A surface may receive pointer focus without the lock being activated.
+//
+// The request creates a new object wp_locked_pointer which is used to
+// interact with the lock as well as receive updates about its state. See
+// the the description of wp_locked_pointer for further information.
+//
+// Note that while a pointer is locked, the wl_pointer objects of the
+// corresponding seat will not emit any wl_pointer.motion events, but
+// relative motion events will still be emitted via wp_relative_pointer
+// objects of the same seat. wl_pointer.axis and wl_pointer.button events
+// are unaffected.
+func (proxy *ZwpPointerConstraintsV1) LockPointer(connection Connection, aSurface ObjectID, aPointer ObjectID, aRegion ObjectID, aLifetime uint32) (aID *ZwpLockedPointerV1, err error) {
+	aID = &ZwpLockedPointerV1{connection.NewID()}
+	request := ZwpPointerConstraintsV1LockPointerRequest{
+		ID:       aID.id,
+		Surface:  aSurface,
+		Pointer:  aPointer,
+		Region:   aRegion,
+		Lifetime: aLifetime,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// ConfinePointer requests to confine pointer to a region
+//
+// The confine_pointer request lets the client request to confine the
+// pointer cursor to a given region. This request may not take effect
+// immediately; in the future, when the compositor deems implementation-
+// specific constraints are satisfied, the pointer confinement will be
+// activated and the compositor sends a confined event.
+//
+// The intersection of the region passed with this request and the input
+// region of the surface is used to determine where the pointer must be
+// in order for the confinement to activate. It is up to the compositor
+// whether to warp the pointer or require some kind of user interaction for
+// the confinement to activate. If the region is null the surface input
+// region is used.
+//
+// The request will create a new object wp_confined_pointer which is used
+// to interact with the confinement as well as receive updates about its
+// state. See the the description of wp_confined_pointer for further
+// information.
+func (proxy *ZwpPointerConstraintsV1) ConfinePointer(connection Connection, aSurface ObjectID, aPointer ObjectID, aRegion ObjectID, aLifetime uint32) (aID *ZwpConfinedPointerV1, err error) {
+	aID = &ZwpConfinedPointerV1{connection.NewID()}
+	request := ZwpPointerConstraintsV1ConfinePointerRequest{
+		ID:       aID.id,
+		Surface:  aSurface,
+		Pointer:  aPointer,
+		Region:   aRegion,
+		Lifetime: aLifetime,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpPointerConstraintsV1 implements Proxy.
+var _ Proxy = &ZwpPointerConstraintsV1{}
+
 // #endregion Interface pointer_constraints_unstable_v1.zwp_pointer_constraints_v1
 
 // ----------------------------------------------------------------------------
@@ -4517,6 +6222,9 @@ type ZwpLockedPointerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_locked_pointer_v1.destroy in pointer_constraints_unstable_v1
 func (ZwpLockedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_locked_pointer_v1.destroy in pointer_constraints_unstable_v1
+func (ZwpLockedPointerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpLockedPointerV1DestroyRequest implements Message.
 var _ Message = ZwpLockedPointerV1DestroyRequest{}
@@ -4553,6 +6261,11 @@ type ZwpLockedPointerV1SetCursorPositionHintRequest struct {
 // Opcode returns the request opcode for zwp_locked_pointer_v1.set_cursor_position_hint in pointer_constraints_unstable_v1
 func (ZwpLockedPointerV1SetCursorPositionHintRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_locked_pointer_v1.set_cursor_position_hint in pointer_constraints_unstable_v1
+func (ZwpLockedPointerV1SetCursorPositionHintRequest) MessageName() string {
+	return "set_cursor_position_hint"
+}
+
 // Ensure ZwpLockedPointerV1SetCursorPositionHintRequest implements Message.
 var _ Message = ZwpLockedPointerV1SetCursorPositionHintRequest{}
 
@@ -4587,6 +6300,9 @@ type ZwpLockedPointerV1SetRegionRequest struct {
 // Opcode returns the request opcode for zwp_locked_pointer_v1.set_region in pointer_constraints_unstable_v1
 func (ZwpLockedPointerV1SetRegionRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_locked_pointer_v1.set_region in pointer_constraints_unstable_v1
+func (ZwpLockedPointerV1SetRegionRequest) MessageName() string { return "set_region" }
+
 // Ensure ZwpLockedPointerV1SetRegionRequest implements Message.
 var _ Message = ZwpLockedPointerV1SetRegionRequest{}
 
@@ -4609,6 +6325,9 @@ type ZwpLockedPointerV1LockedEvent struct {
 
 // Opcode returns the event opcode for zwp_locked_pointer_v1.locked in pointer_constraints_unstable_v1
 func (ZwpLockedPointerV1LockedEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_locked_pointer_v1.locked in pointer_constraints_unstable_v1
+func (ZwpLockedPointerV1LockedEvent) MessageName() string { return "locked" }
 
 // Ensure ZwpLockedPointerV1LockedEvent implements Message.
 var _ Message = ZwpLockedPointerV1LockedEvent{}
@@ -4634,6 +6353,9 @@ type ZwpLockedPointerV1UnlockedEvent struct {
 
 // Opcode returns the event opcode for zwp_locked_pointer_v1.unlocked in pointer_constraints_unstable_v1
 func (ZwpLockedPointerV1UnlockedEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_locked_pointer_v1.unlocked in pointer_constraints_unstable_v1
+func (ZwpLockedPointerV1UnlockedEvent) MessageName() string { return "unlocked" }
 
 // Ensure ZwpLockedPointerV1UnlockedEvent implements Message.
 var _ Message = ZwpLockedPointerV1UnlockedEvent{}
@@ -4675,6 +6397,80 @@ type ZwpLockedPointerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpLockedPointerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpLockedPointerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpLockedPointerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpLockedPointerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpLockedPointerV1LockedEvent{}
+	case 1:
+		return &ZwpLockedPointerV1UnlockedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the locked pointer object
+//
+// Destroy the locked pointer object. If applicable, the compositor will
+// unlock the pointer.
+func (proxy *ZwpLockedPointerV1) Destroy(connection Connection) (err error) {
+	request := ZwpLockedPointerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetCursorPositionHint requests to set the pointer cursor position hint
+//
+// Set the cursor position hint relative to the top left corner of the
+// surface.
+//
+// If the client is drawing its own cursor, it should update the position
+// hint to the position of its own cursor. A compositor may use this
+// information to warp the pointer upon unlock in order to avoid pointer
+// jumps.
+//
+// The cursor position hint is double buffered. The new hint will only take
+// effect when the associated surface gets it pending state applied. See
+// wl_surface.commit for details.
+func (proxy *ZwpLockedPointerV1) SetCursorPositionHint(connection Connection, aSurfaceX Fixed, aSurfaceY Fixed) (err error) {
+	request := ZwpLockedPointerV1SetCursorPositionHintRequest{
+		SurfaceX: aSurfaceX,
+		SurfaceY: aSurfaceY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetRegion requests to set a new lock region
+//
+// Set a new region used to lock the pointer.
+//
+// The new lock region is double-buffered. The new lock region will
+// only take effect when the associated surface gets its pending state
+// applied. See wl_surface.commit for details.
+//
+// For details about the lock region, see wp_locked_pointer.
+func (proxy *ZwpLockedPointerV1) SetRegion(connection Connection, aRegion ObjectID) (err error) {
+	request := ZwpLockedPointerV1SetRegionRequest{
+		Region: aRegion,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpLockedPointerV1 implements Proxy.
+var _ Proxy = &ZwpLockedPointerV1{}
+
 // #endregion Interface pointer_constraints_unstable_v1.zwp_locked_pointer_v1
 
 // ----------------------------------------------------------------------------
@@ -4689,6 +6485,9 @@ type ZwpConfinedPointerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_confined_pointer_v1.destroy in pointer_constraints_unstable_v1
 func (ZwpConfinedPointerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_confined_pointer_v1.destroy in pointer_constraints_unstable_v1
+func (ZwpConfinedPointerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpConfinedPointerV1DestroyRequest implements Message.
 var _ Message = ZwpConfinedPointerV1DestroyRequest{}
@@ -4727,6 +6526,9 @@ type ZwpConfinedPointerV1SetRegionRequest struct {
 // Opcode returns the request opcode for zwp_confined_pointer_v1.set_region in pointer_constraints_unstable_v1
 func (ZwpConfinedPointerV1SetRegionRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_confined_pointer_v1.set_region in pointer_constraints_unstable_v1
+func (ZwpConfinedPointerV1SetRegionRequest) MessageName() string { return "set_region" }
+
 // Ensure ZwpConfinedPointerV1SetRegionRequest implements Message.
 var _ Message = ZwpConfinedPointerV1SetRegionRequest{}
 
@@ -4750,6 +6552,9 @@ type ZwpConfinedPointerV1ConfinedEvent struct {
 
 // Opcode returns the event opcode for zwp_confined_pointer_v1.confined in pointer_constraints_unstable_v1
 func (ZwpConfinedPointerV1ConfinedEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_confined_pointer_v1.confined in pointer_constraints_unstable_v1
+func (ZwpConfinedPointerV1ConfinedEvent) MessageName() string { return "confined" }
 
 // Ensure ZwpConfinedPointerV1ConfinedEvent implements Message.
 var _ Message = ZwpConfinedPointerV1ConfinedEvent{}
@@ -4775,6 +6580,9 @@ type ZwpConfinedPointerV1UnconfinedEvent struct {
 
 // Opcode returns the event opcode for zwp_confined_pointer_v1.unconfined in pointer_constraints_unstable_v1
 func (ZwpConfinedPointerV1UnconfinedEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_confined_pointer_v1.unconfined in pointer_constraints_unstable_v1
+func (ZwpConfinedPointerV1UnconfinedEvent) MessageName() string { return "unconfined" }
 
 // Ensure ZwpConfinedPointerV1UnconfinedEvent implements Message.
 var _ Message = ZwpConfinedPointerV1UnconfinedEvent{}
@@ -4809,6 +6617,67 @@ type ZwpConfinedPointerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpConfinedPointerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpConfinedPointerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpConfinedPointerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpConfinedPointerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpConfinedPointerV1ConfinedEvent{}
+	case 1:
+		return &ZwpConfinedPointerV1UnconfinedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the confined pointer object
+//
+// Destroy the confined pointer object. If applicable, the compositor will
+// unconfine the pointer.
+func (proxy *ZwpConfinedPointerV1) Destroy(connection Connection) (err error) {
+	request := ZwpConfinedPointerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetRegion requests to set a new confine region
+//
+// Set a new region used to confine the pointer.
+//
+// The new confine region is double-buffered. The new confine region will
+// only take effect when the associated surface gets its pending state
+// applied. See wl_surface.commit for details.
+//
+// If the confinement is active when the new confinement region is applied
+// and the pointer ends up outside of newly applied region, the pointer may
+// warped to a position within the new confinement region. If warped, a
+// wl_pointer.motion event will be emitted, but no
+// wp_relative_pointer.relative_motion event.
+//
+// The compositor may also, instead of using the new region, unconfine the
+// pointer.
+//
+// For details about the confine region, see wp_confined_pointer.
+func (proxy *ZwpConfinedPointerV1) SetRegion(connection Connection, aRegion ObjectID) (err error) {
+	request := ZwpConfinedPointerV1SetRegionRequest{
+		Region: aRegion,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpConfinedPointerV1 implements Proxy.
+var _ Proxy = &ZwpConfinedPointerV1{}
+
 // #endregion Interface pointer_constraints_unstable_v1.zwp_confined_pointer_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -4832,6 +6701,9 @@ type ZwpPointerGesturesV1GetSwipeGestureRequest struct {
 
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.get_swipe_gesture in pointer_gestures_unstable_v1
 func (ZwpPointerGesturesV1GetSwipeGestureRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_pointer_gestures_v1.get_swipe_gesture in pointer_gestures_unstable_v1
+func (ZwpPointerGesturesV1GetSwipeGestureRequest) MessageName() string { return "get_swipe_gesture" }
 
 // Ensure ZwpPointerGesturesV1GetSwipeGestureRequest implements Message.
 var _ Message = ZwpPointerGesturesV1GetSwipeGestureRequest{}
@@ -4863,6 +6735,9 @@ type ZwpPointerGesturesV1GetPinchGestureRequest struct {
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.get_pinch_gesture in pointer_gestures_unstable_v1
 func (ZwpPointerGesturesV1GetPinchGestureRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_pointer_gestures_v1.get_pinch_gesture in pointer_gestures_unstable_v1
+func (ZwpPointerGesturesV1GetPinchGestureRequest) MessageName() string { return "get_pinch_gesture" }
+
 // Ensure ZwpPointerGesturesV1GetPinchGestureRequest implements Message.
 var _ Message = ZwpPointerGesturesV1GetPinchGestureRequest{}
 
@@ -4890,6 +6765,9 @@ type ZwpPointerGesturesV1ReleaseRequest struct {
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.release in pointer_gestures_unstable_v1
 func (ZwpPointerGesturesV1ReleaseRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_pointer_gestures_v1.release in pointer_gestures_unstable_v1
+func (ZwpPointerGesturesV1ReleaseRequest) MessageName() string { return "release" }
+
 // Ensure ZwpPointerGesturesV1ReleaseRequest implements Message.
 var _ Message = ZwpPointerGesturesV1ReleaseRequest{}
 
@@ -4913,6 +6791,9 @@ type ZwpPointerGesturesV1GetHoldGestureRequest struct {
 
 // Opcode returns the request opcode for zwp_pointer_gestures_v1.get_hold_gesture in pointer_gestures_unstable_v1
 func (ZwpPointerGesturesV1GetHoldGestureRequest) Opcode() uint16 { return 3 }
+
+// MessageName returns the request name for zwp_pointer_gestures_v1.get_hold_gesture in pointer_gestures_unstable_v1
+func (ZwpPointerGesturesV1GetHoldGestureRequest) MessageName() string { return "get_hold_gesture" }
 
 // Ensure ZwpPointerGesturesV1GetHoldGestureRequest implements Message.
 var _ Message = ZwpPointerGesturesV1GetHoldGestureRequest{}
@@ -4953,6 +6834,88 @@ type ZwpPointerGesturesV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpPointerGesturesV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPointerGesturesV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPointerGesturesV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPointerGesturesV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// GetSwipeGesture requests to get swipe gesture
+//
+// Create a swipe gesture object. See the
+// wl_pointer_gesture_swipe interface for details.
+func (proxy *ZwpPointerGesturesV1) GetSwipeGesture(connection Connection, aPointer ObjectID) (aID *ZwpPointerGestureSwipeV1, err error) {
+	aID = &ZwpPointerGestureSwipeV1{connection.NewID()}
+	request := ZwpPointerGesturesV1GetSwipeGestureRequest{
+		ID:      aID.id,
+		Pointer: aPointer,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetPinchGesture requests to get pinch gesture
+//
+// Create a pinch gesture object. See the
+// wl_pointer_gesture_pinch interface for details.
+func (proxy *ZwpPointerGesturesV1) GetPinchGesture(connection Connection, aPointer ObjectID) (aID *ZwpPointerGesturePinchV1, err error) {
+	aID = &ZwpPointerGesturePinchV1{connection.NewID()}
+	request := ZwpPointerGesturesV1GetPinchGestureRequest{
+		ID:      aID.id,
+		Pointer: aPointer,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Release requests to destroy the pointer gesture object
+//
+// Destroy the pointer gesture object. Swipe, pinch and hold objects
+// created via this gesture object remain valid.
+func (proxy *ZwpPointerGesturesV1) Release(connection Connection) (err error) {
+	request := ZwpPointerGesturesV1ReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetHoldGesture requests to get hold gesture
+//
+// Create a hold gesture object. See the
+// wl_pointer_gesture_hold interface for details.
+func (proxy *ZwpPointerGesturesV1) GetHoldGesture(connection Connection, aPointer ObjectID) (aID *ZwpPointerGestureHoldV1, err error) {
+	aID = &ZwpPointerGestureHoldV1{connection.NewID()}
+	request := ZwpPointerGesturesV1GetHoldGestureRequest{
+		ID:      aID.id,
+		Pointer: aPointer,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpPointerGesturesV1 implements Proxy.
+var _ Proxy = &ZwpPointerGesturesV1{}
+
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gestures_v1
 
 // ----------------------------------------------------------------------------
@@ -4964,6 +6927,9 @@ type ZwpPointerGestureSwipeV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_pointer_gesture_swipe_v1.destroy in pointer_gestures_unstable_v1
 func (ZwpPointerGestureSwipeV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_pointer_gesture_swipe_v1.destroy in pointer_gestures_unstable_v1
+func (ZwpPointerGestureSwipeV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpPointerGestureSwipeV1DestroyRequest implements Message.
 var _ Message = ZwpPointerGestureSwipeV1DestroyRequest{}
@@ -4994,6 +6960,9 @@ type ZwpPointerGestureSwipeV1BeginEvent struct {
 
 // Opcode returns the event opcode for zwp_pointer_gesture_swipe_v1.begin in pointer_gestures_unstable_v1
 func (ZwpPointerGestureSwipeV1BeginEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_pointer_gesture_swipe_v1.begin in pointer_gestures_unstable_v1
+func (ZwpPointerGestureSwipeV1BeginEvent) MessageName() string { return "begin" }
 
 // Ensure ZwpPointerGestureSwipeV1BeginEvent implements Message.
 var _ Message = ZwpPointerGestureSwipeV1BeginEvent{}
@@ -5047,6 +7016,9 @@ type ZwpPointerGestureSwipeV1UpdateEvent struct {
 // Opcode returns the event opcode for zwp_pointer_gesture_swipe_v1.update in pointer_gestures_unstable_v1
 func (ZwpPointerGestureSwipeV1UpdateEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_pointer_gesture_swipe_v1.update in pointer_gestures_unstable_v1
+func (ZwpPointerGestureSwipeV1UpdateEvent) MessageName() string { return "update" }
+
 // Ensure ZwpPointerGestureSwipeV1UpdateEvent implements Message.
 var _ Message = ZwpPointerGestureSwipeV1UpdateEvent{}
 
@@ -5095,6 +7067,9 @@ type ZwpPointerGestureSwipeV1EndEvent struct {
 // Opcode returns the event opcode for zwp_pointer_gesture_swipe_v1.end in pointer_gestures_unstable_v1
 func (ZwpPointerGestureSwipeV1EndEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_pointer_gesture_swipe_v1.end in pointer_gestures_unstable_v1
+func (ZwpPointerGestureSwipeV1EndEvent) MessageName() string { return "end" }
+
 // Ensure ZwpPointerGestureSwipeV1EndEvent implements Message.
 var _ Message = ZwpPointerGestureSwipeV1EndEvent{}
 
@@ -5142,6 +7117,40 @@ type ZwpPointerGestureSwipeV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpPointerGestureSwipeV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPointerGestureSwipeV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPointerGestureSwipeV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPointerGestureSwipeV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpPointerGestureSwipeV1BeginEvent{}
+	case 1:
+		return &ZwpPointerGestureSwipeV1UpdateEvent{}
+	case 2:
+		return &ZwpPointerGestureSwipeV1EndEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the pointer swipe gesture object
+func (proxy *ZwpPointerGestureSwipeV1) Destroy(connection Connection) (err error) {
+	request := ZwpPointerGestureSwipeV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpPointerGestureSwipeV1 implements Proxy.
+var _ Proxy = &ZwpPointerGestureSwipeV1{}
+
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_swipe_v1
 
 // ----------------------------------------------------------------------------
@@ -5153,6 +7162,9 @@ type ZwpPointerGesturePinchV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_pointer_gesture_pinch_v1.destroy in pointer_gestures_unstable_v1
 func (ZwpPointerGesturePinchV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_pointer_gesture_pinch_v1.destroy in pointer_gestures_unstable_v1
+func (ZwpPointerGesturePinchV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpPointerGesturePinchV1DestroyRequest implements Message.
 var _ Message = ZwpPointerGesturePinchV1DestroyRequest{}
@@ -5183,6 +7195,9 @@ type ZwpPointerGesturePinchV1BeginEvent struct {
 
 // Opcode returns the event opcode for zwp_pointer_gesture_pinch_v1.begin in pointer_gestures_unstable_v1
 func (ZwpPointerGesturePinchV1BeginEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_pointer_gesture_pinch_v1.begin in pointer_gestures_unstable_v1
+func (ZwpPointerGesturePinchV1BeginEvent) MessageName() string { return "begin" }
 
 // Ensure ZwpPointerGesturePinchV1BeginEvent implements Message.
 var _ Message = ZwpPointerGesturePinchV1BeginEvent{}
@@ -5249,6 +7264,9 @@ type ZwpPointerGesturePinchV1UpdateEvent struct {
 // Opcode returns the event opcode for zwp_pointer_gesture_pinch_v1.update in pointer_gestures_unstable_v1
 func (ZwpPointerGesturePinchV1UpdateEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_pointer_gesture_pinch_v1.update in pointer_gestures_unstable_v1
+func (ZwpPointerGesturePinchV1UpdateEvent) MessageName() string { return "update" }
+
 // Ensure ZwpPointerGesturePinchV1UpdateEvent implements Message.
 var _ Message = ZwpPointerGesturePinchV1UpdateEvent{}
 
@@ -5307,6 +7325,9 @@ type ZwpPointerGesturePinchV1EndEvent struct {
 // Opcode returns the event opcode for zwp_pointer_gesture_pinch_v1.end in pointer_gestures_unstable_v1
 func (ZwpPointerGesturePinchV1EndEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_pointer_gesture_pinch_v1.end in pointer_gestures_unstable_v1
+func (ZwpPointerGesturePinchV1EndEvent) MessageName() string { return "end" }
+
 // Ensure ZwpPointerGesturePinchV1EndEvent implements Message.
 var _ Message = ZwpPointerGesturePinchV1EndEvent{}
 
@@ -5354,6 +7375,40 @@ type ZwpPointerGesturePinchV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpPointerGesturePinchV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPointerGesturePinchV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPointerGesturePinchV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPointerGesturePinchV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpPointerGesturePinchV1BeginEvent{}
+	case 1:
+		return &ZwpPointerGesturePinchV1UpdateEvent{}
+	case 2:
+		return &ZwpPointerGesturePinchV1EndEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the pinch gesture object
+func (proxy *ZwpPointerGesturePinchV1) Destroy(connection Connection) (err error) {
+	request := ZwpPointerGesturePinchV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpPointerGesturePinchV1 implements Proxy.
+var _ Proxy = &ZwpPointerGesturePinchV1{}
+
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_pinch_v1
 
 // ----------------------------------------------------------------------------
@@ -5365,6 +7420,9 @@ type ZwpPointerGestureHoldV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_pointer_gesture_hold_v1.destroy in pointer_gestures_unstable_v1
 func (ZwpPointerGestureHoldV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_pointer_gesture_hold_v1.destroy in pointer_gestures_unstable_v1
+func (ZwpPointerGestureHoldV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpPointerGestureHoldV1DestroyRequest implements Message.
 var _ Message = ZwpPointerGestureHoldV1DestroyRequest{}
@@ -5394,6 +7452,9 @@ type ZwpPointerGestureHoldV1BeginEvent struct {
 
 // Opcode returns the event opcode for zwp_pointer_gesture_hold_v1.begin in pointer_gestures_unstable_v1
 func (ZwpPointerGestureHoldV1BeginEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_pointer_gesture_hold_v1.begin in pointer_gestures_unstable_v1
+func (ZwpPointerGestureHoldV1BeginEvent) MessageName() string { return "begin" }
 
 // Ensure ZwpPointerGestureHoldV1BeginEvent implements Message.
 var _ Message = ZwpPointerGestureHoldV1BeginEvent{}
@@ -5450,6 +7511,9 @@ type ZwpPointerGestureHoldV1EndEvent struct {
 // Opcode returns the event opcode for zwp_pointer_gesture_hold_v1.end in pointer_gestures_unstable_v1
 func (ZwpPointerGestureHoldV1EndEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_pointer_gesture_hold_v1.end in pointer_gestures_unstable_v1
+func (ZwpPointerGestureHoldV1EndEvent) MessageName() string { return "end" }
+
 // Ensure ZwpPointerGestureHoldV1EndEvent implements Message.
 var _ Message = ZwpPointerGestureHoldV1EndEvent{}
 
@@ -5499,6 +7563,38 @@ type ZwpPointerGestureHoldV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpPointerGestureHoldV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPointerGestureHoldV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPointerGestureHoldV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPointerGestureHoldV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpPointerGestureHoldV1BeginEvent{}
+	case 1:
+		return &ZwpPointerGestureHoldV1EndEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the hold gesture object
+func (proxy *ZwpPointerGestureHoldV1) Destroy(connection Connection) (err error) {
+	request := ZwpPointerGestureHoldV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpPointerGestureHoldV1 implements Proxy.
+var _ Proxy = &ZwpPointerGestureHoldV1{}
+
 // #endregion Interface pointer_gestures_unstable_v1.zwp_pointer_gesture_hold_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5535,6 +7631,9 @@ type WpPresentationDestroyRequest struct {
 // Opcode returns the request opcode for wp_presentation.destroy in presentation_time
 func (WpPresentationDestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wp_presentation.destroy in presentation_time
+func (WpPresentationDestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure WpPresentationDestroyRequest implements Message.
 var _ Message = WpPresentationDestroyRequest{}
 
@@ -5566,6 +7665,9 @@ type WpPresentationFeedbackRequest struct {
 
 // Opcode returns the request opcode for wp_presentation.feedback in presentation_time
 func (WpPresentationFeedbackRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wp_presentation.feedback in presentation_time
+func (WpPresentationFeedbackRequest) MessageName() string { return "feedback" }
 
 // Ensure WpPresentationFeedbackRequest implements Message.
 var _ Message = WpPresentationFeedbackRequest{}
@@ -5623,6 +7725,9 @@ type WpPresentationClockIDEvent struct {
 // Opcode returns the event opcode for wp_presentation.clock_id in presentation_time
 func (WpPresentationClockIDEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for wp_presentation.clock_id in presentation_time
+func (WpPresentationClockIDEvent) MessageName() string { return "clock_id" }
+
 // Ensure WpPresentationClockIDEvent implements Message.
 var _ Message = WpPresentationClockIDEvent{}
 
@@ -5664,6 +7769,63 @@ type WpPresentation struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WpPresentation) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpPresentation) Descriptor() *InterfaceDescriptor {
+	return &WpPresentationDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpPresentation) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WpPresentationClockIDEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to unbind from the presentation interface
+//
+// Informs the server that the client will no longer be using
+// this protocol object. Existing objects created by this object
+// are not affected.
+func (proxy *WpPresentation) Destroy(connection Connection) (err error) {
+	request := WpPresentationDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Feedback requests to request presentation feedback information
+//
+// Request presentation feedback for the current content submission
+// on the given surface. This creates a new presentation_feedback
+// object, which will deliver the feedback information once. If
+// multiple presentation_feedback objects are created for the same
+// submission, they will all deliver the same information.
+//
+// For details on what information is returned, see the
+// presentation_feedback interface.
+func (proxy *WpPresentation) Feedback(connection Connection, aSurface ObjectID) (aCallback *WpPresentationFeedback, err error) {
+	aCallback = &WpPresentationFeedback{connection.NewID()}
+	request := WpPresentationFeedbackRequest{
+		Surface:  aSurface,
+		Callback: aCallback.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aCallback)
+	}
+	return
+}
+
+// Ensure WpPresentation implements Proxy.
+var _ Proxy = &WpPresentation{}
+
 // #endregion Interface presentation_time.wp_presentation
 
 // ----------------------------------------------------------------------------
@@ -5704,6 +7866,9 @@ type WpPresentationFeedbackSyncOutputEvent struct {
 
 // Opcode returns the event opcode for wp_presentation_feedback.sync_output in presentation_time
 func (WpPresentationFeedbackSyncOutputEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wp_presentation_feedback.sync_output in presentation_time
+func (WpPresentationFeedbackSyncOutputEvent) MessageName() string { return "sync_output" }
 
 // Ensure WpPresentationFeedbackSyncOutputEvent implements Message.
 var _ Message = WpPresentationFeedbackSyncOutputEvent{}
@@ -5790,6 +7955,9 @@ type WpPresentationFeedbackPresentedEvent struct {
 // Opcode returns the event opcode for wp_presentation_feedback.presented in presentation_time
 func (WpPresentationFeedbackPresentedEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wp_presentation_feedback.presented in presentation_time
+func (WpPresentationFeedbackPresentedEvent) MessageName() string { return "presented" }
+
 // Ensure WpPresentationFeedbackPresentedEvent implements Message.
 var _ Message = WpPresentationFeedbackPresentedEvent{}
 
@@ -5845,6 +8013,9 @@ type WpPresentationFeedbackDiscardedEvent struct {
 // Opcode returns the event opcode for wp_presentation_feedback.discarded in presentation_time
 func (WpPresentationFeedbackDiscardedEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wp_presentation_feedback.discarded in presentation_time
+func (WpPresentationFeedbackDiscardedEvent) MessageName() string { return "discarded" }
+
 // Ensure WpPresentationFeedbackDiscardedEvent implements Message.
 var _ Message = WpPresentationFeedbackDiscardedEvent{}
 
@@ -5873,6 +8044,33 @@ type WpPresentationFeedback struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WpPresentationFeedback) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpPresentationFeedback) Descriptor() *InterfaceDescriptor {
+	return &WpPresentationFeedbackDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpPresentationFeedback) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WpPresentationFeedbackSyncOutputEvent{}
+	case 1:
+		return &WpPresentationFeedbackPresentedEvent{}
+	case 2:
+		return &WpPresentationFeedbackDiscardedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Ensure WpPresentationFeedback implements Proxy.
+var _ Proxy = &WpPresentationFeedback{}
+
 // #endregion Interface presentation_time.wp_presentation_feedback
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -5893,6 +8091,9 @@ type ZwpRelativePointerManagerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_relative_pointer_manager_v1.destroy in relative_pointer_unstable_v1
 func (ZwpRelativePointerManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_relative_pointer_manager_v1.destroy in relative_pointer_unstable_v1
+func (ZwpRelativePointerManagerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpRelativePointerManagerV1DestroyRequest implements Message.
 var _ Message = ZwpRelativePointerManagerV1DestroyRequest{}
@@ -5917,6 +8118,11 @@ type ZwpRelativePointerManagerV1GetRelativePointerRequest struct {
 
 // Opcode returns the request opcode for zwp_relative_pointer_manager_v1.get_relative_pointer in relative_pointer_unstable_v1
 func (ZwpRelativePointerManagerV1GetRelativePointerRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_relative_pointer_manager_v1.get_relative_pointer in relative_pointer_unstable_v1
+func (ZwpRelativePointerManagerV1GetRelativePointerRequest) MessageName() string {
+	return "get_relative_pointer"
+}
 
 // Ensure ZwpRelativePointerManagerV1GetRelativePointerRequest implements Message.
 var _ Message = ZwpRelativePointerManagerV1GetRelativePointerRequest{}
@@ -5943,6 +8149,54 @@ type ZwpRelativePointerManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpRelativePointerManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpRelativePointerManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpRelativePointerManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpRelativePointerManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the relative pointer manager object
+//
+// Used by the client to notify the server that it will no longer use this
+// relative pointer manager object.
+func (proxy *ZwpRelativePointerManagerV1) Destroy(connection Connection) (err error) {
+	request := ZwpRelativePointerManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetRelativePointer requests to get a relative pointer object
+//
+// Create a relative pointer interface given a wl_pointer object. See the
+// wp_relative_pointer interface for more details.
+func (proxy *ZwpRelativePointerManagerV1) GetRelativePointer(connection Connection, aPointer ObjectID) (aID *ZwpRelativePointerV1, err error) {
+	aID = &ZwpRelativePointerV1{connection.NewID()}
+	request := ZwpRelativePointerManagerV1GetRelativePointerRequest{
+		ID:      aID.id,
+		Pointer: aPointer,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpRelativePointerManagerV1 implements Proxy.
+var _ Proxy = &ZwpRelativePointerManagerV1{}
+
 // #endregion Interface relative_pointer_unstable_v1.zwp_relative_pointer_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -5954,6 +8208,9 @@ type ZwpRelativePointerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_relative_pointer_v1.destroy in relative_pointer_unstable_v1
 func (ZwpRelativePointerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_relative_pointer_v1.destroy in relative_pointer_unstable_v1
+func (ZwpRelativePointerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpRelativePointerV1DestroyRequest implements Message.
 var _ Message = ZwpRelativePointerV1DestroyRequest{}
@@ -6021,6 +8278,9 @@ type ZwpRelativePointerV1RelativeMotionEvent struct {
 // Opcode returns the event opcode for zwp_relative_pointer_v1.relative_motion in relative_pointer_unstable_v1
 func (ZwpRelativePointerV1RelativeMotionEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_relative_pointer_v1.relative_motion in relative_pointer_unstable_v1
+func (ZwpRelativePointerV1RelativeMotionEvent) MessageName() string { return "relative_motion" }
+
 // Ensure ZwpRelativePointerV1RelativeMotionEvent implements Message.
 var _ Message = ZwpRelativePointerV1RelativeMotionEvent{}
 
@@ -6072,6 +8332,36 @@ type ZwpRelativePointerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpRelativePointerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpRelativePointerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpRelativePointerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpRelativePointerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpRelativePointerV1RelativeMotionEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to release the relative pointer object
+func (proxy *ZwpRelativePointerV1) Destroy(connection Connection) (err error) {
+	request := ZwpRelativePointerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpRelativePointerV1 implements Proxy.
+var _ Proxy = &ZwpRelativePointerV1{}
+
 // #endregion Interface relative_pointer_unstable_v1.zwp_relative_pointer_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -6096,6 +8386,9 @@ type ZwpTabletManagerV1GetTabletSeatRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_manager_v1.get_tablet_seat in tablet_unstable_v1
 func (ZwpTabletManagerV1GetTabletSeatRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_tablet_manager_v1.get_tablet_seat in tablet_unstable_v1
+func (ZwpTabletManagerV1GetTabletSeatRequest) MessageName() string { return "get_tablet_seat" }
 
 // Ensure ZwpTabletManagerV1GetTabletSeatRequest implements Message.
 var _ Message = ZwpTabletManagerV1GetTabletSeatRequest{}
@@ -6124,6 +8417,9 @@ type ZwpTabletManagerV1DestroyRequest struct {
 // Opcode returns the request opcode for zwp_tablet_manager_v1.destroy in tablet_unstable_v1
 func (ZwpTabletManagerV1DestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_tablet_manager_v1.destroy in tablet_unstable_v1
+func (ZwpTabletManagerV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpTabletManagerV1DestroyRequest implements Message.
 var _ Message = ZwpTabletManagerV1DestroyRequest{}
 
@@ -6144,6 +8440,54 @@ type ZwpTabletManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTabletManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// GetTabletSeat requests to get the tablet seat
+//
+// Get the wp_tablet_seat object for the given seat. This object
+// provides access to all graphics tablets in this seat.
+func (proxy *ZwpTabletManagerV1) GetTabletSeat(connection Connection, aSeat ObjectID) (aTabletSeat *ZwpTabletSeatV1, err error) {
+	aTabletSeat = &ZwpTabletSeatV1{connection.NewID()}
+	request := ZwpTabletManagerV1GetTabletSeatRequest{
+		TabletSeat: aTabletSeat.id,
+		Seat:       aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aTabletSeat)
+	}
+	return
+}
+
+// Destroy requests to release the memory for the tablet manager object
+//
+// Destroy the wp_tablet_manager object. Objects created from this
+// object are unaffected and should be destroyed separately.
+func (proxy *ZwpTabletManagerV1) Destroy(connection Connection) (err error) {
+	request := ZwpTabletManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletManagerV1 implements Proxy.
+var _ Proxy = &ZwpTabletManagerV1{}
+
 // #endregion Interface tablet_unstable_v1.zwp_tablet_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -6158,6 +8502,9 @@ type ZwpTabletSeatV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_seat_v1.destroy in tablet_unstable_v1
 func (ZwpTabletSeatV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_tablet_seat_v1.destroy in tablet_unstable_v1
+func (ZwpTabletSeatV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTabletSeatV1DestroyRequest implements Message.
 var _ Message = ZwpTabletSeatV1DestroyRequest{}
@@ -6183,6 +8530,9 @@ type ZwpTabletSeatV1TabletAddedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_seat_v1.tablet_added in tablet_unstable_v1
 func (ZwpTabletSeatV1TabletAddedEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_tablet_seat_v1.tablet_added in tablet_unstable_v1
+func (ZwpTabletSeatV1TabletAddedEvent) MessageName() string { return "tablet_added" }
 
 // Ensure ZwpTabletSeatV1TabletAddedEvent implements Message.
 var _ Message = ZwpTabletSeatV1TabletAddedEvent{}
@@ -6214,6 +8564,9 @@ type ZwpTabletSeatV1ToolAddedEvent struct {
 // Opcode returns the event opcode for zwp_tablet_seat_v1.tool_added in tablet_unstable_v1
 func (ZwpTabletSeatV1ToolAddedEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_tablet_seat_v1.tool_added in tablet_unstable_v1
+func (ZwpTabletSeatV1ToolAddedEvent) MessageName() string { return "tool_added" }
+
 // Ensure ZwpTabletSeatV1ToolAddedEvent implements Message.
 var _ Message = ZwpTabletSeatV1ToolAddedEvent{}
 
@@ -6238,6 +8591,41 @@ var _ Event = &ZwpTabletSeatV1ToolAddedEvent{}
 type ZwpTabletSeatV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTabletSeatV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletSeatV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletSeatV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletSeatV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletSeatV1TabletAddedEvent{}
+	case 1:
+		return &ZwpTabletSeatV1ToolAddedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to release the memory for the tablet seat object
+//
+// Destroy the wp_tablet_seat object. Objects created from this
+// object are unaffected and should be destroyed separately.
+func (proxy *ZwpTabletSeatV1) Destroy(connection Connection) (err error) {
+	request := ZwpTabletSeatV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletSeatV1 implements Proxy.
+var _ Proxy = &ZwpTabletSeatV1{}
 
 // #endregion Interface tablet_unstable_v1.zwp_tablet_seat_v1
 
@@ -6381,6 +8769,9 @@ type ZwpTabletToolV1SetCursorRequest struct {
 // Opcode returns the request opcode for zwp_tablet_tool_v1.set_cursor in tablet_unstable_v1
 func (ZwpTabletToolV1SetCursorRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_tablet_tool_v1.set_cursor in tablet_unstable_v1
+func (ZwpTabletToolV1SetCursorRequest) MessageName() string { return "set_cursor" }
+
 // Ensure ZwpTabletToolV1SetCursorRequest implements Message.
 var _ Message = ZwpTabletToolV1SetCursorRequest{}
 
@@ -6413,6 +8804,9 @@ type ZwpTabletToolV1DestroyRequest struct {
 // Opcode returns the request opcode for zwp_tablet_tool_v1.destroy in tablet_unstable_v1
 func (ZwpTabletToolV1DestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_tablet_tool_v1.destroy in tablet_unstable_v1
+func (ZwpTabletToolV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpTabletToolV1DestroyRequest implements Message.
 var _ Message = ZwpTabletToolV1DestroyRequest{}
 
@@ -6438,6 +8832,9 @@ type ZwpTabletToolV1TypeEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.type in tablet_unstable_v1
 func (ZwpTabletToolV1TypeEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.type in tablet_unstable_v1
+func (ZwpTabletToolV1TypeEvent) MessageName() string { return "type" }
 
 // Ensure ZwpTabletToolV1TypeEvent implements Message.
 var _ Message = ZwpTabletToolV1TypeEvent{}
@@ -6483,6 +8880,9 @@ type ZwpTabletToolV1HardwareSerialEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.hardware_serial in tablet_unstable_v1
 func (ZwpTabletToolV1HardwareSerialEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.hardware_serial in tablet_unstable_v1
+func (ZwpTabletToolV1HardwareSerialEvent) MessageName() string { return "hardware_serial" }
+
 // Ensure ZwpTabletToolV1HardwareSerialEvent implements Message.
 var _ Message = ZwpTabletToolV1HardwareSerialEvent{}
 
@@ -6527,6 +8927,9 @@ type ZwpTabletToolV1HardwareIDWacomEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.hardware_id_wacom in tablet_unstable_v1
 func (ZwpTabletToolV1HardwareIDWacomEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.hardware_id_wacom in tablet_unstable_v1
+func (ZwpTabletToolV1HardwareIDWacomEvent) MessageName() string { return "hardware_id_wacom" }
+
 // Ensure ZwpTabletToolV1HardwareIDWacomEvent implements Message.
 var _ Message = ZwpTabletToolV1HardwareIDWacomEvent{}
 
@@ -6565,6 +8968,9 @@ type ZwpTabletToolV1CapabilityEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.capability in tablet_unstable_v1
 func (ZwpTabletToolV1CapabilityEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.capability in tablet_unstable_v1
+func (ZwpTabletToolV1CapabilityEvent) MessageName() string { return "capability" }
+
 // Ensure ZwpTabletToolV1CapabilityEvent implements Message.
 var _ Message = ZwpTabletToolV1CapabilityEvent{}
 
@@ -6591,6 +8997,9 @@ type ZwpTabletToolV1DoneEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.done in tablet_unstable_v1
 func (ZwpTabletToolV1DoneEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.done in tablet_unstable_v1
+func (ZwpTabletToolV1DoneEvent) MessageName() string { return "done" }
 
 // Ensure ZwpTabletToolV1DoneEvent implements Message.
 var _ Message = ZwpTabletToolV1DoneEvent{}
@@ -6624,6 +9033,9 @@ type ZwpTabletToolV1RemovedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.removed in tablet_unstable_v1
 func (ZwpTabletToolV1RemovedEvent) Opcode() uint16 { return 5 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.removed in tablet_unstable_v1
+func (ZwpTabletToolV1RemovedEvent) MessageName() string { return "removed" }
 
 // Ensure ZwpTabletToolV1RemovedEvent implements Message.
 var _ Message = ZwpTabletToolV1RemovedEvent{}
@@ -6659,6 +9071,9 @@ type ZwpTabletToolV1ProximityInEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.proximity_in in tablet_unstable_v1
 func (ZwpTabletToolV1ProximityInEvent) Opcode() uint16 { return 6 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.proximity_in in tablet_unstable_v1
+func (ZwpTabletToolV1ProximityInEvent) MessageName() string { return "proximity_in" }
 
 // Ensure ZwpTabletToolV1ProximityInEvent implements Message.
 var _ Message = ZwpTabletToolV1ProximityInEvent{}
@@ -6706,6 +9121,9 @@ type ZwpTabletToolV1ProximityOutEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.proximity_out in tablet_unstable_v1
 func (ZwpTabletToolV1ProximityOutEvent) Opcode() uint16 { return 7 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.proximity_out in tablet_unstable_v1
+func (ZwpTabletToolV1ProximityOutEvent) MessageName() string { return "proximity_out" }
+
 // Ensure ZwpTabletToolV1ProximityOutEvent implements Message.
 var _ Message = ZwpTabletToolV1ProximityOutEvent{}
 
@@ -6737,6 +9155,9 @@ type ZwpTabletToolV1DownEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.down in tablet_unstable_v1
 func (ZwpTabletToolV1DownEvent) Opcode() uint16 { return 8 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.down in tablet_unstable_v1
+func (ZwpTabletToolV1DownEvent) MessageName() string { return "down" }
 
 // Ensure ZwpTabletToolV1DownEvent implements Message.
 var _ Message = ZwpTabletToolV1DownEvent{}
@@ -6778,6 +9199,9 @@ type ZwpTabletToolV1UpEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.up in tablet_unstable_v1
 func (ZwpTabletToolV1UpEvent) Opcode() uint16 { return 9 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.up in tablet_unstable_v1
+func (ZwpTabletToolV1UpEvent) MessageName() string { return "up" }
+
 // Ensure ZwpTabletToolV1UpEvent implements Message.
 var _ Message = ZwpTabletToolV1UpEvent{}
 
@@ -6802,6 +9226,9 @@ type ZwpTabletToolV1MotionEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.motion in tablet_unstable_v1
 func (ZwpTabletToolV1MotionEvent) Opcode() uint16 { return 10 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.motion in tablet_unstable_v1
+func (ZwpTabletToolV1MotionEvent) MessageName() string { return "motion" }
 
 // Ensure ZwpTabletToolV1MotionEvent implements Message.
 var _ Message = ZwpTabletToolV1MotionEvent{}
@@ -6839,6 +9266,9 @@ type ZwpTabletToolV1PressureEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.pressure in tablet_unstable_v1
 func (ZwpTabletToolV1PressureEvent) Opcode() uint16 { return 11 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.pressure in tablet_unstable_v1
+func (ZwpTabletToolV1PressureEvent) MessageName() string { return "pressure" }
+
 // Ensure ZwpTabletToolV1PressureEvent implements Message.
 var _ Message = ZwpTabletToolV1PressureEvent{}
 
@@ -6869,6 +9299,9 @@ type ZwpTabletToolV1DistanceEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.distance in tablet_unstable_v1
 func (ZwpTabletToolV1DistanceEvent) Opcode() uint16 { return 12 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.distance in tablet_unstable_v1
+func (ZwpTabletToolV1DistanceEvent) MessageName() string { return "distance" }
 
 // Ensure ZwpTabletToolV1DistanceEvent implements Message.
 var _ Message = ZwpTabletToolV1DistanceEvent{}
@@ -6902,6 +9335,9 @@ type ZwpTabletToolV1TiltEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.tilt in tablet_unstable_v1
 func (ZwpTabletToolV1TiltEvent) Opcode() uint16 { return 13 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.tilt in tablet_unstable_v1
+func (ZwpTabletToolV1TiltEvent) MessageName() string { return "tilt" }
 
 // Ensure ZwpTabletToolV1TiltEvent implements Message.
 var _ Message = ZwpTabletToolV1TiltEvent{}
@@ -6937,6 +9373,9 @@ type ZwpTabletToolV1RotationEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.rotation in tablet_unstable_v1
 func (ZwpTabletToolV1RotationEvent) Opcode() uint16 { return 14 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.rotation in tablet_unstable_v1
+func (ZwpTabletToolV1RotationEvent) MessageName() string { return "rotation" }
+
 // Ensure ZwpTabletToolV1RotationEvent implements Message.
 var _ Message = ZwpTabletToolV1RotationEvent{}
 
@@ -6967,6 +9406,9 @@ type ZwpTabletToolV1SliderEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.slider in tablet_unstable_v1
 func (ZwpTabletToolV1SliderEvent) Opcode() uint16 { return 15 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.slider in tablet_unstable_v1
+func (ZwpTabletToolV1SliderEvent) MessageName() string { return "slider" }
 
 // Ensure ZwpTabletToolV1SliderEvent implements Message.
 var _ Message = ZwpTabletToolV1SliderEvent{}
@@ -7008,6 +9450,9 @@ type ZwpTabletToolV1WheelEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.wheel in tablet_unstable_v1
 func (ZwpTabletToolV1WheelEvent) Opcode() uint16 { return 16 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.wheel in tablet_unstable_v1
+func (ZwpTabletToolV1WheelEvent) MessageName() string { return "wheel" }
 
 // Ensure ZwpTabletToolV1WheelEvent implements Message.
 var _ Message = ZwpTabletToolV1WheelEvent{}
@@ -7051,6 +9496,9 @@ type ZwpTabletToolV1ButtonEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v1.button in tablet_unstable_v1
 func (ZwpTabletToolV1ButtonEvent) Opcode() uint16 { return 17 }
 
+// MessageName returns the event name for zwp_tablet_tool_v1.button in tablet_unstable_v1
+func (ZwpTabletToolV1ButtonEvent) MessageName() string { return "button" }
+
 // Ensure ZwpTabletToolV1ButtonEvent implements Message.
 var _ Message = ZwpTabletToolV1ButtonEvent{}
 
@@ -7090,6 +9538,9 @@ type ZwpTabletToolV1FrameEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v1.frame in tablet_unstable_v1
 func (ZwpTabletToolV1FrameEvent) Opcode() uint16 { return 18 }
+
+// MessageName returns the event name for zwp_tablet_tool_v1.frame in tablet_unstable_v1
+func (ZwpTabletToolV1FrameEvent) MessageName() string { return "frame" }
 
 // Ensure ZwpTabletToolV1FrameEvent implements Message.
 var _ Message = ZwpTabletToolV1FrameEvent{}
@@ -7133,6 +9584,119 @@ type ZwpTabletToolV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTabletToolV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletToolV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletToolV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletToolV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletToolV1TypeEvent{}
+	case 1:
+		return &ZwpTabletToolV1HardwareSerialEvent{}
+	case 2:
+		return &ZwpTabletToolV1HardwareIDWacomEvent{}
+	case 3:
+		return &ZwpTabletToolV1CapabilityEvent{}
+	case 4:
+		return &ZwpTabletToolV1DoneEvent{}
+	case 5:
+		return &ZwpTabletToolV1RemovedEvent{}
+	case 6:
+		return &ZwpTabletToolV1ProximityInEvent{}
+	case 7:
+		return &ZwpTabletToolV1ProximityOutEvent{}
+	case 8:
+		return &ZwpTabletToolV1DownEvent{}
+	case 9:
+		return &ZwpTabletToolV1UpEvent{}
+	case 10:
+		return &ZwpTabletToolV1MotionEvent{}
+	case 11:
+		return &ZwpTabletToolV1PressureEvent{}
+	case 12:
+		return &ZwpTabletToolV1DistanceEvent{}
+	case 13:
+		return &ZwpTabletToolV1TiltEvent{}
+	case 14:
+		return &ZwpTabletToolV1RotationEvent{}
+	case 15:
+		return &ZwpTabletToolV1SliderEvent{}
+	case 16:
+		return &ZwpTabletToolV1WheelEvent{}
+	case 17:
+		return &ZwpTabletToolV1ButtonEvent{}
+	case 18:
+		return &ZwpTabletToolV1FrameEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetCursor requests to set the tablet tool's surface
+//
+// Sets the surface of the cursor used for this tool on the given
+// tablet. This request only takes effect if the tool is in proximity
+// of one of the requesting client's surfaces or the surface parameter
+// is the current pointer surface. If there was a previous surface set
+// with this request it is replaced. If surface is NULL, the cursor
+// image is hidden.
+//
+// The parameters hotspot_x and hotspot_y define the position of the
+// pointer surface relative to the pointer location. Its top-left corner
+// is always at (x, y) - (hotspot_x, hotspot_y), where (x, y) are the
+// coordinates of the pointer location, in surface-local coordinates.
+//
+// On surface.attach requests to the pointer surface, hotspot_x and
+// hotspot_y are decremented by the x and y parameters passed to the
+// request. Attach must be confirmed by wl_surface.commit as usual.
+//
+// The hotspot can also be updated by passing the currently set pointer
+// surface to this request with new values for hotspot_x and hotspot_y.
+//
+// The current and pending input regions of the wl_surface are cleared,
+// and wl_surface.set_input_region is ignored until the wl_surface is no
+// longer used as the cursor. When the use as a cursor ends, the current
+// and pending input regions become undefined, and the wl_surface is
+// unmapped.
+//
+// This request gives the surface the role of a cursor. The role
+// assigned by this request is the same as assigned by
+// wl_pointer.set_cursor meaning the same surface can be
+// used both as a wl_pointer cursor and a wp_tablet cursor. If the
+// surface already has another role, it raises a protocol error.
+// The surface may be used on multiple tablets and across multiple
+// seats.
+func (proxy *ZwpTabletToolV1) SetCursor(connection Connection, aSerial uint32, aSurface ObjectID, aHotspotX int32, aHotspotY int32) (err error) {
+	request := ZwpTabletToolV1SetCursorRequest{
+		Serial:   aSerial,
+		Surface:  aSurface,
+		HotspotX: aHotspotX,
+		HotspotY: aHotspotY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the tool object
+//
+// This destroys the client's resource for this tool object.
+func (proxy *ZwpTabletToolV1) Destroy(connection Connection) (err error) {
+	request := ZwpTabletToolV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletToolV1 implements Proxy.
+var _ Proxy = &ZwpTabletToolV1{}
+
 // #endregion Interface tablet_unstable_v1.zwp_tablet_tool_v1
 
 // ----------------------------------------------------------------------------
@@ -7146,6 +9710,9 @@ type ZwpTabletV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_v1.destroy in tablet_unstable_v1
 func (ZwpTabletV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_tablet_v1.destroy in tablet_unstable_v1
+func (ZwpTabletV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTabletV1DestroyRequest implements Message.
 var _ Message = ZwpTabletV1DestroyRequest{}
@@ -7169,6 +9736,9 @@ type ZwpTabletV1NameEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_v1.name in tablet_unstable_v1
 func (ZwpTabletV1NameEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_tablet_v1.name in tablet_unstable_v1
+func (ZwpTabletV1NameEvent) MessageName() string { return "name" }
 
 // Ensure ZwpTabletV1NameEvent implements Message.
 var _ Message = ZwpTabletV1NameEvent{}
@@ -7200,6 +9770,9 @@ type ZwpTabletV1IDEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_v1.id in tablet_unstable_v1
 func (ZwpTabletV1IDEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_tablet_v1.id in tablet_unstable_v1
+func (ZwpTabletV1IDEvent) MessageName() string { return "id" }
 
 // Ensure ZwpTabletV1IDEvent implements Message.
 var _ Message = ZwpTabletV1IDEvent{}
@@ -7246,6 +9819,9 @@ type ZwpTabletV1PathEvent struct {
 // Opcode returns the event opcode for zwp_tablet_v1.path in tablet_unstable_v1
 func (ZwpTabletV1PathEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_tablet_v1.path in tablet_unstable_v1
+func (ZwpTabletV1PathEvent) MessageName() string { return "path" }
+
 // Ensure ZwpTabletV1PathEvent implements Message.
 var _ Message = ZwpTabletV1PathEvent{}
 
@@ -7274,6 +9850,9 @@ type ZwpTabletV1DoneEvent struct {
 // Opcode returns the event opcode for zwp_tablet_v1.done in tablet_unstable_v1
 func (ZwpTabletV1DoneEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_v1.done in tablet_unstable_v1
+func (ZwpTabletV1DoneEvent) MessageName() string { return "done" }
+
 // Ensure ZwpTabletV1DoneEvent implements Message.
 var _ Message = ZwpTabletV1DoneEvent{}
 
@@ -7297,6 +9876,9 @@ type ZwpTabletV1RemovedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_v1.removed in tablet_unstable_v1
 func (ZwpTabletV1RemovedEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_tablet_v1.removed in tablet_unstable_v1
+func (ZwpTabletV1RemovedEvent) MessageName() string { return "removed" }
 
 // Ensure ZwpTabletV1RemovedEvent implements Message.
 var _ Message = ZwpTabletV1RemovedEvent{}
@@ -7323,6 +9905,46 @@ type ZwpTabletV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTabletV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletV1NameEvent{}
+	case 1:
+		return &ZwpTabletV1IDEvent{}
+	case 2:
+		return &ZwpTabletV1PathEvent{}
+	case 3:
+		return &ZwpTabletV1DoneEvent{}
+	case 4:
+		return &ZwpTabletV1RemovedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the tablet object
+//
+// This destroys the client's resource for this tablet object.
+func (proxy *ZwpTabletV1) Destroy(connection Connection) (err error) {
+	request := ZwpTabletV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletV1 implements Proxy.
+var _ Proxy = &ZwpTabletV1{}
+
 // #endregion Interface tablet_unstable_v1.zwp_tablet_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -7347,6 +9969,9 @@ type ZwpTabletManagerV2GetTabletSeatRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_manager_v2.get_tablet_seat in tablet_unstable_v2
 func (ZwpTabletManagerV2GetTabletSeatRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_tablet_manager_v2.get_tablet_seat in tablet_unstable_v2
+func (ZwpTabletManagerV2GetTabletSeatRequest) MessageName() string { return "get_tablet_seat" }
 
 // Ensure ZwpTabletManagerV2GetTabletSeatRequest implements Message.
 var _ Message = ZwpTabletManagerV2GetTabletSeatRequest{}
@@ -7375,6 +10000,9 @@ type ZwpTabletManagerV2DestroyRequest struct {
 // Opcode returns the request opcode for zwp_tablet_manager_v2.destroy in tablet_unstable_v2
 func (ZwpTabletManagerV2DestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_tablet_manager_v2.destroy in tablet_unstable_v2
+func (ZwpTabletManagerV2DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpTabletManagerV2DestroyRequest implements Message.
 var _ Message = ZwpTabletManagerV2DestroyRequest{}
 
@@ -7395,6 +10023,54 @@ type ZwpTabletManagerV2 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTabletManagerV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletManagerV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletManagerV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletManagerV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// GetTabletSeat requests to get the tablet seat
+//
+// Get the wp_tablet_seat object for the given seat. This object
+// provides access to all graphics tablets in this seat.
+func (proxy *ZwpTabletManagerV2) GetTabletSeat(connection Connection, aSeat ObjectID) (aTabletSeat *ZwpTabletSeatV2, err error) {
+	aTabletSeat = &ZwpTabletSeatV2{connection.NewID()}
+	request := ZwpTabletManagerV2GetTabletSeatRequest{
+		TabletSeat: aTabletSeat.id,
+		Seat:       aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aTabletSeat)
+	}
+	return
+}
+
+// Destroy requests to release the memory for the tablet manager object
+//
+// Destroy the wp_tablet_manager object. Objects created from this
+// object are unaffected and should be destroyed separately.
+func (proxy *ZwpTabletManagerV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletManagerV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletManagerV2 implements Proxy.
+var _ Proxy = &ZwpTabletManagerV2{}
+
 // #endregion Interface tablet_unstable_v2.zwp_tablet_manager_v2
 
 // ----------------------------------------------------------------------------
@@ -7409,6 +10085,9 @@ type ZwpTabletSeatV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_seat_v2.destroy in tablet_unstable_v2
 func (ZwpTabletSeatV2DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_tablet_seat_v2.destroy in tablet_unstable_v2
+func (ZwpTabletSeatV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTabletSeatV2DestroyRequest implements Message.
 var _ Message = ZwpTabletSeatV2DestroyRequest{}
@@ -7434,6 +10113,9 @@ type ZwpTabletSeatV2TabletAddedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_seat_v2.tablet_added in tablet_unstable_v2
 func (ZwpTabletSeatV2TabletAddedEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_tablet_seat_v2.tablet_added in tablet_unstable_v2
+func (ZwpTabletSeatV2TabletAddedEvent) MessageName() string { return "tablet_added" }
 
 // Ensure ZwpTabletSeatV2TabletAddedEvent implements Message.
 var _ Message = ZwpTabletSeatV2TabletAddedEvent{}
@@ -7464,6 +10146,9 @@ type ZwpTabletSeatV2ToolAddedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_seat_v2.tool_added in tablet_unstable_v2
 func (ZwpTabletSeatV2ToolAddedEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_tablet_seat_v2.tool_added in tablet_unstable_v2
+func (ZwpTabletSeatV2ToolAddedEvent) MessageName() string { return "tool_added" }
 
 // Ensure ZwpTabletSeatV2ToolAddedEvent implements Message.
 var _ Message = ZwpTabletSeatV2ToolAddedEvent{}
@@ -7501,6 +10186,9 @@ type ZwpTabletSeatV2PadAddedEvent struct {
 // Opcode returns the event opcode for zwp_tablet_seat_v2.pad_added in tablet_unstable_v2
 func (ZwpTabletSeatV2PadAddedEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_tablet_seat_v2.pad_added in tablet_unstable_v2
+func (ZwpTabletSeatV2PadAddedEvent) MessageName() string { return "pad_added" }
+
 // Ensure ZwpTabletSeatV2PadAddedEvent implements Message.
 var _ Message = ZwpTabletSeatV2PadAddedEvent{}
 
@@ -7525,6 +10213,43 @@ var _ Event = &ZwpTabletSeatV2PadAddedEvent{}
 type ZwpTabletSeatV2 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTabletSeatV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletSeatV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletSeatV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletSeatV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletSeatV2TabletAddedEvent{}
+	case 1:
+		return &ZwpTabletSeatV2ToolAddedEvent{}
+	case 2:
+		return &ZwpTabletSeatV2PadAddedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to release the memory for the tablet seat object
+//
+// Destroy the wp_tablet_seat object. Objects created from this
+// object are unaffected and should be destroyed separately.
+func (proxy *ZwpTabletSeatV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletSeatV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletSeatV2 implements Proxy.
+var _ Proxy = &ZwpTabletSeatV2{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_seat_v2
 
@@ -7666,6 +10391,9 @@ type ZwpTabletToolV2SetCursorRequest struct {
 // Opcode returns the request opcode for zwp_tablet_tool_v2.set_cursor in tablet_unstable_v2
 func (ZwpTabletToolV2SetCursorRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_tablet_tool_v2.set_cursor in tablet_unstable_v2
+func (ZwpTabletToolV2SetCursorRequest) MessageName() string { return "set_cursor" }
+
 // Ensure ZwpTabletToolV2SetCursorRequest implements Message.
 var _ Message = ZwpTabletToolV2SetCursorRequest{}
 
@@ -7698,6 +10426,9 @@ type ZwpTabletToolV2DestroyRequest struct {
 // Opcode returns the request opcode for zwp_tablet_tool_v2.destroy in tablet_unstable_v2
 func (ZwpTabletToolV2DestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_tablet_tool_v2.destroy in tablet_unstable_v2
+func (ZwpTabletToolV2DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpTabletToolV2DestroyRequest implements Message.
 var _ Message = ZwpTabletToolV2DestroyRequest{}
 
@@ -7723,6 +10454,9 @@ type ZwpTabletToolV2TypeEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.type in tablet_unstable_v2
 func (ZwpTabletToolV2TypeEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.type in tablet_unstable_v2
+func (ZwpTabletToolV2TypeEvent) MessageName() string { return "type" }
 
 // Ensure ZwpTabletToolV2TypeEvent implements Message.
 var _ Message = ZwpTabletToolV2TypeEvent{}
@@ -7768,6 +10502,9 @@ type ZwpTabletToolV2HardwareSerialEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.hardware_serial in tablet_unstable_v2
 func (ZwpTabletToolV2HardwareSerialEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.hardware_serial in tablet_unstable_v2
+func (ZwpTabletToolV2HardwareSerialEvent) MessageName() string { return "hardware_serial" }
+
 // Ensure ZwpTabletToolV2HardwareSerialEvent implements Message.
 var _ Message = ZwpTabletToolV2HardwareSerialEvent{}
 
@@ -7812,6 +10549,9 @@ type ZwpTabletToolV2HardwareIDWacomEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.hardware_id_wacom in tablet_unstable_v2
 func (ZwpTabletToolV2HardwareIDWacomEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.hardware_id_wacom in tablet_unstable_v2
+func (ZwpTabletToolV2HardwareIDWacomEvent) MessageName() string { return "hardware_id_wacom" }
+
 // Ensure ZwpTabletToolV2HardwareIDWacomEvent implements Message.
 var _ Message = ZwpTabletToolV2HardwareIDWacomEvent{}
 
@@ -7850,6 +10590,9 @@ type ZwpTabletToolV2CapabilityEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.capability in tablet_unstable_v2
 func (ZwpTabletToolV2CapabilityEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.capability in tablet_unstable_v2
+func (ZwpTabletToolV2CapabilityEvent) MessageName() string { return "capability" }
+
 // Ensure ZwpTabletToolV2CapabilityEvent implements Message.
 var _ Message = ZwpTabletToolV2CapabilityEvent{}
 
@@ -7876,6 +10619,9 @@ type ZwpTabletToolV2DoneEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.done in tablet_unstable_v2
 func (ZwpTabletToolV2DoneEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.done in tablet_unstable_v2
+func (ZwpTabletToolV2DoneEvent) MessageName() string { return "done" }
 
 // Ensure ZwpTabletToolV2DoneEvent implements Message.
 var _ Message = ZwpTabletToolV2DoneEvent{}
@@ -7909,6 +10655,9 @@ type ZwpTabletToolV2RemovedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.removed in tablet_unstable_v2
 func (ZwpTabletToolV2RemovedEvent) Opcode() uint16 { return 5 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.removed in tablet_unstable_v2
+func (ZwpTabletToolV2RemovedEvent) MessageName() string { return "removed" }
 
 // Ensure ZwpTabletToolV2RemovedEvent implements Message.
 var _ Message = ZwpTabletToolV2RemovedEvent{}
@@ -7944,6 +10693,9 @@ type ZwpTabletToolV2ProximityInEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.proximity_in in tablet_unstable_v2
 func (ZwpTabletToolV2ProximityInEvent) Opcode() uint16 { return 6 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.proximity_in in tablet_unstable_v2
+func (ZwpTabletToolV2ProximityInEvent) MessageName() string { return "proximity_in" }
 
 // Ensure ZwpTabletToolV2ProximityInEvent implements Message.
 var _ Message = ZwpTabletToolV2ProximityInEvent{}
@@ -7991,6 +10743,9 @@ type ZwpTabletToolV2ProximityOutEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.proximity_out in tablet_unstable_v2
 func (ZwpTabletToolV2ProximityOutEvent) Opcode() uint16 { return 7 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.proximity_out in tablet_unstable_v2
+func (ZwpTabletToolV2ProximityOutEvent) MessageName() string { return "proximity_out" }
+
 // Ensure ZwpTabletToolV2ProximityOutEvent implements Message.
 var _ Message = ZwpTabletToolV2ProximityOutEvent{}
 
@@ -8022,6 +10777,9 @@ type ZwpTabletToolV2DownEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.down in tablet_unstable_v2
 func (ZwpTabletToolV2DownEvent) Opcode() uint16 { return 8 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.down in tablet_unstable_v2
+func (ZwpTabletToolV2DownEvent) MessageName() string { return "down" }
 
 // Ensure ZwpTabletToolV2DownEvent implements Message.
 var _ Message = ZwpTabletToolV2DownEvent{}
@@ -8063,6 +10821,9 @@ type ZwpTabletToolV2UpEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.up in tablet_unstable_v2
 func (ZwpTabletToolV2UpEvent) Opcode() uint16 { return 9 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.up in tablet_unstable_v2
+func (ZwpTabletToolV2UpEvent) MessageName() string { return "up" }
+
 // Ensure ZwpTabletToolV2UpEvent implements Message.
 var _ Message = ZwpTabletToolV2UpEvent{}
 
@@ -8087,6 +10848,9 @@ type ZwpTabletToolV2MotionEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.motion in tablet_unstable_v2
 func (ZwpTabletToolV2MotionEvent) Opcode() uint16 { return 10 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.motion in tablet_unstable_v2
+func (ZwpTabletToolV2MotionEvent) MessageName() string { return "motion" }
 
 // Ensure ZwpTabletToolV2MotionEvent implements Message.
 var _ Message = ZwpTabletToolV2MotionEvent{}
@@ -8124,6 +10888,9 @@ type ZwpTabletToolV2PressureEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.pressure in tablet_unstable_v2
 func (ZwpTabletToolV2PressureEvent) Opcode() uint16 { return 11 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.pressure in tablet_unstable_v2
+func (ZwpTabletToolV2PressureEvent) MessageName() string { return "pressure" }
+
 // Ensure ZwpTabletToolV2PressureEvent implements Message.
 var _ Message = ZwpTabletToolV2PressureEvent{}
 
@@ -8154,6 +10921,9 @@ type ZwpTabletToolV2DistanceEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.distance in tablet_unstable_v2
 func (ZwpTabletToolV2DistanceEvent) Opcode() uint16 { return 12 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.distance in tablet_unstable_v2
+func (ZwpTabletToolV2DistanceEvent) MessageName() string { return "distance" }
 
 // Ensure ZwpTabletToolV2DistanceEvent implements Message.
 var _ Message = ZwpTabletToolV2DistanceEvent{}
@@ -8187,6 +10957,9 @@ type ZwpTabletToolV2TiltEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.tilt in tablet_unstable_v2
 func (ZwpTabletToolV2TiltEvent) Opcode() uint16 { return 13 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.tilt in tablet_unstable_v2
+func (ZwpTabletToolV2TiltEvent) MessageName() string { return "tilt" }
 
 // Ensure ZwpTabletToolV2TiltEvent implements Message.
 var _ Message = ZwpTabletToolV2TiltEvent{}
@@ -8222,6 +10995,9 @@ type ZwpTabletToolV2RotationEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.rotation in tablet_unstable_v2
 func (ZwpTabletToolV2RotationEvent) Opcode() uint16 { return 14 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.rotation in tablet_unstable_v2
+func (ZwpTabletToolV2RotationEvent) MessageName() string { return "rotation" }
+
 // Ensure ZwpTabletToolV2RotationEvent implements Message.
 var _ Message = ZwpTabletToolV2RotationEvent{}
 
@@ -8252,6 +11028,9 @@ type ZwpTabletToolV2SliderEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.slider in tablet_unstable_v2
 func (ZwpTabletToolV2SliderEvent) Opcode() uint16 { return 15 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.slider in tablet_unstable_v2
+func (ZwpTabletToolV2SliderEvent) MessageName() string { return "slider" }
 
 // Ensure ZwpTabletToolV2SliderEvent implements Message.
 var _ Message = ZwpTabletToolV2SliderEvent{}
@@ -8293,6 +11072,9 @@ type ZwpTabletToolV2WheelEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.wheel in tablet_unstable_v2
 func (ZwpTabletToolV2WheelEvent) Opcode() uint16 { return 16 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.wheel in tablet_unstable_v2
+func (ZwpTabletToolV2WheelEvent) MessageName() string { return "wheel" }
 
 // Ensure ZwpTabletToolV2WheelEvent implements Message.
 var _ Message = ZwpTabletToolV2WheelEvent{}
@@ -8336,6 +11118,9 @@ type ZwpTabletToolV2ButtonEvent struct {
 // Opcode returns the event opcode for zwp_tablet_tool_v2.button in tablet_unstable_v2
 func (ZwpTabletToolV2ButtonEvent) Opcode() uint16 { return 17 }
 
+// MessageName returns the event name for zwp_tablet_tool_v2.button in tablet_unstable_v2
+func (ZwpTabletToolV2ButtonEvent) MessageName() string { return "button" }
+
 // Ensure ZwpTabletToolV2ButtonEvent implements Message.
 var _ Message = ZwpTabletToolV2ButtonEvent{}
 
@@ -8375,6 +11160,9 @@ type ZwpTabletToolV2FrameEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_tool_v2.frame in tablet_unstable_v2
 func (ZwpTabletToolV2FrameEvent) Opcode() uint16 { return 18 }
+
+// MessageName returns the event name for zwp_tablet_tool_v2.frame in tablet_unstable_v2
+func (ZwpTabletToolV2FrameEvent) MessageName() string { return "frame" }
 
 // Ensure ZwpTabletToolV2FrameEvent implements Message.
 var _ Message = ZwpTabletToolV2FrameEvent{}
@@ -8418,6 +11206,117 @@ type ZwpTabletToolV2 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTabletToolV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletToolV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletToolV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletToolV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletToolV2TypeEvent{}
+	case 1:
+		return &ZwpTabletToolV2HardwareSerialEvent{}
+	case 2:
+		return &ZwpTabletToolV2HardwareIDWacomEvent{}
+	case 3:
+		return &ZwpTabletToolV2CapabilityEvent{}
+	case 4:
+		return &ZwpTabletToolV2DoneEvent{}
+	case 5:
+		return &ZwpTabletToolV2RemovedEvent{}
+	case 6:
+		return &ZwpTabletToolV2ProximityInEvent{}
+	case 7:
+		return &ZwpTabletToolV2ProximityOutEvent{}
+	case 8:
+		return &ZwpTabletToolV2DownEvent{}
+	case 9:
+		return &ZwpTabletToolV2UpEvent{}
+	case 10:
+		return &ZwpTabletToolV2MotionEvent{}
+	case 11:
+		return &ZwpTabletToolV2PressureEvent{}
+	case 12:
+		return &ZwpTabletToolV2DistanceEvent{}
+	case 13:
+		return &ZwpTabletToolV2TiltEvent{}
+	case 14:
+		return &ZwpTabletToolV2RotationEvent{}
+	case 15:
+		return &ZwpTabletToolV2SliderEvent{}
+	case 16:
+		return &ZwpTabletToolV2WheelEvent{}
+	case 17:
+		return &ZwpTabletToolV2ButtonEvent{}
+	case 18:
+		return &ZwpTabletToolV2FrameEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetCursor requests to set the tablet tool's surface
+//
+// Sets the surface of the cursor used for this tool on the given
+// tablet. This request only takes effect if the tool is in proximity
+// of one of the requesting client's surfaces or the surface parameter
+// is the current pointer surface. If there was a previous surface set
+// with this request it is replaced. If surface is NULL, the cursor
+// image is hidden.
+//
+// The parameters hotspot_x and hotspot_y define the position of the
+// pointer surface relative to the pointer location. Its top-left corner
+// is always at (x, y) - (hotspot_x, hotspot_y), where (x, y) are the
+// coordinates of the pointer location, in surface-local coordinates.
+//
+// On surface.attach requests to the pointer surface, hotspot_x and
+// hotspot_y are decremented by the x and y parameters passed to the
+// request. Attach must be confirmed by wl_surface.commit as usual.
+//
+// The hotspot can also be updated by passing the currently set pointer
+// surface to this request with new values for hotspot_x and hotspot_y.
+//
+// The current and pending input regions of the wl_surface are cleared,
+// and wl_surface.set_input_region is ignored until the wl_surface is no
+// longer used as the cursor. When the use as a cursor ends, the current
+// and pending input regions become undefined, and the wl_surface is
+// unmapped.
+//
+// This request gives the surface the role of a wp_tablet_tool cursor. A
+// surface may only ever be used as the cursor surface for one
+// wp_tablet_tool. If the surface already has another role or has
+// previously been used as cursor surface for a different tool, a
+// protocol error is raised.
+func (proxy *ZwpTabletToolV2) SetCursor(connection Connection, aSerial uint32, aSurface ObjectID, aHotspotX int32, aHotspotY int32) (err error) {
+	request := ZwpTabletToolV2SetCursorRequest{
+		Serial:   aSerial,
+		Surface:  aSurface,
+		HotspotX: aHotspotX,
+		HotspotY: aHotspotY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the tool object
+//
+// This destroys the client's resource for this tool object.
+func (proxy *ZwpTabletToolV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletToolV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletToolV2 implements Proxy.
+var _ Proxy = &ZwpTabletToolV2{}
+
 // #endregion Interface tablet_unstable_v2.zwp_tablet_tool_v2
 
 // ----------------------------------------------------------------------------
@@ -8431,6 +11330,9 @@ type ZwpTabletV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_v2.destroy in tablet_unstable_v2
 func (ZwpTabletV2DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_tablet_v2.destroy in tablet_unstable_v2
+func (ZwpTabletV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTabletV2DestroyRequest implements Message.
 var _ Message = ZwpTabletV2DestroyRequest{}
@@ -8454,6 +11356,9 @@ type ZwpTabletV2NameEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_v2.name in tablet_unstable_v2
 func (ZwpTabletV2NameEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_tablet_v2.name in tablet_unstable_v2
+func (ZwpTabletV2NameEvent) MessageName() string { return "name" }
 
 // Ensure ZwpTabletV2NameEvent implements Message.
 var _ Message = ZwpTabletV2NameEvent{}
@@ -8485,6 +11390,9 @@ type ZwpTabletV2IDEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_v2.id in tablet_unstable_v2
 func (ZwpTabletV2IDEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_tablet_v2.id in tablet_unstable_v2
+func (ZwpTabletV2IDEvent) MessageName() string { return "id" }
 
 // Ensure ZwpTabletV2IDEvent implements Message.
 var _ Message = ZwpTabletV2IDEvent{}
@@ -8531,6 +11439,9 @@ type ZwpTabletV2PathEvent struct {
 // Opcode returns the event opcode for zwp_tablet_v2.path in tablet_unstable_v2
 func (ZwpTabletV2PathEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_tablet_v2.path in tablet_unstable_v2
+func (ZwpTabletV2PathEvent) MessageName() string { return "path" }
+
 // Ensure ZwpTabletV2PathEvent implements Message.
 var _ Message = ZwpTabletV2PathEvent{}
 
@@ -8559,6 +11470,9 @@ type ZwpTabletV2DoneEvent struct {
 // Opcode returns the event opcode for zwp_tablet_v2.done in tablet_unstable_v2
 func (ZwpTabletV2DoneEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_v2.done in tablet_unstable_v2
+func (ZwpTabletV2DoneEvent) MessageName() string { return "done" }
+
 // Ensure ZwpTabletV2DoneEvent implements Message.
 var _ Message = ZwpTabletV2DoneEvent{}
 
@@ -8582,6 +11496,9 @@ type ZwpTabletV2RemovedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_v2.removed in tablet_unstable_v2
 func (ZwpTabletV2RemovedEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_tablet_v2.removed in tablet_unstable_v2
+func (ZwpTabletV2RemovedEvent) MessageName() string { return "removed" }
 
 // Ensure ZwpTabletV2RemovedEvent implements Message.
 var _ Message = ZwpTabletV2RemovedEvent{}
@@ -8607,6 +11524,46 @@ var _ Event = &ZwpTabletV2RemovedEvent{}
 type ZwpTabletV2 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTabletV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletV2NameEvent{}
+	case 1:
+		return &ZwpTabletV2IDEvent{}
+	case 2:
+		return &ZwpTabletV2PathEvent{}
+	case 3:
+		return &ZwpTabletV2DoneEvent{}
+	case 4:
+		return &ZwpTabletV2RemovedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the tablet object
+//
+// This destroys the client's resource for this tablet object.
+func (proxy *ZwpTabletV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletV2 implements Proxy.
+var _ Proxy = &ZwpTabletV2{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_v2
 
@@ -8658,6 +11615,9 @@ type ZwpTabletPadRingV2SetFeedbackRequest struct {
 // Opcode returns the request opcode for zwp_tablet_pad_ring_v2.set_feedback in tablet_unstable_v2
 func (ZwpTabletPadRingV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_tablet_pad_ring_v2.set_feedback in tablet_unstable_v2
+func (ZwpTabletPadRingV2SetFeedbackRequest) MessageName() string { return "set_feedback" }
+
 // Ensure ZwpTabletPadRingV2SetFeedbackRequest implements Message.
 var _ Message = ZwpTabletPadRingV2SetFeedbackRequest{}
 
@@ -8683,6 +11643,9 @@ type ZwpTabletPadRingV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_pad_ring_v2.destroy in tablet_unstable_v2
 func (ZwpTabletPadRingV2DestroyRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_tablet_pad_ring_v2.destroy in tablet_unstable_v2
+func (ZwpTabletPadRingV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTabletPadRingV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadRingV2DestroyRequest{}
@@ -8717,6 +11680,9 @@ type ZwpTabletPadRingV2SourceEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.source in tablet_unstable_v2
 func (ZwpTabletPadRingV2SourceEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_tablet_pad_ring_v2.source in tablet_unstable_v2
+func (ZwpTabletPadRingV2SourceEvent) MessageName() string { return "source" }
+
 // Ensure ZwpTabletPadRingV2SourceEvent implements Message.
 var _ Message = ZwpTabletPadRingV2SourceEvent{}
 
@@ -8746,6 +11712,9 @@ type ZwpTabletPadRingV2AngleEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.angle in tablet_unstable_v2
 func (ZwpTabletPadRingV2AngleEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_tablet_pad_ring_v2.angle in tablet_unstable_v2
+func (ZwpTabletPadRingV2AngleEvent) MessageName() string { return "angle" }
 
 // Ensure ZwpTabletPadRingV2AngleEvent implements Message.
 var _ Message = ZwpTabletPadRingV2AngleEvent{}
@@ -8781,6 +11750,9 @@ type ZwpTabletPadRingV2StopEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.stop in tablet_unstable_v2
 func (ZwpTabletPadRingV2StopEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_tablet_pad_ring_v2.stop in tablet_unstable_v2
+func (ZwpTabletPadRingV2StopEvent) MessageName() string { return "stop" }
+
 // Ensure ZwpTabletPadRingV2StopEvent implements Message.
 var _ Message = ZwpTabletPadRingV2StopEvent{}
 
@@ -8815,6 +11787,9 @@ type ZwpTabletPadRingV2FrameEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_ring_v2.frame in tablet_unstable_v2
 func (ZwpTabletPadRingV2FrameEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_pad_ring_v2.frame in tablet_unstable_v2
+func (ZwpTabletPadRingV2FrameEvent) MessageName() string { return "frame" }
+
 // Ensure ZwpTabletPadRingV2FrameEvent implements Message.
 var _ Message = ZwpTabletPadRingV2FrameEvent{}
 
@@ -8841,6 +11816,74 @@ var _ Event = &ZwpTabletPadRingV2FrameEvent{}
 type ZwpTabletPadRingV2 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTabletPadRingV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletPadRingV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletPadRingV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletPadRingV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletPadRingV2SourceEvent{}
+	case 1:
+		return &ZwpTabletPadRingV2AngleEvent{}
+	case 2:
+		return &ZwpTabletPadRingV2StopEvent{}
+	case 3:
+		return &ZwpTabletPadRingV2FrameEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetFeedback requests to set compositor feedback
+//
+// Request that the compositor use the provided feedback string
+// associated with this ring. This request should be issued immediately
+// after a wp_tablet_pad_group.mode_switch event from the corresponding
+// group is received, or whenever the ring is mapped to a different
+// action. See wp_tablet_pad_group.mode_switch for more details.
+//
+// Clients are encouraged to provide context-aware descriptions for
+// the actions associated with the ring; compositors may use this
+// information to offer visual feedback about the button layout
+// (eg. on-screen displays).
+//
+// The provided string 'description' is a UTF-8 encoded string to be
+// associated with this ring, and is considered user-visible; general
+// internationalization rules apply.
+//
+// The serial argument will be that of the last
+// wp_tablet_pad_group.mode_switch event received for the group of this
+// ring. Requests providing other serials than the most recent one will be
+// ignored.
+func (proxy *ZwpTabletPadRingV2) SetFeedback(connection Connection, aDescription string, aSerial uint32) (err error) {
+	request := ZwpTabletPadRingV2SetFeedbackRequest{
+		Description: aDescription,
+		Serial:      aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the ring object
+//
+// This destroys the client's resource for this ring object.
+func (proxy *ZwpTabletPadRingV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletPadRingV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletPadRingV2 implements Proxy.
+var _ Proxy = &ZwpTabletPadRingV2{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_ring_v2
 
@@ -8892,6 +11935,9 @@ type ZwpTabletPadStripV2SetFeedbackRequest struct {
 // Opcode returns the request opcode for zwp_tablet_pad_strip_v2.set_feedback in tablet_unstable_v2
 func (ZwpTabletPadStripV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_tablet_pad_strip_v2.set_feedback in tablet_unstable_v2
+func (ZwpTabletPadStripV2SetFeedbackRequest) MessageName() string { return "set_feedback" }
+
 // Ensure ZwpTabletPadStripV2SetFeedbackRequest implements Message.
 var _ Message = ZwpTabletPadStripV2SetFeedbackRequest{}
 
@@ -8917,6 +11963,9 @@ type ZwpTabletPadStripV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_pad_strip_v2.destroy in tablet_unstable_v2
 func (ZwpTabletPadStripV2DestroyRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_tablet_pad_strip_v2.destroy in tablet_unstable_v2
+func (ZwpTabletPadStripV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTabletPadStripV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadStripV2DestroyRequest{}
@@ -8951,6 +12000,9 @@ type ZwpTabletPadStripV2SourceEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.source in tablet_unstable_v2
 func (ZwpTabletPadStripV2SourceEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_tablet_pad_strip_v2.source in tablet_unstable_v2
+func (ZwpTabletPadStripV2SourceEvent) MessageName() string { return "source" }
+
 // Ensure ZwpTabletPadStripV2SourceEvent implements Message.
 var _ Message = ZwpTabletPadStripV2SourceEvent{}
 
@@ -8981,6 +12033,9 @@ type ZwpTabletPadStripV2PositionEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.position in tablet_unstable_v2
 func (ZwpTabletPadStripV2PositionEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_tablet_pad_strip_v2.position in tablet_unstable_v2
+func (ZwpTabletPadStripV2PositionEvent) MessageName() string { return "position" }
 
 // Ensure ZwpTabletPadStripV2PositionEvent implements Message.
 var _ Message = ZwpTabletPadStripV2PositionEvent{}
@@ -9015,6 +12070,9 @@ type ZwpTabletPadStripV2StopEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.stop in tablet_unstable_v2
 func (ZwpTabletPadStripV2StopEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for zwp_tablet_pad_strip_v2.stop in tablet_unstable_v2
+func (ZwpTabletPadStripV2StopEvent) MessageName() string { return "stop" }
 
 // Ensure ZwpTabletPadStripV2StopEvent implements Message.
 var _ Message = ZwpTabletPadStripV2StopEvent{}
@@ -9051,6 +12109,9 @@ type ZwpTabletPadStripV2FrameEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_strip_v2.frame in tablet_unstable_v2
 func (ZwpTabletPadStripV2FrameEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_pad_strip_v2.frame in tablet_unstable_v2
+func (ZwpTabletPadStripV2FrameEvent) MessageName() string { return "frame" }
+
 // Ensure ZwpTabletPadStripV2FrameEvent implements Message.
 var _ Message = ZwpTabletPadStripV2FrameEvent{}
 
@@ -9078,6 +12139,74 @@ type ZwpTabletPadStripV2 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTabletPadStripV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletPadStripV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletPadStripV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletPadStripV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletPadStripV2SourceEvent{}
+	case 1:
+		return &ZwpTabletPadStripV2PositionEvent{}
+	case 2:
+		return &ZwpTabletPadStripV2StopEvent{}
+	case 3:
+		return &ZwpTabletPadStripV2FrameEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetFeedback requests to set compositor feedback
+//
+// Requests the compositor to use the provided feedback string
+// associated with this strip. This request should be issued immediately
+// after a wp_tablet_pad_group.mode_switch event from the corresponding
+// group is received, or whenever the strip is mapped to a different
+// action. See wp_tablet_pad_group.mode_switch for more details.
+//
+// Clients are encouraged to provide context-aware descriptions for
+// the actions associated with the strip, and compositors may use this
+// information to offer visual feedback about the button layout
+// (eg. on-screen displays).
+//
+// The provided string 'description' is a UTF-8 encoded string to be
+// associated with this ring, and is considered user-visible; general
+// internationalization rules apply.
+//
+// The serial argument will be that of the last
+// wp_tablet_pad_group.mode_switch event received for the group of this
+// strip. Requests providing other serials than the most recent one will be
+// ignored.
+func (proxy *ZwpTabletPadStripV2) SetFeedback(connection Connection, aDescription string, aSerial uint32) (err error) {
+	request := ZwpTabletPadStripV2SetFeedbackRequest{
+		Description: aDescription,
+		Serial:      aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the strip object
+//
+// This destroys the client's resource for this strip object.
+func (proxy *ZwpTabletPadStripV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletPadStripV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletPadStripV2 implements Proxy.
+var _ Proxy = &ZwpTabletPadStripV2{}
+
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_strip_v2
 
 // ----------------------------------------------------------------------------
@@ -9092,6 +12221,9 @@ type ZwpTabletPadGroupV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_tablet_pad_group_v2.destroy in tablet_unstable_v2
 func (ZwpTabletPadGroupV2DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_tablet_pad_group_v2.destroy in tablet_unstable_v2
+func (ZwpTabletPadGroupV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTabletPadGroupV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadGroupV2DestroyRequest{}
@@ -9126,6 +12258,9 @@ type ZwpTabletPadGroupV2ButtonsEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.buttons in tablet_unstable_v2
 func (ZwpTabletPadGroupV2ButtonsEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_tablet_pad_group_v2.buttons in tablet_unstable_v2
+func (ZwpTabletPadGroupV2ButtonsEvent) MessageName() string { return "buttons" }
+
 // Ensure ZwpTabletPadGroupV2ButtonsEvent implements Message.
 var _ Message = ZwpTabletPadGroupV2ButtonsEvent{}
 
@@ -9156,6 +12291,9 @@ type ZwpTabletPadGroupV2RingEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.ring in tablet_unstable_v2
 func (ZwpTabletPadGroupV2RingEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_tablet_pad_group_v2.ring in tablet_unstable_v2
+func (ZwpTabletPadGroupV2RingEvent) MessageName() string { return "ring" }
+
 // Ensure ZwpTabletPadGroupV2RingEvent implements Message.
 var _ Message = ZwpTabletPadGroupV2RingEvent{}
 
@@ -9185,6 +12323,9 @@ type ZwpTabletPadGroupV2StripEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.strip in tablet_unstable_v2
 func (ZwpTabletPadGroupV2StripEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for zwp_tablet_pad_group_v2.strip in tablet_unstable_v2
+func (ZwpTabletPadGroupV2StripEvent) MessageName() string { return "strip" }
 
 // Ensure ZwpTabletPadGroupV2StripEvent implements Message.
 var _ Message = ZwpTabletPadGroupV2StripEvent{}
@@ -9224,6 +12365,9 @@ type ZwpTabletPadGroupV2ModesEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.modes in tablet_unstable_v2
 func (ZwpTabletPadGroupV2ModesEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_pad_group_v2.modes in tablet_unstable_v2
+func (ZwpTabletPadGroupV2ModesEvent) MessageName() string { return "modes" }
+
 // Ensure ZwpTabletPadGroupV2ModesEvent implements Message.
 var _ Message = ZwpTabletPadGroupV2ModesEvent{}
 
@@ -9251,6 +12395,9 @@ type ZwpTabletPadGroupV2DoneEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.done in tablet_unstable_v2
 func (ZwpTabletPadGroupV2DoneEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_tablet_pad_group_v2.done in tablet_unstable_v2
+func (ZwpTabletPadGroupV2DoneEvent) MessageName() string { return "done" }
 
 // Ensure ZwpTabletPadGroupV2DoneEvent implements Message.
 var _ Message = ZwpTabletPadGroupV2DoneEvent{}
@@ -9305,6 +12452,9 @@ type ZwpTabletPadGroupV2ModeSwitchEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_group_v2.mode_switch in tablet_unstable_v2
 func (ZwpTabletPadGroupV2ModeSwitchEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for zwp_tablet_pad_group_v2.mode_switch in tablet_unstable_v2
+func (ZwpTabletPadGroupV2ModeSwitchEvent) MessageName() string { return "mode_switch" }
+
 // Ensure ZwpTabletPadGroupV2ModeSwitchEvent implements Message.
 var _ Message = ZwpTabletPadGroupV2ModeSwitchEvent{}
 
@@ -9357,6 +12507,49 @@ var _ Event = &ZwpTabletPadGroupV2ModeSwitchEvent{}
 type ZwpTabletPadGroupV2 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTabletPadGroupV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletPadGroupV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletPadGroupV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletPadGroupV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletPadGroupV2ButtonsEvent{}
+	case 1:
+		return &ZwpTabletPadGroupV2RingEvent{}
+	case 2:
+		return &ZwpTabletPadGroupV2StripEvent{}
+	case 3:
+		return &ZwpTabletPadGroupV2ModesEvent{}
+	case 4:
+		return &ZwpTabletPadGroupV2DoneEvent{}
+	case 5:
+		return &ZwpTabletPadGroupV2ModeSwitchEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the pad object
+//
+// Destroy the wp_tablet_pad_group object. Objects created from this object
+// are unaffected and should be destroyed separately.
+func (proxy *ZwpTabletPadGroupV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletPadGroupV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletPadGroupV2 implements Proxy.
+var _ Proxy = &ZwpTabletPadGroupV2{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_group_v2
 
@@ -9417,6 +12610,9 @@ type ZwpTabletPadV2SetFeedbackRequest struct {
 // Opcode returns the request opcode for zwp_tablet_pad_v2.set_feedback in tablet_unstable_v2
 func (ZwpTabletPadV2SetFeedbackRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_tablet_pad_v2.set_feedback in tablet_unstable_v2
+func (ZwpTabletPadV2SetFeedbackRequest) MessageName() string { return "set_feedback" }
+
 // Ensure ZwpTabletPadV2SetFeedbackRequest implements Message.
 var _ Message = ZwpTabletPadV2SetFeedbackRequest{}
 
@@ -9447,6 +12643,9 @@ type ZwpTabletPadV2DestroyRequest struct {
 // Opcode returns the request opcode for zwp_tablet_pad_v2.destroy in tablet_unstable_v2
 func (ZwpTabletPadV2DestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_tablet_pad_v2.destroy in tablet_unstable_v2
+func (ZwpTabletPadV2DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpTabletPadV2DestroyRequest implements Message.
 var _ Message = ZwpTabletPadV2DestroyRequest{}
 
@@ -9471,6 +12670,9 @@ type ZwpTabletPadV2GroupEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.group in tablet_unstable_v2
 func (ZwpTabletPadV2GroupEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_tablet_pad_v2.group in tablet_unstable_v2
+func (ZwpTabletPadV2GroupEvent) MessageName() string { return "group" }
 
 // Ensure ZwpTabletPadV2GroupEvent implements Message.
 var _ Message = ZwpTabletPadV2GroupEvent{}
@@ -9508,6 +12710,9 @@ type ZwpTabletPadV2PathEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_v2.path in tablet_unstable_v2
 func (ZwpTabletPadV2PathEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_tablet_pad_v2.path in tablet_unstable_v2
+func (ZwpTabletPadV2PathEvent) MessageName() string { return "path" }
+
 // Ensure ZwpTabletPadV2PathEvent implements Message.
 var _ Message = ZwpTabletPadV2PathEvent{}
 
@@ -9540,6 +12745,9 @@ type ZwpTabletPadV2ButtonsEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_v2.buttons in tablet_unstable_v2
 func (ZwpTabletPadV2ButtonsEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_tablet_pad_v2.buttons in tablet_unstable_v2
+func (ZwpTabletPadV2ButtonsEvent) MessageName() string { return "buttons" }
+
 // Ensure ZwpTabletPadV2ButtonsEvent implements Message.
 var _ Message = ZwpTabletPadV2ButtonsEvent{}
 
@@ -9567,6 +12775,9 @@ type ZwpTabletPadV2DoneEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_v2.done in tablet_unstable_v2
 func (ZwpTabletPadV2DoneEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_tablet_pad_v2.done in tablet_unstable_v2
+func (ZwpTabletPadV2DoneEvent) MessageName() string { return "done" }
+
 // Ensure ZwpTabletPadV2DoneEvent implements Message.
 var _ Message = ZwpTabletPadV2DoneEvent{}
 
@@ -9593,6 +12804,9 @@ type ZwpTabletPadV2ButtonEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.button in tablet_unstable_v2
 func (ZwpTabletPadV2ButtonEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_tablet_pad_v2.button in tablet_unstable_v2
+func (ZwpTabletPadV2ButtonEvent) MessageName() string { return "button" }
 
 // Ensure ZwpTabletPadV2ButtonEvent implements Message.
 var _ Message = ZwpTabletPadV2ButtonEvent{}
@@ -9637,6 +12851,9 @@ type ZwpTabletPadV2EnterEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_v2.enter in tablet_unstable_v2
 func (ZwpTabletPadV2EnterEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for zwp_tablet_pad_v2.enter in tablet_unstable_v2
+func (ZwpTabletPadV2EnterEvent) MessageName() string { return "enter" }
+
 // Ensure ZwpTabletPadV2EnterEvent implements Message.
 var _ Message = ZwpTabletPadV2EnterEvent{}
 
@@ -9678,6 +12895,9 @@ type ZwpTabletPadV2LeaveEvent struct {
 // Opcode returns the event opcode for zwp_tablet_pad_v2.leave in tablet_unstable_v2
 func (ZwpTabletPadV2LeaveEvent) Opcode() uint16 { return 6 }
 
+// MessageName returns the event name for zwp_tablet_pad_v2.leave in tablet_unstable_v2
+func (ZwpTabletPadV2LeaveEvent) MessageName() string { return "leave" }
+
 // Ensure ZwpTabletPadV2LeaveEvent implements Message.
 var _ Message = ZwpTabletPadV2LeaveEvent{}
 
@@ -9712,6 +12932,9 @@ type ZwpTabletPadV2RemovedEvent struct {
 
 // Opcode returns the event opcode for zwp_tablet_pad_v2.removed in tablet_unstable_v2
 func (ZwpTabletPadV2RemovedEvent) Opcode() uint16 { return 7 }
+
+// MessageName returns the event name for zwp_tablet_pad_v2.removed in tablet_unstable_v2
+func (ZwpTabletPadV2RemovedEvent) MessageName() string { return "removed" }
 
 // Ensure ZwpTabletPadV2RemovedEvent implements Message.
 var _ Message = ZwpTabletPadV2RemovedEvent{}
@@ -9751,6 +12974,89 @@ var _ Event = &ZwpTabletPadV2RemovedEvent{}
 type ZwpTabletPadV2 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTabletPadV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTabletPadV2) Descriptor() *InterfaceDescriptor {
+	return &ZwpTabletPadV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTabletPadV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTabletPadV2GroupEvent{}
+	case 1:
+		return &ZwpTabletPadV2PathEvent{}
+	case 2:
+		return &ZwpTabletPadV2ButtonsEvent{}
+	case 3:
+		return &ZwpTabletPadV2DoneEvent{}
+	case 4:
+		return &ZwpTabletPadV2ButtonEvent{}
+	case 5:
+		return &ZwpTabletPadV2EnterEvent{}
+	case 6:
+		return &ZwpTabletPadV2LeaveEvent{}
+	case 7:
+		return &ZwpTabletPadV2RemovedEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetFeedback requests to set compositor feedback
+//
+// Requests the compositor to use the provided feedback string
+// associated with this button. This request should be issued immediately
+// after a wp_tablet_pad_group.mode_switch event from the corresponding
+// group is received, or whenever a button is mapped to a different
+// action. See wp_tablet_pad_group.mode_switch for more details.
+//
+// Clients are encouraged to provide context-aware descriptions for
+// the actions associated with each button, and compositors may use
+// this information to offer visual feedback on the button layout
+// (e.g. on-screen displays).
+//
+// Button indices start at 0. Setting the feedback string on a button
+// that is reserved by the compositor (i.e. not belonging to any
+// wp_tablet_pad_group) does not generate an error but the compositor
+// is free to ignore the request.
+//
+// The provided string 'description' is a UTF-8 encoded string to be
+// associated with this ring, and is considered user-visible; general
+// internationalization rules apply.
+//
+// The serial argument will be that of the last
+// wp_tablet_pad_group.mode_switch event received for the group of this
+// button. Requests providing other serials than the most recent one will
+// be ignored.
+func (proxy *ZwpTabletPadV2) SetFeedback(connection Connection, aButton uint32, aDescription string, aSerial uint32) (err error) {
+	request := ZwpTabletPadV2SetFeedbackRequest{
+		Button:      aButton,
+		Description: aDescription,
+		Serial:      aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the pad object
+//
+// Destroy the wp_tablet_pad object. Objects created from this object
+// are unaffected and should be destroyed separately.
+func (proxy *ZwpTabletPadV2) Destroy(connection Connection) (err error) {
+	request := ZwpTabletPadV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTabletPadV2 implements Proxy.
+var _ Proxy = &ZwpTabletPadV2{}
 
 // #endregion Interface tablet_unstable_v2.zwp_tablet_pad_v2
 
@@ -9913,6 +13219,9 @@ type ZwpTextInputV1ActivateRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v1.activate in text_input_unstable_v1
 func (ZwpTextInputV1ActivateRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_text_input_v1.activate in text_input_unstable_v1
+func (ZwpTextInputV1ActivateRequest) MessageName() string { return "activate" }
+
 // Ensure ZwpTextInputV1ActivateRequest implements Message.
 var _ Message = ZwpTextInputV1ActivateRequest{}
 
@@ -9942,6 +13251,9 @@ type ZwpTextInputV1DeactivateRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v1.deactivate in text_input_unstable_v1
 func (ZwpTextInputV1DeactivateRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_text_input_v1.deactivate in text_input_unstable_v1
+func (ZwpTextInputV1DeactivateRequest) MessageName() string { return "deactivate" }
+
 // Ensure ZwpTextInputV1DeactivateRequest implements Message.
 var _ Message = ZwpTextInputV1DeactivateRequest{}
 
@@ -9965,6 +13277,9 @@ type ZwpTextInputV1ShowInputPanelRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v1.show_input_panel in text_input_unstable_v1
 func (ZwpTextInputV1ShowInputPanelRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_text_input_v1.show_input_panel in text_input_unstable_v1
+func (ZwpTextInputV1ShowInputPanelRequest) MessageName() string { return "show_input_panel" }
+
 // Ensure ZwpTextInputV1ShowInputPanelRequest implements Message.
 var _ Message = ZwpTextInputV1ShowInputPanelRequest{}
 
@@ -9984,6 +13299,9 @@ type ZwpTextInputV1HideInputPanelRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v1.hide_input_panel in text_input_unstable_v1
 func (ZwpTextInputV1HideInputPanelRequest) Opcode() uint16 { return 3 }
+
+// MessageName returns the request name for zwp_text_input_v1.hide_input_panel in text_input_unstable_v1
+func (ZwpTextInputV1HideInputPanelRequest) MessageName() string { return "hide_input_panel" }
 
 // Ensure ZwpTextInputV1HideInputPanelRequest implements Message.
 var _ Message = ZwpTextInputV1HideInputPanelRequest{}
@@ -10006,6 +13324,9 @@ type ZwpTextInputV1ResetRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v1.reset in text_input_unstable_v1
 func (ZwpTextInputV1ResetRequest) Opcode() uint16 { return 4 }
+
+// MessageName returns the request name for zwp_text_input_v1.reset in text_input_unstable_v1
+func (ZwpTextInputV1ResetRequest) MessageName() string { return "reset" }
 
 // Ensure ZwpTextInputV1ResetRequest implements Message.
 var _ Message = ZwpTextInputV1ResetRequest{}
@@ -10035,6 +13356,9 @@ type ZwpTextInputV1SetSurroundingTextRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v1.set_surrounding_text in text_input_unstable_v1
 func (ZwpTextInputV1SetSurroundingTextRequest) Opcode() uint16 { return 5 }
+
+// MessageName returns the request name for zwp_text_input_v1.set_surrounding_text in text_input_unstable_v1
+func (ZwpTextInputV1SetSurroundingTextRequest) MessageName() string { return "set_surrounding_text" }
 
 // Ensure ZwpTextInputV1SetSurroundingTextRequest implements Message.
 var _ Message = ZwpTextInputV1SetSurroundingTextRequest{}
@@ -10074,6 +13398,9 @@ type ZwpTextInputV1SetContentTypeRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v1.set_content_type in text_input_unstable_v1
 func (ZwpTextInputV1SetContentTypeRequest) Opcode() uint16 { return 6 }
 
+// MessageName returns the request name for zwp_text_input_v1.set_content_type in text_input_unstable_v1
+func (ZwpTextInputV1SetContentTypeRequest) MessageName() string { return "set_content_type" }
+
 // Ensure ZwpTextInputV1SetContentTypeRequest implements Message.
 var _ Message = ZwpTextInputV1SetContentTypeRequest{}
 
@@ -10103,6 +13430,9 @@ type ZwpTextInputV1SetCursorRectangleRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v1.set_cursor_rectangle in text_input_unstable_v1
 func (ZwpTextInputV1SetCursorRectangleRequest) Opcode() uint16 { return 7 }
+
+// MessageName returns the request name for zwp_text_input_v1.set_cursor_rectangle in text_input_unstable_v1
+func (ZwpTextInputV1SetCursorRectangleRequest) MessageName() string { return "set_cursor_rectangle" }
 
 // Ensure ZwpTextInputV1SetCursorRectangleRequest implements Message.
 var _ Message = ZwpTextInputV1SetCursorRectangleRequest{}
@@ -10143,6 +13473,11 @@ type ZwpTextInputV1SetPreferredLanguageRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v1.set_preferred_language in text_input_unstable_v1
 func (ZwpTextInputV1SetPreferredLanguageRequest) Opcode() uint16 { return 8 }
 
+// MessageName returns the request name for zwp_text_input_v1.set_preferred_language in text_input_unstable_v1
+func (ZwpTextInputV1SetPreferredLanguageRequest) MessageName() string {
+	return "set_preferred_language"
+}
+
 // Ensure ZwpTextInputV1SetPreferredLanguageRequest implements Message.
 var _ Message = ZwpTextInputV1SetPreferredLanguageRequest{}
 
@@ -10164,6 +13499,9 @@ type ZwpTextInputV1CommitStateRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v1.commit_state in text_input_unstable_v1
 func (ZwpTextInputV1CommitStateRequest) Opcode() uint16 { return 9 }
+
+// MessageName returns the request name for zwp_text_input_v1.commit_state in text_input_unstable_v1
+func (ZwpTextInputV1CommitStateRequest) MessageName() string { return "commit_state" }
 
 // Ensure ZwpTextInputV1CommitStateRequest implements Message.
 var _ Message = ZwpTextInputV1CommitStateRequest{}
@@ -10187,6 +13525,9 @@ type ZwpTextInputV1InvokeActionRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v1.invoke_action in text_input_unstable_v1
 func (ZwpTextInputV1InvokeActionRequest) Opcode() uint16 { return 10 }
+
+// MessageName returns the request name for zwp_text_input_v1.invoke_action in text_input_unstable_v1
+func (ZwpTextInputV1InvokeActionRequest) MessageName() string { return "invoke_action" }
 
 // Ensure ZwpTextInputV1InvokeActionRequest implements Message.
 var _ Message = ZwpTextInputV1InvokeActionRequest{}
@@ -10216,6 +13557,9 @@ type ZwpTextInputV1EnterEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v1.enter in text_input_unstable_v1
 func (ZwpTextInputV1EnterEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zwp_text_input_v1.enter in text_input_unstable_v1
+func (ZwpTextInputV1EnterEvent) MessageName() string { return "enter" }
+
 // Ensure ZwpTextInputV1EnterEvent implements Message.
 var _ Message = ZwpTextInputV1EnterEvent{}
 
@@ -10243,6 +13587,9 @@ type ZwpTextInputV1LeaveEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v1.leave in text_input_unstable_v1
 func (ZwpTextInputV1LeaveEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_text_input_v1.leave in text_input_unstable_v1
+func (ZwpTextInputV1LeaveEvent) MessageName() string { return "leave" }
+
 // Ensure ZwpTextInputV1LeaveEvent implements Message.
 var _ Message = ZwpTextInputV1LeaveEvent{}
 
@@ -10265,6 +13612,9 @@ type ZwpTextInputV1ModifiersMapEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.modifiers_map in text_input_unstable_v1
 func (ZwpTextInputV1ModifiersMapEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for zwp_text_input_v1.modifiers_map in text_input_unstable_v1
+func (ZwpTextInputV1ModifiersMapEvent) MessageName() string { return "modifiers_map" }
 
 // Ensure ZwpTextInputV1ModifiersMapEvent implements Message.
 var _ Message = ZwpTextInputV1ModifiersMapEvent{}
@@ -10291,6 +13641,9 @@ type ZwpTextInputV1InputPanelStateEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.input_panel_state in text_input_unstable_v1
 func (ZwpTextInputV1InputPanelStateEvent) Opcode() uint16 { return 3 }
+
+// MessageName returns the event name for zwp_text_input_v1.input_panel_state in text_input_unstable_v1
+func (ZwpTextInputV1InputPanelStateEvent) MessageName() string { return "input_panel_state" }
 
 // Ensure ZwpTextInputV1InputPanelStateEvent implements Message.
 var _ Message = ZwpTextInputV1InputPanelStateEvent{}
@@ -10330,6 +13683,9 @@ type ZwpTextInputV1PreeditStringEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.preedit_string in text_input_unstable_v1
 func (ZwpTextInputV1PreeditStringEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_text_input_v1.preedit_string in text_input_unstable_v1
+func (ZwpTextInputV1PreeditStringEvent) MessageName() string { return "preedit_string" }
 
 // Ensure ZwpTextInputV1PreeditStringEvent implements Message.
 var _ Message = ZwpTextInputV1PreeditStringEvent{}
@@ -10377,6 +13733,9 @@ type ZwpTextInputV1PreeditStylingEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v1.preedit_styling in text_input_unstable_v1
 func (ZwpTextInputV1PreeditStylingEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for zwp_text_input_v1.preedit_styling in text_input_unstable_v1
+func (ZwpTextInputV1PreeditStylingEvent) MessageName() string { return "preedit_styling" }
+
 // Ensure ZwpTextInputV1PreeditStylingEvent implements Message.
 var _ Message = ZwpTextInputV1PreeditStylingEvent{}
 
@@ -10417,6 +13776,9 @@ type ZwpTextInputV1PreeditCursorEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v1.preedit_cursor in text_input_unstable_v1
 func (ZwpTextInputV1PreeditCursorEvent) Opcode() uint16 { return 6 }
 
+// MessageName returns the event name for zwp_text_input_v1.preedit_cursor in text_input_unstable_v1
+func (ZwpTextInputV1PreeditCursorEvent) MessageName() string { return "preedit_cursor" }
+
 // Ensure ZwpTextInputV1PreeditCursorEvent implements Message.
 var _ Message = ZwpTextInputV1PreeditCursorEvent{}
 
@@ -10451,6 +13813,9 @@ type ZwpTextInputV1CommitStringEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.commit_string in text_input_unstable_v1
 func (ZwpTextInputV1CommitStringEvent) Opcode() uint16 { return 7 }
+
+// MessageName returns the event name for zwp_text_input_v1.commit_string in text_input_unstable_v1
+func (ZwpTextInputV1CommitStringEvent) MessageName() string { return "commit_string" }
 
 // Ensure ZwpTextInputV1CommitStringEvent implements Message.
 var _ Message = ZwpTextInputV1CommitStringEvent{}
@@ -10487,6 +13852,9 @@ type ZwpTextInputV1CursorPositionEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.cursor_position in text_input_unstable_v1
 func (ZwpTextInputV1CursorPositionEvent) Opcode() uint16 { return 8 }
+
+// MessageName returns the event name for zwp_text_input_v1.cursor_position in text_input_unstable_v1
+func (ZwpTextInputV1CursorPositionEvent) MessageName() string { return "cursor_position" }
 
 // Ensure ZwpTextInputV1CursorPositionEvent implements Message.
 var _ Message = ZwpTextInputV1CursorPositionEvent{}
@@ -10527,6 +13895,11 @@ type ZwpTextInputV1DeleteSurroundingTextEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.delete_surrounding_text in text_input_unstable_v1
 func (ZwpTextInputV1DeleteSurroundingTextEvent) Opcode() uint16 { return 9 }
+
+// MessageName returns the event name for zwp_text_input_v1.delete_surrounding_text in text_input_unstable_v1
+func (ZwpTextInputV1DeleteSurroundingTextEvent) MessageName() string {
+	return "delete_surrounding_text"
+}
 
 // Ensure ZwpTextInputV1DeleteSurroundingTextEvent implements Message.
 var _ Message = ZwpTextInputV1DeleteSurroundingTextEvent{}
@@ -10572,6 +13945,9 @@ type ZwpTextInputV1KeysymEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.keysym in text_input_unstable_v1
 func (ZwpTextInputV1KeysymEvent) Opcode() uint16 { return 10 }
+
+// MessageName returns the event name for zwp_text_input_v1.keysym in text_input_unstable_v1
+func (ZwpTextInputV1KeysymEvent) MessageName() string { return "keysym" }
 
 // Ensure ZwpTextInputV1KeysymEvent implements Message.
 var _ Message = ZwpTextInputV1KeysymEvent{}
@@ -10623,6 +13999,9 @@ type ZwpTextInputV1LanguageEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v1.language in text_input_unstable_v1
 func (ZwpTextInputV1LanguageEvent) Opcode() uint16 { return 11 }
 
+// MessageName returns the event name for zwp_text_input_v1.language in text_input_unstable_v1
+func (ZwpTextInputV1LanguageEvent) MessageName() string { return "language" }
+
 // Ensure ZwpTextInputV1LanguageEvent implements Message.
 var _ Message = ZwpTextInputV1LanguageEvent{}
 
@@ -10660,6 +14039,9 @@ type ZwpTextInputV1TextDirectionEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v1.text_direction in text_input_unstable_v1
 func (ZwpTextInputV1TextDirectionEvent) Opcode() uint16 { return 12 }
+
+// MessageName returns the event name for zwp_text_input_v1.text_direction in text_input_unstable_v1
+func (ZwpTextInputV1TextDirectionEvent) MessageName() string { return "text_direction" }
 
 // Ensure ZwpTextInputV1TextDirectionEvent implements Message.
 var _ Message = ZwpTextInputV1TextDirectionEvent{}
@@ -10717,6 +14099,193 @@ type ZwpTextInputV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTextInputV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTextInputV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpTextInputV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTextInputV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTextInputV1EnterEvent{}
+	case 1:
+		return &ZwpTextInputV1LeaveEvent{}
+	case 2:
+		return &ZwpTextInputV1ModifiersMapEvent{}
+	case 3:
+		return &ZwpTextInputV1InputPanelStateEvent{}
+	case 4:
+		return &ZwpTextInputV1PreeditStringEvent{}
+	case 5:
+		return &ZwpTextInputV1PreeditStylingEvent{}
+	case 6:
+		return &ZwpTextInputV1PreeditCursorEvent{}
+	case 7:
+		return &ZwpTextInputV1CommitStringEvent{}
+	case 8:
+		return &ZwpTextInputV1CursorPositionEvent{}
+	case 9:
+		return &ZwpTextInputV1DeleteSurroundingTextEvent{}
+	case 10:
+		return &ZwpTextInputV1KeysymEvent{}
+	case 11:
+		return &ZwpTextInputV1LanguageEvent{}
+	case 12:
+		return &ZwpTextInputV1TextDirectionEvent{}
+	default:
+		return nil
+	}
+}
+
+// Activate requests to request activation
+//
+// Requests the text_input object to be activated (typically when the
+// text entry gets focus).
+//
+// The seat argument is a wl_seat which maintains the focus for this
+// activation. The surface argument is a wl_surface assigned to the
+// text_input object and tracked for focus lost. The enter event
+// is emitted on successful activation.
+func (proxy *ZwpTextInputV1) Activate(connection Connection, aSeat ObjectID, aSurface ObjectID) (err error) {
+	request := ZwpTextInputV1ActivateRequest{
+		Seat:    aSeat,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Deactivate requests to request deactivation
+//
+// Requests the text_input object to be deactivated (typically when the
+// text entry lost focus). The seat argument is a wl_seat which was used
+// for activation.
+func (proxy *ZwpTextInputV1) Deactivate(connection Connection, aSeat ObjectID) (err error) {
+	request := ZwpTextInputV1DeactivateRequest{
+		Seat: aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// ShowInputPanel requests to show input panels
+//
+// Requests input panels (virtual keyboard) to show.
+func (proxy *ZwpTextInputV1) ShowInputPanel(connection Connection) (err error) {
+	request := ZwpTextInputV1ShowInputPanelRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// HideInputPanel requests to hide input panels
+//
+// Requests input panels (virtual keyboard) to hide.
+func (proxy *ZwpTextInputV1) HideInputPanel(connection Connection) (err error) {
+	request := ZwpTextInputV1HideInputPanelRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Reset requests to reset
+//
+// Should be called by an editor widget when the input state should be
+// reset, for example after the text was changed outside of the normal
+// input method flow.
+func (proxy *ZwpTextInputV1) Reset(connection Connection) (err error) {
+	request := ZwpTextInputV1ResetRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetSurroundingText requests to sets the surrounding text
+//
+// Sets the plain surrounding text around the input position. Text is
+// UTF-8 encoded. Cursor is the byte offset within the
+// surrounding text. Anchor is the byte offset of the
+// selection anchor within the surrounding text. If there is no selected
+// text anchor, then it is the same as cursor.
+func (proxy *ZwpTextInputV1) SetSurroundingText(connection Connection, aText string, aCursor uint32, aAnchor uint32) (err error) {
+	request := ZwpTextInputV1SetSurroundingTextRequest{
+		Text:   aText,
+		Cursor: aCursor,
+		Anchor: aAnchor,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetContentType requests to set content purpose and hint
+//
+// Sets the content purpose and content hint. While the purpose is the
+// basic purpose of an input field, the hint flags allow to modify some
+// of the behavior.
+//
+// When no content type is explicitly set, a normal content purpose with
+// default hints (auto completion, auto correction, auto capitalization)
+// should be assumed.
+func (proxy *ZwpTextInputV1) SetContentType(connection Connection, aHint uint32, aPurpose uint32) (err error) {
+	request := ZwpTextInputV1SetContentTypeRequest{
+		Hint:    aHint,
+		Purpose: aPurpose,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+func (proxy *ZwpTextInputV1) SetCursorRectangle(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := ZwpTextInputV1SetCursorRectangleRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetPreferredLanguage requests to sets preferred language
+//
+// Sets a specific language. This allows for example a virtual keyboard to
+// show a language specific layout. The "language" argument is an RFC-3066
+// format language tag.
+//
+// It could be used for example in a word processor to indicate the
+// language of the currently edited document or in an instant message
+// application which tracks languages of contacts.
+func (proxy *ZwpTextInputV1) SetPreferredLanguage(connection Connection, aLanguage string) (err error) {
+	request := ZwpTextInputV1SetPreferredLanguageRequest{
+		Language: aLanguage,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+func (proxy *ZwpTextInputV1) CommitState(connection Connection, aSerial uint32) (err error) {
+	request := ZwpTextInputV1CommitStateRequest{
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+func (proxy *ZwpTextInputV1) InvokeAction(connection Connection, aButton uint32, aIndex uint32) (err error) {
+	request := ZwpTextInputV1InvokeActionRequest{
+		Button: aButton,
+		Index:  aIndex,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTextInputV1 implements Proxy.
+var _ Proxy = &ZwpTextInputV1{}
+
 // #endregion Interface text_input_unstable_v1.zwp_text_input_v1
 
 // ----------------------------------------------------------------------------
@@ -10731,6 +14300,9 @@ type ZwpTextInputManagerV1CreateTextInputRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_manager_v1.create_text_input in text_input_unstable_v1
 func (ZwpTextInputManagerV1CreateTextInputRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_text_input_manager_v1.create_text_input in text_input_unstable_v1
+func (ZwpTextInputManagerV1CreateTextInputRequest) MessageName() string { return "create_text_input" }
 
 // Ensure ZwpTextInputManagerV1CreateTextInputRequest implements Message.
 var _ Message = ZwpTextInputManagerV1CreateTextInputRequest{}
@@ -10752,6 +14324,42 @@ var _ Request = &ZwpTextInputManagerV1CreateTextInputRequest{}
 type ZwpTextInputManagerV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTextInputManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTextInputManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpTextInputManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTextInputManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// CreateTextInput requests to create text input
+//
+// Creates a new text_input object.
+func (proxy *ZwpTextInputManagerV1) CreateTextInput(connection Connection) (aID *ZwpTextInputV1, err error) {
+	aID = &ZwpTextInputV1{connection.NewID()}
+	request := ZwpTextInputManagerV1CreateTextInputRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpTextInputManagerV1 implements Proxy.
+var _ Proxy = &ZwpTextInputManagerV1{}
 
 // #endregion Interface text_input_unstable_v1.zwp_text_input_manager_v1
 
@@ -10881,6 +14489,9 @@ type ZwpTextInputV3DestroyRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v3.destroy in text_input_unstable_v3
 func (ZwpTextInputV3DestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zwp_text_input_v3.destroy in text_input_unstable_v3
+func (ZwpTextInputV3DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpTextInputV3DestroyRequest implements Message.
 var _ Message = ZwpTextInputV3DestroyRequest{}
 
@@ -10929,6 +14540,9 @@ type ZwpTextInputV3EnableRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v3.enable in text_input_unstable_v3
 func (ZwpTextInputV3EnableRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_text_input_v3.enable in text_input_unstable_v3
+func (ZwpTextInputV3EnableRequest) MessageName() string { return "enable" }
+
 // Ensure ZwpTextInputV3EnableRequest implements Message.
 var _ Message = ZwpTextInputV3EnableRequest{}
 
@@ -10952,6 +14566,9 @@ type ZwpTextInputV3DisableRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v3.disable in text_input_unstable_v3
 func (ZwpTextInputV3DisableRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for zwp_text_input_v3.disable in text_input_unstable_v3
+func (ZwpTextInputV3DisableRequest) MessageName() string { return "disable" }
 
 // Ensure ZwpTextInputV3DisableRequest implements Message.
 var _ Message = ZwpTextInputV3DisableRequest{}
@@ -11008,6 +14625,9 @@ type ZwpTextInputV3SetSurroundingTextRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v3.set_surrounding_text in text_input_unstable_v3
 func (ZwpTextInputV3SetSurroundingTextRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for zwp_text_input_v3.set_surrounding_text in text_input_unstable_v3
+func (ZwpTextInputV3SetSurroundingTextRequest) MessageName() string { return "set_surrounding_text" }
+
 // Ensure ZwpTextInputV3SetSurroundingTextRequest implements Message.
 var _ Message = ZwpTextInputV3SetSurroundingTextRequest{}
 
@@ -11051,6 +14671,9 @@ type ZwpTextInputV3SetTextChangeCauseRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v3.set_text_change_cause in text_input_unstable_v3
 func (ZwpTextInputV3SetTextChangeCauseRequest) Opcode() uint16 { return 4 }
 
+// MessageName returns the request name for zwp_text_input_v3.set_text_change_cause in text_input_unstable_v3
+func (ZwpTextInputV3SetTextChangeCauseRequest) MessageName() string { return "set_text_change_cause" }
+
 // Ensure ZwpTextInputV3SetTextChangeCauseRequest implements Message.
 var _ Message = ZwpTextInputV3SetTextChangeCauseRequest{}
 
@@ -11086,6 +14709,9 @@ type ZwpTextInputV3SetContentTypeRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v3.set_content_type in text_input_unstable_v3
 func (ZwpTextInputV3SetContentTypeRequest) Opcode() uint16 { return 5 }
+
+// MessageName returns the request name for zwp_text_input_v3.set_content_type in text_input_unstable_v3
+func (ZwpTextInputV3SetContentTypeRequest) MessageName() string { return "set_content_type" }
 
 // Ensure ZwpTextInputV3SetContentTypeRequest implements Message.
 var _ Message = ZwpTextInputV3SetContentTypeRequest{}
@@ -11135,6 +14761,9 @@ type ZwpTextInputV3SetCursorRectangleRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_v3.set_cursor_rectangle in text_input_unstable_v3
 func (ZwpTextInputV3SetCursorRectangleRequest) Opcode() uint16 { return 6 }
+
+// MessageName returns the request name for zwp_text_input_v3.set_cursor_rectangle in text_input_unstable_v3
+func (ZwpTextInputV3SetCursorRectangleRequest) MessageName() string { return "set_cursor_rectangle" }
 
 // Ensure ZwpTextInputV3SetCursorRectangleRequest implements Message.
 var _ Message = ZwpTextInputV3SetCursorRectangleRequest{}
@@ -11190,6 +14819,9 @@ type ZwpTextInputV3CommitRequest struct {
 // Opcode returns the request opcode for zwp_text_input_v3.commit in text_input_unstable_v3
 func (ZwpTextInputV3CommitRequest) Opcode() uint16 { return 7 }
 
+// MessageName returns the request name for zwp_text_input_v3.commit in text_input_unstable_v3
+func (ZwpTextInputV3CommitRequest) MessageName() string { return "commit" }
+
 // Ensure ZwpTextInputV3CommitRequest implements Message.
 var _ Message = ZwpTextInputV3CommitRequest{}
 
@@ -11217,6 +14849,9 @@ type ZwpTextInputV3EnterEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v3.enter in text_input_unstable_v3
 func (ZwpTextInputV3EnterEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_text_input_v3.enter in text_input_unstable_v3
+func (ZwpTextInputV3EnterEvent) MessageName() string { return "enter" }
 
 // Ensure ZwpTextInputV3EnterEvent implements Message.
 var _ Message = ZwpTextInputV3EnterEvent{}
@@ -11253,6 +14888,9 @@ type ZwpTextInputV3LeaveEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v3.leave in text_input_unstable_v3
 func (ZwpTextInputV3LeaveEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for zwp_text_input_v3.leave in text_input_unstable_v3
+func (ZwpTextInputV3LeaveEvent) MessageName() string { return "leave" }
 
 // Ensure ZwpTextInputV3LeaveEvent implements Message.
 var _ Message = ZwpTextInputV3LeaveEvent{}
@@ -11301,6 +14939,9 @@ type ZwpTextInputV3PreeditStringEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v3.preedit_string in text_input_unstable_v3
 func (ZwpTextInputV3PreeditStringEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for zwp_text_input_v3.preedit_string in text_input_unstable_v3
+func (ZwpTextInputV3PreeditStringEvent) MessageName() string { return "preedit_string" }
+
 // Ensure ZwpTextInputV3PreeditStringEvent implements Message.
 var _ Message = ZwpTextInputV3PreeditStringEvent{}
 
@@ -11344,6 +14985,9 @@ type ZwpTextInputV3CommitStringEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v3.commit_string in text_input_unstable_v3
 func (ZwpTextInputV3CommitStringEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for zwp_text_input_v3.commit_string in text_input_unstable_v3
+func (ZwpTextInputV3CommitStringEvent) MessageName() string { return "commit_string" }
+
 // Ensure ZwpTextInputV3CommitStringEvent implements Message.
 var _ Message = ZwpTextInputV3CommitStringEvent{}
 
@@ -11386,6 +15030,11 @@ type ZwpTextInputV3DeleteSurroundingTextEvent struct {
 
 // Opcode returns the event opcode for zwp_text_input_v3.delete_surrounding_text in text_input_unstable_v3
 func (ZwpTextInputV3DeleteSurroundingTextEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for zwp_text_input_v3.delete_surrounding_text in text_input_unstable_v3
+func (ZwpTextInputV3DeleteSurroundingTextEvent) MessageName() string {
+	return "delete_surrounding_text"
+}
 
 // Ensure ZwpTextInputV3DeleteSurroundingTextEvent implements Message.
 var _ Message = ZwpTextInputV3DeleteSurroundingTextEvent{}
@@ -11439,6 +15088,9 @@ type ZwpTextInputV3DoneEvent struct {
 // Opcode returns the event opcode for zwp_text_input_v3.done in text_input_unstable_v3
 func (ZwpTextInputV3DoneEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for zwp_text_input_v3.done in text_input_unstable_v3
+func (ZwpTextInputV3DoneEvent) MessageName() string { return "done" }
+
 // Ensure ZwpTextInputV3DoneEvent implements Message.
 var _ Message = ZwpTextInputV3DoneEvent{}
 
@@ -11487,6 +15139,249 @@ type ZwpTextInputV3 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpTextInputV3) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTextInputV3) Descriptor() *InterfaceDescriptor {
+	return &ZwpTextInputV3Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTextInputV3) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpTextInputV3EnterEvent{}
+	case 1:
+		return &ZwpTextInputV3LeaveEvent{}
+	case 2:
+		return &ZwpTextInputV3PreeditStringEvent{}
+	case 3:
+		return &ZwpTextInputV3CommitStringEvent{}
+	case 4:
+		return &ZwpTextInputV3DeleteSurroundingTextEvent{}
+	case 5:
+		return &ZwpTextInputV3DoneEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to Destroy the wp_text_input
+//
+// Destroy the wp_text_input object. Also disables all surfaces enabled
+// through this wp_text_input object.
+func (proxy *ZwpTextInputV3) Destroy(connection Connection) (err error) {
+	request := ZwpTextInputV3DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Enable requests to Request text input to be enabled
+//
+// Requests text input on the surface previously obtained from the enter
+// event.
+//
+// This request must be issued every time the active text input changes
+// to a new one, including within the current surface. Use
+// zwp_text_input_v3.disable when there is no longer any input focus on
+// the current surface.
+//
+// Clients must not enable more than one text input on the single seat
+// and should disable the current text input before enabling the new one.
+// At most one instance of text input may be in enabled state per instance,
+// Requests to enable the another text input when some text input is active
+// must be ignored by compositor.
+//
+// This request resets all state associated with previous enable, disable,
+// set_surrounding_text, set_text_change_cause, set_content_type, and
+// set_cursor_rectangle requests, as well as the state associated with
+// preedit_string, commit_string, and delete_surrounding_text events.
+//
+// The set_surrounding_text, set_content_type and set_cursor_rectangle
+// requests must follow if the text input supports the necessary
+// functionality.
+//
+// State set with this request is double-buffered. It will get applied on
+// the next zwp_text_input_v3.commit request, and stay valid until the
+// next committed enable or disable request.
+//
+// The changes must be applied by the compositor after issuing a
+// zwp_text_input_v3.commit request.
+func (proxy *ZwpTextInputV3) Enable(connection Connection) (err error) {
+	request := ZwpTextInputV3EnableRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Disable requests to Disable text input on a surface
+//
+// Explicitly disable text input on the current surface (typically when
+// there is no focus on any text entry inside the surface).
+//
+// State set with this request is double-buffered. It will get applied on
+// the next zwp_text_input_v3.commit request.
+func (proxy *ZwpTextInputV3) Disable(connection Connection) (err error) {
+	request := ZwpTextInputV3DisableRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetSurroundingText requests to sets the surrounding text
+//
+// Sets the surrounding plain text around the input, excluding the preedit
+// text.
+//
+// The client should notify the compositor of any changes in any of the
+// values carried with this request, including changes caused by handling
+// incoming text-input events as well as changes caused by other
+// mechanisms like keyboard typing.
+//
+// If the client is unaware of the text around the cursor, it should not
+// issue this request, to signify lack of support to the compositor.
+//
+// Text is UTF-8 encoded, and should include the cursor position, the
+// complete selection and additional characters before and after them.
+// There is a maximum length of wayland messages, so text can not be
+// longer than 4000 bytes.
+//
+// Cursor is the byte offset of the cursor within text buffer.
+//
+// Anchor is the byte offset of the selection anchor within text buffer.
+// If there is no selected text, anchor is the same as cursor.
+//
+// If any preedit text is present, it is replaced with a cursor for the
+// purpose of this event.
+//
+// Values set with this request are double-buffered. They will get applied
+// on the next zwp_text_input_v3.commit request, and stay valid until the
+// next committed enable or disable request.
+//
+// The initial state for affected fields is empty, meaning that the text
+// input does not support sending surrounding text. If the empty values
+// get applied, subsequent attempts to change them may have no effect.
+func (proxy *ZwpTextInputV3) SetSurroundingText(connection Connection, aText string, aCursor int32, aAnchor int32) (err error) {
+	request := ZwpTextInputV3SetSurroundingTextRequest{
+		Text:   aText,
+		Cursor: aCursor,
+		Anchor: aAnchor,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetTextChangeCause requests to indicates the cause of surrounding text change
+//
+// Tells the compositor why the text surrounding the cursor changed.
+//
+// Whenever the client detects an external change in text, cursor, or
+// anchor posision, it must issue this request to the compositor. This
+// request is intended to give the input method a chance to update the
+// preedit text in an appropriate way, e.g. by removing it when the user
+// starts typing with a keyboard.
+//
+// cause describes the source of the change.
+//
+// The value set with this request is double-buffered. It must be applied
+// and reset to initial at the next zwp_text_input_v3.commit request.
+//
+// The initial value of cause is input_method.
+func (proxy *ZwpTextInputV3) SetTextChangeCause(connection Connection, aCause uint32) (err error) {
+	request := ZwpTextInputV3SetTextChangeCauseRequest{
+		Cause: aCause,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetContentType requests to set content purpose and hint
+//
+// Sets the content purpose and content hint. While the purpose is the
+// basic purpose of an input field, the hint flags allow to modify some of
+// the behavior.
+//
+// Values set with this request are double-buffered. They will get applied
+// on the next zwp_text_input_v3.commit request.
+// Subsequent attempts to update them may have no effect. The values
+// remain valid until the next committed enable or disable request.
+//
+// The initial value for hint is none, and the initial value for purpose
+// is normal.
+func (proxy *ZwpTextInputV3) SetContentType(connection Connection, aHint uint32, aPurpose uint32) (err error) {
+	request := ZwpTextInputV3SetContentTypeRequest{
+		Hint:    aHint,
+		Purpose: aPurpose,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetCursorRectangle requests to set cursor position
+//
+// Marks an area around the cursor as a x, y, width, height rectangle in
+// surface local coordinates.
+//
+// Allows the compositor to put a window with word suggestions near the
+// cursor, without obstructing the text being input.
+//
+// If the client is unaware of the position of edited text, it should not
+// issue this request, to signify lack of support to the compositor.
+//
+// Values set with this request are double-buffered. They will get applied
+// on the next zwp_text_input_v3.commit request, and stay valid until the
+// next committed enable or disable request.
+//
+// The initial values describing a cursor rectangle are empty. That means
+// the text input does not support describing the cursor area. If the
+// empty values get applied, subsequent attempts to change them may have
+// no effect.
+func (proxy *ZwpTextInputV3) SetCursorRectangle(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := ZwpTextInputV3SetCursorRectangleRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Commit requests to commit state
+//
+// Atomically applies state changes recently sent to the compositor.
+//
+// The commit request establishes and updates the state of the client, and
+// must be issued after any changes to apply them.
+//
+// Text input state (enabled status, content purpose, content hint,
+// surrounding text and change cause, cursor rectangle) is conceptually
+// double-buffered within the context of a text input, i.e. between a
+// committed enable request and the following committed enable or disable
+// request.
+//
+// Protocol requests modify the pending state, as opposed to the current
+// state in use by the input method. A commit request atomically applies
+// all pending state, replacing the current state. After commit, the new
+// pending state is as documented for each related request.
+//
+// Requests are applied in the order of arrival.
+//
+// Neither current nor pending state are modified unless noted otherwise.
+//
+// The compositor must count the number of commit requests coming from
+// each zwp_text_input_v3 object and use the count as the serial in done
+// events.
+func (proxy *ZwpTextInputV3) Commit(connection Connection) (err error) {
+	request := ZwpTextInputV3CommitRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpTextInputV3 implements Proxy.
+var _ Proxy = &ZwpTextInputV3{}
+
 // #endregion Interface text_input_unstable_v3.zwp_text_input_v3
 
 // ----------------------------------------------------------------------------
@@ -11500,6 +15395,9 @@ type ZwpTextInputManagerV3DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_text_input_manager_v3.destroy in text_input_unstable_v3
 func (ZwpTextInputManagerV3DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_text_input_manager_v3.destroy in text_input_unstable_v3
+func (ZwpTextInputManagerV3DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpTextInputManagerV3DestroyRequest implements Message.
 var _ Message = ZwpTextInputManagerV3DestroyRequest{}
@@ -11524,6 +15422,9 @@ type ZwpTextInputManagerV3GetTextInputRequest struct {
 // Opcode returns the request opcode for zwp_text_input_manager_v3.get_text_input in text_input_unstable_v3
 func (ZwpTextInputManagerV3GetTextInputRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_text_input_manager_v3.get_text_input in text_input_unstable_v3
+func (ZwpTextInputManagerV3GetTextInputRequest) MessageName() string { return "get_text_input" }
+
 // Ensure ZwpTextInputManagerV3GetTextInputRequest implements Message.
 var _ Message = ZwpTextInputManagerV3GetTextInputRequest{}
 
@@ -11547,6 +15448,52 @@ var _ Request = &ZwpTextInputManagerV3GetTextInputRequest{}
 type ZwpTextInputManagerV3 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpTextInputManagerV3) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpTextInputManagerV3) Descriptor() *InterfaceDescriptor {
+	return &ZwpTextInputManagerV3Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpTextInputManagerV3) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to Destroy the wp_text_input_manager
+//
+// Destroy the wp_text_input_manager object.
+func (proxy *ZwpTextInputManagerV3) Destroy(connection Connection) (err error) {
+	request := ZwpTextInputManagerV3DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetTextInput requests to create a new text input object
+//
+// Creates a new text-input object for a given seat.
+func (proxy *ZwpTextInputManagerV3) GetTextInput(connection Connection, aSeat ObjectID) (aID *ZwpTextInputV3, err error) {
+	aID = &ZwpTextInputV3{connection.NewID()}
+	request := ZwpTextInputManagerV3GetTextInputRequest{
+		ID:   aID.id,
+		Seat: aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpTextInputManagerV3 implements Proxy.
+var _ Proxy = &ZwpTextInputManagerV3{}
 
 // #endregion Interface text_input_unstable_v3.zwp_text_input_manager_v3
 
@@ -11577,6 +15524,9 @@ type WpViewporterDestroyRequest struct {
 // Opcode returns the request opcode for wp_viewporter.destroy in viewporter
 func (WpViewporterDestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wp_viewporter.destroy in viewporter
+func (WpViewporterDestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure WpViewporterDestroyRequest implements Message.
 var _ Message = WpViewporterDestroyRequest{}
 
@@ -11604,6 +15554,9 @@ type WpViewporterGetViewportRequest struct {
 
 // Opcode returns the request opcode for wp_viewporter.get_viewport in viewporter
 func (WpViewporterGetViewportRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wp_viewporter.get_viewport in viewporter
+func (WpViewporterGetViewportRequest) MessageName() string { return "get_viewport" }
 
 // Ensure WpViewporterGetViewportRequest implements Message.
 var _ Message = WpViewporterGetViewportRequest{}
@@ -11633,6 +15586,57 @@ var _ Request = &WpViewporterGetViewportRequest{}
 type WpViewporter struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WpViewporter) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpViewporter) Descriptor() *InterfaceDescriptor {
+	return &WpViewporterDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpViewporter) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to unbind from the cropping and scaling interface
+//
+// Informs the server that the client will not be using this
+// protocol object anymore. This does not affect any other objects,
+// wp_viewport objects included.
+func (proxy *WpViewporter) Destroy(connection Connection) (err error) {
+	request := WpViewporterDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetViewport requests to extend surface interface for crop and scale
+//
+// Instantiate an interface extension for the given wl_surface to
+// crop and scale its content. If the given wl_surface already has
+// a wp_viewport object associated, the viewport_exists
+// protocol error is raised.
+func (proxy *WpViewporter) GetViewport(connection Connection, aSurface ObjectID) (aID *WpViewport, err error) {
+	aID = &WpViewport{connection.NewID()}
+	request := WpViewporterGetViewportRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure WpViewporter implements Proxy.
+var _ Proxy = &WpViewporter{}
 
 // #endregion Interface viewporter.wp_viewporter
 
@@ -11664,6 +15668,9 @@ type WpViewportDestroyRequest struct {
 
 // Opcode returns the request opcode for wp_viewport.destroy in viewporter
 func (WpViewportDestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wp_viewport.destroy in viewporter
+func (WpViewportDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WpViewportDestroyRequest implements Message.
 var _ Message = WpViewportDestroyRequest{}
@@ -11705,6 +15712,9 @@ type WpViewportSetSourceRequest struct {
 
 // Opcode returns the request opcode for wp_viewport.set_source in viewporter
 func (WpViewportSetSourceRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wp_viewport.set_source in viewporter
+func (WpViewportSetSourceRequest) MessageName() string { return "set_source" }
 
 // Ensure WpViewportSetSourceRequest implements Message.
 var _ Message = WpViewportSetSourceRequest{}
@@ -11752,6 +15762,9 @@ type WpViewportSetDestinationRequest struct {
 
 // Opcode returns the request opcode for wp_viewport.set_destination in viewporter
 func (WpViewportSetDestinationRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for wp_viewport.set_destination in viewporter
+func (WpViewportSetDestinationRequest) MessageName() string { return "set_destination" }
 
 // Ensure WpViewportSetDestinationRequest implements Message.
 var _ Message = WpViewportSetDestinationRequest{}
@@ -11837,6 +15850,83 @@ type WpViewport struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WpViewport) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WpViewport) Descriptor() *InterfaceDescriptor {
+	return &WpViewportDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WpViewport) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to remove scaling and cropping from the surface
+//
+// The associated wl_surface's crop and scale state is removed.
+// The change is applied on the next wl_surface.commit.
+func (proxy *WpViewport) Destroy(connection Connection) (err error) {
+	request := WpViewportDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetSource requests to set the source rectangle for cropping
+//
+// Set the source rectangle of the associated wl_surface. See
+// wp_viewport for the description, and relation to the wl_buffer
+// size.
+//
+// If all of x, y, width and height are -1.0, the source rectangle is
+// unset instead. Any other set of values where width or height are zero
+// or negative, or x or y are negative, raise the bad_value protocol
+// error.
+//
+// The crop and scale state is double-buffered state, and will be
+// applied on the next wl_surface.commit.
+func (proxy *WpViewport) SetSource(connection Connection, aX Fixed, aY Fixed, aWidth Fixed, aHeight Fixed) (err error) {
+	request := WpViewportSetSourceRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetDestination requests to set the surface size for scaling
+//
+// Set the destination size of the associated wl_surface. See
+// wp_viewport for the description, and relation to the wl_buffer
+// size.
+//
+// If width is -1 and height is -1, the destination size is unset
+// instead. Any other pair of values for width and height that
+// contains zero or negative values raises the bad_value protocol
+// error.
+//
+// The crop and scale state is double-buffered state, and will be
+// applied on the next wl_surface.commit.
+func (proxy *WpViewport) SetDestination(connection Connection, aWidth int32, aHeight int32) (err error) {
+	request := WpViewportSetDestinationRequest{
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WpViewport implements Proxy.
+var _ Proxy = &WpViewport{}
+
 // #endregion Interface viewporter.wp_viewport
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -11889,6 +15979,9 @@ type WlDisplaySyncRequest struct {
 // Opcode returns the request opcode for wl_display.sync in wayland
 func (WlDisplaySyncRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_display.sync in wayland
+func (WlDisplaySyncRequest) MessageName() string { return "sync" }
+
 // Ensure WlDisplaySyncRequest implements Message.
 var _ Message = WlDisplaySyncRequest{}
 
@@ -11921,6 +16014,9 @@ type WlDisplayGetRegistryRequest struct {
 
 // Opcode returns the request opcode for wl_display.get_registry in wayland
 func (WlDisplayGetRegistryRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_display.get_registry in wayland
+func (WlDisplayGetRegistryRequest) MessageName() string { return "get_registry" }
 
 // Ensure WlDisplayGetRegistryRequest implements Message.
 var _ Message = WlDisplayGetRegistryRequest{}
@@ -11958,6 +16054,9 @@ type WlDisplayErrorEvent struct {
 
 // Opcode returns the event opcode for wl_display.error in wayland
 func (WlDisplayErrorEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_display.error in wayland
+func (WlDisplayErrorEvent) MessageName() string { return "error" }
 
 // Ensure WlDisplayErrorEvent implements Message.
 var _ Message = WlDisplayErrorEvent{}
@@ -12000,6 +16099,9 @@ type WlDisplayDeleteIDEvent struct {
 // Opcode returns the event opcode for wl_display.delete_id in wayland
 func (WlDisplayDeleteIDEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_display.delete_id in wayland
+func (WlDisplayDeleteIDEvent) MessageName() string { return "delete_id" }
+
 // Ensure WlDisplayDeleteIDEvent implements Message.
 var _ Message = WlDisplayDeleteIDEvent{}
 
@@ -12024,6 +16126,79 @@ type WlDisplay struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlDisplay) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlDisplay) Descriptor() *InterfaceDescriptor {
+	return &WlDisplayDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlDisplay) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlDisplayErrorEvent{}
+	case 1:
+		return &WlDisplayDeleteIDEvent{}
+	default:
+		return nil
+	}
+}
+
+// Sync requests to asynchronous roundtrip
+//
+// The sync request asks the server to emit the 'done' event
+// on the returned wl_callback object.  Since requests are
+// handled in-order and events are delivered in-order, this can
+// be used as a barrier to ensure all previous requests and the
+// resulting events have been handled.
+//
+// The object returned by this request will be destroyed by the
+// compositor after the callback is fired and as such the client must not
+// attempt to use it after that point.
+//
+// The callback_data passed in the callback is the event serial.
+func (proxy *WlDisplay) Sync(connection Connection) (aCallback *WlCallback, err error) {
+	aCallback = &WlCallback{connection.NewID()}
+	request := WlDisplaySyncRequest{
+		Callback: aCallback.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aCallback)
+	}
+	return
+}
+
+// GetRegistry requests to get global registry object
+//
+// This request creates a registry object that allows the client
+// to list and bind the global objects available from the
+// compositor.
+//
+// It should be noted that the server side resources consumed in
+// response to a get_registry request can only be released when the
+// client disconnects, not when the client side proxy is destroyed.
+// Therefore, clients should invoke get_registry as infrequently as
+// possible to avoid wasting memory.
+func (proxy *WlDisplay) GetRegistry(connection Connection) (aRegistry *WlRegistry, err error) {
+	aRegistry = &WlRegistry{connection.NewID()}
+	request := WlDisplayGetRegistryRequest{
+		Registry: aRegistry.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aRegistry)
+	}
+	return
+}
+
+// Ensure WlDisplay implements Proxy.
+var _ Proxy = &WlDisplay{}
+
 // #endregion Interface wayland.wl_display
 
 // ----------------------------------------------------------------------------
@@ -12043,6 +16218,9 @@ type WlRegistryBindRequest struct {
 
 // Opcode returns the request opcode for wl_registry.bind in wayland
 func (WlRegistryBindRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_registry.bind in wayland
+func (WlRegistryBindRequest) MessageName() string { return "bind" }
 
 // Ensure WlRegistryBindRequest implements Message.
 var _ Message = WlRegistryBindRequest{}
@@ -12081,6 +16259,9 @@ type WlRegistryGlobalEvent struct {
 
 // Opcode returns the event opcode for wl_registry.global in wayland
 func (WlRegistryGlobalEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_registry.global in wayland
+func (WlRegistryGlobalEvent) MessageName() string { return "global" }
 
 // Ensure WlRegistryGlobalEvent implements Message.
 var _ Message = WlRegistryGlobalEvent{}
@@ -12128,6 +16309,9 @@ type WlRegistryGlobalRemoveEvent struct {
 // Opcode returns the event opcode for wl_registry.global_remove in wayland
 func (WlRegistryGlobalRemoveEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_registry.global_remove in wayland
+func (WlRegistryGlobalRemoveEvent) MessageName() string { return "global_remove" }
+
 // Ensure WlRegistryGlobalRemoveEvent implements Message.
 var _ Message = WlRegistryGlobalRemoveEvent{}
 
@@ -12170,6 +16354,45 @@ type WlRegistry struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlRegistry) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlRegistry) Descriptor() *InterfaceDescriptor {
+	return &WlRegistryDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlRegistry) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlRegistryGlobalEvent{}
+	case 1:
+		return &WlRegistryGlobalRemoveEvent{}
+	default:
+		return nil
+	}
+}
+
+// Bind requests to bind an object to the display
+//
+// Binds a new, client-created object to the server using the
+// specified name as the identifier.
+func (proxy *WlRegistry) Bind(connection Connection, aName uint32) (aID ObjectID, err error) {
+	aID = connection.NewID()
+	request := WlRegistryBindRequest{
+		Name: aName,
+		ID:   aID,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlRegistry implements Proxy.
+var _ Proxy = &WlRegistry{}
+
 // #endregion Interface wayland.wl_registry
 
 // ----------------------------------------------------------------------------
@@ -12185,6 +16408,9 @@ type WlCallbackDoneEvent struct {
 
 // Opcode returns the event opcode for wl_callback.done in wayland
 func (WlCallbackDoneEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_callback.done in wayland
+func (WlCallbackDoneEvent) MessageName() string { return "done" }
 
 // Ensure WlCallbackDoneEvent implements Message.
 var _ Message = WlCallbackDoneEvent{}
@@ -12210,6 +16436,29 @@ type WlCallback struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlCallback) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlCallback) Descriptor() *InterfaceDescriptor {
+	return &WlCallbackDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlCallback) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlCallbackDoneEvent{}
+	default:
+		return nil
+	}
+}
+
+// Ensure WlCallback implements Proxy.
+var _ Proxy = &WlCallback{}
+
 // #endregion Interface wayland.wl_callback
 
 // ----------------------------------------------------------------------------
@@ -12225,6 +16474,9 @@ type WlCompositorCreateSurfaceRequest struct {
 
 // Opcode returns the request opcode for wl_compositor.create_surface in wayland
 func (WlCompositorCreateSurfaceRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_compositor.create_surface in wayland
+func (WlCompositorCreateSurfaceRequest) MessageName() string { return "create_surface" }
 
 // Ensure WlCompositorCreateSurfaceRequest implements Message.
 var _ Message = WlCompositorCreateSurfaceRequest{}
@@ -12251,6 +16503,9 @@ type WlCompositorCreateRegionRequest struct {
 // Opcode returns the request opcode for wl_compositor.create_region in wayland
 func (WlCompositorCreateRegionRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wl_compositor.create_region in wayland
+func (WlCompositorCreateRegionRequest) MessageName() string { return "create_region" }
+
 // Ensure WlCompositorCreateRegionRequest implements Message.
 var _ Message = WlCompositorCreateRegionRequest{}
 
@@ -12273,6 +16528,57 @@ var _ Request = &WlCompositorCreateRegionRequest{}
 type WlCompositor struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlCompositor) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlCompositor) Descriptor() *InterfaceDescriptor {
+	return &WlCompositorDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlCompositor) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// CreateSurface requests to create new surface
+//
+// Ask the compositor to create a new surface.
+func (proxy *WlCompositor) CreateSurface(connection Connection) (aID *WlSurface, err error) {
+	aID = &WlSurface{connection.NewID()}
+	request := WlCompositorCreateSurfaceRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// CreateRegion requests to create new region
+//
+// Ask the compositor to create a new region.
+func (proxy *WlCompositor) CreateRegion(connection Connection) (aID *WlRegion, err error) {
+	aID = &WlRegion{connection.NewID()}
+	request := WlCompositorCreateRegionRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure WlCompositor implements Proxy.
+var _ Proxy = &WlCompositor{}
 
 // #endregion Interface wayland.wl_compositor
 
@@ -12314,6 +16620,9 @@ type WlShmPoolCreateBufferRequest struct {
 
 // Opcode returns the request opcode for wl_shm_pool.create_buffer in wayland
 func (WlShmPoolCreateBufferRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_shm_pool.create_buffer in wayland
+func (WlShmPoolCreateBufferRequest) MessageName() string { return "create_buffer" }
 
 // Ensure WlShmPoolCreateBufferRequest implements Message.
 var _ Message = WlShmPoolCreateBufferRequest{}
@@ -12357,6 +16666,9 @@ type WlShmPoolDestroyRequest struct {
 // Opcode returns the request opcode for wl_shm_pool.destroy in wayland
 func (WlShmPoolDestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wl_shm_pool.destroy in wayland
+func (WlShmPoolDestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure WlShmPoolDestroyRequest implements Message.
 var _ Message = WlShmPoolDestroyRequest{}
 
@@ -12381,6 +16693,9 @@ type WlShmPoolResizeRequest struct {
 
 // Opcode returns the request opcode for wl_shm_pool.resize in wayland
 func (WlShmPoolResizeRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for wl_shm_pool.resize in wayland
+func (WlShmPoolResizeRequest) MessageName() string { return "resize" }
 
 // Ensure WlShmPoolResizeRequest implements Message.
 var _ Message = WlShmPoolResizeRequest{}
@@ -12408,6 +16723,84 @@ var _ Request = &WlShmPoolResizeRequest{}
 type WlShmPool struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlShmPool) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlShmPool) Descriptor() *InterfaceDescriptor {
+	return &WlShmPoolDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlShmPool) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// CreateBuffer requests to create a buffer from the pool
+//
+// Create a wl_buffer object from the pool.
+//
+// The buffer is created offset bytes into the pool and has
+// width and height as specified.  The stride argument specifies
+// the number of bytes from the beginning of one row to the beginning
+// of the next.  The format is the pixel format of the buffer and
+// must be one of those advertised through the wl_shm.format event.
+//
+// A buffer will keep a reference to the pool it was created from
+// so it is valid to destroy the pool immediately after creating
+// a buffer from it.
+func (proxy *WlShmPool) CreateBuffer(connection Connection, aOffset int32, aWidth int32, aHeight int32, aStride int32, aFormat uint32) (aID *WlBuffer, err error) {
+	aID = &WlBuffer{connection.NewID()}
+	request := WlShmPoolCreateBufferRequest{
+		ID:     aID.id,
+		Offset: aOffset,
+		Width:  aWidth,
+		Height: aHeight,
+		Stride: aStride,
+		Format: aFormat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Destroy requests to destroy the pool
+//
+// Destroy the shared memory pool.
+//
+// The mmapped memory will be released when all
+// buffers that have been created from this pool
+// are gone.
+func (proxy *WlShmPool) Destroy(connection Connection) (err error) {
+	request := WlShmPoolDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Resize requests to change the size of the pool mapping
+//
+// This request will cause the server to remap the backing memory
+// for the pool from the file descriptor passed when the pool was
+// created, but using the new size.  This request can only be
+// used to make the pool bigger.
+func (proxy *WlShmPool) Resize(connection Connection, aSize int32) (err error) {
+	request := WlShmPoolResizeRequest{
+		Size: aSize,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlShmPool implements Proxy.
+var _ Proxy = &WlShmPool{}
 
 // #endregion Interface wayland.wl_shm_pool
 
@@ -12766,6 +17159,9 @@ type WlShmCreatePoolRequest struct {
 // Opcode returns the request opcode for wl_shm.create_pool in wayland
 func (WlShmCreatePoolRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_shm.create_pool in wayland
+func (WlShmCreatePoolRequest) MessageName() string { return "create_pool" }
+
 // Ensure WlShmCreatePoolRequest implements Message.
 var _ Message = WlShmCreatePoolRequest{}
 
@@ -12799,6 +17195,9 @@ type WlShmFormatEvent struct {
 // Opcode returns the event opcode for wl_shm.format in wayland
 func (WlShmFormatEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for wl_shm.format in wayland
+func (WlShmFormatEvent) MessageName() string { return "format" }
+
 // Ensure WlShmFormatEvent implements Message.
 var _ Message = WlShmFormatEvent{}
 
@@ -12830,6 +17229,50 @@ type WlShm struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlShm) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlShm) Descriptor() *InterfaceDescriptor {
+	return &WlShmDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlShm) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlShmFormatEvent{}
+	default:
+		return nil
+	}
+}
+
+// CreatePool requests to create a shm pool
+//
+// Create a new wl_shm_pool object.
+//
+// The pool can be used to create shared memory based buffer
+// objects.  The server will mmap size bytes of the passed file
+// descriptor, to use as backing memory for the pool.
+func (proxy *WlShm) CreatePool(connection Connection, aFD FD, aSize int32) (aID *WlShmPool, err error) {
+	aID = &WlShmPool{connection.NewID()}
+	request := WlShmCreatePoolRequest{
+		ID:   aID.id,
+		FD:   aFD,
+		Size: aSize,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure WlShm implements Proxy.
+var _ Proxy = &WlShm{}
+
 // #endregion Interface wayland.wl_shm
 
 // ----------------------------------------------------------------------------
@@ -12846,6 +17289,9 @@ type WlBufferDestroyRequest struct {
 
 // Opcode returns the request opcode for wl_buffer.destroy in wayland
 func (WlBufferDestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_buffer.destroy in wayland
+func (WlBufferDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WlBufferDestroyRequest implements Message.
 var _ Message = WlBufferDestroyRequest{}
@@ -12878,6 +17324,9 @@ type WlBufferReleaseEvent struct {
 // Opcode returns the event opcode for wl_buffer.release in wayland
 func (WlBufferReleaseEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for wl_buffer.release in wayland
+func (WlBufferReleaseEvent) MessageName() string { return "release" }
+
 // Ensure WlBufferReleaseEvent implements Message.
 var _ Message = WlBufferReleaseEvent{}
 
@@ -12904,6 +17353,41 @@ var _ Event = &WlBufferReleaseEvent{}
 type WlBuffer struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlBuffer) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlBuffer) Descriptor() *InterfaceDescriptor {
+	return &WlBufferDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlBuffer) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlBufferReleaseEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy a buffer
+//
+// Destroy a buffer. If and how you need to release the backing
+// storage is defined by the buffer factory interface.
+//
+// For possible side-effects to a surface, see wl_surface.attach.
+func (proxy *WlBuffer) Destroy(connection Connection) (err error) {
+	request := WlBufferDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlBuffer implements Proxy.
+var _ Proxy = &WlBuffer{}
 
 // #endregion Interface wayland.wl_buffer
 
@@ -12953,6 +17437,9 @@ type WlDataOfferAcceptRequest struct {
 // Opcode returns the request opcode for wl_data_offer.accept in wayland
 func (WlDataOfferAcceptRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_data_offer.accept in wayland
+func (WlDataOfferAcceptRequest) MessageName() string { return "accept" }
+
 // Ensure WlDataOfferAcceptRequest implements Message.
 var _ Message = WlDataOfferAcceptRequest{}
 
@@ -12998,6 +17485,9 @@ type WlDataOfferReceiveRequest struct {
 // Opcode returns the request opcode for wl_data_offer.receive in wayland
 func (WlDataOfferReceiveRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wl_data_offer.receive in wayland
+func (WlDataOfferReceiveRequest) MessageName() string { return "receive" }
+
 // Ensure WlDataOfferReceiveRequest implements Message.
 var _ Message = WlDataOfferReceiveRequest{}
 
@@ -13023,6 +17513,9 @@ type WlDataOfferDestroyRequest struct {
 
 // Opcode returns the request opcode for wl_data_offer.destroy in wayland
 func (WlDataOfferDestroyRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for wl_data_offer.destroy in wayland
+func (WlDataOfferDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WlDataOfferDestroyRequest implements Message.
 var _ Message = WlDataOfferDestroyRequest{}
@@ -13056,6 +17549,9 @@ type WlDataOfferFinishRequest struct {
 
 // Opcode returns the request opcode for wl_data_offer.finish in wayland
 func (WlDataOfferFinishRequest) Opcode() uint16 { return 3 }
+
+// MessageName returns the request name for wl_data_offer.finish in wayland
+func (WlDataOfferFinishRequest) MessageName() string { return "finish" }
 
 // Ensure WlDataOfferFinishRequest implements Message.
 var _ Message = WlDataOfferFinishRequest{}
@@ -13112,6 +17608,9 @@ type WlDataOfferSetActionsRequest struct {
 // Opcode returns the request opcode for wl_data_offer.set_actions in wayland
 func (WlDataOfferSetActionsRequest) Opcode() uint16 { return 4 }
 
+// MessageName returns the request name for wl_data_offer.set_actions in wayland
+func (WlDataOfferSetActionsRequest) MessageName() string { return "set_actions" }
+
 // Ensure WlDataOfferSetActionsRequest implements Message.
 var _ Message = WlDataOfferSetActionsRequest{}
 
@@ -13141,6 +17640,9 @@ type WlDataOfferOfferEvent struct {
 // Opcode returns the event opcode for wl_data_offer.offer in wayland
 func (WlDataOfferOfferEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for wl_data_offer.offer in wayland
+func (WlDataOfferOfferEvent) MessageName() string { return "offer" }
+
 // Ensure WlDataOfferOfferEvent implements Message.
 var _ Message = WlDataOfferOfferEvent{}
 
@@ -13169,6 +17671,9 @@ type WlDataOfferSourceActionsEvent struct {
 
 // Opcode returns the event opcode for wl_data_offer.source_actions in wayland
 func (WlDataOfferSourceActionsEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for wl_data_offer.source_actions in wayland
+func (WlDataOfferSourceActionsEvent) MessageName() string { return "source_actions" }
 
 // Ensure WlDataOfferSourceActionsEvent implements Message.
 var _ Message = WlDataOfferSourceActionsEvent{}
@@ -13231,6 +17736,9 @@ type WlDataOfferActionEvent struct {
 // Opcode returns the event opcode for wl_data_offer.action in wayland
 func (WlDataOfferActionEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wl_data_offer.action in wayland
+func (WlDataOfferActionEvent) MessageName() string { return "action" }
+
 // Ensure WlDataOfferActionEvent implements Message.
 var _ Message = WlDataOfferActionEvent{}
 
@@ -13258,6 +17766,157 @@ var _ Event = &WlDataOfferActionEvent{}
 type WlDataOffer struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlDataOffer) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlDataOffer) Descriptor() *InterfaceDescriptor {
+	return &WlDataOfferDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlDataOffer) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlDataOfferOfferEvent{}
+	case 1:
+		return &WlDataOfferSourceActionsEvent{}
+	case 2:
+		return &WlDataOfferActionEvent{}
+	default:
+		return nil
+	}
+}
+
+// Accept requests to accept one of the offered mime types
+//
+// Indicate that the client can accept the given mime type, or
+// NULL for not accepted.
+//
+// For objects of version 2 or older, this request is used by the
+// client to give feedback whether the client can receive the given
+// mime type, or NULL if none is accepted; the feedback does not
+// determine whether the drag-and-drop operation succeeds or not.
+//
+// For objects of version 3 or newer, this request determines the
+// final result of the drag-and-drop operation. If the end result
+// is that no mime types were accepted, the drag-and-drop operation
+// will be cancelled and the corresponding drag source will receive
+// wl_data_source.cancelled. Clients may still use this event in
+// conjunction with wl_data_source.action for feedback.
+func (proxy *WlDataOffer) Accept(connection Connection, aSerial uint32, aMimeType string) (err error) {
+	request := WlDataOfferAcceptRequest{
+		Serial:   aSerial,
+		MimeType: aMimeType,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Receive requests to request that the data is transferred
+//
+// To transfer the offered data, the client issues this request
+// and indicates the mime type it wants to receive.  The transfer
+// happens through the passed file descriptor (typically created
+// with the pipe system call).  The source client writes the data
+// in the mime type representation requested and then closes the
+// file descriptor.
+//
+// The receiving client reads from the read end of the pipe until
+// EOF and then closes its end, at which point the transfer is
+// complete.
+//
+// This request may happen multiple times for different mime types,
+// both before and after wl_data_device.drop. Drag-and-drop destination
+// clients may preemptively fetch data or examine it more closely to
+// determine acceptance.
+func (proxy *WlDataOffer) Receive(connection Connection, aMimeType string, aFD FD) (err error) {
+	request := WlDataOfferReceiveRequest{
+		MimeType: aMimeType,
+		FD:       aFD,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy data offer
+//
+// Destroy the data offer.
+func (proxy *WlDataOffer) Destroy(connection Connection) (err error) {
+	request := WlDataOfferDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Finish requests to the offer will no longer be used
+//
+// Notifies the compositor that the drag destination successfully
+// finished the drag-and-drop operation.
+//
+// Upon receiving this request, the compositor will emit
+// wl_data_source.dnd_finished on the drag source client.
+//
+// It is a client error to perform other requests than
+// wl_data_offer.destroy after this one. It is also an error to perform
+// this request after a NULL mime type has been set in
+// wl_data_offer.accept or no action was received through
+// wl_data_offer.action.
+//
+// If wl_data_offer.finish request is received for a non drag and drop
+// operation, the invalid_finish protocol error is raised.
+func (proxy *WlDataOffer) Finish(connection Connection) (err error) {
+	request := WlDataOfferFinishRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetActions requests to set the available/preferred drag-and-drop actions
+//
+// Sets the actions that the destination side client supports for
+// this operation. This request may trigger the emission of
+// wl_data_source.action and wl_data_offer.action events if the compositor
+// needs to change the selected action.
+//
+// This request can be called multiple times throughout the
+// drag-and-drop operation, typically in response to wl_data_device.enter
+// or wl_data_device.motion events.
+//
+// This request determines the final result of the drag-and-drop
+// operation. If the end result is that no action is accepted,
+// the drag source will receive wl_data_source.cancelled.
+//
+// The dnd_actions argument must contain only values expressed in the
+// wl_data_device_manager.dnd_actions enum, and the preferred_action
+// argument must only contain one of those values set, otherwise it
+// will result in a protocol error.
+//
+// While managing an "ask" action, the destination drag-and-drop client
+// may perform further wl_data_offer.receive requests, and is expected
+// to perform one last wl_data_offer.set_actions request with a preferred
+// action other than "ask" (and optionally wl_data_offer.accept) before
+// requesting wl_data_offer.finish, in order to convey the action selected
+// by the user. If the preferred action is not in the
+// wl_data_offer.source_actions mask, an error will be raised.
+//
+// If the "ask" action is dismissed (e.g. user cancellation), the client
+// is expected to perform wl_data_offer.destroy right away.
+//
+// This request can only be made on drag-and-drop offers, a protocol error
+// will be raised otherwise.
+func (proxy *WlDataOffer) SetActions(connection Connection, aDndActions uint32, aPreferredAction uint32) (err error) {
+	request := WlDataOfferSetActionsRequest{
+		DndActions:      aDndActions,
+		PreferredAction: aPreferredAction,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlDataOffer implements Proxy.
+var _ Proxy = &WlDataOffer{}
 
 // #endregion Interface wayland.wl_data_offer
 
@@ -13287,6 +17946,9 @@ type WlDataSourceOfferRequest struct {
 // Opcode returns the request opcode for wl_data_source.offer in wayland
 func (WlDataSourceOfferRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_data_source.offer in wayland
+func (WlDataSourceOfferRequest) MessageName() string { return "offer" }
+
 // Ensure WlDataSourceOfferRequest implements Message.
 var _ Message = WlDataSourceOfferRequest{}
 
@@ -13309,6 +17971,9 @@ type WlDataSourceDestroyRequest struct {
 
 // Opcode returns the request opcode for wl_data_source.destroy in wayland
 func (WlDataSourceDestroyRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_data_source.destroy in wayland
+func (WlDataSourceDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WlDataSourceDestroyRequest implements Message.
 var _ Message = WlDataSourceDestroyRequest{}
@@ -13344,6 +18009,9 @@ type WlDataSourceSetActionsRequest struct {
 // Opcode returns the request opcode for wl_data_source.set_actions in wayland
 func (WlDataSourceSetActionsRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for wl_data_source.set_actions in wayland
+func (WlDataSourceSetActionsRequest) MessageName() string { return "set_actions" }
+
 // Ensure WlDataSourceSetActionsRequest implements Message.
 var _ Message = WlDataSourceSetActionsRequest{}
 
@@ -13371,6 +18039,9 @@ type WlDataSourceTargetEvent struct {
 
 // Opcode returns the event opcode for wl_data_source.target in wayland
 func (WlDataSourceTargetEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_data_source.target in wayland
+func (WlDataSourceTargetEvent) MessageName() string { return "target" }
 
 // Ensure WlDataSourceTargetEvent implements Message.
 var _ Message = WlDataSourceTargetEvent{}
@@ -13403,6 +18074,9 @@ type WlDataSourceSendEvent struct {
 
 // Opcode returns the event opcode for wl_data_source.send in wayland
 func (WlDataSourceSendEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for wl_data_source.send in wayland
+func (WlDataSourceSendEvent) MessageName() string { return "send" }
 
 // Ensure WlDataSourceSendEvent implements Message.
 var _ Message = WlDataSourceSendEvent{}
@@ -13453,6 +18127,9 @@ type WlDataSourceCancelledEvent struct {
 // Opcode returns the event opcode for wl_data_source.cancelled in wayland
 func (WlDataSourceCancelledEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wl_data_source.cancelled in wayland
+func (WlDataSourceCancelledEvent) MessageName() string { return "cancelled" }
+
 // Ensure WlDataSourceCancelledEvent implements Message.
 var _ Message = WlDataSourceCancelledEvent{}
 
@@ -13481,6 +18158,9 @@ type WlDataSourceDndDropPerformedEvent struct {
 // Opcode returns the event opcode for wl_data_source.dnd_drop_performed in wayland
 func (WlDataSourceDndDropPerformedEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for wl_data_source.dnd_drop_performed in wayland
+func (WlDataSourceDndDropPerformedEvent) MessageName() string { return "dnd_drop_performed" }
+
 // Ensure WlDataSourceDndDropPerformedEvent implements Message.
 var _ Message = WlDataSourceDndDropPerformedEvent{}
 
@@ -13505,6 +18185,9 @@ type WlDataSourceDndFinishedEvent struct {
 
 // Opcode returns the event opcode for wl_data_source.dnd_finished in wayland
 func (WlDataSourceDndFinishedEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for wl_data_source.dnd_finished in wayland
+func (WlDataSourceDndFinishedEvent) MessageName() string { return "dnd_finished" }
 
 // Ensure WlDataSourceDndFinishedEvent implements Message.
 var _ Message = WlDataSourceDndFinishedEvent{}
@@ -13552,6 +18235,9 @@ type WlDataSourceActionEvent struct {
 // Opcode returns the event opcode for wl_data_source.action in wayland
 func (WlDataSourceActionEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for wl_data_source.action in wayland
+func (WlDataSourceActionEvent) MessageName() string { return "action" }
+
 // Ensure WlDataSourceActionEvent implements Message.
 var _ Message = WlDataSourceActionEvent{}
 
@@ -13577,6 +18263,84 @@ var _ Event = &WlDataSourceActionEvent{}
 type WlDataSource struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlDataSource) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlDataSource) Descriptor() *InterfaceDescriptor {
+	return &WlDataSourceDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlDataSource) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlDataSourceTargetEvent{}
+	case 1:
+		return &WlDataSourceSendEvent{}
+	case 2:
+		return &WlDataSourceCancelledEvent{}
+	case 3:
+		return &WlDataSourceDndDropPerformedEvent{}
+	case 4:
+		return &WlDataSourceDndFinishedEvent{}
+	case 5:
+		return &WlDataSourceActionEvent{}
+	default:
+		return nil
+	}
+}
+
+// Offer requests to add an offered mime type
+//
+// This request adds a mime type to the set of mime types
+// advertised to targets.  Can be called several times to offer
+// multiple types.
+func (proxy *WlDataSource) Offer(connection Connection, aMimeType string) (err error) {
+	request := WlDataSourceOfferRequest{
+		MimeType: aMimeType,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the data source
+//
+// Destroy the data source.
+func (proxy *WlDataSource) Destroy(connection Connection) (err error) {
+	request := WlDataSourceDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetActions requests to set the available drag-and-drop actions
+//
+// Sets the actions that the source side client supports for this
+// operation. This request may trigger wl_data_source.action and
+// wl_data_offer.action events if the compositor needs to change the
+// selected action.
+//
+// The dnd_actions argument must contain only values expressed in the
+// wl_data_device_manager.dnd_actions enum, otherwise it will result
+// in a protocol error.
+//
+// This request must be made once only, and can only be made on sources
+// used in drag-and-drop, so it must be performed before
+// wl_data_device.start_drag. Attempting to use the source other than
+// for drag-and-drop will raise a protocol error.
+func (proxy *WlDataSource) SetActions(connection Connection, aDndActions uint32) (err error) {
+	request := WlDataSourceSetActionsRequest{
+		DndActions: aDndActions,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlDataSource implements Proxy.
+var _ Proxy = &WlDataSource{}
 
 // #endregion Interface wayland.wl_data_source
 
@@ -13637,6 +18401,9 @@ type WlDataDeviceStartDragRequest struct {
 // Opcode returns the request opcode for wl_data_device.start_drag in wayland
 func (WlDataDeviceStartDragRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_data_device.start_drag in wayland
+func (WlDataDeviceStartDragRequest) MessageName() string { return "start_drag" }
+
 // Ensure WlDataDeviceStartDragRequest implements Message.
 var _ Message = WlDataDeviceStartDragRequest{}
 
@@ -13677,6 +18444,9 @@ type WlDataDeviceSetSelectionRequest struct {
 // Opcode returns the request opcode for wl_data_device.set_selection in wayland
 func (WlDataDeviceSetSelectionRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wl_data_device.set_selection in wayland
+func (WlDataDeviceSetSelectionRequest) MessageName() string { return "set_selection" }
+
 // Ensure WlDataDeviceSetSelectionRequest implements Message.
 var _ Message = WlDataDeviceSetSelectionRequest{}
 
@@ -13702,6 +18472,9 @@ type WlDataDeviceReleaseRequest struct {
 
 // Opcode returns the request opcode for wl_data_device.release in wayland
 func (WlDataDeviceReleaseRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for wl_data_device.release in wayland
+func (WlDataDeviceReleaseRequest) MessageName() string { return "release" }
 
 // Ensure WlDataDeviceReleaseRequest implements Message.
 var _ Message = WlDataDeviceReleaseRequest{}
@@ -13730,6 +18503,9 @@ type WlDataDeviceDataOfferEvent struct {
 
 // Opcode returns the event opcode for wl_data_device.data_offer in wayland
 func (WlDataDeviceDataOfferEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_data_device.data_offer in wayland
+func (WlDataDeviceDataOfferEvent) MessageName() string { return "data_offer" }
 
 // Ensure WlDataDeviceDataOfferEvent implements Message.
 var _ Message = WlDataDeviceDataOfferEvent{}
@@ -13772,6 +18548,9 @@ type WlDataDeviceEnterEvent struct {
 
 // Opcode returns the event opcode for wl_data_device.enter in wayland
 func (WlDataDeviceEnterEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for wl_data_device.enter in wayland
+func (WlDataDeviceEnterEvent) MessageName() string { return "enter" }
 
 // Ensure WlDataDeviceEnterEvent implements Message.
 var _ Message = WlDataDeviceEnterEvent{}
@@ -13820,6 +18599,9 @@ type WlDataDeviceLeaveEvent struct {
 // Opcode returns the event opcode for wl_data_device.leave in wayland
 func (WlDataDeviceLeaveEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wl_data_device.leave in wayland
+func (WlDataDeviceLeaveEvent) MessageName() string { return "leave" }
+
 // Ensure WlDataDeviceLeaveEvent implements Message.
 var _ Message = WlDataDeviceLeaveEvent{}
 
@@ -13850,6 +18632,9 @@ type WlDataDeviceMotionEvent struct {
 
 // Opcode returns the event opcode for wl_data_device.motion in wayland
 func (WlDataDeviceMotionEvent) Opcode() uint16 { return 3 }
+
+// MessageName returns the event name for wl_data_device.motion in wayland
+func (WlDataDeviceMotionEvent) MessageName() string { return "motion" }
 
 // Ensure WlDataDeviceMotionEvent implements Message.
 var _ Message = WlDataDeviceMotionEvent{}
@@ -13898,6 +18683,9 @@ type WlDataDeviceDropEvent struct {
 // Opcode returns the event opcode for wl_data_device.drop in wayland
 func (WlDataDeviceDropEvent) Opcode() uint16 { return 4 }
 
+// MessageName returns the event name for wl_data_device.drop in wayland
+func (WlDataDeviceDropEvent) MessageName() string { return "drop" }
+
 // Ensure WlDataDeviceDropEvent implements Message.
 var _ Message = WlDataDeviceDropEvent{}
 
@@ -13930,6 +18718,9 @@ type WlDataDeviceSelectionEvent struct {
 // Opcode returns the event opcode for wl_data_device.selection in wayland
 func (WlDataDeviceSelectionEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for wl_data_device.selection in wayland
+func (WlDataDeviceSelectionEvent) MessageName() string { return "selection" }
+
 // Ensure WlDataDeviceSelectionEvent implements Message.
 var _ Message = WlDataDeviceSelectionEvent{}
 
@@ -13956,6 +18747,104 @@ var _ Event = &WlDataDeviceSelectionEvent{}
 type WlDataDevice struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlDataDevice) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlDataDevice) Descriptor() *InterfaceDescriptor {
+	return &WlDataDeviceDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlDataDevice) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlDataDeviceDataOfferEvent{}
+	case 1:
+		return &WlDataDeviceEnterEvent{}
+	case 2:
+		return &WlDataDeviceLeaveEvent{}
+	case 3:
+		return &WlDataDeviceMotionEvent{}
+	case 4:
+		return &WlDataDeviceDropEvent{}
+	case 5:
+		return &WlDataDeviceSelectionEvent{}
+	default:
+		return nil
+	}
+}
+
+// StartDrag requests to start drag-and-drop operation
+//
+// This request asks the compositor to start a drag-and-drop
+// operation on behalf of the client.
+//
+// The source argument is the data source that provides the data
+// for the eventual data transfer. If source is NULL, enter, leave
+// and motion events are sent only to the client that initiated the
+// drag and the client is expected to handle the data passing
+// internally. If source is destroyed, the drag-and-drop session will be
+// cancelled.
+//
+// The origin surface is the surface where the drag originates and
+// the client must have an active implicit grab that matches the
+// serial.
+//
+// The icon surface is an optional (can be NULL) surface that
+// provides an icon to be moved around with the cursor.  Initially,
+// the top-left corner of the icon surface is placed at the cursor
+// hotspot, but subsequent wl_surface.attach request can move the
+// relative position. Attach requests must be confirmed with
+// wl_surface.commit as usual. The icon surface is given the role of
+// a drag-and-drop icon. If the icon surface already has another role,
+// it raises a protocol error.
+//
+// The current and pending input regions of the icon wl_surface are
+// cleared, and wl_surface.set_input_region is ignored until the
+// wl_surface is no longer used as the icon surface. When the use
+// as an icon ends, the current and pending input regions become
+// undefined, and the wl_surface is unmapped.
+func (proxy *WlDataDevice) StartDrag(connection Connection, aSource ObjectID, aOrigin ObjectID, aIcon ObjectID, aSerial uint32) (err error) {
+	request := WlDataDeviceStartDragRequest{
+		Source: aSource,
+		Origin: aOrigin,
+		Icon:   aIcon,
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetSelection requests to copy data to the selection
+//
+// This request asks the compositor to set the selection
+// to the data from the source on behalf of the client.
+//
+// To unset the selection, set the source to NULL.
+func (proxy *WlDataDevice) SetSelection(connection Connection, aSource ObjectID, aSerial uint32) (err error) {
+	request := WlDataDeviceSetSelectionRequest{
+		Source: aSource,
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Release requests to destroy data device
+//
+// This request destroys the data device.
+func (proxy *WlDataDevice) Release(connection Connection) (err error) {
+	request := WlDataDeviceReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlDataDevice implements Proxy.
+var _ Proxy = &WlDataDevice{}
 
 // #endregion Interface wayland.wl_data_device
 
@@ -14014,6 +18903,9 @@ type WlDataDeviceManagerCreateDataSourceRequest struct {
 // Opcode returns the request opcode for wl_data_device_manager.create_data_source in wayland
 func (WlDataDeviceManagerCreateDataSourceRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_data_device_manager.create_data_source in wayland
+func (WlDataDeviceManagerCreateDataSourceRequest) MessageName() string { return "create_data_source" }
+
 // Ensure WlDataDeviceManagerCreateDataSourceRequest implements Message.
 var _ Message = WlDataDeviceManagerCreateDataSourceRequest{}
 
@@ -14041,6 +18933,9 @@ type WlDataDeviceManagerGetDataDeviceRequest struct {
 
 // Opcode returns the request opcode for wl_data_device_manager.get_data_device in wayland
 func (WlDataDeviceManagerGetDataDeviceRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_data_device_manager.get_data_device in wayland
+func (WlDataDeviceManagerGetDataDeviceRequest) MessageName() string { return "get_data_device" }
 
 // Ensure WlDataDeviceManagerGetDataDeviceRequest implements Message.
 var _ Message = WlDataDeviceManagerGetDataDeviceRequest{}
@@ -14075,6 +18970,58 @@ type WlDataDeviceManager struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlDataDeviceManager) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlDataDeviceManager) Descriptor() *InterfaceDescriptor {
+	return &WlDataDeviceManagerDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlDataDeviceManager) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// CreateDataSource requests to create a new data source
+//
+// Create a new data source.
+func (proxy *WlDataDeviceManager) CreateDataSource(connection Connection) (aID *WlDataSource, err error) {
+	aID = &WlDataSource{connection.NewID()}
+	request := WlDataDeviceManagerCreateDataSourceRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetDataDevice requests to create a new data device
+//
+// Create a new data device for a given seat.
+func (proxy *WlDataDeviceManager) GetDataDevice(connection Connection, aSeat ObjectID) (aID *WlDataDevice, err error) {
+	aID = &WlDataDevice{connection.NewID()}
+	request := WlDataDeviceManagerGetDataDeviceRequest{
+		ID:   aID.id,
+		Seat: aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure WlDataDeviceManager implements Proxy.
+var _ Proxy = &WlDataDeviceManager{}
+
 // #endregion Interface wayland.wl_data_device_manager
 
 // ----------------------------------------------------------------------------
@@ -14104,6 +19051,9 @@ type WlShellGetShellSurfaceRequest struct {
 
 // Opcode returns the request opcode for wl_shell.get_shell_surface in wayland
 func (WlShellGetShellSurfaceRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_shell.get_shell_surface in wayland
+func (WlShellGetShellSurfaceRequest) MessageName() string { return "get_shell_surface" }
 
 // Ensure WlShellGetShellSurfaceRequest implements Message.
 var _ Message = WlShellGetShellSurfaceRequest{}
@@ -14135,6 +19085,47 @@ var _ Request = &WlShellGetShellSurfaceRequest{}
 type WlShell struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlShell) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlShell) Descriptor() *InterfaceDescriptor {
+	return &WlShellDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlShell) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// GetShellSurface requests to create a shell surface from a surface
+//
+// Create a shell surface for an existing surface. This gives
+// the wl_surface the role of a shell surface. If the wl_surface
+// already has another role, it raises a protocol error.
+//
+// Only one shell surface can be associated with a given surface.
+func (proxy *WlShell) GetShellSurface(connection Connection, aSurface ObjectID) (aID *WlShellSurface, err error) {
+	aID = &WlShellSurface{connection.NewID()}
+	request := WlShellGetShellSurfaceRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure WlShell implements Proxy.
+var _ Proxy = &WlShell{}
 
 // #endregion Interface wayland.wl_shell
 
@@ -14222,6 +19213,9 @@ type WlShellSurfacePongRequest struct {
 // Opcode returns the request opcode for wl_shell_surface.pong in wayland
 func (WlShellSurfacePongRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_shell_surface.pong in wayland
+func (WlShellSurfacePongRequest) MessageName() string { return "pong" }
+
 // Ensure WlShellSurfacePongRequest implements Message.
 var _ Message = WlShellSurfacePongRequest{}
 
@@ -14253,6 +19247,9 @@ type WlShellSurfaceMoveRequest struct {
 
 // Opcode returns the request opcode for wl_shell_surface.move in wayland
 func (WlShellSurfaceMoveRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_shell_surface.move in wayland
+func (WlShellSurfaceMoveRequest) MessageName() string { return "move" }
 
 // Ensure WlShellSurfaceMoveRequest implements Message.
 var _ Message = WlShellSurfaceMoveRequest{}
@@ -14292,6 +19289,9 @@ type WlShellSurfaceResizeRequest struct {
 // Opcode returns the request opcode for wl_shell_surface.resize in wayland
 func (WlShellSurfaceResizeRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for wl_shell_surface.resize in wayland
+func (WlShellSurfaceResizeRequest) MessageName() string { return "resize" }
+
 // Ensure WlShellSurfaceResizeRequest implements Message.
 var _ Message = WlShellSurfaceResizeRequest{}
 
@@ -14322,6 +19322,9 @@ type WlShellSurfaceSetToplevelRequest struct {
 
 // Opcode returns the request opcode for wl_shell_surface.set_toplevel in wayland
 func (WlShellSurfaceSetToplevelRequest) Opcode() uint16 { return 3 }
+
+// MessageName returns the request name for wl_shell_surface.set_toplevel in wayland
+func (WlShellSurfaceSetToplevelRequest) MessageName() string { return "set_toplevel" }
 
 // Ensure WlShellSurfaceSetToplevelRequest implements Message.
 var _ Message = WlShellSurfaceSetToplevelRequest{}
@@ -14359,6 +19362,9 @@ type WlShellSurfaceSetTransientRequest struct {
 
 // Opcode returns the request opcode for wl_shell_surface.set_transient in wayland
 func (WlShellSurfaceSetTransientRequest) Opcode() uint16 { return 4 }
+
+// MessageName returns the request name for wl_shell_surface.set_transient in wayland
+func (WlShellSurfaceSetTransientRequest) MessageName() string { return "set_transient" }
 
 // Ensure WlShellSurfaceSetTransientRequest implements Message.
 var _ Message = WlShellSurfaceSetTransientRequest{}
@@ -14432,6 +19438,9 @@ type WlShellSurfaceSetFullscreenRequest struct {
 // Opcode returns the request opcode for wl_shell_surface.set_fullscreen in wayland
 func (WlShellSurfaceSetFullscreenRequest) Opcode() uint16 { return 5 }
 
+// MessageName returns the request name for wl_shell_surface.set_fullscreen in wayland
+func (WlShellSurfaceSetFullscreenRequest) MessageName() string { return "set_fullscreen" }
+
 // Ensure WlShellSurfaceSetFullscreenRequest implements Message.
 var _ Message = WlShellSurfaceSetFullscreenRequest{}
 
@@ -14496,6 +19505,9 @@ type WlShellSurfaceSetPopupRequest struct {
 // Opcode returns the request opcode for wl_shell_surface.set_popup in wayland
 func (WlShellSurfaceSetPopupRequest) Opcode() uint16 { return 6 }
 
+// MessageName returns the request name for wl_shell_surface.set_popup in wayland
+func (WlShellSurfaceSetPopupRequest) MessageName() string { return "set_popup" }
+
 // Ensure WlShellSurfaceSetPopupRequest implements Message.
 var _ Message = WlShellSurfaceSetPopupRequest{}
 
@@ -14553,6 +19565,9 @@ type WlShellSurfaceSetMaximizedRequest struct {
 // Opcode returns the request opcode for wl_shell_surface.set_maximized in wayland
 func (WlShellSurfaceSetMaximizedRequest) Opcode() uint16 { return 7 }
 
+// MessageName returns the request name for wl_shell_surface.set_maximized in wayland
+func (WlShellSurfaceSetMaximizedRequest) MessageName() string { return "set_maximized" }
+
 // Ensure WlShellSurfaceSetMaximizedRequest implements Message.
 var _ Message = WlShellSurfaceSetMaximizedRequest{}
 
@@ -14584,6 +19599,9 @@ type WlShellSurfaceSetTitleRequest struct {
 // Opcode returns the request opcode for wl_shell_surface.set_title in wayland
 func (WlShellSurfaceSetTitleRequest) Opcode() uint16 { return 8 }
 
+// MessageName returns the request name for wl_shell_surface.set_title in wayland
+func (WlShellSurfaceSetTitleRequest) MessageName() string { return "set_title" }
+
 // Ensure WlShellSurfaceSetTitleRequest implements Message.
 var _ Message = WlShellSurfaceSetTitleRequest{}
 
@@ -14614,6 +19632,9 @@ type WlShellSurfaceSetClassRequest struct {
 // Opcode returns the request opcode for wl_shell_surface.set_class in wayland
 func (WlShellSurfaceSetClassRequest) Opcode() uint16 { return 9 }
 
+// MessageName returns the request name for wl_shell_surface.set_class in wayland
+func (WlShellSurfaceSetClassRequest) MessageName() string { return "set_class" }
+
 // Ensure WlShellSurfaceSetClassRequest implements Message.
 var _ Message = WlShellSurfaceSetClassRequest{}
 
@@ -14639,6 +19660,9 @@ type WlShellSurfacePingEvent struct {
 
 // Opcode returns the event opcode for wl_shell_surface.ping in wayland
 func (WlShellSurfacePingEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_shell_surface.ping in wayland
+func (WlShellSurfacePingEvent) MessageName() string { return "ping" }
 
 // Ensure WlShellSurfacePingEvent implements Message.
 var _ Message = WlShellSurfacePingEvent{}
@@ -14689,6 +19713,9 @@ type WlShellSurfaceConfigureEvent struct {
 // Opcode returns the event opcode for wl_shell_surface.configure in wayland
 func (WlShellSurfaceConfigureEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_shell_surface.configure in wayland
+func (WlShellSurfaceConfigureEvent) MessageName() string { return "configure" }
+
 // Ensure WlShellSurfaceConfigureEvent implements Message.
 var _ Message = WlShellSurfaceConfigureEvent{}
 
@@ -14726,6 +19753,9 @@ type WlShellSurfacePopupDoneEvent struct {
 // Opcode returns the event opcode for wl_shell_surface.popup_done in wayland
 func (WlShellSurfacePopupDoneEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wl_shell_surface.popup_done in wayland
+func (WlShellSurfacePopupDoneEvent) MessageName() string { return "popup_done" }
+
 // Ensure WlShellSurfacePopupDoneEvent implements Message.
 var _ Message = WlShellSurfacePopupDoneEvent{}
 
@@ -14753,6 +19783,249 @@ var _ Event = &WlShellSurfacePopupDoneEvent{}
 type WlShellSurface struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlShellSurface) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlShellSurface) Descriptor() *InterfaceDescriptor {
+	return &WlShellSurfaceDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlShellSurface) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlShellSurfacePingEvent{}
+	case 1:
+		return &WlShellSurfaceConfigureEvent{}
+	case 2:
+		return &WlShellSurfacePopupDoneEvent{}
+	default:
+		return nil
+	}
+}
+
+// Pong requests to respond to a ping event
+//
+// A client must respond to a ping event with a pong request or
+// the client may be deemed unresponsive.
+func (proxy *WlShellSurface) Pong(connection Connection, aSerial uint32) (err error) {
+	request := WlShellSurfacePongRequest{
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Move requests to start an interactive move
+//
+// Start a pointer-driven move of the surface.
+//
+// This request must be used in response to a button press event.
+// The server may ignore move requests depending on the state of
+// the surface (e.g. fullscreen or maximized).
+func (proxy *WlShellSurface) Move(connection Connection, aSeat ObjectID, aSerial uint32) (err error) {
+	request := WlShellSurfaceMoveRequest{
+		Seat:   aSeat,
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Resize requests to start an interactive resize
+//
+// Start a pointer-driven resizing of the surface.
+//
+// This request must be used in response to a button press event.
+// The server may ignore resize requests depending on the state of
+// the surface (e.g. fullscreen or maximized).
+func (proxy *WlShellSurface) Resize(connection Connection, aSeat ObjectID, aSerial uint32, aEdges uint32) (err error) {
+	request := WlShellSurfaceResizeRequest{
+		Seat:   aSeat,
+		Serial: aSerial,
+		Edges:  aEdges,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetToplevel requests to make the surface a toplevel surface
+//
+// Map the surface as a toplevel surface.
+//
+// A toplevel surface is not fullscreen, maximized or transient.
+func (proxy *WlShellSurface) SetToplevel(connection Connection) (err error) {
+	request := WlShellSurfaceSetToplevelRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetTransient requests to make the surface a transient surface
+//
+// Map the surface relative to an existing surface.
+//
+// The x and y arguments specify the location of the upper left
+// corner of the surface relative to the upper left corner of the
+// parent surface, in surface-local coordinates.
+//
+// The flags argument controls details of the transient behaviour.
+func (proxy *WlShellSurface) SetTransient(connection Connection, aParent ObjectID, aX int32, aY int32, aFlags uint32) (err error) {
+	request := WlShellSurfaceSetTransientRequest{
+		Parent: aParent,
+		X:      aX,
+		Y:      aY,
+		Flags:  aFlags,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetFullscreen requests to make the surface a fullscreen surface
+//
+// Map the surface as a fullscreen surface.
+//
+// If an output parameter is given then the surface will be made
+// fullscreen on that output. If the client does not specify the
+// output then the compositor will apply its policy - usually
+// choosing the output on which the surface has the biggest surface
+// area.
+//
+// The client may specify a method to resolve a size conflict
+// between the output size and the surface size - this is provided
+// through the method parameter.
+//
+// The framerate parameter is used only when the method is set
+// to "driver", to indicate the preferred framerate. A value of 0
+// indicates that the client does not care about framerate.  The
+// framerate is specified in mHz, that is framerate of 60000 is 60Hz.
+//
+// A method of "scale" or "driver" implies a scaling operation of
+// the surface, either via a direct scaling operation or a change of
+// the output mode. This will override any kind of output scaling, so
+// that mapping a surface with a buffer size equal to the mode can
+// fill the screen independent of buffer_scale.
+//
+// A method of "fill" means we don't scale up the buffer, however
+// any output scale is applied. This means that you may run into
+// an edge case where the application maps a buffer with the same
+// size of the output mode but buffer_scale 1 (thus making a
+// surface larger than the output). In this case it is allowed to
+// downscale the results to fit the screen.
+//
+// The compositor must reply to this request with a configure event
+// with the dimensions for the output on which the surface will
+// be made fullscreen.
+func (proxy *WlShellSurface) SetFullscreen(connection Connection, aMethod uint32, aFramerate uint32, aOutput ObjectID) (err error) {
+	request := WlShellSurfaceSetFullscreenRequest{
+		Method:    aMethod,
+		Framerate: aFramerate,
+		Output:    aOutput,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetPopup requests to make the surface a popup surface
+//
+// Map the surface as a popup.
+//
+// A popup surface is a transient surface with an added pointer
+// grab.
+//
+// An existing implicit grab will be changed to owner-events mode,
+// and the popup grab will continue after the implicit grab ends
+// (i.e. releasing the mouse button does not cause the popup to
+// be unmapped).
+//
+// The popup grab continues until the window is destroyed or a
+// mouse button is pressed in any other client's window. A click
+// in any of the client's surfaces is reported as normal, however,
+// clicks in other clients' surfaces will be discarded and trigger
+// the callback.
+//
+// The x and y arguments specify the location of the upper left
+// corner of the surface relative to the upper left corner of the
+// parent surface, in surface-local coordinates.
+func (proxy *WlShellSurface) SetPopup(connection Connection, aSeat ObjectID, aSerial uint32, aParent ObjectID, aX int32, aY int32, aFlags uint32) (err error) {
+	request := WlShellSurfaceSetPopupRequest{
+		Seat:   aSeat,
+		Serial: aSerial,
+		Parent: aParent,
+		X:      aX,
+		Y:      aY,
+		Flags:  aFlags,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetMaximized requests to make the surface a maximized surface
+//
+// Map the surface as a maximized surface.
+//
+// If an output parameter is given then the surface will be
+// maximized on that output. If the client does not specify the
+// output then the compositor will apply its policy - usually
+// choosing the output on which the surface has the biggest surface
+// area.
+//
+// The compositor will reply with a configure event telling
+// the expected new surface size. The operation is completed
+// on the next buffer attach to this surface.
+//
+// A maximized surface typically fills the entire output it is
+// bound to, except for desktop elements such as panels. This is
+// the main difference between a maximized shell surface and a
+// fullscreen shell surface.
+//
+// The details depend on the compositor implementation.
+func (proxy *WlShellSurface) SetMaximized(connection Connection, aOutput ObjectID) (err error) {
+	request := WlShellSurfaceSetMaximizedRequest{
+		Output: aOutput,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetTitle requests to set surface title
+//
+// Set a short title for the surface.
+//
+// This string may be used to identify the surface in a task bar,
+// window list, or other user interface elements provided by the
+// compositor.
+//
+// The string must be encoded in UTF-8.
+func (proxy *WlShellSurface) SetTitle(connection Connection, aTitle string) (err error) {
+	request := WlShellSurfaceSetTitleRequest{
+		Title: aTitle,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetClass requests to set surface class
+//
+// Set a class for the surface.
+//
+// The surface class identifies the general class of applications
+// to which the surface belongs. A common convention is to use the
+// file name (or the full path if it is a non-standard location) of
+// the application's .desktop file as the class.
+func (proxy *WlShellSurface) SetClass(connection Connection, aClass string) (err error) {
+	request := WlShellSurfaceSetClassRequest{
+		Class: aClass,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlShellSurface implements Proxy.
+var _ Proxy = &WlShellSurface{}
 
 // #endregion Interface wayland.wl_shell_surface
 
@@ -14783,6 +20056,9 @@ type WlSurfaceDestroyRequest struct {
 
 // Opcode returns the request opcode for wl_surface.destroy in wayland
 func (WlSurfaceDestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_surface.destroy in wayland
+func (WlSurfaceDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WlSurfaceDestroyRequest implements Message.
 var _ Message = WlSurfaceDestroyRequest{}
@@ -14860,6 +20136,9 @@ type WlSurfaceAttachRequest struct {
 // Opcode returns the request opcode for wl_surface.attach in wayland
 func (WlSurfaceAttachRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wl_surface.attach in wayland
+func (WlSurfaceAttachRequest) MessageName() string { return "attach" }
+
 // Ensure WlSurfaceAttachRequest implements Message.
 var _ Message = WlSurfaceAttachRequest{}
 
@@ -14919,6 +20198,9 @@ type WlSurfaceDamageRequest struct {
 
 // Opcode returns the request opcode for wl_surface.damage in wayland
 func (WlSurfaceDamageRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for wl_surface.damage in wayland
+func (WlSurfaceDamageRequest) MessageName() string { return "damage" }
 
 // Ensure WlSurfaceDamageRequest implements Message.
 var _ Message = WlSurfaceDamageRequest{}
@@ -14985,6 +20267,9 @@ type WlSurfaceFrameRequest struct {
 // Opcode returns the request opcode for wl_surface.frame in wayland
 func (WlSurfaceFrameRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for wl_surface.frame in wayland
+func (WlSurfaceFrameRequest) MessageName() string { return "frame" }
+
 // Ensure WlSurfaceFrameRequest implements Message.
 var _ Message = WlSurfaceFrameRequest{}
 
@@ -15033,6 +20318,9 @@ type WlSurfaceSetOpaqueRegionRequest struct {
 // Opcode returns the request opcode for wl_surface.set_opaque_region in wayland
 func (WlSurfaceSetOpaqueRegionRequest) Opcode() uint16 { return 4 }
 
+// MessageName returns the request name for wl_surface.set_opaque_region in wayland
+func (WlSurfaceSetOpaqueRegionRequest) MessageName() string { return "set_opaque_region" }
+
 // Ensure WlSurfaceSetOpaqueRegionRequest implements Message.
 var _ Message = WlSurfaceSetOpaqueRegionRequest{}
 
@@ -15079,6 +20367,9 @@ type WlSurfaceSetInputRegionRequest struct {
 // Opcode returns the request opcode for wl_surface.set_input_region in wayland
 func (WlSurfaceSetInputRegionRequest) Opcode() uint16 { return 5 }
 
+// MessageName returns the request name for wl_surface.set_input_region in wayland
+func (WlSurfaceSetInputRegionRequest) MessageName() string { return "set_input_region" }
+
 // Ensure WlSurfaceSetInputRegionRequest implements Message.
 var _ Message = WlSurfaceSetInputRegionRequest{}
 
@@ -15117,6 +20408,9 @@ type WlSurfaceCommitRequest struct {
 
 // Opcode returns the request opcode for wl_surface.commit in wayland
 func (WlSurfaceCommitRequest) Opcode() uint16 { return 6 }
+
+// MessageName returns the request name for wl_surface.commit in wayland
+func (WlSurfaceCommitRequest) MessageName() string { return "commit" }
 
 // Ensure WlSurfaceCommitRequest implements Message.
 var _ Message = WlSurfaceCommitRequest{}
@@ -15168,6 +20462,9 @@ type WlSurfaceSetBufferTransformRequest struct {
 // Opcode returns the request opcode for wl_surface.set_buffer_transform in wayland
 func (WlSurfaceSetBufferTransformRequest) Opcode() uint16 { return 7 }
 
+// MessageName returns the request name for wl_surface.set_buffer_transform in wayland
+func (WlSurfaceSetBufferTransformRequest) MessageName() string { return "set_buffer_transform" }
+
 // Ensure WlSurfaceSetBufferTransformRequest implements Message.
 var _ Message = WlSurfaceSetBufferTransformRequest{}
 
@@ -15214,6 +20511,9 @@ type WlSurfaceSetBufferScaleRequest struct {
 
 // Opcode returns the request opcode for wl_surface.set_buffer_scale in wayland
 func (WlSurfaceSetBufferScaleRequest) Opcode() uint16 { return 8 }
+
+// MessageName returns the request name for wl_surface.set_buffer_scale in wayland
+func (WlSurfaceSetBufferScaleRequest) MessageName() string { return "set_buffer_scale" }
 
 // Ensure WlSurfaceSetBufferScaleRequest implements Message.
 var _ Message = WlSurfaceSetBufferScaleRequest{}
@@ -15280,6 +20580,9 @@ type WlSurfaceDamageBufferRequest struct {
 // Opcode returns the request opcode for wl_surface.damage_buffer in wayland
 func (WlSurfaceDamageBufferRequest) Opcode() uint16 { return 9 }
 
+// MessageName returns the request name for wl_surface.damage_buffer in wayland
+func (WlSurfaceDamageBufferRequest) MessageName() string { return "damage_buffer" }
+
 // Ensure WlSurfaceDamageBufferRequest implements Message.
 var _ Message = WlSurfaceDamageBufferRequest{}
 
@@ -15318,6 +20621,9 @@ type WlSurfaceEnterEvent struct {
 // Opcode returns the event opcode for wl_surface.enter in wayland
 func (WlSurfaceEnterEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for wl_surface.enter in wayland
+func (WlSurfaceEnterEvent) MessageName() string { return "enter" }
+
 // Ensure WlSurfaceEnterEvent implements Message.
 var _ Message = WlSurfaceEnterEvent{}
 
@@ -15352,6 +20658,9 @@ type WlSurfaceLeaveEvent struct {
 
 // Opcode returns the event opcode for wl_surface.leave in wayland
 func (WlSurfaceLeaveEvent) Opcode() uint16 { return 1 }
+
+// MessageName returns the event name for wl_surface.leave in wayland
+func (WlSurfaceLeaveEvent) MessageName() string { return "leave" }
 
 // Ensure WlSurfaceLeaveEvent implements Message.
 var _ Message = WlSurfaceLeaveEvent{}
@@ -15416,6 +20725,389 @@ type WlSurface struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlSurface) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlSurface) Descriptor() *InterfaceDescriptor {
+	return &WlSurfaceDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlSurface) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlSurfaceEnterEvent{}
+	case 1:
+		return &WlSurfaceLeaveEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to delete surface
+//
+// Deletes the surface and invalidates its object ID.
+func (proxy *WlSurface) Destroy(connection Connection) (err error) {
+	request := WlSurfaceDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Attach requests to set the surface contents
+//
+// Set a buffer as the content of this surface.
+//
+// The new size of the surface is calculated based on the buffer
+// size transformed by the inverse buffer_transform and the
+// inverse buffer_scale. This means that at commit time the supplied
+// buffer size must be an integer multiple of the buffer_scale. If
+// that's not the case, an invalid_size error is sent.
+//
+// The x and y arguments specify the location of the new pending
+// buffer's upper left corner, relative to the current buffer's upper
+// left corner, in surface-local coordinates. In other words, the
+// x and y, combined with the new surface size define in which
+// directions the surface's size changes.
+//
+// Surface contents are double-buffered state, see wl_surface.commit.
+//
+// The initial surface contents are void; there is no content.
+// wl_surface.attach assigns the given wl_buffer as the pending
+// wl_buffer. wl_surface.commit makes the pending wl_buffer the new
+// surface contents, and the size of the surface becomes the size
+// calculated from the wl_buffer, as described above. After commit,
+// there is no pending buffer until the next attach.
+//
+// Committing a pending wl_buffer allows the compositor to read the
+// pixels in the wl_buffer. The compositor may access the pixels at
+// any time after the wl_surface.commit request. When the compositor
+// will not access the pixels anymore, it will send the
+// wl_buffer.release event. Only after receiving wl_buffer.release,
+// the client may reuse the wl_buffer. A wl_buffer that has been
+// attached and then replaced by another attach instead of committed
+// will not receive a release event, and is not used by the
+// compositor.
+//
+// If a pending wl_buffer has been committed to more than one wl_surface,
+// the delivery of wl_buffer.release events becomes undefined. A well
+// behaved client should not rely on wl_buffer.release events in this
+// case. Alternatively, a client could create multiple wl_buffer objects
+// from the same backing storage or use wp_linux_buffer_release.
+//
+// Destroying the wl_buffer after wl_buffer.release does not change
+// the surface contents. Destroying the wl_buffer before wl_buffer.release
+// is allowed as long as the underlying buffer storage isn't re-used (this
+// can happen e.g. on client process termination). However, if the client
+// destroys the wl_buffer before receiving the wl_buffer.release event and
+// mutates the underlying buffer storage, the surface contents become
+// undefined immediately.
+//
+// If wl_surface.attach is sent with a NULL wl_buffer, the
+// following wl_surface.commit will remove the surface content.
+func (proxy *WlSurface) Attach(connection Connection, aBuffer ObjectID, aX int32, aY int32) (err error) {
+	request := WlSurfaceAttachRequest{
+		Buffer: aBuffer,
+		X:      aX,
+		Y:      aY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Damage requests to mark part of the surface damaged
+//
+// This request is used to describe the regions where the pending
+// buffer is different from the current surface contents, and where
+// the surface therefore needs to be repainted. The compositor
+// ignores the parts of the damage that fall outside of the surface.
+//
+// Damage is double-buffered state, see wl_surface.commit.
+//
+// The damage rectangle is specified in surface-local coordinates,
+// where x and y specify the upper left corner of the damage rectangle.
+//
+// The initial value for pending damage is empty: no damage.
+// wl_surface.damage adds pending damage: the new pending damage
+// is the union of old pending damage and the given rectangle.
+//
+// wl_surface.commit assigns pending damage as the current damage,
+// and clears pending damage. The server will clear the current
+// damage as it repaints the surface.
+//
+// Note! New clients should not use this request. Instead damage can be
+// posted with wl_surface.damage_buffer which uses buffer coordinates
+// instead of surface coordinates.
+func (proxy *WlSurface) Damage(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := WlSurfaceDamageRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Frame requests to request a frame throttling hint
+//
+// Request a notification when it is a good time to start drawing a new
+// frame, by creating a frame callback. This is useful for throttling
+// redrawing operations, and driving animations.
+//
+// When a client is animating on a wl_surface, it can use the 'frame'
+// request to get notified when it is a good time to draw and commit the
+// next frame of animation. If the client commits an update earlier than
+// that, it is likely that some updates will not make it to the display,
+// and the client is wasting resources by drawing too often.
+//
+// The frame request will take effect on the next wl_surface.commit.
+// The notification will only be posted for one frame unless
+// requested again. For a wl_surface, the notifications are posted in
+// the order the frame requests were committed.
+//
+// The server must send the notifications so that a client
+// will not send excessive updates, while still allowing
+// the highest possible update rate for clients that wait for the reply
+// before drawing again. The server should give some time for the client
+// to draw and commit after sending the frame callback events to let it
+// hit the next output refresh.
+//
+// A server should avoid signaling the frame callbacks if the
+// surface is not visible in any way, e.g. the surface is off-screen,
+// or completely obscured by other opaque surfaces.
+//
+// The object returned by this request will be destroyed by the
+// compositor after the callback is fired and as such the client must not
+// attempt to use it after that point.
+//
+// The callback_data passed in the callback is the current time, in
+// milliseconds, with an undefined base.
+func (proxy *WlSurface) Frame(connection Connection) (aCallback *WlCallback, err error) {
+	aCallback = &WlCallback{connection.NewID()}
+	request := WlSurfaceFrameRequest{
+		Callback: aCallback.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aCallback)
+	}
+	return
+}
+
+// SetOpaqueRegion requests to set opaque region
+//
+// This request sets the region of the surface that contains
+// opaque content.
+//
+// The opaque region is an optimization hint for the compositor
+// that lets it optimize the redrawing of content behind opaque
+// regions.  Setting an opaque region is not required for correct
+// behaviour, but marking transparent content as opaque will result
+// in repaint artifacts.
+//
+// The opaque region is specified in surface-local coordinates.
+//
+// The compositor ignores the parts of the opaque region that fall
+// outside of the surface.
+//
+// Opaque region is double-buffered state, see wl_surface.commit.
+//
+// wl_surface.set_opaque_region changes the pending opaque region.
+// wl_surface.commit copies the pending region to the current region.
+// Otherwise, the pending and current regions are never changed.
+//
+// The initial value for an opaque region is empty. Setting the pending
+// opaque region has copy semantics, and the wl_region object can be
+// destroyed immediately. A NULL wl_region causes the pending opaque
+// region to be set to empty.
+func (proxy *WlSurface) SetOpaqueRegion(connection Connection, aRegion ObjectID) (err error) {
+	request := WlSurfaceSetOpaqueRegionRequest{
+		Region: aRegion,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetInputRegion requests to set input region
+//
+// This request sets the region of the surface that can receive
+// pointer and touch events.
+//
+// Input events happening outside of this region will try the next
+// surface in the server surface stack. The compositor ignores the
+// parts of the input region that fall outside of the surface.
+//
+// The input region is specified in surface-local coordinates.
+//
+// Input region is double-buffered state, see wl_surface.commit.
+//
+// wl_surface.set_input_region changes the pending input region.
+// wl_surface.commit copies the pending region to the current region.
+// Otherwise the pending and current regions are never changed,
+// except cursor and icon surfaces are special cases, see
+// wl_pointer.set_cursor and wl_data_device.start_drag.
+//
+// The initial value for an input region is infinite. That means the
+// whole surface will accept input. Setting the pending input region
+// has copy semantics, and the wl_region object can be destroyed
+// immediately. A NULL wl_region causes the input region to be set
+// to infinite.
+func (proxy *WlSurface) SetInputRegion(connection Connection, aRegion ObjectID) (err error) {
+	request := WlSurfaceSetInputRegionRequest{
+		Region: aRegion,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Commit requests to commit pending surface state
+//
+// Surface state (input, opaque, and damage regions, attached buffers,
+// etc.) is double-buffered. Protocol requests modify the pending state,
+// as opposed to the current state in use by the compositor. A commit
+// request atomically applies all pending state, replacing the current
+// state. After commit, the new pending state is as documented for each
+// related request.
+//
+// On commit, a pending wl_buffer is applied first, and all other state
+// second. This means that all coordinates in double-buffered state are
+// relative to the new wl_buffer coming into use, except for
+// wl_surface.attach itself. If there is no pending wl_buffer, the
+// coordinates are relative to the current surface contents.
+//
+// All requests that need a commit to become effective are documented
+// to affect double-buffered state.
+//
+// Other interfaces may add further double-buffered surface state.
+func (proxy *WlSurface) Commit(connection Connection) (err error) {
+	request := WlSurfaceCommitRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetBufferTransform requests to sets the buffer transformation
+//
+// This request sets an optional transformation on how the compositor
+// interprets the contents of the buffer attached to the surface. The
+// accepted values for the transform parameter are the values for
+// wl_output.transform.
+//
+// Buffer transform is double-buffered state, see wl_surface.commit.
+//
+// A newly created surface has its buffer transformation set to normal.
+//
+// wl_surface.set_buffer_transform changes the pending buffer
+// transformation. wl_surface.commit copies the pending buffer
+// transformation to the current one. Otherwise, the pending and current
+// values are never changed.
+//
+// The purpose of this request is to allow clients to render content
+// according to the output transform, thus permitting the compositor to
+// use certain optimizations even if the display is rotated. Using
+// hardware overlays and scanning out a client buffer for fullscreen
+// surfaces are examples of such optimizations. Those optimizations are
+// highly dependent on the compositor implementation, so the use of this
+// request should be considered on a case-by-case basis.
+//
+// Note that if the transform value includes 90 or 270 degree rotation,
+// the width of the buffer will become the surface height and the height
+// of the buffer will become the surface width.
+//
+// If transform is not one of the values from the
+// wl_output.transform enum the invalid_transform protocol error
+// is raised.
+func (proxy *WlSurface) SetBufferTransform(connection Connection, aTransform int32) (err error) {
+	request := WlSurfaceSetBufferTransformRequest{
+		Transform: aTransform,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetBufferScale requests to sets the buffer scaling factor
+//
+// This request sets an optional scaling factor on how the compositor
+// interprets the contents of the buffer attached to the window.
+//
+// Buffer scale is double-buffered state, see wl_surface.commit.
+//
+// A newly created surface has its buffer scale set to 1.
+//
+// wl_surface.set_buffer_scale changes the pending buffer scale.
+// wl_surface.commit copies the pending buffer scale to the current one.
+// Otherwise, the pending and current values are never changed.
+//
+// The purpose of this request is to allow clients to supply higher
+// resolution buffer data for use on high resolution outputs. It is
+// intended that you pick the same buffer scale as the scale of the
+// output that the surface is displayed on. This means the compositor
+// can avoid scaling when rendering the surface on that output.
+//
+// Note that if the scale is larger than 1, then you have to attach
+// a buffer that is larger (by a factor of scale in each dimension)
+// than the desired surface size.
+//
+// If scale is not positive the invalid_scale protocol error is
+// raised.
+func (proxy *WlSurface) SetBufferScale(connection Connection, aScale int32) (err error) {
+	request := WlSurfaceSetBufferScaleRequest{
+		Scale: aScale,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// DamageBuffer requests to mark part of the surface damaged using buffer coordinates
+//
+// This request is used to describe the regions where the pending
+// buffer is different from the current surface contents, and where
+// the surface therefore needs to be repainted. The compositor
+// ignores the parts of the damage that fall outside of the surface.
+//
+// Damage is double-buffered state, see wl_surface.commit.
+//
+// The damage rectangle is specified in buffer coordinates,
+// where x and y specify the upper left corner of the damage rectangle.
+//
+// The initial value for pending damage is empty: no damage.
+// wl_surface.damage_buffer adds pending damage: the new pending
+// damage is the union of old pending damage and the given rectangle.
+//
+// wl_surface.commit assigns pending damage as the current damage,
+// and clears pending damage. The server will clear the current
+// damage as it repaints the surface.
+//
+// This request differs from wl_surface.damage in only one way - it
+// takes damage in buffer coordinates instead of surface-local
+// coordinates. While this generally is more intuitive than surface
+// coordinates, it is especially desirable when using wp_viewport
+// or when a drawing library (like EGL) is unaware of buffer scale
+// and buffer transform.
+//
+// Note: Because buffer transformation changes and damage requests may
+// be interleaved in the protocol stream, it is impossible to determine
+// the actual mapping between surface and buffer damage until
+// wl_surface.commit time. Therefore, compositors wishing to take both
+// kinds of damage into account will have to accumulate damage from the
+// two requests separately and only transform from one to the other
+// after receiving the wl_surface.commit.
+func (proxy *WlSurface) DamageBuffer(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := WlSurfaceDamageBufferRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlSurface implements Proxy.
+var _ Proxy = &WlSurface{}
+
 // #endregion Interface wayland.wl_surface
 
 // ----------------------------------------------------------------------------
@@ -15466,6 +21158,9 @@ type WlSeatGetPointerRequest struct {
 // Opcode returns the request opcode for wl_seat.get_pointer in wayland
 func (WlSeatGetPointerRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_seat.get_pointer in wayland
+func (WlSeatGetPointerRequest) MessageName() string { return "get_pointer" }
+
 // Ensure WlSeatGetPointerRequest implements Message.
 var _ Message = WlSeatGetPointerRequest{}
 
@@ -15497,6 +21192,9 @@ type WlSeatGetKeyboardRequest struct {
 
 // Opcode returns the request opcode for wl_seat.get_keyboard in wayland
 func (WlSeatGetKeyboardRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_seat.get_keyboard in wayland
+func (WlSeatGetKeyboardRequest) MessageName() string { return "get_keyboard" }
 
 // Ensure WlSeatGetKeyboardRequest implements Message.
 var _ Message = WlSeatGetKeyboardRequest{}
@@ -15530,6 +21228,9 @@ type WlSeatGetTouchRequest struct {
 // Opcode returns the request opcode for wl_seat.get_touch in wayland
 func (WlSeatGetTouchRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for wl_seat.get_touch in wayland
+func (WlSeatGetTouchRequest) MessageName() string { return "get_touch" }
+
 // Ensure WlSeatGetTouchRequest implements Message.
 var _ Message = WlSeatGetTouchRequest{}
 
@@ -15553,6 +21254,9 @@ type WlSeatReleaseRequest struct {
 
 // Opcode returns the request opcode for wl_seat.release in wayland
 func (WlSeatReleaseRequest) Opcode() uint16 { return 3 }
+
+// MessageName returns the request name for wl_seat.release in wayland
+func (WlSeatReleaseRequest) MessageName() string { return "release" }
 
 // Ensure WlSeatReleaseRequest implements Message.
 var _ Message = WlSeatReleaseRequest{}
@@ -15599,6 +21303,9 @@ type WlSeatCapabilitiesEvent struct {
 // Opcode returns the event opcode for wl_seat.capabilities in wayland
 func (WlSeatCapabilitiesEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for wl_seat.capabilities in wayland
+func (WlSeatCapabilitiesEvent) MessageName() string { return "capabilities" }
+
 // Ensure WlSeatCapabilitiesEvent implements Message.
 var _ Message = WlSeatCapabilitiesEvent{}
 
@@ -15641,6 +21348,9 @@ type WlSeatNameEvent struct {
 // Opcode returns the event opcode for wl_seat.name in wayland
 func (WlSeatNameEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_seat.name in wayland
+func (WlSeatNameEvent) MessageName() string { return "name" }
+
 // Ensure WlSeatNameEvent implements Message.
 var _ Message = WlSeatNameEvent{}
 
@@ -15666,6 +21376,107 @@ var _ Event = &WlSeatNameEvent{}
 type WlSeat struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlSeat) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlSeat) Descriptor() *InterfaceDescriptor {
+	return &WlSeatDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlSeat) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlSeatCapabilitiesEvent{}
+	case 1:
+		return &WlSeatNameEvent{}
+	default:
+		return nil
+	}
+}
+
+// GetPointer requests to return pointer object
+//
+// The ID provided will be initialized to the wl_pointer interface
+// for this seat.
+//
+// This request only takes effect if the seat has the pointer
+// capability, or has had the pointer capability in the past.
+// It is a protocol violation to issue this request on a seat that has
+// never had the pointer capability. The missing_capability error will
+// be sent in this case.
+func (proxy *WlSeat) GetPointer(connection Connection) (aID *WlPointer, err error) {
+	aID = &WlPointer{connection.NewID()}
+	request := WlSeatGetPointerRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetKeyboard requests to return keyboard object
+//
+// The ID provided will be initialized to the wl_keyboard interface
+// for this seat.
+//
+// This request only takes effect if the seat has the keyboard
+// capability, or has had the keyboard capability in the past.
+// It is a protocol violation to issue this request on a seat that has
+// never had the keyboard capability. The missing_capability error will
+// be sent in this case.
+func (proxy *WlSeat) GetKeyboard(connection Connection) (aID *WlKeyboard, err error) {
+	aID = &WlKeyboard{connection.NewID()}
+	request := WlSeatGetKeyboardRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetTouch requests to return touch object
+//
+// The ID provided will be initialized to the wl_touch interface
+// for this seat.
+//
+// This request only takes effect if the seat has the touch
+// capability, or has had the touch capability in the past.
+// It is a protocol violation to issue this request on a seat that has
+// never had the touch capability. The missing_capability error will
+// be sent in this case.
+func (proxy *WlSeat) GetTouch(connection Connection) (aID *WlTouch, err error) {
+	aID = &WlTouch{connection.NewID()}
+	request := WlSeatGetTouchRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Release requests to release the seat object
+//
+// Using this request a client can tell the server that it is not going to
+// use the seat object anymore.
+func (proxy *WlSeat) Release(connection Connection) (err error) {
+	request := WlSeatReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlSeat implements Proxy.
+var _ Proxy = &WlSeat{}
 
 // #endregion Interface wayland.wl_seat
 
@@ -15794,6 +21605,9 @@ type WlPointerSetCursorRequest struct {
 // Opcode returns the request opcode for wl_pointer.set_cursor in wayland
 func (WlPointerSetCursorRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_pointer.set_cursor in wayland
+func (WlPointerSetCursorRequest) MessageName() string { return "set_cursor" }
+
 // Ensure WlPointerSetCursorRequest implements Message.
 var _ Message = WlPointerSetCursorRequest{}
 
@@ -15830,6 +21644,9 @@ type WlPointerReleaseRequest struct {
 // Opcode returns the request opcode for wl_pointer.release in wayland
 func (WlPointerReleaseRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for wl_pointer.release in wayland
+func (WlPointerReleaseRequest) MessageName() string { return "release" }
+
 // Ensure WlPointerReleaseRequest implements Message.
 var _ Message = WlPointerReleaseRequest{}
 
@@ -15865,6 +21682,9 @@ type WlPointerEnterEvent struct {
 
 // Opcode returns the event opcode for wl_pointer.enter in wayland
 func (WlPointerEnterEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_pointer.enter in wayland
+func (WlPointerEnterEvent) MessageName() string { return "enter" }
 
 // Ensure WlPointerEnterEvent implements Message.
 var _ Message = WlPointerEnterEvent{}
@@ -15915,6 +21735,9 @@ type WlPointerLeaveEvent struct {
 // Opcode returns the event opcode for wl_pointer.leave in wayland
 func (WlPointerLeaveEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_pointer.leave in wayland
+func (WlPointerLeaveEvent) MessageName() string { return "leave" }
+
 // Ensure WlPointerLeaveEvent implements Message.
 var _ Message = WlPointerLeaveEvent{}
 
@@ -15954,6 +21777,9 @@ type WlPointerMotionEvent struct {
 
 // Opcode returns the event opcode for wl_pointer.motion in wayland
 func (WlPointerMotionEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for wl_pointer.motion in wayland
+func (WlPointerMotionEvent) MessageName() string { return "motion" }
 
 // Ensure WlPointerMotionEvent implements Message.
 var _ Message = WlPointerMotionEvent{}
@@ -16013,6 +21839,9 @@ type WlPointerButtonEvent struct {
 
 // Opcode returns the event opcode for wl_pointer.button in wayland
 func (WlPointerButtonEvent) Opcode() uint16 { return 3 }
+
+// MessageName returns the event name for wl_pointer.button in wayland
+func (WlPointerButtonEvent) MessageName() string { return "button" }
 
 // Ensure WlPointerButtonEvent implements Message.
 var _ Message = WlPointerButtonEvent{}
@@ -16076,6 +21905,9 @@ type WlPointerAxisEvent struct {
 
 // Opcode returns the event opcode for wl_pointer.axis in wayland
 func (WlPointerAxisEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for wl_pointer.axis in wayland
+func (WlPointerAxisEvent) MessageName() string { return "axis" }
 
 // Ensure WlPointerAxisEvent implements Message.
 var _ Message = WlPointerAxisEvent{}
@@ -16145,6 +21977,9 @@ type WlPointerFrameEvent struct {
 // Opcode returns the event opcode for wl_pointer.frame in wayland
 func (WlPointerFrameEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for wl_pointer.frame in wayland
+func (WlPointerFrameEvent) MessageName() string { return "frame" }
+
 // Ensure WlPointerFrameEvent implements Message.
 var _ Message = WlPointerFrameEvent{}
 
@@ -16191,6 +22026,9 @@ type WlPointerAxisSourceEvent struct {
 // Opcode returns the event opcode for wl_pointer.axis_source in wayland
 func (WlPointerAxisSourceEvent) Opcode() uint16 { return 6 }
 
+// MessageName returns the event name for wl_pointer.axis_source in wayland
+func (WlPointerAxisSourceEvent) MessageName() string { return "axis_source" }
+
 // Ensure WlPointerAxisSourceEvent implements Message.
 var _ Message = WlPointerAxisSourceEvent{}
 
@@ -16233,6 +22071,9 @@ type WlPointerAxisStopEvent struct {
 
 // Opcode returns the event opcode for wl_pointer.axis_stop in wayland
 func (WlPointerAxisStopEvent) Opcode() uint16 { return 7 }
+
+// MessageName returns the event name for wl_pointer.axis_stop in wayland
+func (WlPointerAxisStopEvent) MessageName() string { return "axis_stop" }
 
 // Ensure WlPointerAxisStopEvent implements Message.
 var _ Message = WlPointerAxisStopEvent{}
@@ -16294,6 +22135,9 @@ type WlPointerAxisDiscreteEvent struct {
 // Opcode returns the event opcode for wl_pointer.axis_discrete in wayland
 func (WlPointerAxisDiscreteEvent) Opcode() uint16 { return 8 }
 
+// MessageName returns the event name for wl_pointer.axis_discrete in wayland
+func (WlPointerAxisDiscreteEvent) MessageName() string { return "axis_discrete" }
+
 // Ensure WlPointerAxisDiscreteEvent implements Message.
 var _ Message = WlPointerAxisDiscreteEvent{}
 
@@ -16328,6 +22172,106 @@ var _ Event = &WlPointerAxisDiscreteEvent{}
 type WlPointer struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlPointer) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlPointer) Descriptor() *InterfaceDescriptor {
+	return &WlPointerDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlPointer) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlPointerEnterEvent{}
+	case 1:
+		return &WlPointerLeaveEvent{}
+	case 2:
+		return &WlPointerMotionEvent{}
+	case 3:
+		return &WlPointerButtonEvent{}
+	case 4:
+		return &WlPointerAxisEvent{}
+	case 5:
+		return &WlPointerFrameEvent{}
+	case 6:
+		return &WlPointerAxisSourceEvent{}
+	case 7:
+		return &WlPointerAxisStopEvent{}
+	case 8:
+		return &WlPointerAxisDiscreteEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetCursor requests to set the pointer surface
+//
+// Set the pointer surface, i.e., the surface that contains the
+// pointer image (cursor). This request gives the surface the role
+// of a cursor. If the surface already has another role, it raises
+// a protocol error.
+//
+// The cursor actually changes only if the pointer
+// focus for this device is one of the requesting client's surfaces
+// or the surface parameter is the current pointer surface. If
+// there was a previous surface set with this request it is
+// replaced. If surface is NULL, the pointer image is hidden.
+//
+// The parameters hotspot_x and hotspot_y define the position of
+// the pointer surface relative to the pointer location. Its
+// top-left corner is always at (x, y) - (hotspot_x, hotspot_y),
+// where (x, y) are the coordinates of the pointer location, in
+// surface-local coordinates.
+//
+// On surface.attach requests to the pointer surface, hotspot_x
+// and hotspot_y are decremented by the x and y parameters
+// passed to the request. Attach must be confirmed by
+// wl_surface.commit as usual.
+//
+// The hotspot can also be updated by passing the currently set
+// pointer surface to this request with new values for hotspot_x
+// and hotspot_y.
+//
+// The current and pending input regions of the wl_surface are
+// cleared, and wl_surface.set_input_region is ignored until the
+// wl_surface is no longer used as the cursor. When the use as a
+// cursor ends, the current and pending input regions become
+// undefined, and the wl_surface is unmapped.
+//
+// The serial parameter must match the latest wl_pointer.enter
+// serial number sent to the client. Otherwise the request will be
+// ignored.
+func (proxy *WlPointer) SetCursor(connection Connection, aSerial uint32, aSurface ObjectID, aHotspotX int32, aHotspotY int32) (err error) {
+	request := WlPointerSetCursorRequest{
+		Serial:   aSerial,
+		Surface:  aSurface,
+		HotspotX: aHotspotX,
+		HotspotY: aHotspotY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Release requests to release the pointer object
+//
+// Using this request a client can tell the server that it is not going to
+// use the pointer object anymore.
+//
+// This request destroys the pointer proxy object, so clients must not call
+// wl_pointer_destroy() after using this request.
+func (proxy *WlPointer) Release(connection Connection) (err error) {
+	request := WlPointerReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlPointer implements Proxy.
+var _ Proxy = &WlPointer{}
 
 // #endregion Interface wayland.wl_pointer
 
@@ -16368,6 +22312,9 @@ type WlKeyboardReleaseRequest struct {
 // Opcode returns the request opcode for wl_keyboard.release in wayland
 func (WlKeyboardReleaseRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_keyboard.release in wayland
+func (WlKeyboardReleaseRequest) MessageName() string { return "release" }
+
 // Ensure WlKeyboardReleaseRequest implements Message.
 var _ Message = WlKeyboardReleaseRequest{}
 
@@ -16400,6 +22347,9 @@ type WlKeyboardKeymapEvent struct {
 
 // Opcode returns the event opcode for wl_keyboard.keymap in wayland
 func (WlKeyboardKeymapEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_keyboard.keymap in wayland
+func (WlKeyboardKeymapEvent) MessageName() string { return "keymap" }
 
 // Ensure WlKeyboardKeymapEvent implements Message.
 var _ Message = WlKeyboardKeymapEvent{}
@@ -16448,6 +22398,9 @@ type WlKeyboardEnterEvent struct {
 // Opcode returns the event opcode for wl_keyboard.enter in wayland
 func (WlKeyboardEnterEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_keyboard.enter in wayland
+func (WlKeyboardEnterEvent) MessageName() string { return "enter" }
+
 // Ensure WlKeyboardEnterEvent implements Message.
 var _ Message = WlKeyboardEnterEvent{}
 
@@ -16494,6 +22447,9 @@ type WlKeyboardLeaveEvent struct {
 
 // Opcode returns the event opcode for wl_keyboard.leave in wayland
 func (WlKeyboardLeaveEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for wl_keyboard.leave in wayland
+func (WlKeyboardLeaveEvent) MessageName() string { return "leave" }
 
 // Ensure WlKeyboardLeaveEvent implements Message.
 var _ Message = WlKeyboardLeaveEvent{}
@@ -16543,6 +22499,9 @@ type WlKeyboardKeyEvent struct {
 
 // Opcode returns the event opcode for wl_keyboard.key in wayland
 func (WlKeyboardKeyEvent) Opcode() uint16 { return 3 }
+
+// MessageName returns the event name for wl_keyboard.key in wayland
+func (WlKeyboardKeyEvent) MessageName() string { return "key" }
 
 // Ensure WlKeyboardKeyEvent implements Message.
 var _ Message = WlKeyboardKeyEvent{}
@@ -16598,6 +22557,9 @@ type WlKeyboardModifiersEvent struct {
 
 // Opcode returns the event opcode for wl_keyboard.modifiers in wayland
 func (WlKeyboardModifiersEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for wl_keyboard.modifiers in wayland
+func (WlKeyboardModifiersEvent) MessageName() string { return "modifiers" }
 
 // Ensure WlKeyboardModifiersEvent implements Message.
 var _ Message = WlKeyboardModifiersEvent{}
@@ -16660,6 +22622,9 @@ type WlKeyboardRepeatInfoEvent struct {
 // Opcode returns the event opcode for wl_keyboard.repeat_info in wayland
 func (WlKeyboardRepeatInfoEvent) Opcode() uint16 { return 5 }
 
+// MessageName returns the event name for wl_keyboard.repeat_info in wayland
+func (WlKeyboardRepeatInfoEvent) MessageName() string { return "repeat_info" }
+
 // Ensure WlKeyboardRepeatInfoEvent implements Message.
 var _ Message = WlKeyboardRepeatInfoEvent{}
 
@@ -16689,6 +22654,46 @@ type WlKeyboard struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlKeyboard) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlKeyboard) Descriptor() *InterfaceDescriptor {
+	return &WlKeyboardDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlKeyboard) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlKeyboardKeymapEvent{}
+	case 1:
+		return &WlKeyboardEnterEvent{}
+	case 2:
+		return &WlKeyboardLeaveEvent{}
+	case 3:
+		return &WlKeyboardKeyEvent{}
+	case 4:
+		return &WlKeyboardModifiersEvent{}
+	case 5:
+		return &WlKeyboardRepeatInfoEvent{}
+	default:
+		return nil
+	}
+}
+
+// Release requests to release the keyboard object
+func (proxy *WlKeyboard) Release(connection Connection) (err error) {
+	request := WlKeyboardReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlKeyboard implements Proxy.
+var _ Proxy = &WlKeyboard{}
+
 // #endregion Interface wayland.wl_keyboard
 
 // ----------------------------------------------------------------------------
@@ -16700,6 +22705,9 @@ type WlTouchReleaseRequest struct {
 
 // Opcode returns the request opcode for wl_touch.release in wayland
 func (WlTouchReleaseRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_touch.release in wayland
+func (WlTouchReleaseRequest) MessageName() string { return "release" }
 
 // Ensure WlTouchReleaseRequest implements Message.
 var _ Message = WlTouchReleaseRequest{}
@@ -16740,6 +22748,9 @@ type WlTouchDownEvent struct {
 
 // Opcode returns the event opcode for wl_touch.down in wayland
 func (WlTouchDownEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_touch.down in wayland
+func (WlTouchDownEvent) MessageName() string { return "down" }
 
 // Ensure WlTouchDownEvent implements Message.
 var _ Message = WlTouchDownEvent{}
@@ -16801,6 +22812,9 @@ type WlTouchUpEvent struct {
 // Opcode returns the event opcode for wl_touch.up in wayland
 func (WlTouchUpEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_touch.up in wayland
+func (WlTouchUpEvent) MessageName() string { return "up" }
+
 // Ensure WlTouchUpEvent implements Message.
 var _ Message = WlTouchUpEvent{}
 
@@ -16846,6 +22860,9 @@ type WlTouchMotionEvent struct {
 
 // Opcode returns the event opcode for wl_touch.motion in wayland
 func (WlTouchMotionEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for wl_touch.motion in wayland
+func (WlTouchMotionEvent) MessageName() string { return "motion" }
 
 // Ensure WlTouchMotionEvent implements Message.
 var _ Message = WlTouchMotionEvent{}
@@ -16894,6 +22911,9 @@ type WlTouchFrameEvent struct {
 // Opcode returns the event opcode for wl_touch.frame in wayland
 func (WlTouchFrameEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for wl_touch.frame in wayland
+func (WlTouchFrameEvent) MessageName() string { return "frame" }
+
 // Ensure WlTouchFrameEvent implements Message.
 var _ Message = WlTouchFrameEvent{}
 
@@ -16918,6 +22938,9 @@ type WlTouchCancelEvent struct {
 
 // Opcode returns the event opcode for wl_touch.cancel in wayland
 func (WlTouchCancelEvent) Opcode() uint16 { return 4 }
+
+// MessageName returns the event name for wl_touch.cancel in wayland
+func (WlTouchCancelEvent) MessageName() string { return "cancel" }
 
 // Ensure WlTouchCancelEvent implements Message.
 var _ Message = WlTouchCancelEvent{}
@@ -16970,6 +22993,9 @@ type WlTouchShapeEvent struct {
 
 // Opcode returns the event opcode for wl_touch.shape in wayland
 func (WlTouchShapeEvent) Opcode() uint16 { return 5 }
+
+// MessageName returns the event name for wl_touch.shape in wayland
+func (WlTouchShapeEvent) MessageName() string { return "shape" }
 
 // Ensure WlTouchShapeEvent implements Message.
 var _ Message = WlTouchShapeEvent{}
@@ -17033,6 +23059,9 @@ type WlTouchOrientationEvent struct {
 // Opcode returns the event opcode for wl_touch.orientation in wayland
 func (WlTouchOrientationEvent) Opcode() uint16 { return 6 }
 
+// MessageName returns the event name for wl_touch.orientation in wayland
+func (WlTouchOrientationEvent) MessageName() string { return "orientation" }
+
 // Ensure WlTouchOrientationEvent implements Message.
 var _ Message = WlTouchOrientationEvent{}
 
@@ -17067,6 +23096,48 @@ var _ Event = &WlTouchOrientationEvent{}
 type WlTouch struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *WlTouch) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlTouch) Descriptor() *InterfaceDescriptor {
+	return &WlTouchDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlTouch) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlTouchDownEvent{}
+	case 1:
+		return &WlTouchUpEvent{}
+	case 2:
+		return &WlTouchMotionEvent{}
+	case 3:
+		return &WlTouchFrameEvent{}
+	case 4:
+		return &WlTouchCancelEvent{}
+	case 5:
+		return &WlTouchShapeEvent{}
+	case 6:
+		return &WlTouchOrientationEvent{}
+	default:
+		return nil
+	}
+}
+
+// Release requests to release the touch object
+func (proxy *WlTouch) Release(connection Connection) (err error) {
+	request := WlTouchReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlTouch implements Proxy.
+var _ Proxy = &WlTouch{}
 
 // #endregion Interface wayland.wl_touch
 
@@ -17164,6 +23235,9 @@ type WlOutputReleaseRequest struct {
 // Opcode returns the request opcode for wl_output.release in wayland
 func (WlOutputReleaseRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for wl_output.release in wayland
+func (WlOutputReleaseRequest) MessageName() string { return "release" }
+
 // Ensure WlOutputReleaseRequest implements Message.
 var _ Message = WlOutputReleaseRequest{}
 
@@ -17218,6 +23292,9 @@ type WlOutputGeometryEvent struct {
 
 // Opcode returns the event opcode for wl_output.geometry in wayland
 func (WlOutputGeometryEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for wl_output.geometry in wayland
+func (WlOutputGeometryEvent) MessageName() string { return "geometry" }
 
 // Ensure WlOutputGeometryEvent implements Message.
 var _ Message = WlOutputGeometryEvent{}
@@ -17319,6 +23396,9 @@ type WlOutputModeEvent struct {
 // Opcode returns the event opcode for wl_output.mode in wayland
 func (WlOutputModeEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for wl_output.mode in wayland
+func (WlOutputModeEvent) MessageName() string { return "mode" }
+
 // Ensure WlOutputModeEvent implements Message.
 var _ Message = WlOutputModeEvent{}
 
@@ -17363,6 +23443,9 @@ type WlOutputDoneEvent struct {
 // Opcode returns the event opcode for wl_output.done in wayland
 func (WlOutputDoneEvent) Opcode() uint16 { return 2 }
 
+// MessageName returns the event name for wl_output.done in wayland
+func (WlOutputDoneEvent) MessageName() string { return "done" }
+
 // Ensure WlOutputDoneEvent implements Message.
 var _ Message = WlOutputDoneEvent{}
 
@@ -17402,6 +23485,9 @@ type WlOutputScaleEvent struct {
 // Opcode returns the event opcode for wl_output.scale in wayland
 func (WlOutputScaleEvent) Opcode() uint16 { return 3 }
 
+// MessageName returns the event name for wl_output.scale in wayland
+func (WlOutputScaleEvent) MessageName() string { return "scale" }
+
 // Ensure WlOutputScaleEvent implements Message.
 var _ Message = WlOutputScaleEvent{}
 
@@ -17430,6 +23516,45 @@ type WlOutput struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlOutput) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlOutput) Descriptor() *InterfaceDescriptor {
+	return &WlOutputDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlOutput) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &WlOutputGeometryEvent{}
+	case 1:
+		return &WlOutputModeEvent{}
+	case 2:
+		return &WlOutputDoneEvent{}
+	case 3:
+		return &WlOutputScaleEvent{}
+	default:
+		return nil
+	}
+}
+
+// Release requests to release the output object
+//
+// Using this request a client can tell the server that it is not going to
+// use the output object anymore.
+func (proxy *WlOutput) Release(connection Connection) (err error) {
+	request := WlOutputReleaseRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlOutput implements Proxy.
+var _ Proxy = &WlOutput{}
+
 // #endregion Interface wayland.wl_output
 
 // ----------------------------------------------------------------------------
@@ -17443,6 +23568,9 @@ type WlRegionDestroyRequest struct {
 
 // Opcode returns the request opcode for wl_region.destroy in wayland
 func (WlRegionDestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_region.destroy in wayland
+func (WlRegionDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WlRegionDestroyRequest implements Message.
 var _ Message = WlRegionDestroyRequest{}
@@ -17474,6 +23602,9 @@ type WlRegionAddRequest struct {
 
 // Opcode returns the request opcode for wl_region.add in wayland
 func (WlRegionAddRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_region.add in wayland
+func (WlRegionAddRequest) MessageName() string { return "add" }
 
 // Ensure WlRegionAddRequest implements Message.
 var _ Message = WlRegionAddRequest{}
@@ -17518,6 +23649,9 @@ type WlRegionSubtractRequest struct {
 // Opcode returns the request opcode for wl_region.subtract in wayland
 func (WlRegionSubtractRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for wl_region.subtract in wayland
+func (WlRegionSubtractRequest) MessageName() string { return "subtract" }
+
 // Ensure WlRegionSubtractRequest implements Message.
 var _ Message = WlRegionSubtractRequest{}
 
@@ -17551,6 +23685,64 @@ type WlRegion struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlRegion) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlRegion) Descriptor() *InterfaceDescriptor {
+	return &WlRegionDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlRegion) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy region
+//
+// Destroy the region.  This will invalidate the object ID.
+func (proxy *WlRegion) Destroy(connection Connection) (err error) {
+	request := WlRegionDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Add requests to add rectangle to region
+//
+// Add the specified rectangle to the region.
+func (proxy *WlRegion) Add(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := WlRegionAddRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Subtract requests to subtract rectangle from region
+//
+// Subtract the specified rectangle from the region.
+func (proxy *WlRegion) Subtract(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := WlRegionSubtractRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlRegion implements Proxy.
+var _ Proxy = &WlRegion{}
+
 // #endregion Interface wayland.wl_region
 
 // ----------------------------------------------------------------------------
@@ -17573,6 +23765,9 @@ type WlSubcompositorDestroyRequest struct {
 
 // Opcode returns the request opcode for wl_subcompositor.destroy in wayland
 func (WlSubcompositorDestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_subcompositor.destroy in wayland
+func (WlSubcompositorDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WlSubcompositorDestroyRequest implements Message.
 var _ Message = WlSubcompositorDestroyRequest{}
@@ -17615,6 +23810,9 @@ type WlSubcompositorGetSubsurfaceRequest struct {
 
 // Opcode returns the request opcode for wl_subcompositor.get_subsurface in wayland
 func (WlSubcompositorGetSubsurfaceRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_subcompositor.get_subsurface in wayland
+func (WlSubcompositorGetSubsurfaceRequest) MessageName() string { return "get_subsurface" }
 
 // Ensure WlSubcompositorGetSubsurfaceRequest implements Message.
 var _ Message = WlSubcompositorGetSubsurfaceRequest{}
@@ -17661,6 +23859,69 @@ type WlSubcompositor struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlSubcompositor) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlSubcompositor) Descriptor() *InterfaceDescriptor {
+	return &WlSubcompositorDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlSubcompositor) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to unbind from the subcompositor interface
+//
+// Informs the server that the client will not be using this
+// protocol object anymore. This does not affect any other
+// objects, wl_subsurface objects included.
+func (proxy *WlSubcompositor) Destroy(connection Connection) (err error) {
+	request := WlSubcompositorDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetSubsurface requests to give a surface the role sub-surface
+//
+// Create a sub-surface interface for the given surface, and
+// associate it with the given parent surface. This turns a
+// plain wl_surface into a sub-surface.
+//
+// The to-be sub-surface must not already have another role, and it
+// must not have an existing wl_subsurface object. Otherwise a protocol
+// error is raised.
+//
+// Adding sub-surfaces to a parent is a double-buffered operation on the
+// parent (see wl_surface.commit). The effect of adding a sub-surface
+// becomes visible on the next time the state of the parent surface is
+// applied.
+//
+// This request modifies the behaviour of wl_surface.commit request on
+// the sub-surface, see the documentation on wl_subsurface interface.
+func (proxy *WlSubcompositor) GetSubsurface(connection Connection, aSurface ObjectID, aParent ObjectID) (aID *WlSubsurface, err error) {
+	aID = &WlSubsurface{connection.NewID()}
+	request := WlSubcompositorGetSubsurfaceRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+		Parent:  aParent,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure WlSubcompositor implements Proxy.
+var _ Proxy = &WlSubcompositor{}
+
 // #endregion Interface wayland.wl_subcompositor
 
 // ----------------------------------------------------------------------------
@@ -17685,6 +23946,9 @@ type WlSubsurfaceDestroyRequest struct {
 
 // Opcode returns the request opcode for wl_subsurface.destroy in wayland
 func (WlSubsurfaceDestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for wl_subsurface.destroy in wayland
+func (WlSubsurfaceDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure WlSubsurfaceDestroyRequest implements Message.
 var _ Message = WlSubsurfaceDestroyRequest{}
@@ -17725,6 +23989,9 @@ type WlSubsurfaceSetPositionRequest struct {
 
 // Opcode returns the request opcode for wl_subsurface.set_position in wayland
 func (WlSubsurfaceSetPositionRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for wl_subsurface.set_position in wayland
+func (WlSubsurfaceSetPositionRequest) MessageName() string { return "set_position" }
 
 // Ensure WlSubsurfaceSetPositionRequest implements Message.
 var _ Message = WlSubsurfaceSetPositionRequest{}
@@ -17768,6 +24035,9 @@ type WlSubsurfacePlaceAboveRequest struct {
 // Opcode returns the request opcode for wl_subsurface.place_above in wayland
 func (WlSubsurfacePlaceAboveRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for wl_subsurface.place_above in wayland
+func (WlSubsurfacePlaceAboveRequest) MessageName() string { return "place_above" }
+
 // Ensure WlSubsurfacePlaceAboveRequest implements Message.
 var _ Message = WlSubsurfacePlaceAboveRequest{}
 
@@ -17793,6 +24063,9 @@ type WlSubsurfacePlaceBelowRequest struct {
 
 // Opcode returns the request opcode for wl_subsurface.place_below in wayland
 func (WlSubsurfacePlaceBelowRequest) Opcode() uint16 { return 3 }
+
+// MessageName returns the request name for wl_subsurface.place_below in wayland
+func (WlSubsurfacePlaceBelowRequest) MessageName() string { return "place_below" }
 
 // Ensure WlSubsurfacePlaceBelowRequest implements Message.
 var _ Message = WlSubsurfacePlaceBelowRequest{}
@@ -17828,6 +24101,9 @@ type WlSubsurfaceSetSyncRequest struct {
 
 // Opcode returns the request opcode for wl_subsurface.set_sync in wayland
 func (WlSubsurfaceSetSyncRequest) Opcode() uint16 { return 4 }
+
+// MessageName returns the request name for wl_subsurface.set_sync in wayland
+func (WlSubsurfaceSetSyncRequest) MessageName() string { return "set_sync" }
 
 // Ensure WlSubsurfaceSetSyncRequest implements Message.
 var _ Message = WlSubsurfaceSetSyncRequest{}
@@ -17866,6 +24142,9 @@ type WlSubsurfaceSetDesyncRequest struct {
 
 // Opcode returns the request opcode for wl_subsurface.set_desync in wayland
 func (WlSubsurfaceSetDesyncRequest) Opcode() uint16 { return 5 }
+
+// MessageName returns the request name for wl_subsurface.set_desync in wayland
+func (WlSubsurfaceSetDesyncRequest) MessageName() string { return "set_desync" }
 
 // Ensure WlSubsurfaceSetDesyncRequest implements Message.
 var _ Message = WlSubsurfaceSetDesyncRequest{}
@@ -17933,6 +24212,152 @@ type WlSubsurface struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *WlSubsurface) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (WlSubsurface) Descriptor() *InterfaceDescriptor {
+	return &WlSubsurfaceDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (WlSubsurface) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to remove sub-surface interface
+//
+// The sub-surface interface is removed from the wl_surface object
+// that was turned into a sub-surface with a
+// wl_subcompositor.get_subsurface request. The wl_surface's association
+// to the parent is deleted, and the wl_surface loses its role as
+// a sub-surface. The wl_surface is unmapped immediately.
+func (proxy *WlSubsurface) Destroy(connection Connection) (err error) {
+	request := WlSubsurfaceDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetPosition requests to reposition the sub-surface
+//
+// This schedules a sub-surface position change.
+// The sub-surface will be moved so that its origin (top left
+// corner pixel) will be at the location x, y of the parent surface
+// coordinate system. The coordinates are not restricted to the parent
+// surface area. Negative values are allowed.
+//
+// The scheduled coordinates will take effect whenever the state of the
+// parent surface is applied. When this happens depends on whether the
+// parent surface is in synchronized mode or not. See
+// wl_subsurface.set_sync and wl_subsurface.set_desync for details.
+//
+// If more than one set_position request is invoked by the client before
+// the commit of the parent surface, the position of a new request always
+// replaces the scheduled position from any previous request.
+//
+// The initial position is 0, 0.
+func (proxy *WlSubsurface) SetPosition(connection Connection, aX int32, aY int32) (err error) {
+	request := WlSubsurfaceSetPositionRequest{
+		X: aX,
+		Y: aY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// PlaceAbove requests to restack the sub-surface
+//
+// This sub-surface is taken from the stack, and put back just
+// above the reference surface, changing the z-order of the sub-surfaces.
+// The reference surface must be one of the sibling surfaces, or the
+// parent surface. Using any other surface, including this sub-surface,
+// will cause a protocol error.
+//
+// The z-order is double-buffered. Requests are handled in order and
+// applied immediately to a pending state. The final pending state is
+// copied to the active state the next time the state of the parent
+// surface is applied. When this happens depends on whether the parent
+// surface is in synchronized mode or not. See wl_subsurface.set_sync and
+// wl_subsurface.set_desync for details.
+//
+// A new sub-surface is initially added as the top-most in the stack
+// of its siblings and parent.
+func (proxy *WlSubsurface) PlaceAbove(connection Connection, aSibling ObjectID) (err error) {
+	request := WlSubsurfacePlaceAboveRequest{
+		Sibling: aSibling,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// PlaceBelow requests to restack the sub-surface
+//
+// The sub-surface is placed just below the reference surface.
+// See wl_subsurface.place_above.
+func (proxy *WlSubsurface) PlaceBelow(connection Connection, aSibling ObjectID) (err error) {
+	request := WlSubsurfacePlaceBelowRequest{
+		Sibling: aSibling,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetSync requests to set sub-surface to synchronized mode
+//
+// Change the commit behaviour of the sub-surface to synchronized
+// mode, also described as the parent dependent mode.
+//
+// In synchronized mode, wl_surface.commit on a sub-surface will
+// accumulate the committed state in a cache, but the state will
+// not be applied and hence will not change the compositor output.
+// The cached state is applied to the sub-surface immediately after
+// the parent surface's state is applied. This ensures atomic
+// updates of the parent and all its synchronized sub-surfaces.
+// Applying the cached state will invalidate the cache, so further
+// parent surface commits do not (re-)apply old state.
+//
+// See wl_subsurface for the recursive effect of this mode.
+func (proxy *WlSubsurface) SetSync(connection Connection) (err error) {
+	request := WlSubsurfaceSetSyncRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetDesync requests to set sub-surface to desynchronized mode
+//
+// Change the commit behaviour of the sub-surface to desynchronized
+// mode, also described as independent or freely running mode.
+//
+// In desynchronized mode, wl_surface.commit on a sub-surface will
+// apply the pending state directly, without caching, as happens
+// normally with a wl_surface. Calling wl_surface.commit on the
+// parent surface has no effect on the sub-surface's wl_surface
+// state. This mode allows a sub-surface to be updated on its own.
+//
+// If cached state exists when wl_surface.commit is called in
+// desynchronized mode, the pending state is added to the cached
+// state, and applied as a whole. This invalidates the cache.
+//
+// Note: even if a sub-surface is set to desynchronized, a parent
+// sub-surface may override it to behave as synchronized. For details,
+// see wl_subsurface.
+//
+// If a surface's parent surface behaves as desynchronized, then
+// the cached state is applied on set_desync.
+func (proxy *WlSubsurface) SetDesync(connection Connection) (err error) {
+	request := WlSubsurfaceSetDesyncRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure WlSubsurface implements Proxy.
+var _ Proxy = &WlSubsurface{}
+
 // #endregion Interface wayland.wl_subsurface
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -17953,6 +24378,11 @@ type ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest struct {
 
 // Opcode returns the request opcode for zwp_primary_selection_device_manager_v1.create_source in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_primary_selection_device_manager_v1.create_source in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest) MessageName() string {
+	return "create_source"
+}
 
 // Ensure ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}
@@ -17980,6 +24410,9 @@ type ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest struct {
 // Opcode returns the request opcode for zwp_primary_selection_device_manager_v1.get_device in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_primary_selection_device_manager_v1.get_device in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest) MessageName() string { return "get_device" }
+
 // Ensure ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}
 
@@ -18006,6 +24439,9 @@ type ZwpPrimarySelectionDeviceManagerV1DestroyRequest struct {
 // Opcode returns the request opcode for zwp_primary_selection_device_manager_v1.destroy in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionDeviceManagerV1DestroyRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for zwp_primary_selection_device_manager_v1.destroy in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionDeviceManagerV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpPrimarySelectionDeviceManagerV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
 
@@ -18027,6 +24463,67 @@ type ZwpPrimarySelectionDeviceManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpPrimarySelectionDeviceManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPrimarySelectionDeviceManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPrimarySelectionDeviceManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPrimarySelectionDeviceManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// CreateSource requests to create a new primary selection source
+//
+// Create a new primary selection source.
+func (proxy *ZwpPrimarySelectionDeviceManagerV1) CreateSource(connection Connection) (aID *ZwpPrimarySelectionSourceV1, err error) {
+	aID = &ZwpPrimarySelectionSourceV1{connection.NewID()}
+	request := ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetDevice requests to create a new primary selection device
+//
+// Create a new data device for a given seat.
+func (proxy *ZwpPrimarySelectionDeviceManagerV1) GetDevice(connection Connection, aSeat ObjectID) (aID *ZwpPrimarySelectionDeviceV1, err error) {
+	aID = &ZwpPrimarySelectionDeviceV1{connection.NewID()}
+	request := ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{
+		ID:   aID.id,
+		Seat: aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Destroy requests to destroy the primary selection device manager
+//
+// Destroy the primary selection device manager.
+func (proxy *ZwpPrimarySelectionDeviceManagerV1) Destroy(connection Connection) (err error) {
+	request := ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpPrimarySelectionDeviceManagerV1 implements Proxy.
+var _ Proxy = &ZwpPrimarySelectionDeviceManagerV1{}
+
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -18047,6 +24544,9 @@ type ZwpPrimarySelectionDeviceV1SetSelectionRequest struct {
 
 // Opcode returns the request opcode for zwp_primary_selection_device_v1.set_selection in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionDeviceV1SetSelectionRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_primary_selection_device_v1.set_selection in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionDeviceV1SetSelectionRequest) MessageName() string { return "set_selection" }
 
 // Ensure ZwpPrimarySelectionDeviceV1SetSelectionRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceV1SetSelectionRequest{}
@@ -18074,6 +24574,9 @@ type ZwpPrimarySelectionDeviceV1DestroyRequest struct {
 // Opcode returns the request opcode for zwp_primary_selection_device_v1.destroy in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionDeviceV1DestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_primary_selection_device_v1.destroy in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionDeviceV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpPrimarySelectionDeviceV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionDeviceV1DestroyRequest{}
 
@@ -18098,6 +24601,9 @@ type ZwpPrimarySelectionDeviceV1DataOfferEvent struct {
 
 // Opcode returns the event opcode for zwp_primary_selection_device_v1.data_offer in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionDeviceV1DataOfferEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_primary_selection_device_v1.data_offer in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionDeviceV1DataOfferEvent) MessageName() string { return "data_offer" }
 
 // Ensure ZwpPrimarySelectionDeviceV1DataOfferEvent implements Message.
 var _ Message = ZwpPrimarySelectionDeviceV1DataOfferEvent{}
@@ -18133,6 +24639,9 @@ type ZwpPrimarySelectionDeviceV1SelectionEvent struct {
 // Opcode returns the event opcode for zwp_primary_selection_device_v1.selection in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionDeviceV1SelectionEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_primary_selection_device_v1.selection in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionDeviceV1SelectionEvent) MessageName() string { return "selection" }
+
 // Ensure ZwpPrimarySelectionDeviceV1SelectionEvent implements Message.
 var _ Message = ZwpPrimarySelectionDeviceV1SelectionEvent{}
 
@@ -18152,6 +24661,55 @@ var _ Event = &ZwpPrimarySelectionDeviceV1SelectionEvent{}
 type ZwpPrimarySelectionDeviceV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpPrimarySelectionDeviceV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPrimarySelectionDeviceV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPrimarySelectionDeviceV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPrimarySelectionDeviceV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpPrimarySelectionDeviceV1DataOfferEvent{}
+	case 1:
+		return &ZwpPrimarySelectionDeviceV1SelectionEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetSelection requests to set the primary selection
+//
+// Replaces the current selection. The previous owner of the primary
+// selection will receive a wp_primary_selection_source.cancelled event.
+//
+// To unset the selection, set the source to NULL.
+func (proxy *ZwpPrimarySelectionDeviceV1) SetSelection(connection Connection, aSource ObjectID, aSerial uint32) (err error) {
+	request := ZwpPrimarySelectionDeviceV1SetSelectionRequest{
+		Source: aSource,
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the primary selection device
+//
+// Destroy the primary selection device.
+func (proxy *ZwpPrimarySelectionDeviceV1) Destroy(connection Connection) (err error) {
+	request := ZwpPrimarySelectionDeviceV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpPrimarySelectionDeviceV1 implements Proxy.
+var _ Proxy = &ZwpPrimarySelectionDeviceV1{}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_device_v1
 
@@ -18177,6 +24735,9 @@ type ZwpPrimarySelectionOfferV1ReceiveRequest struct {
 
 // Opcode returns the request opcode for zwp_primary_selection_offer_v1.receive in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionOfferV1ReceiveRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_primary_selection_offer_v1.receive in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionOfferV1ReceiveRequest) MessageName() string { return "receive" }
 
 // Ensure ZwpPrimarySelectionOfferV1ReceiveRequest implements Message.
 var _ Message = ZwpPrimarySelectionOfferV1ReceiveRequest{}
@@ -18204,6 +24765,9 @@ type ZwpPrimarySelectionOfferV1DestroyRequest struct {
 // Opcode returns the request opcode for zwp_primary_selection_offer_v1.destroy in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionOfferV1DestroyRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_primary_selection_offer_v1.destroy in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionOfferV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZwpPrimarySelectionOfferV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionOfferV1DestroyRequest{}
 
@@ -18227,6 +24791,9 @@ type ZwpPrimarySelectionOfferV1OfferEvent struct {
 
 // Opcode returns the event opcode for zwp_primary_selection_offer_v1.offer in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionOfferV1OfferEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_primary_selection_offer_v1.offer in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionOfferV1OfferEvent) MessageName() string { return "offer" }
 
 // Ensure ZwpPrimarySelectionOfferV1OfferEvent implements Message.
 var _ Message = ZwpPrimarySelectionOfferV1OfferEvent{}
@@ -18255,6 +24822,58 @@ type ZwpPrimarySelectionOfferV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpPrimarySelectionOfferV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPrimarySelectionOfferV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPrimarySelectionOfferV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPrimarySelectionOfferV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpPrimarySelectionOfferV1OfferEvent{}
+	default:
+		return nil
+	}
+}
+
+// Receive requests to request that the data is transferred
+//
+// To transfer the contents of the primary selection clipboard, the client
+// issues this request and indicates the mime type that it wants to
+// receive. The transfer happens through the passed file descriptor
+// (typically created with the pipe system call). The source client writes
+// the data in the mime type representation requested and then closes the
+// file descriptor.
+//
+// The receiving client reads from the read end of the pipe until EOF and
+// closes its end, at which point the transfer is complete.
+func (proxy *ZwpPrimarySelectionOfferV1) Receive(connection Connection, aMimeType string, aFD FD) (err error) {
+	request := ZwpPrimarySelectionOfferV1ReceiveRequest{
+		MimeType: aMimeType,
+		FD:       aFD,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the primary selection offer
+//
+// Destroy the primary selection offer.
+func (proxy *ZwpPrimarySelectionOfferV1) Destroy(connection Connection) (err error) {
+	request := ZwpPrimarySelectionOfferV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpPrimarySelectionOfferV1 implements Proxy.
+var _ Proxy = &ZwpPrimarySelectionOfferV1{}
+
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_offer_v1
 
 // ----------------------------------------------------------------------------
@@ -18270,6 +24889,9 @@ type ZwpPrimarySelectionSourceV1OfferRequest struct {
 
 // Opcode returns the request opcode for zwp_primary_selection_source_v1.offer in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionSourceV1OfferRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_primary_selection_source_v1.offer in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionSourceV1OfferRequest) MessageName() string { return "offer" }
 
 // Ensure ZwpPrimarySelectionSourceV1OfferRequest implements Message.
 var _ Message = ZwpPrimarySelectionSourceV1OfferRequest{}
@@ -18293,6 +24915,9 @@ type ZwpPrimarySelectionSourceV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_primary_selection_source_v1.destroy in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionSourceV1DestroyRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_primary_selection_source_v1.destroy in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionSourceV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpPrimarySelectionSourceV1DestroyRequest implements Message.
 var _ Message = ZwpPrimarySelectionSourceV1DestroyRequest{}
@@ -18318,6 +24943,9 @@ type ZwpPrimarySelectionSourceV1SendEvent struct {
 
 // Opcode returns the event opcode for zwp_primary_selection_source_v1.send in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionSourceV1SendEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_primary_selection_source_v1.send in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionSourceV1SendEvent) MessageName() string { return "send" }
 
 // Ensure ZwpPrimarySelectionSourceV1SendEvent implements Message.
 var _ Message = ZwpPrimarySelectionSourceV1SendEvent{}
@@ -18350,6 +24978,9 @@ type ZwpPrimarySelectionSourceV1CancelledEvent struct {
 // Opcode returns the event opcode for zwp_primary_selection_source_v1.cancelled in wp_primary_selection_unstable_v1
 func (ZwpPrimarySelectionSourceV1CancelledEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_primary_selection_source_v1.cancelled in wp_primary_selection_unstable_v1
+func (ZwpPrimarySelectionSourceV1CancelledEvent) MessageName() string { return "cancelled" }
+
 // Ensure ZwpPrimarySelectionSourceV1CancelledEvent implements Message.
 var _ Message = ZwpPrimarySelectionSourceV1CancelledEvent{}
 
@@ -18369,6 +25000,52 @@ var _ Event = &ZwpPrimarySelectionSourceV1CancelledEvent{}
 type ZwpPrimarySelectionSourceV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpPrimarySelectionSourceV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpPrimarySelectionSourceV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpPrimarySelectionSourceV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpPrimarySelectionSourceV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpPrimarySelectionSourceV1SendEvent{}
+	case 1:
+		return &ZwpPrimarySelectionSourceV1CancelledEvent{}
+	default:
+		return nil
+	}
+}
+
+// Offer requests to add an offered mime type
+//
+// This request adds a mime type to the set of mime types advertised to
+// targets. Can be called several times to offer multiple types.
+func (proxy *ZwpPrimarySelectionSourceV1) Offer(connection Connection, aMimeType string) (err error) {
+	request := ZwpPrimarySelectionSourceV1OfferRequest{
+		MimeType: aMimeType,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the primary selection source
+//
+// Destroy the primary selection source.
+func (proxy *ZwpPrimarySelectionSourceV1) Destroy(connection Connection) (err error) {
+	request := ZwpPrimarySelectionSourceV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpPrimarySelectionSourceV1 implements Proxy.
+var _ Proxy = &ZwpPrimarySelectionSourceV1{}
 
 // #endregion Interface wp_primary_selection_unstable_v1.zwp_primary_selection_source_v1
 
@@ -18394,6 +25071,9 @@ type XdgActivationV1DestroyRequest struct {
 // Opcode returns the request opcode for xdg_activation_v1.destroy in xdg_activation_v1
 func (XdgActivationV1DestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for xdg_activation_v1.destroy in xdg_activation_v1
+func (XdgActivationV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure XdgActivationV1DestroyRequest implements Message.
 var _ Message = XdgActivationV1DestroyRequest{}
 
@@ -18416,6 +25096,9 @@ type XdgActivationV1GetActivationTokenRequest struct {
 
 // Opcode returns the request opcode for xdg_activation_v1.get_activation_token in xdg_activation_v1
 func (XdgActivationV1GetActivationTokenRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for xdg_activation_v1.get_activation_token in xdg_activation_v1
+func (XdgActivationV1GetActivationTokenRequest) MessageName() string { return "get_activation_token" }
 
 // Ensure XdgActivationV1GetActivationTokenRequest implements Message.
 var _ Message = XdgActivationV1GetActivationTokenRequest{}
@@ -18454,6 +25137,9 @@ type XdgActivationV1ActivateRequest struct {
 // Opcode returns the request opcode for xdg_activation_v1.activate in xdg_activation_v1
 func (XdgActivationV1ActivateRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for xdg_activation_v1.activate in xdg_activation_v1
+func (XdgActivationV1ActivateRequest) MessageName() string { return "activate" }
+
 // Ensure XdgActivationV1ActivateRequest implements Message.
 var _ Message = XdgActivationV1ActivateRequest{}
 
@@ -18479,6 +25165,78 @@ var _ Request = &XdgActivationV1ActivateRequest{}
 type XdgActivationV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *XdgActivationV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (XdgActivationV1) Descriptor() *InterfaceDescriptor {
+	return &XdgActivationV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (XdgActivationV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_activation object
+//
+// Notify the compositor that the xdg_activation object will no longer be
+// used.
+//
+// The child objects created via this interface are unaffected and should
+// be destroyed separately.
+func (proxy *XdgActivationV1) Destroy(connection Connection) (err error) {
+	request := XdgActivationV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetActivationToken requests to requests a token
+//
+// Creates an xdg_activation_token_v1 object that will provide
+// the initiating client with a unique token for this activation. This
+// token should be offered to the clients to be activated.
+func (proxy *XdgActivationV1) GetActivationToken(connection Connection) (aID *XdgActivationTokenV1, err error) {
+	aID = &XdgActivationTokenV1{connection.NewID()}
+	request := XdgActivationV1GetActivationTokenRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Activate requests to notify new interaction being available
+//
+// Requests surface activation. It's up to the compositor to display
+// this information as desired, for example by placing the surface above
+// the rest.
+//
+// The compositor may know who requested this by checking the activation
+// token and might decide not to follow through with the activation if it's
+// considered unwanted.
+//
+// Compositors can ignore unknown activation tokens when an invalid
+// token is passed.
+func (proxy *XdgActivationV1) Activate(connection Connection, aToken string, aSurface ObjectID) (err error) {
+	request := XdgActivationV1ActivateRequest{
+		Token:   aToken,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure XdgActivationV1 implements Proxy.
+var _ Proxy = &XdgActivationV1{}
 
 // #endregion Interface xdg_activation_v1.xdg_activation_v1
 
@@ -18517,6 +25275,9 @@ type XdgActivationTokenV1SetSerialRequest struct {
 // Opcode returns the request opcode for xdg_activation_token_v1.set_serial in xdg_activation_v1
 func (XdgActivationTokenV1SetSerialRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for xdg_activation_token_v1.set_serial in xdg_activation_v1
+func (XdgActivationTokenV1SetSerialRequest) MessageName() string { return "set_serial" }
+
 // Ensure XdgActivationTokenV1SetSerialRequest implements Message.
 var _ Message = XdgActivationTokenV1SetSerialRequest{}
 
@@ -18547,6 +25308,9 @@ type XdgActivationTokenV1SetAppIDRequest struct {
 
 // Opcode returns the request opcode for xdg_activation_token_v1.set_app_id in xdg_activation_v1
 func (XdgActivationTokenV1SetAppIDRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for xdg_activation_token_v1.set_app_id in xdg_activation_v1
+func (XdgActivationTokenV1SetAppIDRequest) MessageName() string { return "set_app_id" }
 
 // Ensure XdgActivationTokenV1SetAppIDRequest implements Message.
 var _ Message = XdgActivationTokenV1SetAppIDRequest{}
@@ -18579,6 +25343,9 @@ type XdgActivationTokenV1SetSurfaceRequest struct {
 // Opcode returns the request opcode for xdg_activation_token_v1.set_surface in xdg_activation_v1
 func (XdgActivationTokenV1SetSurfaceRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for xdg_activation_token_v1.set_surface in xdg_activation_v1
+func (XdgActivationTokenV1SetSurfaceRequest) MessageName() string { return "set_surface" }
+
 // Ensure XdgActivationTokenV1SetSurfaceRequest implements Message.
 var _ Message = XdgActivationTokenV1SetSurfaceRequest{}
 
@@ -18603,6 +25370,9 @@ type XdgActivationTokenV1CommitRequest struct {
 // Opcode returns the request opcode for xdg_activation_token_v1.commit in xdg_activation_v1
 func (XdgActivationTokenV1CommitRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for xdg_activation_token_v1.commit in xdg_activation_v1
+func (XdgActivationTokenV1CommitRequest) MessageName() string { return "commit" }
+
 // Ensure XdgActivationTokenV1CommitRequest implements Message.
 var _ Message = XdgActivationTokenV1CommitRequest{}
 
@@ -18623,6 +25393,9 @@ type XdgActivationTokenV1DestroyRequest struct {
 
 // Opcode returns the request opcode for xdg_activation_token_v1.destroy in xdg_activation_v1
 func (XdgActivationTokenV1DestroyRequest) Opcode() uint16 { return 4 }
+
+// MessageName returns the request name for xdg_activation_token_v1.destroy in xdg_activation_v1
+func (XdgActivationTokenV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure XdgActivationTokenV1DestroyRequest implements Message.
 var _ Message = XdgActivationTokenV1DestroyRequest{}
@@ -18646,6 +25419,9 @@ type XdgActivationTokenV1DoneEvent struct {
 
 // Opcode returns the event opcode for xdg_activation_token_v1.done in xdg_activation_v1
 func (XdgActivationTokenV1DoneEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for xdg_activation_token_v1.done in xdg_activation_v1
+func (XdgActivationTokenV1DoneEvent) MessageName() string { return "done" }
 
 // Ensure XdgActivationTokenV1DoneEvent implements Message.
 var _ Message = XdgActivationTokenV1DoneEvent{}
@@ -18677,6 +25453,103 @@ type XdgActivationTokenV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *XdgActivationTokenV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (XdgActivationTokenV1) Descriptor() *InterfaceDescriptor {
+	return &XdgActivationTokenV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (XdgActivationTokenV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &XdgActivationTokenV1DoneEvent{}
+	default:
+		return nil
+	}
+}
+
+// SetSerial requests to specifies the seat and serial of the activating event
+//
+// Provides information about the seat and serial event that requested the
+// token.
+//
+// The serial can come from an input or focus event. For instance, if a
+// click triggers the launch of a third-party client, the launcher client
+// should send a set_serial request with the serial and seat from the
+// wl_pointer.button event.
+//
+// Some compositors might refuse to activate toplevels when the token
+// doesn't have a valid and recent enough event serial.
+//
+// Must be sent before commit. This information is optional.
+func (proxy *XdgActivationTokenV1) SetSerial(connection Connection, aSerial uint32, aSeat ObjectID) (err error) {
+	request := XdgActivationTokenV1SetSerialRequest{
+		Serial: aSerial,
+		Seat:   aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetAppID requests to specifies the application being activated
+//
+// The requesting client can specify an app_id to associate the token
+// being created with it.
+//
+// Must be sent before commit. This information is optional.
+func (proxy *XdgActivationTokenV1) SetAppID(connection Connection, aAppID string) (err error) {
+	request := XdgActivationTokenV1SetAppIDRequest{
+		AppID: aAppID,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetSurface requests to specifies the surface requesting activation
+//
+// This request sets the surface requesting the activation. Note, this is
+// different from the surface that will be activated.
+//
+// Some compositors might refuse to activate toplevels when the token
+// doesn't have a requesting surface.
+//
+// Must be sent before commit. This information is optional.
+func (proxy *XdgActivationTokenV1) SetSurface(connection Connection, aSurface ObjectID) (err error) {
+	request := XdgActivationTokenV1SetSurfaceRequest{
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Commit requests to issues the token request
+//
+// Requests an activation token based on the different parameters that
+// have been offered through set_serial, set_surface and set_app_id.
+func (proxy *XdgActivationTokenV1) Commit(connection Connection) (err error) {
+	request := XdgActivationTokenV1CommitRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Destroy requests to destroy the xdg_activation_token_v1 object
+//
+// Notify the compositor that the xdg_activation_token_v1 object will no
+// longer be used.
+func (proxy *XdgActivationTokenV1) Destroy(connection Connection) (err error) {
+	request := XdgActivationTokenV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure XdgActivationTokenV1 implements Proxy.
+var _ Proxy = &XdgActivationTokenV1{}
+
 // #endregion Interface xdg_activation_v1.xdg_activation_token_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18697,6 +25570,9 @@ type ZxdgDecorationManagerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_decoration_manager_v1.destroy in xdg_decoration_unstable_v1
 func (ZxdgDecorationManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_decoration_manager_v1.destroy in xdg_decoration_unstable_v1
+func (ZxdgDecorationManagerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgDecorationManagerV1DestroyRequest implements Message.
 var _ Message = ZxdgDecorationManagerV1DestroyRequest{}
@@ -18726,6 +25602,11 @@ type ZxdgDecorationManagerV1GetToplevelDecorationRequest struct {
 
 // Opcode returns the request opcode for zxdg_decoration_manager_v1.get_toplevel_decoration in xdg_decoration_unstable_v1
 func (ZxdgDecorationManagerV1GetToplevelDecorationRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zxdg_decoration_manager_v1.get_toplevel_decoration in xdg_decoration_unstable_v1
+func (ZxdgDecorationManagerV1GetToplevelDecorationRequest) MessageName() string {
+	return "get_toplevel_decoration"
+}
 
 // Ensure ZxdgDecorationManagerV1GetToplevelDecorationRequest implements Message.
 var _ Message = ZxdgDecorationManagerV1GetToplevelDecorationRequest{}
@@ -18772,6 +25653,59 @@ type ZxdgDecorationManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgDecorationManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgDecorationManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgDecorationManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgDecorationManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the decoration manager object
+//
+// Destroy the decoration manager. This doesn't destroy objects created
+// with the manager.
+func (proxy *ZxdgDecorationManagerV1) Destroy(connection Connection) (err error) {
+	request := ZxdgDecorationManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetToplevelDecoration requests to create a new toplevel decoration object
+//
+// Create a new decoration object associated with the given toplevel.
+//
+// Creating an xdg_toplevel_decoration from an xdg_toplevel which has a
+// buffer attached or committed is a client error, and any attempts by a
+// client to attach or manipulate a buffer prior to the first
+// xdg_toplevel_decoration.configure event must also be treated as
+// errors.
+func (proxy *ZxdgDecorationManagerV1) GetToplevelDecoration(connection Connection, aToplevel ObjectID) (aID *ZxdgToplevelDecorationV1, err error) {
+	aID = &ZxdgToplevelDecorationV1{connection.NewID()}
+	request := ZxdgDecorationManagerV1GetToplevelDecorationRequest{
+		ID:       aID.id,
+		Toplevel: aToplevel,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZxdgDecorationManagerV1 implements Proxy.
+var _ Proxy = &ZxdgDecorationManagerV1{}
+
 // #endregion Interface xdg_decoration_unstable_v1.zxdg_decoration_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -18813,6 +25747,9 @@ type ZxdgToplevelDecorationV1DestroyRequest struct {
 // Opcode returns the request opcode for zxdg_toplevel_decoration_v1.destroy in xdg_decoration_unstable_v1
 func (ZxdgToplevelDecorationV1DestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zxdg_toplevel_decoration_v1.destroy in xdg_decoration_unstable_v1
+func (ZxdgToplevelDecorationV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZxdgToplevelDecorationV1DestroyRequest implements Message.
 var _ Message = ZxdgToplevelDecorationV1DestroyRequest{}
 
@@ -18852,6 +25789,9 @@ type ZxdgToplevelDecorationV1SetModeRequest struct {
 // Opcode returns the request opcode for zxdg_toplevel_decoration_v1.set_mode in xdg_decoration_unstable_v1
 func (ZxdgToplevelDecorationV1SetModeRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zxdg_toplevel_decoration_v1.set_mode in xdg_decoration_unstable_v1
+func (ZxdgToplevelDecorationV1SetModeRequest) MessageName() string { return "set_mode" }
+
 // Ensure ZxdgToplevelDecorationV1SetModeRequest implements Message.
 var _ Message = ZxdgToplevelDecorationV1SetModeRequest{}
 
@@ -18877,6 +25817,9 @@ type ZxdgToplevelDecorationV1UnsetModeRequest struct {
 
 // Opcode returns the request opcode for zxdg_toplevel_decoration_v1.unset_mode in xdg_decoration_unstable_v1
 func (ZxdgToplevelDecorationV1UnsetModeRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for zxdg_toplevel_decoration_v1.unset_mode in xdg_decoration_unstable_v1
+func (ZxdgToplevelDecorationV1UnsetModeRequest) MessageName() string { return "unset_mode" }
 
 // Ensure ZxdgToplevelDecorationV1UnsetModeRequest implements Message.
 var _ Message = ZxdgToplevelDecorationV1UnsetModeRequest{}
@@ -18906,6 +25849,9 @@ type ZxdgToplevelDecorationV1ConfigureEvent struct {
 // Opcode returns the event opcode for zxdg_toplevel_decoration_v1.configure in xdg_decoration_unstable_v1
 func (ZxdgToplevelDecorationV1ConfigureEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zxdg_toplevel_decoration_v1.configure in xdg_decoration_unstable_v1
+func (ZxdgToplevelDecorationV1ConfigureEvent) MessageName() string { return "configure" }
+
 // Ensure ZxdgToplevelDecorationV1ConfigureEvent implements Message.
 var _ Message = ZxdgToplevelDecorationV1ConfigureEvent{}
 
@@ -18934,6 +25880,79 @@ type ZxdgToplevelDecorationV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgToplevelDecorationV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgToplevelDecorationV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgToplevelDecorationV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgToplevelDecorationV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZxdgToplevelDecorationV1ConfigureEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the decoration object
+//
+// Switch back to a mode without any server-side decorations at the next
+// commit.
+func (proxy *ZxdgToplevelDecorationV1) Destroy(connection Connection) (err error) {
+	request := ZxdgToplevelDecorationV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetMode requests to set the decoration mode
+//
+// Set the toplevel surface decoration mode. This informs the compositor
+// that the client prefers the provided decoration mode.
+//
+// After requesting a decoration mode, the compositor will respond by
+// emitting an xdg_surface.configure event. The client should then update
+// its content, drawing it without decorations if the received mode is
+// server-side decorations. The client must also acknowledge the configure
+// when committing the new content (see xdg_surface.ack_configure).
+//
+// The compositor can decide not to use the client's mode and enforce a
+// different mode instead.
+//
+// Clients whose decoration mode depend on the xdg_toplevel state may send
+// a set_mode request in response to an xdg_surface.configure event and wait
+// for the next xdg_surface.configure event to prevent unwanted state.
+// Such clients are responsible for preventing configure loops and must
+// make sure not to send multiple successive set_mode requests with the
+// same decoration mode.
+func (proxy *ZxdgToplevelDecorationV1) SetMode(connection Connection, aMode uint32) (err error) {
+	request := ZxdgToplevelDecorationV1SetModeRequest{
+		Mode: aMode,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// UnsetMode requests to unset the decoration mode
+//
+// Unset the toplevel surface decoration mode. This informs the compositor
+// that the client doesn't prefer a particular decoration mode.
+//
+// This request has the same semantics as set_mode.
+func (proxy *ZxdgToplevelDecorationV1) UnsetMode(connection Connection) (err error) {
+	request := ZxdgToplevelDecorationV1UnsetModeRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZxdgToplevelDecorationV1 implements Proxy.
+var _ Proxy = &ZxdgToplevelDecorationV1{}
+
 // #endregion Interface xdg_decoration_unstable_v1.zxdg_toplevel_decoration_v1
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18954,6 +25973,9 @@ type ZxdgExporterV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_exporter_v1.destroy in xdg_foreign_unstable_v1
 func (ZxdgExporterV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_exporter_v1.destroy in xdg_foreign_unstable_v1
+func (ZxdgExporterV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgExporterV1DestroyRequest implements Message.
 var _ Message = ZxdgExporterV1DestroyRequest{}
@@ -18987,6 +26009,9 @@ type ZxdgExporterV1ExportRequest struct {
 // Opcode returns the request opcode for zxdg_exporter_v1.export in xdg_foreign_unstable_v1
 func (ZxdgExporterV1ExportRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zxdg_exporter_v1.export in xdg_foreign_unstable_v1
+func (ZxdgExporterV1ExportRequest) MessageName() string { return "export" }
+
 // Ensure ZxdgExporterV1ExportRequest implements Message.
 var _ Message = ZxdgExporterV1ExportRequest{}
 
@@ -19012,6 +26037,60 @@ type ZxdgExporterV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgExporterV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgExporterV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgExporterV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgExporterV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_exporter object
+//
+// Notify the compositor that the xdg_exporter object will no longer be
+// used.
+func (proxy *ZxdgExporterV1) Destroy(connection Connection) (err error) {
+	request := ZxdgExporterV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Export requests to export a surface
+//
+// The export request exports the passed surface so that it can later be
+// imported via xdg_importer. When called, a new xdg_exported object will
+// be created and xdg_exported.handle will be sent immediately. See the
+// corresponding interface and event for details.
+//
+// A surface may be exported multiple times, and each exported handle may
+// be used to create an xdg_imported multiple times. Only xdg_surface
+// surfaces may be exported.
+func (proxy *ZxdgExporterV1) Export(connection Connection, aSurface ObjectID) (aID *ZxdgExportedV1, err error) {
+	aID = &ZxdgExportedV1{connection.NewID()}
+	request := ZxdgExporterV1ExportRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZxdgExporterV1 implements Proxy.
+var _ Proxy = &ZxdgExporterV1{}
+
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_exporter_v1
 
 // ----------------------------------------------------------------------------
@@ -19026,6 +26105,9 @@ type ZxdgImporterV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_importer_v1.destroy in xdg_foreign_unstable_v1
 func (ZxdgImporterV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_importer_v1.destroy in xdg_foreign_unstable_v1
+func (ZxdgImporterV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgImporterV1DestroyRequest implements Message.
 var _ Message = ZxdgImporterV1DestroyRequest{}
@@ -19056,6 +26138,9 @@ type ZxdgImporterV1ImportRequest struct {
 // Opcode returns the request opcode for zxdg_importer_v1.import in xdg_foreign_unstable_v1
 func (ZxdgImporterV1ImportRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zxdg_importer_v1.import in xdg_foreign_unstable_v1
+func (ZxdgImporterV1ImportRequest) MessageName() string { return "import" }
+
 // Ensure ZxdgImporterV1ImportRequest implements Message.
 var _ Message = ZxdgImporterV1ImportRequest{}
 
@@ -19082,6 +26167,57 @@ type ZxdgImporterV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgImporterV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgImporterV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgImporterV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgImporterV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_importer object
+//
+// Notify the compositor that the xdg_importer object will no longer be
+// used.
+func (proxy *ZxdgImporterV1) Destroy(connection Connection) (err error) {
+	request := ZxdgImporterV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Import requests to import a surface
+//
+// The import request imports a surface from any client given a handle
+// retrieved by exporting said surface using xdg_exporter.export. When
+// called, a new xdg_imported object will be created. This new object
+// represents the imported surface, and the importing client can
+// manipulate its relationship using it. See xdg_imported for details.
+func (proxy *ZxdgImporterV1) Import(connection Connection, aHandle string) (aID *ZxdgImportedV1, err error) {
+	aID = &ZxdgImportedV1{connection.NewID()}
+	request := ZxdgImporterV1ImportRequest{
+		ID:     aID.id,
+		Handle: aHandle,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZxdgImporterV1 implements Proxy.
+var _ Proxy = &ZxdgImporterV1{}
+
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_importer_v1
 
 // ----------------------------------------------------------------------------
@@ -19097,6 +26233,9 @@ type ZxdgExportedV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_exported_v1.destroy in xdg_foreign_unstable_v1
 func (ZxdgExportedV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_exported_v1.destroy in xdg_foreign_unstable_v1
+func (ZxdgExportedV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgExportedV1DestroyRequest implements Message.
 var _ Message = ZxdgExportedV1DestroyRequest{}
@@ -19122,6 +26261,9 @@ type ZxdgExportedV1HandleEvent struct {
 
 // Opcode returns the event opcode for zxdg_exported_v1.handle in xdg_foreign_unstable_v1
 func (ZxdgExportedV1HandleEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zxdg_exported_v1.handle in xdg_foreign_unstable_v1
+func (ZxdgExportedV1HandleEvent) MessageName() string { return "handle" }
 
 // Ensure ZxdgExportedV1HandleEvent implements Message.
 var _ Message = ZxdgExportedV1HandleEvent{}
@@ -19149,6 +26291,40 @@ type ZxdgExportedV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgExportedV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgExportedV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgExportedV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgExportedV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZxdgExportedV1HandleEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to unexport the exported surface
+//
+// Revoke the previously exported surface. This invalidates any
+// relationship the importer may have set up using the xdg_imported created
+// given the handle sent via xdg_exported.handle.
+func (proxy *ZxdgExportedV1) Destroy(connection Connection) (err error) {
+	request := ZxdgExportedV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZxdgExportedV1 implements Proxy.
+var _ Proxy = &ZxdgExportedV1{}
+
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_exported_v1
 
 // ----------------------------------------------------------------------------
@@ -19164,6 +26340,9 @@ type ZxdgImportedV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_imported_v1.destroy in xdg_foreign_unstable_v1
 func (ZxdgImportedV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_imported_v1.destroy in xdg_foreign_unstable_v1
+func (ZxdgImportedV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgImportedV1DestroyRequest implements Message.
 var _ Message = ZxdgImportedV1DestroyRequest{}
@@ -19189,6 +26368,9 @@ type ZxdgImportedV1SetParentOfRequest struct {
 
 // Opcode returns the request opcode for zxdg_imported_v1.set_parent_of in xdg_foreign_unstable_v1
 func (ZxdgImportedV1SetParentOfRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zxdg_imported_v1.set_parent_of in xdg_foreign_unstable_v1
+func (ZxdgImportedV1SetParentOfRequest) MessageName() string { return "set_parent_of" }
 
 // Ensure ZxdgImportedV1SetParentOfRequest implements Message.
 var _ Message = ZxdgImportedV1SetParentOfRequest{}
@@ -19216,6 +26398,9 @@ type ZxdgImportedV1DestroyedEvent struct {
 // Opcode returns the event opcode for zxdg_imported_v1.destroyed in xdg_foreign_unstable_v1
 func (ZxdgImportedV1DestroyedEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zxdg_imported_v1.destroyed in xdg_foreign_unstable_v1
+func (ZxdgImportedV1DestroyedEvent) MessageName() string { return "destroyed" }
+
 // Ensure ZxdgImportedV1DestroyedEvent implements Message.
 var _ Message = ZxdgImportedV1DestroyedEvent{}
 
@@ -19235,6 +26420,54 @@ var _ Event = &ZxdgImportedV1DestroyedEvent{}
 type ZxdgImportedV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZxdgImportedV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgImportedV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgImportedV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgImportedV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZxdgImportedV1DestroyedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_imported object
+//
+// Notify the compositor that it will no longer use the xdg_imported
+// object. Any relationship that may have been set up will at this point
+// be invalidated.
+func (proxy *ZxdgImportedV1) Destroy(connection Connection) (err error) {
+	request := ZxdgImportedV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetParentOf requests to set as the parent of some surface
+//
+// Set the imported surface as the parent of some surface of the client.
+// The passed surface must be a toplevel xdg_surface. Calling this function
+// sets up a surface to surface relation with the same stacking and positioning
+// semantics as xdg_surface.set_parent.
+func (proxy *ZxdgImportedV1) SetParentOf(connection Connection, aSurface ObjectID) (err error) {
+	request := ZxdgImportedV1SetParentOfRequest{
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZxdgImportedV1 implements Proxy.
+var _ Proxy = &ZxdgImportedV1{}
 
 // #endregion Interface xdg_foreign_unstable_v1.zxdg_imported_v1
 
@@ -19267,6 +26500,9 @@ type ZxdgExporterV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_exporter_v2.destroy in xdg_foreign_unstable_v2
 func (ZxdgExporterV2DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_exporter_v2.destroy in xdg_foreign_unstable_v2
+func (ZxdgExporterV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgExporterV2DestroyRequest implements Message.
 var _ Message = ZxdgExporterV2DestroyRequest{}
@@ -19301,6 +26537,9 @@ type ZxdgExporterV2ExportToplevelRequest struct {
 // Opcode returns the request opcode for zxdg_exporter_v2.export_toplevel in xdg_foreign_unstable_v2
 func (ZxdgExporterV2ExportToplevelRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zxdg_exporter_v2.export_toplevel in xdg_foreign_unstable_v2
+func (ZxdgExporterV2ExportToplevelRequest) MessageName() string { return "export_toplevel" }
+
 // Ensure ZxdgExporterV2ExportToplevelRequest implements Message.
 var _ Message = ZxdgExporterV2ExportToplevelRequest{}
 
@@ -19326,6 +26565,61 @@ type ZxdgExporterV2 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgExporterV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgExporterV2) Descriptor() *InterfaceDescriptor {
+	return &ZxdgExporterV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgExporterV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_exporter object
+//
+// Notify the compositor that the xdg_exporter object will no longer be
+// used.
+func (proxy *ZxdgExporterV2) Destroy(connection Connection) (err error) {
+	request := ZxdgExporterV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// ExportToplevel requests to export a toplevel surface
+//
+// The export_toplevel request exports the passed surface so that it can later be
+// imported via xdg_importer. When called, a new xdg_exported object will
+// be created and xdg_exported.handle will be sent immediately. See the
+// corresponding interface and event for details.
+//
+// A surface may be exported multiple times, and each exported handle may
+// be used to create an xdg_imported multiple times. Only xdg_toplevel
+// equivalent surfaces may be exported, otherwise an invalid_surface
+// protocol error is sent.
+func (proxy *ZxdgExporterV2) ExportToplevel(connection Connection, aSurface ObjectID) (aID *ZxdgExportedV2, err error) {
+	aID = &ZxdgExportedV2{connection.NewID()}
+	request := ZxdgExporterV2ExportToplevelRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZxdgExporterV2 implements Proxy.
+var _ Proxy = &ZxdgExporterV2{}
+
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_exporter_v2
 
 // ----------------------------------------------------------------------------
@@ -19340,6 +26634,9 @@ type ZxdgImporterV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_importer_v2.destroy in xdg_foreign_unstable_v2
 func (ZxdgImporterV2DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_importer_v2.destroy in xdg_foreign_unstable_v2
+func (ZxdgImporterV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgImporterV2DestroyRequest implements Message.
 var _ Message = ZxdgImporterV2DestroyRequest{}
@@ -19370,6 +26667,9 @@ type ZxdgImporterV2ImportToplevelRequest struct {
 // Opcode returns the request opcode for zxdg_importer_v2.import_toplevel in xdg_foreign_unstable_v2
 func (ZxdgImporterV2ImportToplevelRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zxdg_importer_v2.import_toplevel in xdg_foreign_unstable_v2
+func (ZxdgImporterV2ImportToplevelRequest) MessageName() string { return "import_toplevel" }
+
 // Ensure ZxdgImporterV2ImportToplevelRequest implements Message.
 var _ Message = ZxdgImporterV2ImportToplevelRequest{}
 
@@ -19396,6 +26696,57 @@ type ZxdgImporterV2 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgImporterV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgImporterV2) Descriptor() *InterfaceDescriptor {
+	return &ZxdgImporterV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgImporterV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_importer object
+//
+// Notify the compositor that the xdg_importer object will no longer be
+// used.
+func (proxy *ZxdgImporterV2) Destroy(connection Connection) (err error) {
+	request := ZxdgImporterV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// ImportToplevel requests to import a toplevel surface
+//
+// The import_toplevel request imports a surface from any client given a handle
+// retrieved by exporting said surface using xdg_exporter.export_toplevel.
+// When called, a new xdg_imported object will be created. This new object
+// represents the imported surface, and the importing client can
+// manipulate its relationship using it. See xdg_imported for details.
+func (proxy *ZxdgImporterV2) ImportToplevel(connection Connection, aHandle string) (aID *ZxdgImportedV2, err error) {
+	aID = &ZxdgImportedV2{connection.NewID()}
+	request := ZxdgImporterV2ImportToplevelRequest{
+		ID:     aID.id,
+		Handle: aHandle,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZxdgImporterV2 implements Proxy.
+var _ Proxy = &ZxdgImporterV2{}
+
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_importer_v2
 
 // ----------------------------------------------------------------------------
@@ -19411,6 +26762,9 @@ type ZxdgExportedV2DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_exported_v2.destroy in xdg_foreign_unstable_v2
 func (ZxdgExportedV2DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_exported_v2.destroy in xdg_foreign_unstable_v2
+func (ZxdgExportedV2DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgExportedV2DestroyRequest implements Message.
 var _ Message = ZxdgExportedV2DestroyRequest{}
@@ -19437,6 +26791,9 @@ type ZxdgExportedV2HandleEvent struct {
 // Opcode returns the event opcode for zxdg_exported_v2.handle in xdg_foreign_unstable_v2
 func (ZxdgExportedV2HandleEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zxdg_exported_v2.handle in xdg_foreign_unstable_v2
+func (ZxdgExportedV2HandleEvent) MessageName() string { return "handle" }
+
 // Ensure ZxdgExportedV2HandleEvent implements Message.
 var _ Message = ZxdgExportedV2HandleEvent{}
 
@@ -19462,6 +26819,40 @@ var _ Event = &ZxdgExportedV2HandleEvent{}
 type ZxdgExportedV2 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZxdgExportedV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgExportedV2) Descriptor() *InterfaceDescriptor {
+	return &ZxdgExportedV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgExportedV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZxdgExportedV2HandleEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to unexport the exported surface
+//
+// Revoke the previously exported surface. This invalidates any
+// relationship the importer may have set up using the xdg_imported created
+// given the handle sent via xdg_exported.handle.
+func (proxy *ZxdgExportedV2) Destroy(connection Connection) (err error) {
+	request := ZxdgExportedV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZxdgExportedV2 implements Proxy.
+var _ Proxy = &ZxdgExportedV2{}
 
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_exported_v2
 
@@ -19490,6 +26881,9 @@ type ZxdgImportedV2DestroyRequest struct {
 // Opcode returns the request opcode for zxdg_imported_v2.destroy in xdg_foreign_unstable_v2
 func (ZxdgImportedV2DestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zxdg_imported_v2.destroy in xdg_foreign_unstable_v2
+func (ZxdgImportedV2DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZxdgImportedV2DestroyRequest implements Message.
 var _ Message = ZxdgImportedV2DestroyRequest{}
 
@@ -19515,6 +26909,9 @@ type ZxdgImportedV2SetParentOfRequest struct {
 
 // Opcode returns the request opcode for zxdg_imported_v2.set_parent_of in xdg_foreign_unstable_v2
 func (ZxdgImportedV2SetParentOfRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zxdg_imported_v2.set_parent_of in xdg_foreign_unstable_v2
+func (ZxdgImportedV2SetParentOfRequest) MessageName() string { return "set_parent_of" }
 
 // Ensure ZxdgImportedV2SetParentOfRequest implements Message.
 var _ Message = ZxdgImportedV2SetParentOfRequest{}
@@ -19542,6 +26939,9 @@ type ZxdgImportedV2DestroyedEvent struct {
 // Opcode returns the event opcode for zxdg_imported_v2.destroyed in xdg_foreign_unstable_v2
 func (ZxdgImportedV2DestroyedEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for zxdg_imported_v2.destroyed in xdg_foreign_unstable_v2
+func (ZxdgImportedV2DestroyedEvent) MessageName() string { return "destroyed" }
+
 // Ensure ZxdgImportedV2DestroyedEvent implements Message.
 var _ Message = ZxdgImportedV2DestroyedEvent{}
 
@@ -19561,6 +26961,55 @@ var _ Event = &ZxdgImportedV2DestroyedEvent{}
 type ZxdgImportedV2 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZxdgImportedV2) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgImportedV2) Descriptor() *InterfaceDescriptor {
+	return &ZxdgImportedV2Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgImportedV2) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZxdgImportedV2DestroyedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_imported object
+//
+// Notify the compositor that it will no longer use the xdg_imported
+// object. Any relationship that may have been set up will at this point
+// be invalidated.
+func (proxy *ZxdgImportedV2) Destroy(connection Connection) (err error) {
+	request := ZxdgImportedV2DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetParentOf requests to set as the parent of some surface
+//
+// Set the imported surface as the parent of some surface of the client.
+// The passed surface must be an xdg_toplevel equivalent, otherwise an
+// invalid_surface protocol error is sent. Calling this function sets up
+// a surface to surface relation with the same stacking and positioning
+// semantics as xdg_toplevel.set_parent.
+func (proxy *ZxdgImportedV2) SetParentOf(connection Connection, aSurface ObjectID) (err error) {
+	request := ZxdgImportedV2SetParentOfRequest{
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZxdgImportedV2 implements Proxy.
+var _ Proxy = &ZxdgImportedV2{}
 
 // #endregion Interface xdg_foreign_unstable_v2.zxdg_imported_v2
 
@@ -19585,6 +27034,9 @@ type ZxdgOutputManagerV1DestroyRequest struct {
 // Opcode returns the request opcode for zxdg_output_manager_v1.destroy in xdg_output_unstable_v1
 func (ZxdgOutputManagerV1DestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for zxdg_output_manager_v1.destroy in xdg_output_unstable_v1
+func (ZxdgOutputManagerV1DestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure ZxdgOutputManagerV1DestroyRequest implements Message.
 var _ Message = ZxdgOutputManagerV1DestroyRequest{}
 
@@ -19607,6 +27059,9 @@ type ZxdgOutputManagerV1GetXdgOutputRequest struct {
 
 // Opcode returns the request opcode for zxdg_output_manager_v1.get_xdg_output in xdg_output_unstable_v1
 func (ZxdgOutputManagerV1GetXdgOutputRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zxdg_output_manager_v1.get_xdg_output in xdg_output_unstable_v1
+func (ZxdgOutputManagerV1GetXdgOutputRequest) MessageName() string { return "get_xdg_output" }
 
 // Ensure ZxdgOutputManagerV1GetXdgOutputRequest implements Message.
 var _ Message = ZxdgOutputManagerV1GetXdgOutputRequest{}
@@ -19632,6 +27087,55 @@ type ZxdgOutputManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZxdgOutputManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgOutputManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgOutputManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgOutputManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_output_manager object
+//
+// Using this request a client can tell the server that it is not
+// going to use the xdg_output_manager object anymore.
+//
+// Any objects already created through this instance are not affected.
+func (proxy *ZxdgOutputManagerV1) Destroy(connection Connection) (err error) {
+	request := ZxdgOutputManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetXdgOutput requests to create an xdg output from a wl_output
+//
+// This creates a new xdg_output object for the given wl_output.
+func (proxy *ZxdgOutputManagerV1) GetXdgOutput(connection Connection, aOutput ObjectID) (aID *ZxdgOutputV1, err error) {
+	aID = &ZxdgOutputV1{connection.NewID()}
+	request := ZxdgOutputManagerV1GetXdgOutputRequest{
+		ID:     aID.id,
+		Output: aOutput,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZxdgOutputManagerV1 implements Proxy.
+var _ Proxy = &ZxdgOutputManagerV1{}
+
 // #endregion Interface xdg_output_unstable_v1.zxdg_output_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -19646,6 +27150,9 @@ type ZxdgOutputV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zxdg_output_v1.destroy in xdg_output_unstable_v1
 func (ZxdgOutputV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zxdg_output_v1.destroy in xdg_output_unstable_v1
+func (ZxdgOutputV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZxdgOutputV1DestroyRequest implements Message.
 var _ Message = ZxdgOutputV1DestroyRequest{}
@@ -19676,6 +27183,9 @@ type ZxdgOutputV1LogicalPositionEvent struct {
 
 // Opcode returns the event opcode for zxdg_output_v1.logical_position in xdg_output_unstable_v1
 func (ZxdgOutputV1LogicalPositionEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zxdg_output_v1.logical_position in xdg_output_unstable_v1
+func (ZxdgOutputV1LogicalPositionEvent) MessageName() string { return "logical_position" }
 
 // Ensure ZxdgOutputV1LogicalPositionEvent implements Message.
 var _ Message = ZxdgOutputV1LogicalPositionEvent{}
@@ -19745,6 +27255,9 @@ type ZxdgOutputV1LogicalSizeEvent struct {
 // Opcode returns the event opcode for zxdg_output_v1.logical_size in xdg_output_unstable_v1
 func (ZxdgOutputV1LogicalSizeEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zxdg_output_v1.logical_size in xdg_output_unstable_v1
+func (ZxdgOutputV1LogicalSizeEvent) MessageName() string { return "logical_size" }
+
 // Ensure ZxdgOutputV1LogicalSizeEvent implements Message.
 var _ Message = ZxdgOutputV1LogicalSizeEvent{}
 
@@ -19782,6 +27295,9 @@ type ZxdgOutputV1DoneEvent struct {
 
 // Opcode returns the event opcode for zxdg_output_v1.done in xdg_output_unstable_v1
 func (ZxdgOutputV1DoneEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for zxdg_output_v1.done in xdg_output_unstable_v1
+func (ZxdgOutputV1DoneEvent) MessageName() string { return "done" }
 
 // Ensure ZxdgOutputV1DoneEvent implements Message.
 var _ Message = ZxdgOutputV1DoneEvent{}
@@ -19821,6 +27337,9 @@ type ZxdgOutputV1NameEvent struct {
 
 // Opcode returns the event opcode for zxdg_output_v1.name in xdg_output_unstable_v1
 func (ZxdgOutputV1NameEvent) Opcode() uint16 { return 3 }
+
+// MessageName returns the event name for zxdg_output_v1.name in xdg_output_unstable_v1
+func (ZxdgOutputV1NameEvent) MessageName() string { return "name" }
 
 // Ensure ZxdgOutputV1NameEvent implements Message.
 var _ Message = ZxdgOutputV1NameEvent{}
@@ -19863,6 +27382,9 @@ type ZxdgOutputV1DescriptionEvent struct {
 // Opcode returns the event opcode for zxdg_output_v1.description in xdg_output_unstable_v1
 func (ZxdgOutputV1DescriptionEvent) Opcode() uint16 { return 4 }
 
+// MessageName returns the event name for zxdg_output_v1.description in xdg_output_unstable_v1
+func (ZxdgOutputV1DescriptionEvent) MessageName() string { return "description" }
+
 // Ensure ZxdgOutputV1DescriptionEvent implements Message.
 var _ Message = ZxdgOutputV1DescriptionEvent{}
 
@@ -19893,6 +27415,47 @@ var _ Event = &ZxdgOutputV1DescriptionEvent{}
 type ZxdgOutputV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZxdgOutputV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZxdgOutputV1) Descriptor() *InterfaceDescriptor {
+	return &ZxdgOutputV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZxdgOutputV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZxdgOutputV1LogicalPositionEvent{}
+	case 1:
+		return &ZxdgOutputV1LogicalSizeEvent{}
+	case 2:
+		return &ZxdgOutputV1DoneEvent{}
+	case 3:
+		return &ZxdgOutputV1NameEvent{}
+	case 4:
+		return &ZxdgOutputV1DescriptionEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_output object
+//
+// Using this request a client can tell the server that it is not
+// going to use the xdg_output object anymore.
+func (proxy *ZxdgOutputV1) Destroy(connection Connection) (err error) {
+	request := ZxdgOutputV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZxdgOutputV1 implements Proxy.
+var _ Proxy = &ZxdgOutputV1{}
 
 // #endregion Interface xdg_output_unstable_v1.zxdg_output_v1
 
@@ -19940,6 +27503,9 @@ type XdgWmBaseDestroyRequest struct {
 // Opcode returns the request opcode for xdg_wm_base.destroy in xdg_shell
 func (XdgWmBaseDestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for xdg_wm_base.destroy in xdg_shell
+func (XdgWmBaseDestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure XdgWmBaseDestroyRequest implements Message.
 var _ Message = XdgWmBaseDestroyRequest{}
 
@@ -19962,6 +27528,9 @@ type XdgWmBaseCreatePositionerRequest struct {
 
 // Opcode returns the request opcode for xdg_wm_base.create_positioner in xdg_shell
 func (XdgWmBaseCreatePositionerRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for xdg_wm_base.create_positioner in xdg_shell
+func (XdgWmBaseCreatePositionerRequest) MessageName() string { return "create_positioner" }
 
 // Ensure XdgWmBaseCreatePositionerRequest implements Message.
 var _ Message = XdgWmBaseCreatePositionerRequest{}
@@ -20001,6 +27570,9 @@ type XdgWmBaseGetXdgSurfaceRequest struct {
 // Opcode returns the request opcode for xdg_wm_base.get_xdg_surface in xdg_shell
 func (XdgWmBaseGetXdgSurfaceRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for xdg_wm_base.get_xdg_surface in xdg_shell
+func (XdgWmBaseGetXdgSurfaceRequest) MessageName() string { return "get_xdg_surface" }
+
 // Ensure XdgWmBaseGetXdgSurfaceRequest implements Message.
 var _ Message = XdgWmBaseGetXdgSurfaceRequest{}
 
@@ -20029,6 +27601,9 @@ type XdgWmBasePongRequest struct {
 
 // Opcode returns the request opcode for xdg_wm_base.pong in xdg_shell
 func (XdgWmBasePongRequest) Opcode() uint16 { return 3 }
+
+// MessageName returns the request name for xdg_wm_base.pong in xdg_shell
+func (XdgWmBasePongRequest) MessageName() string { return "pong" }
 
 // Ensure XdgWmBasePongRequest implements Message.
 var _ Message = XdgWmBasePongRequest{}
@@ -20065,6 +27640,9 @@ type XdgWmBasePingEvent struct {
 // Opcode returns the event opcode for xdg_wm_base.ping in xdg_shell
 func (XdgWmBasePingEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for xdg_wm_base.ping in xdg_shell
+func (XdgWmBasePingEvent) MessageName() string { return "ping" }
+
 // Ensure XdgWmBasePingEvent implements Message.
 var _ Message = XdgWmBasePingEvent{}
 
@@ -20091,6 +27669,99 @@ var _ Event = &XdgWmBasePingEvent{}
 type XdgWmBase struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *XdgWmBase) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (XdgWmBase) Descriptor() *InterfaceDescriptor {
+	return &XdgWmBaseDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (XdgWmBase) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &XdgWmBasePingEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy xdg_wm_base
+//
+// Destroy this xdg_wm_base object.
+//
+// Destroying a bound xdg_wm_base object while there are surfaces
+// still alive created by this xdg_wm_base object instance is illegal
+// and will result in a protocol error.
+func (proxy *XdgWmBase) Destroy(connection Connection) (err error) {
+	request := XdgWmBaseDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// CreatePositioner requests to create a positioner object
+//
+// Create a positioner object. A positioner object is used to position
+// surfaces relative to some parent surface. See the interface description
+// and xdg_surface.get_popup for details.
+func (proxy *XdgWmBase) CreatePositioner(connection Connection) (aID *XdgPositioner, err error) {
+	aID = &XdgPositioner{connection.NewID()}
+	request := XdgWmBaseCreatePositionerRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetXdgSurface requests to create a shell surface from a surface
+//
+// This creates an xdg_surface for the given surface. While xdg_surface
+// itself is not a role, the corresponding surface may only be assigned
+// a role extending xdg_surface, such as xdg_toplevel or xdg_popup. It is
+// illegal to create an xdg_surface for a wl_surface which already has an
+// assigned role and this will result in a protocol error.
+//
+// This creates an xdg_surface for the given surface. An xdg_surface is
+// used as basis to define a role to a given surface, such as xdg_toplevel
+// or xdg_popup. It also manages functionality shared between xdg_surface
+// based surface roles.
+//
+// See the documentation of xdg_surface for more details about what an
+// xdg_surface is and how it is used.
+func (proxy *XdgWmBase) GetXdgSurface(connection Connection, aSurface ObjectID) (aID *XdgSurface, err error) {
+	aID = &XdgSurface{connection.NewID()}
+	request := XdgWmBaseGetXdgSurfaceRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Pong requests to respond to a ping event
+//
+// A client must respond to a ping event with a pong request or
+// the client may be deemed unresponsive. See xdg_wm_base.ping.
+func (proxy *XdgWmBase) Pong(connection Connection, aSerial uint32) (err error) {
+	request := XdgWmBasePongRequest{
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure XdgWmBase implements Proxy.
+var _ Proxy = &XdgWmBase{}
 
 // #endregion Interface xdg_shell.xdg_wm_base
 
@@ -20188,6 +27859,9 @@ type XdgPositionerDestroyRequest struct {
 // Opcode returns the request opcode for xdg_positioner.destroy in xdg_shell
 func (XdgPositionerDestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for xdg_positioner.destroy in xdg_shell
+func (XdgPositionerDestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure XdgPositionerDestroyRequest implements Message.
 var _ Message = XdgPositionerDestroyRequest{}
 
@@ -20216,6 +27890,9 @@ type XdgPositionerSetSizeRequest struct {
 
 // Opcode returns the request opcode for xdg_positioner.set_size in xdg_shell
 func (XdgPositionerSetSizeRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for xdg_positioner.set_size in xdg_shell
+func (XdgPositionerSetSizeRequest) MessageName() string { return "set_size" }
 
 // Ensure XdgPositionerSetSizeRequest implements Message.
 var _ Message = XdgPositionerSetSizeRequest{}
@@ -20263,6 +27940,9 @@ type XdgPositionerSetAnchorRectRequest struct {
 // Opcode returns the request opcode for xdg_positioner.set_anchor_rect in xdg_shell
 func (XdgPositionerSetAnchorRectRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for xdg_positioner.set_anchor_rect in xdg_shell
+func (XdgPositionerSetAnchorRectRequest) MessageName() string { return "set_anchor_rect" }
+
 // Ensure XdgPositionerSetAnchorRectRequest implements Message.
 var _ Message = XdgPositionerSetAnchorRectRequest{}
 
@@ -20302,6 +27982,9 @@ type XdgPositionerSetAnchorRequest struct {
 // Opcode returns the request opcode for xdg_positioner.set_anchor in xdg_shell
 func (XdgPositionerSetAnchorRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for xdg_positioner.set_anchor in xdg_shell
+func (XdgPositionerSetAnchorRequest) MessageName() string { return "set_anchor" }
+
 // Ensure XdgPositionerSetAnchorRequest implements Message.
 var _ Message = XdgPositionerSetAnchorRequest{}
 
@@ -20331,6 +28014,9 @@ type XdgPositionerSetGravityRequest struct {
 
 // Opcode returns the request opcode for xdg_positioner.set_gravity in xdg_shell
 func (XdgPositionerSetGravityRequest) Opcode() uint16 { return 4 }
+
+// MessageName returns the request name for xdg_positioner.set_gravity in xdg_shell
+func (XdgPositionerSetGravityRequest) MessageName() string { return "set_gravity" }
 
 // Ensure XdgPositionerSetGravityRequest implements Message.
 var _ Message = XdgPositionerSetGravityRequest{}
@@ -20368,6 +28054,11 @@ type XdgPositionerSetConstraintAdjustmentRequest struct {
 
 // Opcode returns the request opcode for xdg_positioner.set_constraint_adjustment in xdg_shell
 func (XdgPositionerSetConstraintAdjustmentRequest) Opcode() uint16 { return 5 }
+
+// MessageName returns the request name for xdg_positioner.set_constraint_adjustment in xdg_shell
+func (XdgPositionerSetConstraintAdjustmentRequest) MessageName() string {
+	return "set_constraint_adjustment"
+}
 
 // Ensure XdgPositionerSetConstraintAdjustmentRequest implements Message.
 var _ Message = XdgPositionerSetConstraintAdjustmentRequest{}
@@ -20407,6 +28098,9 @@ type XdgPositionerSetOffsetRequest struct {
 // Opcode returns the request opcode for xdg_positioner.set_offset in xdg_shell
 func (XdgPositionerSetOffsetRequest) Opcode() uint16 { return 6 }
 
+// MessageName returns the request name for xdg_positioner.set_offset in xdg_shell
+func (XdgPositionerSetOffsetRequest) MessageName() string { return "set_offset" }
+
 // Ensure XdgPositionerSetOffsetRequest implements Message.
 var _ Message = XdgPositionerSetOffsetRequest{}
 
@@ -20438,6 +28132,9 @@ type XdgPositionerSetReactiveRequest struct {
 // Opcode returns the request opcode for xdg_positioner.set_reactive in xdg_shell
 func (XdgPositionerSetReactiveRequest) Opcode() uint16 { return 7 }
 
+// MessageName returns the request name for xdg_positioner.set_reactive in xdg_shell
+func (XdgPositionerSetReactiveRequest) MessageName() string { return "set_reactive" }
+
 // Ensure XdgPositionerSetReactiveRequest implements Message.
 var _ Message = XdgPositionerSetReactiveRequest{}
 
@@ -20459,6 +28156,9 @@ type XdgPositionerSetParentSizeRequest struct {
 
 // Opcode returns the request opcode for xdg_positioner.set_parent_size in xdg_shell
 func (XdgPositionerSetParentSizeRequest) Opcode() uint16 { return 8 }
+
+// MessageName returns the request name for xdg_positioner.set_parent_size in xdg_shell
+func (XdgPositionerSetParentSizeRequest) MessageName() string { return "set_parent_size" }
 
 // Ensure XdgPositionerSetParentSizeRequest implements Message.
 var _ Message = XdgPositionerSetParentSizeRequest{}
@@ -20490,6 +28190,9 @@ type XdgPositionerSetParentConfigureRequest struct {
 
 // Opcode returns the request opcode for xdg_positioner.set_parent_configure in xdg_shell
 func (XdgPositionerSetParentConfigureRequest) Opcode() uint16 { return 9 }
+
+// MessageName returns the request name for xdg_positioner.set_parent_configure in xdg_shell
+func (XdgPositionerSetParentConfigureRequest) MessageName() string { return "set_parent_configure" }
 
 // Ensure XdgPositionerSetParentConfigureRequest implements Message.
 var _ Message = XdgPositionerSetParentConfigureRequest{}
@@ -20530,6 +28233,189 @@ type XdgPositioner struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *XdgPositioner) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (XdgPositioner) Descriptor() *InterfaceDescriptor {
+	return &XdgPositionerDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (XdgPositioner) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_positioner object
+//
+// Notify the compositor that the xdg_positioner will no longer be used.
+func (proxy *XdgPositioner) Destroy(connection Connection) (err error) {
+	request := XdgPositionerDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetSize requests to set the size of the to-be positioned rectangle
+//
+// Set the size of the surface that is to be positioned with the positioner
+// object. The size is in surface-local coordinates and corresponds to the
+// window geometry. See xdg_surface.set_window_geometry.
+//
+// If a zero or negative size is set the invalid_input error is raised.
+func (proxy *XdgPositioner) SetSize(connection Connection, aWidth int32, aHeight int32) (err error) {
+	request := XdgPositionerSetSizeRequest{
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetAnchorRect requests to set the anchor rectangle within the parent surface
+//
+// Specify the anchor rectangle within the parent surface that the child
+// surface will be placed relative to. The rectangle is relative to the
+// window geometry as defined by xdg_surface.set_window_geometry of the
+// parent surface.
+//
+// When the xdg_positioner object is used to position a child surface, the
+// anchor rectangle may not extend outside the window geometry of the
+// positioned child's parent surface.
+//
+// If a negative size is set the invalid_input error is raised.
+func (proxy *XdgPositioner) SetAnchorRect(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := XdgPositionerSetAnchorRectRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetAnchor requests to set anchor rectangle anchor
+//
+// Defines the anchor point for the anchor rectangle. The specified anchor
+// is used derive an anchor point that the child surface will be
+// positioned relative to. If a corner anchor is set (e.g. 'top_left' or
+// 'bottom_right'), the anchor point will be at the specified corner;
+// otherwise, the derived anchor point will be centered on the specified
+// edge, or in the center of the anchor rectangle if no edge is specified.
+func (proxy *XdgPositioner) SetAnchor(connection Connection, aAnchor uint32) (err error) {
+	request := XdgPositionerSetAnchorRequest{
+		Anchor: aAnchor,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetGravity requests to set child surface gravity
+//
+// Defines in what direction a surface should be positioned, relative to
+// the anchor point of the parent surface. If a corner gravity is
+// specified (e.g. 'bottom_right' or 'top_left'), then the child surface
+// will be placed towards the specified gravity; otherwise, the child
+// surface will be centered over the anchor point on any axis that had no
+// gravity specified.
+func (proxy *XdgPositioner) SetGravity(connection Connection, aGravity uint32) (err error) {
+	request := XdgPositionerSetGravityRequest{
+		Gravity: aGravity,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetConstraintAdjustment requests to set the adjustment to be done when constrained
+//
+// Specify how the window should be positioned if the originally intended
+// position caused the surface to be constrained, meaning at least
+// partially outside positioning boundaries set by the compositor. The
+// adjustment is set by constructing a bitmask describing the adjustment to
+// be made when the surface is constrained on that axis.
+//
+// If no bit for one axis is set, the compositor will assume that the child
+// surface should not change its position on that axis when constrained.
+//
+// If more than one bit for one axis is set, the order of how adjustments
+// are applied is specified in the corresponding adjustment descriptions.
+//
+// The default adjustment is none.
+func (proxy *XdgPositioner) SetConstraintAdjustment(connection Connection, aConstraintAdjustment uint32) (err error) {
+	request := XdgPositionerSetConstraintAdjustmentRequest{
+		ConstraintAdjustment: aConstraintAdjustment,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetOffset requests to set surface position offset
+//
+// Specify the surface position offset relative to the position of the
+// anchor on the anchor rectangle and the anchor on the surface. For
+// example if the anchor of the anchor rectangle is at (x, y), the surface
+// has the gravity bottom|right, and the offset is (ox, oy), the calculated
+// surface position will be (x + ox, y + oy). The offset position of the
+// surface is the one used for constraint testing. See
+// set_constraint_adjustment.
+//
+// An example use case is placing a popup menu on top of a user interface
+// element, while aligning the user interface element of the parent surface
+// with some user interface element placed somewhere in the popup surface.
+func (proxy *XdgPositioner) SetOffset(connection Connection, aX int32, aY int32) (err error) {
+	request := XdgPositionerSetOffsetRequest{
+		X: aX,
+		Y: aY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetReactive requests to continuously reconstrain the surface
+//
+// When set reactive, the surface is reconstrained if the conditions used
+// for constraining changed, e.g. the parent window moved.
+//
+// If the conditions changed and the popup was reconstrained, an
+// xdg_popup.configure event is sent with updated geometry, followed by an
+// xdg_surface.configure event.
+func (proxy *XdgPositioner) SetReactive(connection Connection) (err error) {
+	request := XdgPositionerSetReactiveRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+func (proxy *XdgPositioner) SetParentSize(connection Connection, aParentWidth int32, aParentHeight int32) (err error) {
+	request := XdgPositionerSetParentSizeRequest{
+		ParentWidth:  aParentWidth,
+		ParentHeight: aParentHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetParentConfigure requests to set parent configure this is a response to
+//
+// Set the serial of an xdg_surface.configure event this positioner will be
+// used in response to. The compositor may use this information together
+// with set_parent_size to determine what future state the popup should be
+// constrained using.
+func (proxy *XdgPositioner) SetParentConfigure(connection Connection, aSerial uint32) (err error) {
+	request := XdgPositionerSetParentConfigureRequest{
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure XdgPositioner implements Proxy.
+var _ Proxy = &XdgPositioner{}
+
 // #endregion Interface xdg_shell.xdg_positioner
 
 // ----------------------------------------------------------------------------
@@ -20555,6 +28441,9 @@ type XdgSurfaceDestroyRequest struct {
 // Opcode returns the request opcode for xdg_surface.destroy in xdg_shell
 func (XdgSurfaceDestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for xdg_surface.destroy in xdg_shell
+func (XdgSurfaceDestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure XdgSurfaceDestroyRequest implements Message.
 var _ Message = XdgSurfaceDestroyRequest{}
 
@@ -20579,6 +28468,9 @@ type XdgSurfaceGetToplevelRequest struct {
 
 // Opcode returns the request opcode for xdg_surface.get_toplevel in xdg_shell
 func (XdgSurfaceGetToplevelRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for xdg_surface.get_toplevel in xdg_shell
+func (XdgSurfaceGetToplevelRequest) MessageName() string { return "get_toplevel" }
 
 // Ensure XdgSurfaceGetToplevelRequest implements Message.
 var _ Message = XdgSurfaceGetToplevelRequest{}
@@ -20614,6 +28506,9 @@ type XdgSurfaceGetPopupRequest struct {
 
 // Opcode returns the request opcode for xdg_surface.get_popup in xdg_shell
 func (XdgSurfaceGetPopupRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for xdg_surface.get_popup in xdg_shell
+func (XdgSurfaceGetPopupRequest) MessageName() string { return "get_popup" }
 
 // Ensure XdgSurfaceGetPopupRequest implements Message.
 var _ Message = XdgSurfaceGetPopupRequest{}
@@ -20679,6 +28574,9 @@ type XdgSurfaceSetWindowGeometryRequest struct {
 // Opcode returns the request opcode for xdg_surface.set_window_geometry in xdg_shell
 func (XdgSurfaceSetWindowGeometryRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for xdg_surface.set_window_geometry in xdg_shell
+func (XdgSurfaceSetWindowGeometryRequest) MessageName() string { return "set_window_geometry" }
+
 // Ensure XdgSurfaceSetWindowGeometryRequest implements Message.
 var _ Message = XdgSurfaceSetWindowGeometryRequest{}
 
@@ -20731,6 +28629,9 @@ type XdgSurfaceAckConfigureRequest struct {
 // Opcode returns the request opcode for xdg_surface.ack_configure in xdg_shell
 func (XdgSurfaceAckConfigureRequest) Opcode() uint16 { return 4 }
 
+// MessageName returns the request name for xdg_surface.ack_configure in xdg_shell
+func (XdgSurfaceAckConfigureRequest) MessageName() string { return "ack_configure" }
+
 // Ensure XdgSurfaceAckConfigureRequest implements Message.
 var _ Message = XdgSurfaceAckConfigureRequest{}
 
@@ -20770,6 +28671,9 @@ type XdgSurfaceConfigureEvent struct {
 
 // Opcode returns the event opcode for xdg_surface.configure in xdg_shell
 func (XdgSurfaceConfigureEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for xdg_surface.configure in xdg_shell
+func (XdgSurfaceConfigureEvent) MessageName() string { return "configure" }
 
 // Ensure XdgSurfaceConfigureEvent implements Message.
 var _ Message = XdgSurfaceConfigureEvent{}
@@ -20836,6 +28740,153 @@ var _ Event = &XdgSurfaceConfigureEvent{}
 type XdgSurface struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *XdgSurface) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (XdgSurface) Descriptor() *InterfaceDescriptor {
+	return &XdgSurfaceDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (XdgSurface) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &XdgSurfaceConfigureEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_surface
+//
+// Destroy the xdg_surface object. An xdg_surface must only be destroyed
+// after its role object has been destroyed.
+func (proxy *XdgSurface) Destroy(connection Connection) (err error) {
+	request := XdgSurfaceDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetToplevel requests to assign the xdg_toplevel surface role
+//
+// This creates an xdg_toplevel object for the given xdg_surface and gives
+// the associated wl_surface the xdg_toplevel role.
+//
+// See the documentation of xdg_toplevel for more details about what an
+// xdg_toplevel is and how it is used.
+func (proxy *XdgSurface) GetToplevel(connection Connection) (aID *XdgToplevel, err error) {
+	aID = &XdgToplevel{connection.NewID()}
+	request := XdgSurfaceGetToplevelRequest{
+		ID: aID.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// GetPopup requests to assign the xdg_popup surface role
+//
+// This creates an xdg_popup object for the given xdg_surface and gives
+// the associated wl_surface the xdg_popup role.
+//
+// If null is passed as a parent, a parent surface must be specified using
+// some other protocol, before committing the initial state.
+//
+// See the documentation of xdg_popup for more details about what an
+// xdg_popup is and how it is used.
+func (proxy *XdgSurface) GetPopup(connection Connection, aParent ObjectID, aPositioner ObjectID) (aID *XdgPopup, err error) {
+	aID = &XdgPopup{connection.NewID()}
+	request := XdgSurfaceGetPopupRequest{
+		ID:         aID.id,
+		Parent:     aParent,
+		Positioner: aPositioner,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// SetWindowGeometry requests to set the new window geometry
+//
+// The window geometry of a surface is its "visible bounds" from the
+// user's perspective. Client-side decorations often have invisible
+// portions like drop-shadows which should be ignored for the
+// purposes of aligning, placing and constraining windows.
+//
+// The window geometry is double buffered, and will be applied at the
+// time wl_surface.commit of the corresponding wl_surface is called.
+//
+// When maintaining a position, the compositor should treat the (x, y)
+// coordinate of the window geometry as the top left corner of the window.
+// A client changing the (x, y) window geometry coordinate should in
+// general not alter the position of the window.
+//
+// Once the window geometry of the surface is set, it is not possible to
+// unset it, and it will remain the same until set_window_geometry is
+// called again, even if a new subsurface or buffer is attached.
+//
+// If never set, the value is the full bounds of the surface,
+// including any subsurfaces. This updates dynamically on every
+// commit. This unset is meant for extremely simple clients.
+//
+// The arguments are given in the surface-local coordinate space of
+// the wl_surface associated with this xdg_surface.
+//
+// The width and height must be greater than zero. Setting an invalid size
+// will raise an error. When applied, the effective window geometry will be
+// the set window geometry clamped to the bounding rectangle of the
+// combined geometry of the surface of the xdg_surface and the associated
+// subsurfaces.
+func (proxy *XdgSurface) SetWindowGeometry(connection Connection, aX int32, aY int32, aWidth int32, aHeight int32) (err error) {
+	request := XdgSurfaceSetWindowGeometryRequest{
+		X:      aX,
+		Y:      aY,
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// AckConfigure requests to ack a configure event
+//
+// When a configure event is received, if a client commits the
+// surface in response to the configure event, then the client
+// must make an ack_configure request sometime before the commit
+// request, passing along the serial of the configure event.
+//
+// For instance, for toplevel surfaces the compositor might use this
+// information to move a surface to the top left only when the client has
+// drawn itself for the maximized or fullscreen state.
+//
+// If the client receives multiple configure events before it
+// can respond to one, it only has to ack the last configure event.
+//
+// A client is not required to commit immediately after sending
+// an ack_configure request - it may even ack_configure several times
+// before its next surface commit.
+//
+// A client may send multiple ack_configure requests before committing, but
+// only the last request sent before a commit indicates which configure
+// event the client really is responding to.
+func (proxy *XdgSurface) AckConfigure(connection Connection, aSerial uint32) (err error) {
+	request := XdgSurfaceAckConfigureRequest{
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure XdgSurface implements Proxy.
+var _ Proxy = &XdgSurface{}
 
 // #endregion Interface xdg_shell.xdg_surface
 
@@ -20911,6 +28962,9 @@ type XdgToplevelDestroyRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.destroy in xdg_shell
 func (XdgToplevelDestroyRequest) Opcode() uint16 { return 0 }
 
+// MessageName returns the request name for xdg_toplevel.destroy in xdg_shell
+func (XdgToplevelDestroyRequest) MessageName() string { return "destroy" }
+
 // Ensure XdgToplevelDestroyRequest implements Message.
 var _ Message = XdgToplevelDestroyRequest{}
 
@@ -20947,6 +29001,9 @@ type XdgToplevelSetParentRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.set_parent in xdg_shell
 func (XdgToplevelSetParentRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for xdg_toplevel.set_parent in xdg_shell
+func (XdgToplevelSetParentRequest) MessageName() string { return "set_parent" }
+
 // Ensure XdgToplevelSetParentRequest implements Message.
 var _ Message = XdgToplevelSetParentRequest{}
 
@@ -20976,6 +29033,9 @@ type XdgToplevelSetTitleRequest struct {
 
 // Opcode returns the request opcode for xdg_toplevel.set_title in xdg_shell
 func (XdgToplevelSetTitleRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for xdg_toplevel.set_title in xdg_shell
+func (XdgToplevelSetTitleRequest) MessageName() string { return "set_title" }
 
 // Ensure XdgToplevelSetTitleRequest implements Message.
 var _ Message = XdgToplevelSetTitleRequest{}
@@ -21023,6 +29083,9 @@ type XdgToplevelSetAppIDRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.set_app_id in xdg_shell
 func (XdgToplevelSetAppIDRequest) Opcode() uint16 { return 3 }
 
+// MessageName returns the request name for xdg_toplevel.set_app_id in xdg_shell
+func (XdgToplevelSetAppIDRequest) MessageName() string { return "set_app_id" }
+
 // Ensure XdgToplevelSetAppIDRequest implements Message.
 var _ Message = XdgToplevelSetAppIDRequest{}
 
@@ -21066,6 +29129,9 @@ type XdgToplevelShowWindowMenuRequest struct {
 
 // Opcode returns the request opcode for xdg_toplevel.show_window_menu in xdg_shell
 func (XdgToplevelShowWindowMenuRequest) Opcode() uint16 { return 4 }
+
+// MessageName returns the request name for xdg_toplevel.show_window_menu in xdg_shell
+func (XdgToplevelShowWindowMenuRequest) MessageName() string { return "show_window_menu" }
 
 // Ensure XdgToplevelShowWindowMenuRequest implements Message.
 var _ Message = XdgToplevelShowWindowMenuRequest{}
@@ -21118,6 +29184,9 @@ type XdgToplevelMoveRequest struct {
 
 // Opcode returns the request opcode for xdg_toplevel.move in xdg_shell
 func (XdgToplevelMoveRequest) Opcode() uint16 { return 5 }
+
+// MessageName returns the request name for xdg_toplevel.move in xdg_shell
+func (XdgToplevelMoveRequest) MessageName() string { return "move" }
 
 // Ensure XdgToplevelMoveRequest implements Message.
 var _ Message = XdgToplevelMoveRequest{}
@@ -21181,6 +29250,9 @@ type XdgToplevelResizeRequest struct {
 
 // Opcode returns the request opcode for xdg_toplevel.resize in xdg_shell
 func (XdgToplevelResizeRequest) Opcode() uint16 { return 6 }
+
+// MessageName returns the request name for xdg_toplevel.resize in xdg_shell
+func (XdgToplevelResizeRequest) MessageName() string { return "resize" }
 
 // Ensure XdgToplevelResizeRequest implements Message.
 var _ Message = XdgToplevelResizeRequest{}
@@ -21247,6 +29319,9 @@ type XdgToplevelSetMaxSizeRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.set_max_size in xdg_shell
 func (XdgToplevelSetMaxSizeRequest) Opcode() uint16 { return 7 }
 
+// MessageName returns the request name for xdg_toplevel.set_max_size in xdg_shell
+func (XdgToplevelSetMaxSizeRequest) MessageName() string { return "set_max_size" }
+
 // Ensure XdgToplevelSetMaxSizeRequest implements Message.
 var _ Message = XdgToplevelSetMaxSizeRequest{}
 
@@ -21309,6 +29384,9 @@ type XdgToplevelSetMinSizeRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.set_min_size in xdg_shell
 func (XdgToplevelSetMinSizeRequest) Opcode() uint16 { return 8 }
 
+// MessageName returns the request name for xdg_toplevel.set_min_size in xdg_shell
+func (XdgToplevelSetMinSizeRequest) MessageName() string { return "set_min_size" }
+
 // Ensure XdgToplevelSetMinSizeRequest implements Message.
 var _ Message = XdgToplevelSetMinSizeRequest{}
 
@@ -21353,6 +29431,9 @@ type XdgToplevelSetMaximizedRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.set_maximized in xdg_shell
 func (XdgToplevelSetMaximizedRequest) Opcode() uint16 { return 9 }
 
+// MessageName returns the request name for xdg_toplevel.set_maximized in xdg_shell
+func (XdgToplevelSetMaximizedRequest) MessageName() string { return "set_maximized" }
+
 // Ensure XdgToplevelSetMaximizedRequest implements Message.
 var _ Message = XdgToplevelSetMaximizedRequest{}
 
@@ -21392,6 +29473,9 @@ type XdgToplevelUnsetMaximizedRequest struct {
 
 // Opcode returns the request opcode for xdg_toplevel.unset_maximized in xdg_shell
 func (XdgToplevelUnsetMaximizedRequest) Opcode() uint16 { return 10 }
+
+// MessageName returns the request name for xdg_toplevel.unset_maximized in xdg_shell
+func (XdgToplevelUnsetMaximizedRequest) MessageName() string { return "unset_maximized" }
 
 // Ensure XdgToplevelUnsetMaximizedRequest implements Message.
 var _ Message = XdgToplevelUnsetMaximizedRequest{}
@@ -21436,6 +29520,9 @@ type XdgToplevelSetFullscreenRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.set_fullscreen in xdg_shell
 func (XdgToplevelSetFullscreenRequest) Opcode() uint16 { return 11 }
 
+// MessageName returns the request name for xdg_toplevel.set_fullscreen in xdg_shell
+func (XdgToplevelSetFullscreenRequest) MessageName() string { return "set_fullscreen" }
+
 // Ensure XdgToplevelSetFullscreenRequest implements Message.
 var _ Message = XdgToplevelSetFullscreenRequest{}
 
@@ -21475,6 +29562,9 @@ type XdgToplevelUnsetFullscreenRequest struct {
 // Opcode returns the request opcode for xdg_toplevel.unset_fullscreen in xdg_shell
 func (XdgToplevelUnsetFullscreenRequest) Opcode() uint16 { return 12 }
 
+// MessageName returns the request name for xdg_toplevel.unset_fullscreen in xdg_shell
+func (XdgToplevelUnsetFullscreenRequest) MessageName() string { return "unset_fullscreen" }
+
 // Ensure XdgToplevelUnsetFullscreenRequest implements Message.
 var _ Message = XdgToplevelUnsetFullscreenRequest{}
 
@@ -21501,6 +29591,9 @@ type XdgToplevelSetMinimizedRequest struct {
 
 // Opcode returns the request opcode for xdg_toplevel.set_minimized in xdg_shell
 func (XdgToplevelSetMinimizedRequest) Opcode() uint16 { return 13 }
+
+// MessageName returns the request name for xdg_toplevel.set_minimized in xdg_shell
+func (XdgToplevelSetMinimizedRequest) MessageName() string { return "set_minimized" }
 
 // Ensure XdgToplevelSetMinimizedRequest implements Message.
 var _ Message = XdgToplevelSetMinimizedRequest{}
@@ -21545,6 +29638,9 @@ type XdgToplevelConfigureEvent struct {
 // Opcode returns the event opcode for xdg_toplevel.configure in xdg_shell
 func (XdgToplevelConfigureEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for xdg_toplevel.configure in xdg_shell
+func (XdgToplevelConfigureEvent) MessageName() string { return "configure" }
+
 // Ensure XdgToplevelConfigureEvent implements Message.
 var _ Message = XdgToplevelConfigureEvent{}
 
@@ -21587,6 +29683,9 @@ type XdgToplevelCloseEvent struct {
 // Opcode returns the event opcode for xdg_toplevel.close in xdg_shell
 func (XdgToplevelCloseEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for xdg_toplevel.close in xdg_shell
+func (XdgToplevelCloseEvent) MessageName() string { return "close" }
+
 // Ensure XdgToplevelCloseEvent implements Message.
 var _ Message = XdgToplevelCloseEvent{}
 
@@ -21621,6 +29720,430 @@ type XdgToplevel struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *XdgToplevel) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (XdgToplevel) Descriptor() *InterfaceDescriptor {
+	return &XdgToplevelDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (XdgToplevel) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &XdgToplevelConfigureEvent{}
+	case 1:
+		return &XdgToplevelCloseEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the xdg_toplevel
+//
+// This request destroys the role surface and unmaps the surface;
+// see "Unmapping" behavior in interface section for details.
+func (proxy *XdgToplevel) Destroy(connection Connection) (err error) {
+	request := XdgToplevelDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetParent requests to set the parent of this surface
+//
+// Set the "parent" of this surface. This surface should be stacked
+// above the parent surface and all other ancestor surfaces.
+//
+// Parent windows should be set on dialogs, toolboxes, or other
+// "auxiliary" surfaces, so that the parent is raised when the dialog
+// is raised.
+//
+// Setting a null parent for a child window removes any parent-child
+// relationship for the child. Setting a null parent for a window which
+// currently has no parent is a no-op.
+//
+// If the parent is unmapped then its children are managed as
+// though the parent of the now-unmapped parent has become the
+// parent of this surface. If no parent exists for the now-unmapped
+// parent then the children are managed as though they have no
+// parent surface.
+func (proxy *XdgToplevel) SetParent(connection Connection, aParent ObjectID) (err error) {
+	request := XdgToplevelSetParentRequest{
+		Parent: aParent,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetTitle requests to set surface title
+//
+// Set a short title for the surface.
+//
+// This string may be used to identify the surface in a task bar,
+// window list, or other user interface elements provided by the
+// compositor.
+//
+// The string must be encoded in UTF-8.
+func (proxy *XdgToplevel) SetTitle(connection Connection, aTitle string) (err error) {
+	request := XdgToplevelSetTitleRequest{
+		Title: aTitle,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetAppID requests to set application ID
+//
+// Set an application identifier for the surface.
+//
+// The app ID identifies the general class of applications to which
+// the surface belongs. The compositor can use this to group multiple
+// surfaces together, or to determine how to launch a new application.
+//
+// For D-Bus activatable applications, the app ID is used as the D-Bus
+// service name.
+//
+// The compositor shell will try to group application surfaces together
+// by their app ID. As a best practice, it is suggested to select app
+// ID's that match the basename of the application's .desktop file.
+// For example, "org.freedesktop.FooViewer" where the .desktop file is
+// "org.freedesktop.FooViewer.desktop".
+//
+// Like other properties, a set_app_id request can be sent after the
+// xdg_toplevel has been mapped to update the property.
+//
+// See the desktop-entry specification [0] for more details on
+// application identifiers and how they relate to well-known D-Bus
+// names and .desktop files.
+//
+// [0] http://standards.freedesktop.org/desktop-entry-spec/
+func (proxy *XdgToplevel) SetAppID(connection Connection, aAppID string) (err error) {
+	request := XdgToplevelSetAppIDRequest{
+		AppID: aAppID,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// ShowWindowMenu requests to show the window menu
+//
+// Clients implementing client-side decorations might want to show
+// a context menu when right-clicking on the decorations, giving the
+// user a menu that they can use to maximize or minimize the window.
+//
+// This request asks the compositor to pop up such a window menu at
+// the given position, relative to the local surface coordinates of
+// the parent surface. There are no guarantees as to what menu items
+// the window menu contains.
+//
+// This request must be used in response to some sort of user action
+// like a button press, key press, or touch down event.
+func (proxy *XdgToplevel) ShowWindowMenu(connection Connection, aSeat ObjectID, aSerial uint32, aX int32, aY int32) (err error) {
+	request := XdgToplevelShowWindowMenuRequest{
+		Seat:   aSeat,
+		Serial: aSerial,
+		X:      aX,
+		Y:      aY,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Move requests to start an interactive move
+//
+// Start an interactive, user-driven move of the surface.
+//
+// This request must be used in response to some sort of user action
+// like a button press, key press, or touch down event. The passed
+// serial is used to determine the type of interactive move (touch,
+// pointer, etc).
+//
+// The server may ignore move requests depending on the state of
+// the surface (e.g. fullscreen or maximized), or if the passed serial
+// is no longer valid.
+//
+// If triggered, the surface will lose the focus of the device
+// (wl_pointer, wl_touch, etc) used for the move. It is up to the
+// compositor to visually indicate that the move is taking place, such as
+// updating a pointer cursor, during the move. There is no guarantee
+// that the device focus will return when the move is completed.
+func (proxy *XdgToplevel) Move(connection Connection, aSeat ObjectID, aSerial uint32) (err error) {
+	request := XdgToplevelMoveRequest{
+		Seat:   aSeat,
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Resize requests to start an interactive resize
+//
+// Start a user-driven, interactive resize of the surface.
+//
+// This request must be used in response to some sort of user action
+// like a button press, key press, or touch down event. The passed
+// serial is used to determine the type of interactive resize (touch,
+// pointer, etc).
+//
+// The server may ignore resize requests depending on the state of
+// the surface (e.g. fullscreen or maximized).
+//
+// If triggered, the client will receive configure events with the
+// "resize" state enum value and the expected sizes. See the "resize"
+// enum value for more details about what is required. The client
+// must also acknowledge configure events using "ack_configure". After
+// the resize is completed, the client will receive another "configure"
+// event without the resize state.
+//
+// If triggered, the surface also will lose the focus of the device
+// (wl_pointer, wl_touch, etc) used for the resize. It is up to the
+// compositor to visually indicate that the resize is taking place,
+// such as updating a pointer cursor, during the resize. There is no
+// guarantee that the device focus will return when the resize is
+// completed.
+//
+// The edges parameter specifies how the surface should be resized,
+// and is one of the values of the resize_edge enum. The compositor
+// may use this information to update the surface position for
+// example when dragging the top left corner. The compositor may also
+// use this information to adapt its behavior, e.g. choose an
+// appropriate cursor image.
+func (proxy *XdgToplevel) Resize(connection Connection, aSeat ObjectID, aSerial uint32, aEdges uint32) (err error) {
+	request := XdgToplevelResizeRequest{
+		Seat:   aSeat,
+		Serial: aSerial,
+		Edges:  aEdges,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetMaxSize requests to set the maximum size
+//
+// Set a maximum size for the window.
+//
+// The client can specify a maximum size so that the compositor does
+// not try to configure the window beyond this size.
+//
+// The width and height arguments are in window geometry coordinates.
+// See xdg_surface.set_window_geometry.
+//
+// Values set in this way are double-buffered. They will get applied
+// on the next commit.
+//
+// The compositor can use this information to allow or disallow
+// different states like maximize or fullscreen and draw accurate
+// animations.
+//
+// Similarly, a tiling window manager may use this information to
+// place and resize client windows in a more effective way.
+//
+// The client should not rely on the compositor to obey the maximum
+// size. The compositor may decide to ignore the values set by the
+// client and request a larger size.
+//
+// If never set, or a value of zero in the request, means that the
+// client has no expected maximum size in the given dimension.
+// As a result, a client wishing to reset the maximum size
+// to an unspecified state can use zero for width and height in the
+// request.
+//
+// Requesting a maximum size to be smaller than the minimum size of
+// a surface is illegal and will result in a protocol error.
+//
+// The width and height must be greater than or equal to zero. Using
+// strictly negative values for width and height will result in a
+// protocol error.
+func (proxy *XdgToplevel) SetMaxSize(connection Connection, aWidth int32, aHeight int32) (err error) {
+	request := XdgToplevelSetMaxSizeRequest{
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetMinSize requests to set the minimum size
+//
+// Set a minimum size for the window.
+//
+// The client can specify a minimum size so that the compositor does
+// not try to configure the window below this size.
+//
+// The width and height arguments are in window geometry coordinates.
+// See xdg_surface.set_window_geometry.
+//
+// Values set in this way are double-buffered. They will get applied
+// on the next commit.
+//
+// The compositor can use this information to allow or disallow
+// different states like maximize or fullscreen and draw accurate
+// animations.
+//
+// Similarly, a tiling window manager may use this information to
+// place and resize client windows in a more effective way.
+//
+// The client should not rely on the compositor to obey the minimum
+// size. The compositor may decide to ignore the values set by the
+// client and request a smaller size.
+//
+// If never set, or a value of zero in the request, means that the
+// client has no expected minimum size in the given dimension.
+// As a result, a client wishing to reset the minimum size
+// to an unspecified state can use zero for width and height in the
+// request.
+//
+// Requesting a minimum size to be larger than the maximum size of
+// a surface is illegal and will result in a protocol error.
+//
+// The width and height must be greater than or equal to zero. Using
+// strictly negative values for width and height will result in a
+// protocol error.
+func (proxy *XdgToplevel) SetMinSize(connection Connection, aWidth int32, aHeight int32) (err error) {
+	request := XdgToplevelSetMinSizeRequest{
+		Width:  aWidth,
+		Height: aHeight,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetMaximized requests to maximize the window
+//
+// Maximize the surface.
+//
+// After requesting that the surface should be maximized, the compositor
+// will respond by emitting a configure event. Whether this configure
+// actually sets the window maximized is subject to compositor policies.
+// The client must then update its content, drawing in the configured
+// state. The client must also acknowledge the configure when committing
+// the new content (see ack_configure).
+//
+// It is up to the compositor to decide how and where to maximize the
+// surface, for example which output and what region of the screen should
+// be used.
+//
+// If the surface was already maximized, the compositor will still emit
+// a configure event with the "maximized" state.
+//
+// If the surface is in a fullscreen state, this request has no direct
+// effect. It may alter the state the surface is returned to when
+// unmaximized unless overridden by the compositor.
+func (proxy *XdgToplevel) SetMaximized(connection Connection) (err error) {
+	request := XdgToplevelSetMaximizedRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// UnsetMaximized requests to unmaximize the window
+//
+// Unmaximize the surface.
+//
+// After requesting that the surface should be unmaximized, the compositor
+// will respond by emitting a configure event. Whether this actually
+// un-maximizes the window is subject to compositor policies.
+// If available and applicable, the compositor will include the window
+// geometry dimensions the window had prior to being maximized in the
+// configure event. The client must then update its content, drawing it in
+// the configured state. The client must also acknowledge the configure
+// when committing the new content (see ack_configure).
+//
+// It is up to the compositor to position the surface after it was
+// unmaximized; usually the position the surface had before maximizing, if
+// applicable.
+//
+// If the surface was already not maximized, the compositor will still
+// emit a configure event without the "maximized" state.
+//
+// If the surface is in a fullscreen state, this request has no direct
+// effect. It may alter the state the surface is returned to when
+// unmaximized unless overridden by the compositor.
+func (proxy *XdgToplevel) UnsetMaximized(connection Connection) (err error) {
+	request := XdgToplevelUnsetMaximizedRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetFullscreen requests to set the window as fullscreen on an output
+//
+// Make the surface fullscreen.
+//
+// After requesting that the surface should be fullscreened, the
+// compositor will respond by emitting a configure event. Whether the
+// client is actually put into a fullscreen state is subject to compositor
+// policies. The client must also acknowledge the configure when
+// committing the new content (see ack_configure).
+//
+// The output passed by the request indicates the client's preference as
+// to which display it should be set fullscreen on. If this value is NULL,
+// it's up to the compositor to choose which display will be used to map
+// this surface.
+//
+// If the surface doesn't cover the whole output, the compositor will
+// position the surface in the center of the output and compensate with
+// with border fill covering the rest of the output. The content of the
+// border fill is undefined, but should be assumed to be in some way that
+// attempts to blend into the surrounding area (e.g. solid black).
+//
+// If the fullscreened surface is not opaque, the compositor must make
+// sure that other screen content not part of the same surface tree (made
+// up of subsurfaces, popups or similarly coupled surfaces) are not
+// visible below the fullscreened surface.
+func (proxy *XdgToplevel) SetFullscreen(connection Connection, aOutput ObjectID) (err error) {
+	request := XdgToplevelSetFullscreenRequest{
+		Output: aOutput,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// UnsetFullscreen requests to unset the window as fullscreen
+//
+// Make the surface no longer fullscreen.
+//
+// After requesting that the surface should be unfullscreened, the
+// compositor will respond by emitting a configure event.
+// Whether this actually removes the fullscreen state of the client is
+// subject to compositor policies.
+//
+// Making a surface unfullscreen sets states for the surface based on the following:
+// * the state(s) it may have had before becoming fullscreen
+// * any state(s) decided by the compositor
+// * any state(s) requested by the client while the surface was fullscreen
+//
+// The compositor may include the previous window geometry dimensions in
+// the configure event, if applicable.
+//
+// The client must also acknowledge the configure when committing the new
+// content (see ack_configure).
+func (proxy *XdgToplevel) UnsetFullscreen(connection Connection) (err error) {
+	request := XdgToplevelUnsetFullscreenRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetMinimized requests to set the window as minimized
+//
+// Request that the compositor minimize your surface. There is no
+// way to know if the surface is currently minimized, nor is there
+// any way to unset minimization on this surface.
+//
+// If you are looking to throttle redrawing when minimized, please
+// instead use the wl_surface.frame event for this, as this will
+// also work with live previews on windows in Alt-Tab, Expose or
+// similar compositor features.
+func (proxy *XdgToplevel) SetMinimized(connection Connection) (err error) {
+	request := XdgToplevelSetMinimizedRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure XdgToplevel implements Proxy.
+var _ Proxy = &XdgToplevel{}
+
 // #endregion Interface xdg_shell.xdg_toplevel
 
 // ----------------------------------------------------------------------------
@@ -21645,6 +30168,9 @@ type XdgPopupDestroyRequest struct {
 
 // Opcode returns the request opcode for xdg_popup.destroy in xdg_shell
 func (XdgPopupDestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for xdg_popup.destroy in xdg_shell
+func (XdgPopupDestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure XdgPopupDestroyRequest implements Message.
 var _ Message = XdgPopupDestroyRequest{}
@@ -21711,6 +30237,9 @@ type XdgPopupGrabRequest struct {
 // Opcode returns the request opcode for xdg_popup.grab in xdg_shell
 func (XdgPopupGrabRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for xdg_popup.grab in xdg_shell
+func (XdgPopupGrabRequest) MessageName() string { return "grab" }
+
 // Ensure XdgPopupGrabRequest implements Message.
 var _ Message = XdgPopupGrabRequest{}
 
@@ -21763,6 +30292,9 @@ type XdgPopupRepositionRequest struct {
 // Opcode returns the request opcode for xdg_popup.reposition in xdg_shell
 func (XdgPopupRepositionRequest) Opcode() uint16 { return 2 }
 
+// MessageName returns the request name for xdg_popup.reposition in xdg_shell
+func (XdgPopupRepositionRequest) MessageName() string { return "reposition" }
+
 // Ensure XdgPopupRepositionRequest implements Message.
 var _ Message = XdgPopupRepositionRequest{}
 
@@ -21811,6 +30343,9 @@ type XdgPopupConfigureEvent struct {
 // Opcode returns the event opcode for xdg_popup.configure in xdg_shell
 func (XdgPopupConfigureEvent) Opcode() uint16 { return 0 }
 
+// MessageName returns the event name for xdg_popup.configure in xdg_shell
+func (XdgPopupConfigureEvent) MessageName() string { return "configure" }
+
 // Ensure XdgPopupConfigureEvent implements Message.
 var _ Message = XdgPopupConfigureEvent{}
 
@@ -21853,6 +30388,9 @@ type XdgPopupPopupDoneEvent struct {
 // Opcode returns the event opcode for xdg_popup.popup_done in xdg_shell
 func (XdgPopupPopupDoneEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for xdg_popup.popup_done in xdg_shell
+func (XdgPopupPopupDoneEvent) MessageName() string { return "popup_done" }
+
 // Ensure XdgPopupPopupDoneEvent implements Message.
 var _ Message = XdgPopupPopupDoneEvent{}
 
@@ -21888,6 +30426,9 @@ type XdgPopupRepositionedEvent struct {
 
 // Opcode returns the event opcode for xdg_popup.repositioned in xdg_shell
 func (XdgPopupRepositionedEvent) Opcode() uint16 { return 2 }
+
+// MessageName returns the event name for xdg_popup.repositioned in xdg_shell
+func (XdgPopupRepositionedEvent) MessageName() string { return "repositioned" }
 
 // Ensure XdgPopupRepositionedEvent implements Message.
 var _ Message = XdgPopupRepositionedEvent{}
@@ -21935,6 +30476,132 @@ type XdgPopup struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *XdgPopup) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (XdgPopup) Descriptor() *InterfaceDescriptor {
+	return &XdgPopupDescriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (XdgPopup) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &XdgPopupConfigureEvent{}
+	case 1:
+		return &XdgPopupPopupDoneEvent{}
+	case 2:
+		return &XdgPopupRepositionedEvent{}
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to remove xdg_popup interface
+//
+// This destroys the popup. Explicitly destroying the xdg_popup
+// object will also dismiss the popup, and unmap the surface.
+//
+// If this xdg_popup is not the "topmost" popup, a protocol error
+// will be sent.
+func (proxy *XdgPopup) Destroy(connection Connection) (err error) {
+	request := XdgPopupDestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Grab requests to make the popup take an explicit grab
+//
+// This request makes the created popup take an explicit grab. An explicit
+// grab will be dismissed when the user dismisses the popup, or when the
+// client destroys the xdg_popup. This can be done by the user clicking
+// outside the surface, using the keyboard, or even locking the screen
+// through closing the lid or a timeout.
+//
+// If the compositor denies the grab, the popup will be immediately
+// dismissed.
+//
+// This request must be used in response to some sort of user action like a
+// button press, key press, or touch down event. The serial number of the
+// event should be passed as 'serial'.
+//
+// The parent of a grabbing popup must either be an xdg_toplevel surface or
+// another xdg_popup with an explicit grab. If the parent is another
+// xdg_popup it means that the popups are nested, with this popup now being
+// the topmost popup.
+//
+// Nested popups must be destroyed in the reverse order they were created
+// in, e.g. the only popup you are allowed to destroy at all times is the
+// topmost one.
+//
+// When compositors choose to dismiss a popup, they may dismiss every
+// nested grabbing popup as well. When a compositor dismisses popups, it
+// will follow the same dismissing order as required from the client.
+//
+// The parent of a grabbing popup must either be another xdg_popup with an
+// active explicit grab, or an xdg_popup or xdg_toplevel, if there are no
+// explicit grabs already taken.
+//
+// If the topmost grabbing popup is destroyed, the grab will be returned to
+// the parent of the popup, if that parent previously had an explicit grab.
+//
+// If the parent is a grabbing popup which has already been dismissed, this
+// popup will be immediately dismissed. If the parent is a popup that did
+// not take an explicit grab, an error will be raised.
+//
+// During a popup grab, the client owning the grab will receive pointer
+// and touch events for all their surfaces as normal (similar to an
+// "owner-events" grab in X11 parlance), while the top most grabbing popup
+// will always have keyboard focus.
+func (proxy *XdgPopup) Grab(connection Connection, aSeat ObjectID, aSerial uint32) (err error) {
+	request := XdgPopupGrabRequest{
+		Seat:   aSeat,
+		Serial: aSerial,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Reposition requests to recalculate the popup's location
+//
+// Reposition an already-mapped popup. The popup will be placed given the
+// details in the passed xdg_positioner object, and a
+// xdg_popup.repositioned followed by xdg_popup.configure and
+// xdg_surface.configure will be emitted in response. Any parameters set
+// by the previous positioner will be discarded.
+//
+// The passed token will be sent in the corresponding
+// xdg_popup.repositioned event. The new popup position will not take
+// effect until the corresponding configure event is acknowledged by the
+// client. See xdg_popup.repositioned for details. The token itself is
+// opaque, and has no other special meaning.
+//
+// If multiple reposition requests are sent, the compositor may skip all
+// but the last one.
+//
+// If the popup is repositioned in response to a configure event for its
+// parent, the client should send an xdg_positioner.set_parent_configure
+// and possibly an xdg_positioner.set_parent_size request to allow the
+// compositor to properly constrain the popup.
+//
+// If the popup is repositioned together with a parent that is being
+// resized, but not in response to a configure event, the client should
+// send an xdg_positioner.set_parent_size request.
+func (proxy *XdgPopup) Reposition(connection Connection, aPositioner ObjectID, aToken uint32) (err error) {
+	request := XdgPopupRepositionRequest{
+		Positioner: aPositioner,
+		Token:      aToken,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure XdgPopup implements Proxy.
+var _ Proxy = &XdgPopup{}
+
 // #endregion Interface xdg_shell.xdg_popup
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -21954,6 +30621,9 @@ type ZwpXwaylandKeyboardGrabManagerV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_xwayland_keyboard_grab_manager_v1.destroy in xwayland_keyboard_grab_unstable_v1
 func (ZwpXwaylandKeyboardGrabManagerV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_xwayland_keyboard_grab_manager_v1.destroy in xwayland_keyboard_grab_unstable_v1
+func (ZwpXwaylandKeyboardGrabManagerV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpXwaylandKeyboardGrabManagerV1DestroyRequest implements Message.
 var _ Message = ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}
@@ -22000,6 +30670,11 @@ type ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest struct {
 // Opcode returns the request opcode for zwp_xwayland_keyboard_grab_manager_v1.grab_keyboard in xwayland_keyboard_grab_unstable_v1
 func (ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_xwayland_keyboard_grab_manager_v1.grab_keyboard in xwayland_keyboard_grab_unstable_v1
+func (ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest) MessageName() string {
+	return "grab_keyboard"
+}
+
 // Ensure ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest implements Message.
 var _ Message = ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}
 
@@ -22027,6 +30702,71 @@ type ZwpXwaylandKeyboardGrabManagerV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpXwaylandKeyboardGrabManagerV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpXwaylandKeyboardGrabManagerV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpXwaylandKeyboardGrabManagerV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpXwaylandKeyboardGrabManagerV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the keyboard grab manager
+//
+// Destroy the keyboard grab manager.
+func (proxy *ZwpXwaylandKeyboardGrabManagerV1) Destroy(connection Connection) (err error) {
+	request := ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GrabKeyboard requests to grab the keyboard to a surface
+//
+// The grab_keyboard request asks for a grab of the keyboard, forcing
+// the keyboard focus for the given seat upon the given surface.
+//
+// The protocol provides no guarantee that the grab is ever satisfied,
+// and does not require the compositor to send an error if the grab
+// cannot ever be satisfied. It is thus possible to request a keyboard
+// grab that will never be effective.
+//
+// The protocol:
+//
+// * does not guarantee that the grab itself is applied for a surface,
+// the grab request may be silently ignored by the compositor,
+// * does not guarantee that any events are sent to this client even
+// if the grab is applied to a surface,
+// * does not guarantee that events sent to this client are exhaustive,
+// a compositor may filter some events for its own consumption,
+// * does not guarantee that events sent to this client are continuous,
+// a compositor may change and reroute keyboard events while the grab
+// is nominally active.
+func (proxy *ZwpXwaylandKeyboardGrabManagerV1) GrabKeyboard(connection Connection, aSurface ObjectID, aSeat ObjectID) (aID *ZwpXwaylandKeyboardGrabV1, err error) {
+	aID = &ZwpXwaylandKeyboardGrabV1{connection.NewID()}
+	request := ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+		Seat:    aSeat,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpXwaylandKeyboardGrabManagerV1 implements Proxy.
+var _ Proxy = &ZwpXwaylandKeyboardGrabManagerV1{}
+
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_manager_v1
 
 // ----------------------------------------------------------------------------
@@ -22041,6 +30781,9 @@ type ZwpXwaylandKeyboardGrabV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_xwayland_keyboard_grab_v1.destroy in xwayland_keyboard_grab_unstable_v1
 func (ZwpXwaylandKeyboardGrabV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_xwayland_keyboard_grab_v1.destroy in xwayland_keyboard_grab_unstable_v1
+func (ZwpXwaylandKeyboardGrabV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpXwaylandKeyboardGrabV1DestroyRequest implements Message.
 var _ Message = ZwpXwaylandKeyboardGrabV1DestroyRequest{}
@@ -22059,6 +30802,37 @@ var _ Request = &ZwpXwaylandKeyboardGrabV1DestroyRequest{}
 type ZwpXwaylandKeyboardGrabV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpXwaylandKeyboardGrabV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpXwaylandKeyboardGrabV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpXwaylandKeyboardGrabV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpXwaylandKeyboardGrabV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy the grabbed keyboard object
+//
+// Destroy the grabbed keyboard object. If applicable, the compositor
+// will ungrab the keyboard.
+func (proxy *ZwpXwaylandKeyboardGrabV1) Destroy(connection Connection) (err error) {
+	request := ZwpXwaylandKeyboardGrabV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// Ensure ZwpXwaylandKeyboardGrabV1 implements Proxy.
+var _ Proxy = &ZwpXwaylandKeyboardGrabV1{}
 
 // #endregion Interface xwayland_keyboard_grab_unstable_v1.zwp_xwayland_keyboard_grab_v1
 
@@ -22088,6 +30862,9 @@ type ZwpLinuxExplicitSynchronizationV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_linux_explicit_synchronization_v1.destroy in zwp_linux_explicit_synchronization_unstable_v1
 func (ZwpLinuxExplicitSynchronizationV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_linux_explicit_synchronization_v1.destroy in zwp_linux_explicit_synchronization_unstable_v1
+func (ZwpLinuxExplicitSynchronizationV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpLinuxExplicitSynchronizationV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxExplicitSynchronizationV1DestroyRequest{}
@@ -22123,6 +30900,11 @@ type ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest struct {
 
 // Opcode returns the request opcode for zwp_linux_explicit_synchronization_v1.get_synchronization in zwp_linux_explicit_synchronization_unstable_v1
 func (ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest) Opcode() uint16 { return 1 }
+
+// MessageName returns the request name for zwp_linux_explicit_synchronization_v1.get_synchronization in zwp_linux_explicit_synchronization_unstable_v1
+func (ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest) MessageName() string {
+	return "get_synchronization"
+}
 
 // Ensure ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest implements Message.
 var _ Message = ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
@@ -22162,6 +30944,64 @@ var _ Request = &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
 type ZwpLinuxExplicitSynchronizationV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpLinuxExplicitSynchronizationV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpLinuxExplicitSynchronizationV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpLinuxExplicitSynchronizationV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpLinuxExplicitSynchronizationV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy explicit synchronization factory object
+//
+// Destroy this explicit synchronization factory object. Other objects,
+// including zwp_linux_surface_synchronization_v1 objects created by this
+// factory, shall not be affected by this request.
+func (proxy *ZwpLinuxExplicitSynchronizationV1) Destroy(connection Connection) (err error) {
+	request := ZwpLinuxExplicitSynchronizationV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetSynchronization requests to extend surface interface for explicit synchronization
+//
+// Instantiate an interface extension for the given wl_surface to provide
+// explicit synchronization.
+//
+// If the given wl_surface already has an explicit synchronization object
+// associated, the synchronization_exists protocol error is raised.
+//
+// Graphics APIs, like EGL or Vulkan, that manage the buffer queue and
+// commits of a wl_surface themselves, are likely to be using this
+// extension internally. If a client is using such an API for a
+// wl_surface, it should not directly use this extension on that surface,
+// to avoid raising a synchronization_exists protocol error.
+func (proxy *ZwpLinuxExplicitSynchronizationV1) GetSynchronization(connection Connection, aSurface ObjectID) (aID *ZwpLinuxSurfaceSynchronizationV1, err error) {
+	aID = &ZwpLinuxSurfaceSynchronizationV1{connection.NewID()}
+	request := ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{
+		ID:      aID.id,
+		Surface: aSurface,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aID)
+	}
+	return
+}
+
+// Ensure ZwpLinuxExplicitSynchronizationV1 implements Proxy.
+var _ Proxy = &ZwpLinuxExplicitSynchronizationV1{}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_explicit_synchronization_v1
 
@@ -22205,6 +31045,9 @@ type ZwpLinuxSurfaceSynchronizationV1DestroyRequest struct {
 
 // Opcode returns the request opcode for zwp_linux_surface_synchronization_v1.destroy in zwp_linux_explicit_synchronization_unstable_v1
 func (ZwpLinuxSurfaceSynchronizationV1DestroyRequest) Opcode() uint16 { return 0 }
+
+// MessageName returns the request name for zwp_linux_surface_synchronization_v1.destroy in zwp_linux_explicit_synchronization_unstable_v1
+func (ZwpLinuxSurfaceSynchronizationV1DestroyRequest) MessageName() string { return "destroy" }
 
 // Ensure ZwpLinuxSurfaceSynchronizationV1DestroyRequest implements Message.
 var _ Message = ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
@@ -22250,6 +31093,11 @@ type ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest struct {
 // Opcode returns the request opcode for zwp_linux_surface_synchronization_v1.set_acquire_fence in zwp_linux_explicit_synchronization_unstable_v1
 func (ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest) Opcode() uint16 { return 1 }
 
+// MessageName returns the request name for zwp_linux_surface_synchronization_v1.set_acquire_fence in zwp_linux_explicit_synchronization_unstable_v1
+func (ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest) MessageName() string {
+	return "set_acquire_fence"
+}
+
 // Ensure ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest implements Message.
 var _ Message = ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}
 
@@ -22290,6 +31138,9 @@ type ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest struct {
 
 // Opcode returns the request opcode for zwp_linux_surface_synchronization_v1.get_release in zwp_linux_explicit_synchronization_unstable_v1
 func (ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest) Opcode() uint16 { return 2 }
+
+// MessageName returns the request name for zwp_linux_surface_synchronization_v1.get_release in zwp_linux_explicit_synchronization_unstable_v1
+func (ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest) MessageName() string { return "get_release" }
 
 // Ensure ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest implements Message.
 var _ Message = ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
@@ -22341,6 +31192,107 @@ type ZwpLinuxSurfaceSynchronizationV1 struct {
 	id ObjectID
 }
 
+// ID returns the ID of the object.
+func (proxy *ZwpLinuxSurfaceSynchronizationV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpLinuxSurfaceSynchronizationV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpLinuxSurfaceSynchronizationV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpLinuxSurfaceSynchronizationV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	default:
+		return nil
+	}
+}
+
+// Destroy requests to destroy synchronization object
+//
+// Destroy this explicit synchronization object.
+//
+// Any fence set by this object with set_acquire_fence since the last
+// commit will be discarded by the server. Any fences set by this object
+// before the last commit are not affected.
+//
+// zwp_linux_buffer_release_v1 objects created by this object are not
+// affected by this request.
+func (proxy *ZwpLinuxSurfaceSynchronizationV1) Destroy(connection Connection) (err error) {
+	request := ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// SetAcquireFence requests to set the acquire fence
+//
+// Set the acquire fence that must be signaled before the compositor
+// may sample from the buffer attached with wl_surface.attach. The fence
+// is a dma_fence kernel object.
+//
+// The acquire fence is double-buffered state, and will be applied on the
+// next wl_surface.commit request for the associated surface. Thus, it
+// applies only to the buffer that is attached to the surface at commit
+// time.
+//
+// If the provided fd is not a valid dma_fence fd, then an INVALID_FENCE
+// error is raised.
+//
+// If a fence has already been attached during the same commit cycle, a
+// DUPLICATE_FENCE error is raised.
+//
+// If the associated wl_surface was destroyed, a NO_SURFACE error is
+// raised.
+//
+// If at surface commit time the attached buffer does not support explicit
+// synchronization, an UNSUPPORTED_BUFFER error is raised.
+//
+// If at surface commit time there is no buffer attached, a NO_BUFFER
+// error is raised.
+func (proxy *ZwpLinuxSurfaceSynchronizationV1) SetAcquireFence(connection Connection, aFD FD) (err error) {
+	request := ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{
+		FD: aFD,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	return
+}
+
+// GetRelease requests to release fence for last-attached buffer
+//
+// Create a listener for the release of the buffer attached by the
+// client with wl_surface.attach. See zwp_linux_buffer_release_v1
+// documentation for more information.
+//
+// The release object is double-buffered state, and will be associated
+// with the buffer that is attached to the surface at wl_surface.commit
+// time.
+//
+// If a zwp_linux_buffer_release_v1 object has already been requested for
+// the surface in the same commit cycle, a DUPLICATE_RELEASE error is
+// raised.
+//
+// If the associated wl_surface was destroyed, a NO_SURFACE error
+// is raised.
+//
+// If at surface commit time there is no buffer attached, a NO_BUFFER
+// error is raised.
+func (proxy *ZwpLinuxSurfaceSynchronizationV1) GetRelease(connection Connection) (aRelease *ZwpLinuxBufferReleaseV1, err error) {
+	aRelease = &ZwpLinuxBufferReleaseV1{connection.NewID()}
+	request := ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{
+		Release: aRelease.id,
+	}
+	err = connection.SendRequest(proxy.id, &request)
+	if err == nil {
+		connection.RegisterProxy(aRelease)
+	}
+	return
+}
+
+// Ensure ZwpLinuxSurfaceSynchronizationV1 implements Proxy.
+var _ Proxy = &ZwpLinuxSurfaceSynchronizationV1{}
+
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_surface_synchronization_v1
 
 // ----------------------------------------------------------------------------
@@ -22366,6 +31318,9 @@ type ZwpLinuxBufferReleaseV1FencedReleaseEvent struct {
 
 // Opcode returns the event opcode for zwp_linux_buffer_release_v1.fenced_release in zwp_linux_explicit_synchronization_unstable_v1
 func (ZwpLinuxBufferReleaseV1FencedReleaseEvent) Opcode() uint16 { return 0 }
+
+// MessageName returns the event name for zwp_linux_buffer_release_v1.fenced_release in zwp_linux_explicit_synchronization_unstable_v1
+func (ZwpLinuxBufferReleaseV1FencedReleaseEvent) MessageName() string { return "fenced_release" }
 
 // Ensure ZwpLinuxBufferReleaseV1FencedReleaseEvent implements Message.
 var _ Message = ZwpLinuxBufferReleaseV1FencedReleaseEvent{}
@@ -22402,6 +31357,9 @@ type ZwpLinuxBufferReleaseV1ImmediateReleaseEvent struct {
 // Opcode returns the event opcode for zwp_linux_buffer_release_v1.immediate_release in zwp_linux_explicit_synchronization_unstable_v1
 func (ZwpLinuxBufferReleaseV1ImmediateReleaseEvent) Opcode() uint16 { return 1 }
 
+// MessageName returns the event name for zwp_linux_buffer_release_v1.immediate_release in zwp_linux_explicit_synchronization_unstable_v1
+func (ZwpLinuxBufferReleaseV1ImmediateReleaseEvent) MessageName() string { return "immediate_release" }
+
 // Ensure ZwpLinuxBufferReleaseV1ImmediateReleaseEvent implements Message.
 var _ Message = ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
 
@@ -22435,6 +31393,31 @@ var _ Event = &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
 type ZwpLinuxBufferReleaseV1 struct {
 	id ObjectID
 }
+
+// ID returns the ID of the object.
+func (proxy *ZwpLinuxBufferReleaseV1) ID() ObjectID {
+	return proxy.id
+}
+
+// Descriptor returns the interface descriptor for the interface of the object.
+func (ZwpLinuxBufferReleaseV1) Descriptor() *InterfaceDescriptor {
+	return &ZwpLinuxBufferReleaseV1Descriptor
+}
+
+// Dispatch returns an Event object for a given opcode.
+func (ZwpLinuxBufferReleaseV1) Dispatch(opcode uint16) Event {
+	switch opcode {
+	case 0:
+		return &ZwpLinuxBufferReleaseV1FencedReleaseEvent{}
+	case 1:
+		return &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
+	default:
+		return nil
+	}
+}
+
+// Ensure ZwpLinuxBufferReleaseV1 implements Proxy.
+var _ Proxy = &ZwpLinuxBufferReleaseV1{}
 
 // #endregion Interface zwp_linux_explicit_synchronization_unstable_v1.zwp_linux_buffer_release_v1
 
