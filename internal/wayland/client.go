@@ -15,8 +15,10 @@ var _ Connection = &Display{}
 
 // Display manages a connection to a Wayland display.
 type Display struct {
-	socket  *net.UnixConn
-	display *WlDisplay
+	socket       *net.UnixConn
+	display      *WlDisplay
+	globals      *Globals
+	errorHandler ErrorHandler
 
 	objects      map[ObjectID]Proxy
 	objectsMutex sync.RWMutex
@@ -51,24 +53,69 @@ func Connect(display string) (*Display, error) {
 	handlers := make(map[ObjectID][]Handler)
 
 	conn := &Display{
-		socket:   socket,
-		display:  wldisplay,
-		objects:  objects,
-		handlers: handlers,
-		id:       1,
+		socket:       socket,
+		display:      wldisplay,
+		errorHandler: PanicOnError{},
+		objects:      objects,
+		handlers:     handlers,
+		id:           1,
 	}
+
+	globals := &Globals{
+		globals: make(map[string]WlRegistryGlobalEvent),
+		conn:    conn,
+	}
+
+	conn.globals = globals
 
 	return conn, nil
 }
 
-// Sync returns a callback that can be used as a barrier for syncronization.
-func (d *Display) Sync() (cb *WlCallback, err error) {
-	return d.display.Sync(d)
+func (d *Display) SetErrorHandler(h ErrorHandler) {
+	d.errorHandler = h
 }
 
-// Registry requests the global registry object.
-func (d *Display) Registry() (registry *WlRegistry, err error) {
-	return d.display.GetRegistry(d)
+type cbHandler struct {
+	ch   chan uint32
+	conn *Display
+}
+
+func (s *cbHandler) Handle(event Event) {
+	switch t := event.(type) {
+	case *WlCallbackDoneEvent:
+		s.ch <- t.CallbackData
+		close(s.ch)
+	}
+}
+
+// Sync synchronizes the connection.
+func (d *Display) Sync() error {
+	callback := &WlCallback{id: d.NewID()}
+	request := WlDisplaySyncRequest{
+		Callback: callback.id,
+	}
+	d.RegisterProxy(callback)
+	handler := &cbHandler{
+		ch:   make(chan uint32),
+		conn: d,
+	}
+	d.RegisterHandler(callback.id, handler)
+	defer d.UnregisterHandler(callback.id, handler)
+
+	err := d.SendRequest(d.display.id, &request)
+	if err != nil {
+		return err
+	}
+
+	// TODO(jchw): Need to handle connection error case somehow.
+	<-handler.ch
+
+	return nil
+}
+
+// Globals gets the globals manager.
+func (d *Display) Globals() *Globals {
+	return d.globals
 }
 
 // NewID returns the next ID.
@@ -163,7 +210,7 @@ func (d *Display) PollEvent() (ObjectID, Event, error) {
 
 	err = event.Scan(scanner)
 	if err != nil {
-		return 0, nil, fmt.Errorf("scanning event %s for %d (interface %s)", event.MessageName(), scanner.header.ObjectID, object.Descriptor().Name)
+		return 0, nil, fmt.Errorf("scanning event %s for %d (interface %s): %w", event.MessageName(), scanner.header.ObjectID, object.Descriptor().Name, err)
 	}
 
 	return ObjectID(scanner.header.ObjectID), event, nil
@@ -175,10 +222,22 @@ func (d *Display) DispatchEvent(object ObjectID, event Event) {
 	case *WlDisplayDeleteIDEvent:
 		d.UnregisterObject(ObjectID(t.ID))
 		d.UnregisterHandlers(ObjectID(t.ID))
+	case *WlRegistryGlobalEvent:
+		d.globals.registerGlobal(t)
+	case *WlRegistryGlobalRemoveEvent:
+		d.globals.unregisterGlobal(t)
+	case *WlDisplayErrorEvent:
+		d.errorHandler.Handle(WaylandError{
+			ObjectID: t.ObjectID,
+			Code:     t.Code,
+			Message:  t.Message,
+		})
+		return
 	}
 
 	d.handlersMutex.Lock()
-	handlers := append([]Handler{}, d.handlers[object]...)
+	handlers := make([]Handler, len(d.handlers[object]))
+	copy(handlers, d.handlers[object])
 	d.handlersMutex.Unlock()
 
 	for _, handler := range handlers {

@@ -34,8 +34,8 @@ func WriteRequest(socket *net.UnixConn, object ObjectID, request Request) error 
 		return err
 	}
 
-	size := w.Len() + 8
-	if size > int(uint16(size)) || size < 8 {
+	size := w.Len()
+	if size > int(uint16(size)) {
 		return ErrMessageOverflow
 	}
 
@@ -44,7 +44,7 @@ func WriteRequest(socket *net.UnixConn, object ObjectID, request Request) error 
 	*(*RequestHeader)((unsafe.Pointer)(&buf[0])) = RequestHeader{
 		ObjectID: uint32(object),
 		Opcode:   request.Opcode(),
-		Size:     uint16(w.Len() + 8),
+		Size:     uint16(size),
 	}
 
 	n, oobn, err := socket.WriteMsgUnix(buf, emitter.oob, nil)
@@ -87,19 +87,20 @@ func (e *RequestEmitter) PutFixed(v Fixed) error {
 }
 
 func (e *RequestEmitter) PutString(v string) error {
-	if err := e.PutUint(uint32(len(v))); err != nil {
+	b := []byte(v)
+	b = append(b, 0)
+	for len(b)&3 != 0 {
+		b = append(b, 0)
+	}
+
+	len := uint32(len(v) + 1)
+
+	if err := e.PutUint(len); err != nil {
 		return err
 	}
 
-	if _, err := e.writer.Write([]byte(v)); err != nil {
+	if _, err := e.writer.Write(b); err != nil {
 		return err
-	}
-
-	pad := 4 - (len(v) & 0x3)
-	if pad > 0 {
-		if _, err := e.writer.Write(make([]byte, pad)); err != nil {
-			return err
-		}
 	}
 
 	return nil

@@ -58,6 +58,7 @@ type entry struct {
 type request struct {
 	XMLName xml.Name `xml:"request"`
 	Name    string   `xml:"name,attr"`
+	Since   int      `xml:"since,attr,omitempty"`
 
 	Description description `xml:"description"`
 	Args        []arg       `xml:"arg"`
@@ -225,6 +226,10 @@ func codegen(w io.Writer) error {
 
 			if _, err := fmt.Fprintf(w, "\tName: %q,\n", intf.Name); err != nil {
 				return fmt.Errorf("writing protocol %q interface descriptor %q name value: %w", proto.Name, intf.Name, err)
+			}
+
+			if _, err := fmt.Fprintf(w, "\tVersion: %d,\n", intf.Version); err != nil {
+				return fmt.Errorf("writing protocol %q interface descriptor %q version value: %w", proto.Name, intf.Name, err)
 			}
 
 			if _, err := fmt.Fprintf(w, "\tEvents: []EventDescriptor{\n"); err != nil {
@@ -490,12 +495,17 @@ func codegenproto(w io.Writer, proto protocol) error {
 		}
 
 		// Proxy struct declaration.
-		if _, err := fmt.Fprintf(w, "type %s struct {\n\tid ObjectID\n}\n\n", structname); err != nil {
+		if _, err := fmt.Fprintf(w, "type %s struct {\n\tid ObjectID\n\tversion uint32\n}\n\n", structname); err != nil {
 			return fmt.Errorf("writing proxy %s struct: %w", structname, err)
 		}
 
 		// Implement ID function.
 		if _, err := fmt.Fprintf(w, "// ID returns the ID of the object.\nfunc (proxy *%s) ID() ObjectID {\n\treturn proxy.id\n}\n\n", structname); err != nil {
+			return fmt.Errorf("writing event %s Proxy interface Descriptor method: %w", structname, err)
+		}
+
+		// Implement Version function.
+		if _, err := fmt.Fprintf(w, "// ID returns the Version of the interface.\nfunc (proxy *%s) Version() uint32 {\n\treturn proxy.version\n}\n\n", structname); err != nil {
 			return fmt.Errorf("writing event %s Proxy interface Descriptor method: %w", structname, err)
 		}
 
@@ -555,8 +565,12 @@ func codegenproto(w io.Writer, proto protocol) error {
 				case "fd":
 					_, err = fmt.Fprintf(w, ", %s FD", argname)
 				case "new_id":
-					// Skip, leave for output.
-					continue
+					// Untyped new_id needs interface name and version.
+					// I have no idea why these aren't just explicit.
+					// In fact, I have no idea why name is needed at all.
+					if arg.Interface == "" {
+						_, err = fmt.Fprintf(w, ", %sInterfaceName string, %sInterfaceVersion uint32", argname, argname)
+					}
 				default:
 					err = fmt.Errorf("invalid type %s", arg.Type)
 				}
@@ -608,7 +622,7 @@ func codegenproto(w io.Writer, proto protocol) error {
 					continue
 				case "new_id":
 					if arg.Interface != "" {
-						if _, err := fmt.Fprintf(w, "\t%s = &%s{connection.NewID()}\n", argname, namegen(arg.Interface)); err != nil {
+						if _, err := fmt.Fprintf(w, "\t%s = &%s{connection.NewID(), proxy.version}\n", argname, namegen(arg.Interface)); err != nil {
 							return fmt.Errorf("writing function %s id assignment %s: %w", funcname, argname, err)
 						}
 					} else {
@@ -639,6 +653,16 @@ func codegenproto(w io.Writer, proto protocol) error {
 				} else {
 					if _, err := fmt.Fprintf(w, "\t\t%s: a%s,\n", argname, argname); err != nil {
 						return fmt.Errorf("writing function %s request arg %s assignment: %w", funcname, argname, err)
+					}
+
+					// Set synthesized arguments.
+					if arg.Type == "new_id" {
+						if _, err := fmt.Fprintf(w, "\t\t%sInterfaceName: a%sInterfaceName,\n", argname, argname); err != nil {
+							return fmt.Errorf("writing function %s request arg %sInterfaceName assignment: %w", funcname, argname, err)
+						}
+						if _, err := fmt.Fprintf(w, "\t\t%sInterfaceVersion: a%sInterfaceVersion,\n", argname, argname); err != nil {
+							return fmt.Errorf("writing function %s request arg %sInterfaceVersion assignment: %w", funcname, argname, err)
+						}
 					}
 				}
 			}
@@ -722,8 +746,22 @@ func arggen(w io.Writer, arg arg) error {
 	}
 
 	// Write actual arg.
-	if _, err := fmt.Fprintf(w, "\t%s %s\n\n", argname, typ); err != nil {
+	if _, err := fmt.Fprintf(w, "\t%s %s\n", argname, typ); err != nil {
 		return fmt.Errorf("writing argument %s: %w", argname, err)
+	}
+
+	// Synthesize implied arguments.
+	if arg.Type == "new_id" && arg.Interface == "" {
+		if _, err := fmt.Fprintf(w, "\t%sInterfaceName string\n", argname); err != nil {
+			return fmt.Errorf("writing argument %sInterfaceName: %w", argname, err)
+		}
+		if _, err := fmt.Fprintf(w, "\t%sInterfaceVersion uint32\n", argname); err != nil {
+			return fmt.Errorf("writing argument %sInterfaceVersion: %w", argname, err)
+		}
+	}
+
+	if _, err := fmt.Fprint(w, "\n"); err != nil {
+		return fmt.Errorf("writing extra newline for %s: %w", argname, err)
 	}
 
 	return nil
@@ -751,6 +789,16 @@ func argemitgen(w io.Writer, arg arg) error {
 	}
 
 	argname := namegen(arg.Name)
+
+	// Emit implied arguments.
+	if arg.Type == "new_id" && arg.Interface == "" {
+		if _, err := fmt.Fprintf(w, "\tif err := e.PutString(r.%sInterfaceName); err != nil {\n\t\treturn err\n\t}\n", argname); err != nil {
+			return fmt.Errorf("writing argument emitter %s: %w", argname, err)
+		}
+		if _, err := fmt.Fprintf(w, "\tif err := e.PutUint(r.%sInterfaceVersion); err != nil {\n\t\treturn err\n\t}\n", argname); err != nil {
+			return fmt.Errorf("writing argument emitter %s: %w", argname, err)
+		}
+	}
 
 	if _, err := fmt.Fprintf(w, "\tif err := e.Put%s(r.%s); err != nil {\n\t\treturn err\n\t}\n", typ, argname); err != nil {
 		return fmt.Errorf("writing argument emitter %s: %w", argname, err)

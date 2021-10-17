@@ -100,7 +100,11 @@ func (s *EventScanner) String() (string, error) {
 		return "", err
 	}
 
-	buf := make([]byte, len+(4-(len&3)))
+	if len&0x3 != 0 {
+		len += 4 - len&0x3
+	}
+
+	buf := make([]byte, len)
 	if _, err := s.reader.Read(buf[:]); err != nil {
 		return "", err
 	}

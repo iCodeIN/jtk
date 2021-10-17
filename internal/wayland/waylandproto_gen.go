@@ -5,7 +5,8 @@ package wayland
 ////////////////////////////////////////////////////////////////////////////////
 // Interface Descriptors
 var WpDrmLeaseDeviceV1Descriptor = InterfaceDescriptor{
-	Name: "wp_drm_lease_device_v1",
+	Name:    "wp_drm_lease_device_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "drm_fd", Opcode: 0, Type: &WpDrmLeaseDeviceV1DrmFDEvent{}},
 		{Name: "connector", Opcode: 1, Type: &WpDrmLeaseDeviceV1ConnectorEvent{}},
@@ -18,7 +19,8 @@ var WpDrmLeaseDeviceV1Descriptor = InterfaceDescriptor{
 	},
 }
 var WpDrmLeaseConnectorV1Descriptor = InterfaceDescriptor{
-	Name: "wp_drm_lease_connector_v1",
+	Name:    "wp_drm_lease_connector_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "name", Opcode: 0, Type: &WpDrmLeaseConnectorV1NameEvent{}},
 		{Name: "description", Opcode: 1, Type: &WpDrmLeaseConnectorV1DescriptionEvent{}},
@@ -31,15 +33,17 @@ var WpDrmLeaseConnectorV1Descriptor = InterfaceDescriptor{
 	},
 }
 var WpDrmLeaseRequestV1Descriptor = InterfaceDescriptor{
-	Name:   "wp_drm_lease_request_v1",
-	Events: []EventDescriptor{},
+	Name:    "wp_drm_lease_request_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "request_connector", Opcode: 0, Type: &WpDrmLeaseRequestV1RequestConnectorRequest{}},
 		{Name: "submit", Opcode: 1, Type: &WpDrmLeaseRequestV1SubmitRequest{}},
 	},
 }
 var WpDrmLeaseV1Descriptor = InterfaceDescriptor{
-	Name: "wp_drm_lease_v1",
+	Name:    "wp_drm_lease_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "lease_fd", Opcode: 0, Type: &WpDrmLeaseV1LeaseFDEvent{}},
 		{Name: "finished", Opcode: 1, Type: &WpDrmLeaseV1FinishedEvent{}},
@@ -49,7 +53,8 @@ var WpDrmLeaseV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpFullscreenShellV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_fullscreen_shell_v1",
+	Name:    "zwp_fullscreen_shell_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "capability", Opcode: 0, Type: &ZwpFullscreenShellV1CapabilityEvent{}},
 	},
@@ -60,7 +65,8 @@ var ZwpFullscreenShellV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpFullscreenShellModeFeedbackV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_fullscreen_shell_mode_feedback_v1",
+	Name:    "zwp_fullscreen_shell_mode_feedback_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "mode_successful", Opcode: 0, Type: &ZwpFullscreenShellModeFeedbackV1ModeSuccessfulEvent{}},
 		{Name: "mode_failed", Opcode: 1, Type: &ZwpFullscreenShellModeFeedbackV1ModeFailedEvent{}},
@@ -69,22 +75,25 @@ var ZwpFullscreenShellModeFeedbackV1Descriptor = InterfaceDescriptor{
 	Requests: []RequestDescriptor{},
 }
 var ZwpIdleInhibitManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_idle_inhibit_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_idle_inhibit_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitManagerV1DestroyRequest{}},
 		{Name: "create_inhibitor", Opcode: 1, Type: &ZwpIdleInhibitManagerV1CreateInhibitorRequest{}},
 	},
 }
 var ZwpIdleInhibitorV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_idle_inhibitor_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_idle_inhibitor_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpIdleInhibitorV1DestroyRequest{}},
 	},
 }
 var ZwpInputMethodContextV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_input_method_context_v1",
+	Name:    "zwp_input_method_context_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "surrounding_text", Opcode: 0, Type: &ZwpInputMethodContextV1SurroundingTextEvent{}},
 		{Name: "reset", Opcode: 1, Type: &ZwpInputMethodContextV1ResetEvent{}},
@@ -111,7 +120,8 @@ var ZwpInputMethodContextV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpInputMethodV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_input_method_v1",
+	Name:    "zwp_input_method_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "activate", Opcode: 0, Type: &ZwpInputMethodV1ActivateEvent{}},
 		{Name: "deactivate", Opcode: 1, Type: &ZwpInputMethodV1DeactivateEvent{}},
@@ -119,23 +129,26 @@ var ZwpInputMethodV1Descriptor = InterfaceDescriptor{
 	Requests: []RequestDescriptor{},
 }
 var ZwpInputPanelV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_input_panel_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_input_panel_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "get_input_panel_surface", Opcode: 0, Type: &ZwpInputPanelV1GetInputPanelSurfaceRequest{}},
 	},
 }
 var ZwpInputPanelSurfaceV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_input_panel_surface_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_input_panel_surface_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "set_toplevel", Opcode: 0, Type: &ZwpInputPanelSurfaceV1SetToplevelRequest{}},
 		{Name: "set_overlay_panel", Opcode: 1, Type: &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}},
 	},
 }
 var ZwpInputTimestampsManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_input_timestamps_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_input_timestamps_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpInputTimestampsManagerV1DestroyRequest{}},
 		{Name: "get_keyboard_timestamps", Opcode: 1, Type: &ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{}},
@@ -144,7 +157,8 @@ var ZwpInputTimestampsManagerV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpInputTimestampsV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_input_timestamps_v1",
+	Name:    "zwp_input_timestamps_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "timestamp", Opcode: 0, Type: &ZwpInputTimestampsV1TimestampEvent{}},
 	},
@@ -153,15 +167,17 @@ var ZwpInputTimestampsV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpKeyboardShortcutsInhibitManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_keyboard_shortcuts_inhibit_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_keyboard_shortcuts_inhibit_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitManagerV1DestroyRequest{}},
 		{Name: "inhibit_shortcuts", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}},
 	},
 }
 var ZwpKeyboardShortcutsInhibitorV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_keyboard_shortcuts_inhibitor_v1",
+	Name:    "zwp_keyboard_shortcuts_inhibitor_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "active", Opcode: 0, Type: &ZwpKeyboardShortcutsInhibitorV1ActiveEvent{}},
 		{Name: "inactive", Opcode: 1, Type: &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}},
@@ -171,7 +187,8 @@ var ZwpKeyboardShortcutsInhibitorV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpLinuxDmabufV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_linux_dmabuf_v1",
+	Name:    "zwp_linux_dmabuf_v1",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "format", Opcode: 0, Type: &ZwpLinuxDmabufV1FormatEvent{}},
 		{Name: "modifier", Opcode: 1, Type: &ZwpLinuxDmabufV1ModifierEvent{}},
@@ -182,7 +199,8 @@ var ZwpLinuxDmabufV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpLinuxBufferParamsV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_linux_buffer_params_v1",
+	Name:    "zwp_linux_buffer_params_v1",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "created", Opcode: 0, Type: &ZwpLinuxBufferParamsV1CreatedEvent{}},
 		{Name: "failed", Opcode: 1, Type: &ZwpLinuxBufferParamsV1FailedEvent{}},
@@ -195,8 +213,9 @@ var ZwpLinuxBufferParamsV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPointerConstraintsV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_pointer_constraints_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_pointer_constraints_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpPointerConstraintsV1DestroyRequest{}},
 		{Name: "lock_pointer", Opcode: 1, Type: &ZwpPointerConstraintsV1LockPointerRequest{}},
@@ -204,7 +223,8 @@ var ZwpPointerConstraintsV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpLockedPointerV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_locked_pointer_v1",
+	Name:    "zwp_locked_pointer_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "locked", Opcode: 0, Type: &ZwpLockedPointerV1LockedEvent{}},
 		{Name: "unlocked", Opcode: 1, Type: &ZwpLockedPointerV1UnlockedEvent{}},
@@ -216,7 +236,8 @@ var ZwpLockedPointerV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpConfinedPointerV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_confined_pointer_v1",
+	Name:    "zwp_confined_pointer_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "confined", Opcode: 0, Type: &ZwpConfinedPointerV1ConfinedEvent{}},
 		{Name: "unconfined", Opcode: 1, Type: &ZwpConfinedPointerV1UnconfinedEvent{}},
@@ -227,8 +248,9 @@ var ZwpConfinedPointerV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPointerGesturesV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_pointer_gestures_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_pointer_gestures_v1",
+	Version: 3,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "get_swipe_gesture", Opcode: 0, Type: &ZwpPointerGesturesV1GetSwipeGestureRequest{}},
 		{Name: "get_pinch_gesture", Opcode: 1, Type: &ZwpPointerGesturesV1GetPinchGestureRequest{}},
@@ -237,7 +259,8 @@ var ZwpPointerGesturesV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPointerGestureSwipeV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_pointer_gesture_swipe_v1",
+	Name:    "zwp_pointer_gesture_swipe_v1",
+	Version: 2,
 	Events: []EventDescriptor{
 		{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureSwipeV1BeginEvent{}},
 		{Name: "update", Opcode: 1, Type: &ZwpPointerGestureSwipeV1UpdateEvent{}},
@@ -248,7 +271,8 @@ var ZwpPointerGestureSwipeV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPointerGesturePinchV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_pointer_gesture_pinch_v1",
+	Name:    "zwp_pointer_gesture_pinch_v1",
+	Version: 2,
 	Events: []EventDescriptor{
 		{Name: "begin", Opcode: 0, Type: &ZwpPointerGesturePinchV1BeginEvent{}},
 		{Name: "update", Opcode: 1, Type: &ZwpPointerGesturePinchV1UpdateEvent{}},
@@ -259,7 +283,8 @@ var ZwpPointerGesturePinchV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPointerGestureHoldV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_pointer_gesture_hold_v1",
+	Name:    "zwp_pointer_gesture_hold_v1",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "begin", Opcode: 0, Type: &ZwpPointerGestureHoldV1BeginEvent{}},
 		{Name: "end", Opcode: 1, Type: &ZwpPointerGestureHoldV1EndEvent{}},
@@ -269,7 +294,8 @@ var ZwpPointerGestureHoldV1Descriptor = InterfaceDescriptor{
 	},
 }
 var WpPresentationDescriptor = InterfaceDescriptor{
-	Name: "wp_presentation",
+	Name:    "wp_presentation",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "clock_id", Opcode: 0, Type: &WpPresentationClockIDEvent{}},
 	},
@@ -279,7 +305,8 @@ var WpPresentationDescriptor = InterfaceDescriptor{
 	},
 }
 var WpPresentationFeedbackDescriptor = InterfaceDescriptor{
-	Name: "wp_presentation_feedback",
+	Name:    "wp_presentation_feedback",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "sync_output", Opcode: 0, Type: &WpPresentationFeedbackSyncOutputEvent{}},
 		{Name: "presented", Opcode: 1, Type: &WpPresentationFeedbackPresentedEvent{}},
@@ -288,15 +315,17 @@ var WpPresentationFeedbackDescriptor = InterfaceDescriptor{
 	Requests: []RequestDescriptor{},
 }
 var ZwpRelativePointerManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_relative_pointer_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_relative_pointer_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpRelativePointerManagerV1DestroyRequest{}},
 		{Name: "get_relative_pointer", Opcode: 1, Type: &ZwpRelativePointerManagerV1GetRelativePointerRequest{}},
 	},
 }
 var ZwpRelativePointerV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_relative_pointer_v1",
+	Name:    "zwp_relative_pointer_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "relative_motion", Opcode: 0, Type: &ZwpRelativePointerV1RelativeMotionEvent{}},
 	},
@@ -305,15 +334,17 @@ var ZwpRelativePointerV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_tablet_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_tablet_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV1GetTabletSeatRequest{}},
 		{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV1DestroyRequest{}},
 	},
 }
 var ZwpTabletSeatV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_seat_v1",
+	Name:    "zwp_tablet_seat_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV1TabletAddedEvent{}},
 		{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV1ToolAddedEvent{}},
@@ -323,7 +354,8 @@ var ZwpTabletSeatV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletToolV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_tool_v1",
+	Name:    "zwp_tablet_tool_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "type", Opcode: 0, Type: &ZwpTabletToolV1TypeEvent{}},
 		{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV1HardwareSerialEvent{}},
@@ -351,7 +383,8 @@ var ZwpTabletToolV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_v1",
+	Name:    "zwp_tablet_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "name", Opcode: 0, Type: &ZwpTabletV1NameEvent{}},
 		{Name: "id", Opcode: 1, Type: &ZwpTabletV1IDEvent{}},
@@ -364,15 +397,17 @@ var ZwpTabletV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletManagerV2Descriptor = InterfaceDescriptor{
-	Name:   "zwp_tablet_manager_v2",
-	Events: []EventDescriptor{},
+	Name:    "zwp_tablet_manager_v2",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "get_tablet_seat", Opcode: 0, Type: &ZwpTabletManagerV2GetTabletSeatRequest{}},
 		{Name: "destroy", Opcode: 1, Type: &ZwpTabletManagerV2DestroyRequest{}},
 	},
 }
 var ZwpTabletSeatV2Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_seat_v2",
+	Name:    "zwp_tablet_seat_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "tablet_added", Opcode: 0, Type: &ZwpTabletSeatV2TabletAddedEvent{}},
 		{Name: "tool_added", Opcode: 1, Type: &ZwpTabletSeatV2ToolAddedEvent{}},
@@ -383,7 +418,8 @@ var ZwpTabletSeatV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletToolV2Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_tool_v2",
+	Name:    "zwp_tablet_tool_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "type", Opcode: 0, Type: &ZwpTabletToolV2TypeEvent{}},
 		{Name: "hardware_serial", Opcode: 1, Type: &ZwpTabletToolV2HardwareSerialEvent{}},
@@ -411,7 +447,8 @@ var ZwpTabletToolV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletV2Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_v2",
+	Name:    "zwp_tablet_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "name", Opcode: 0, Type: &ZwpTabletV2NameEvent{}},
 		{Name: "id", Opcode: 1, Type: &ZwpTabletV2IDEvent{}},
@@ -424,7 +461,8 @@ var ZwpTabletV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletPadRingV2Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_pad_ring_v2",
+	Name:    "zwp_tablet_pad_ring_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "source", Opcode: 0, Type: &ZwpTabletPadRingV2SourceEvent{}},
 		{Name: "angle", Opcode: 1, Type: &ZwpTabletPadRingV2AngleEvent{}},
@@ -437,7 +475,8 @@ var ZwpTabletPadRingV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletPadStripV2Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_pad_strip_v2",
+	Name:    "zwp_tablet_pad_strip_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "source", Opcode: 0, Type: &ZwpTabletPadStripV2SourceEvent{}},
 		{Name: "position", Opcode: 1, Type: &ZwpTabletPadStripV2PositionEvent{}},
@@ -450,7 +489,8 @@ var ZwpTabletPadStripV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletPadGroupV2Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_pad_group_v2",
+	Name:    "zwp_tablet_pad_group_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "buttons", Opcode: 0, Type: &ZwpTabletPadGroupV2ButtonsEvent{}},
 		{Name: "ring", Opcode: 1, Type: &ZwpTabletPadGroupV2RingEvent{}},
@@ -464,7 +504,8 @@ var ZwpTabletPadGroupV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTabletPadV2Descriptor = InterfaceDescriptor{
-	Name: "zwp_tablet_pad_v2",
+	Name:    "zwp_tablet_pad_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "group", Opcode: 0, Type: &ZwpTabletPadV2GroupEvent{}},
 		{Name: "path", Opcode: 1, Type: &ZwpTabletPadV2PathEvent{}},
@@ -481,7 +522,8 @@ var ZwpTabletPadV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTextInputV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_text_input_v1",
+	Name:    "zwp_text_input_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "enter", Opcode: 0, Type: &ZwpTextInputV1EnterEvent{}},
 		{Name: "leave", Opcode: 1, Type: &ZwpTextInputV1LeaveEvent{}},
@@ -512,14 +554,16 @@ var ZwpTextInputV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTextInputManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_text_input_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_text_input_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "create_text_input", Opcode: 0, Type: &ZwpTextInputManagerV1CreateTextInputRequest{}},
 	},
 }
 var ZwpTextInputV3Descriptor = InterfaceDescriptor{
-	Name: "zwp_text_input_v3",
+	Name:    "zwp_text_input_v3",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "enter", Opcode: 0, Type: &ZwpTextInputV3EnterEvent{}},
 		{Name: "leave", Opcode: 1, Type: &ZwpTextInputV3LeaveEvent{}},
@@ -540,24 +584,27 @@ var ZwpTextInputV3Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpTextInputManagerV3Descriptor = InterfaceDescriptor{
-	Name:   "zwp_text_input_manager_v3",
-	Events: []EventDescriptor{},
+	Name:    "zwp_text_input_manager_v3",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpTextInputManagerV3DestroyRequest{}},
 		{Name: "get_text_input", Opcode: 1, Type: &ZwpTextInputManagerV3GetTextInputRequest{}},
 	},
 }
 var WpViewporterDescriptor = InterfaceDescriptor{
-	Name:   "wp_viewporter",
-	Events: []EventDescriptor{},
+	Name:    "wp_viewporter",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &WpViewporterDestroyRequest{}},
 		{Name: "get_viewport", Opcode: 1, Type: &WpViewporterGetViewportRequest{}},
 	},
 }
 var WpViewportDescriptor = InterfaceDescriptor{
-	Name:   "wp_viewport",
-	Events: []EventDescriptor{},
+	Name:    "wp_viewport",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &WpViewportDestroyRequest{}},
 		{Name: "set_source", Opcode: 1, Type: &WpViewportSetSourceRequest{}},
@@ -565,7 +612,8 @@ var WpViewportDescriptor = InterfaceDescriptor{
 	},
 }
 var WlDisplayDescriptor = InterfaceDescriptor{
-	Name: "wl_display",
+	Name:    "wl_display",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "error", Opcode: 0, Type: &WlDisplayErrorEvent{}},
 		{Name: "delete_id", Opcode: 1, Type: &WlDisplayDeleteIDEvent{}},
@@ -576,7 +624,8 @@ var WlDisplayDescriptor = InterfaceDescriptor{
 	},
 }
 var WlRegistryDescriptor = InterfaceDescriptor{
-	Name: "wl_registry",
+	Name:    "wl_registry",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "global", Opcode: 0, Type: &WlRegistryGlobalEvent{}},
 		{Name: "global_remove", Opcode: 1, Type: &WlRegistryGlobalRemoveEvent{}},
@@ -586,23 +635,26 @@ var WlRegistryDescriptor = InterfaceDescriptor{
 	},
 }
 var WlCallbackDescriptor = InterfaceDescriptor{
-	Name: "wl_callback",
+	Name:    "wl_callback",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "done", Opcode: 0, Type: &WlCallbackDoneEvent{}},
 	},
 	Requests: []RequestDescriptor{},
 }
 var WlCompositorDescriptor = InterfaceDescriptor{
-	Name:   "wl_compositor",
-	Events: []EventDescriptor{},
+	Name:    "wl_compositor",
+	Version: 4,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "create_surface", Opcode: 0, Type: &WlCompositorCreateSurfaceRequest{}},
 		{Name: "create_region", Opcode: 1, Type: &WlCompositorCreateRegionRequest{}},
 	},
 }
 var WlShmPoolDescriptor = InterfaceDescriptor{
-	Name:   "wl_shm_pool",
-	Events: []EventDescriptor{},
+	Name:    "wl_shm_pool",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "create_buffer", Opcode: 0, Type: &WlShmPoolCreateBufferRequest{}},
 		{Name: "destroy", Opcode: 1, Type: &WlShmPoolDestroyRequest{}},
@@ -610,7 +662,8 @@ var WlShmPoolDescriptor = InterfaceDescriptor{
 	},
 }
 var WlShmDescriptor = InterfaceDescriptor{
-	Name: "wl_shm",
+	Name:    "wl_shm",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "format", Opcode: 0, Type: &WlShmFormatEvent{}},
 	},
@@ -619,7 +672,8 @@ var WlShmDescriptor = InterfaceDescriptor{
 	},
 }
 var WlBufferDescriptor = InterfaceDescriptor{
-	Name: "wl_buffer",
+	Name:    "wl_buffer",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "release", Opcode: 0, Type: &WlBufferReleaseEvent{}},
 	},
@@ -628,7 +682,8 @@ var WlBufferDescriptor = InterfaceDescriptor{
 	},
 }
 var WlDataOfferDescriptor = InterfaceDescriptor{
-	Name: "wl_data_offer",
+	Name:    "wl_data_offer",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "offer", Opcode: 0, Type: &WlDataOfferOfferEvent{}},
 		{Name: "source_actions", Opcode: 1, Type: &WlDataOfferSourceActionsEvent{}},
@@ -643,7 +698,8 @@ var WlDataOfferDescriptor = InterfaceDescriptor{
 	},
 }
 var WlDataSourceDescriptor = InterfaceDescriptor{
-	Name: "wl_data_source",
+	Name:    "wl_data_source",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "target", Opcode: 0, Type: &WlDataSourceTargetEvent{}},
 		{Name: "send", Opcode: 1, Type: &WlDataSourceSendEvent{}},
@@ -659,7 +715,8 @@ var WlDataSourceDescriptor = InterfaceDescriptor{
 	},
 }
 var WlDataDeviceDescriptor = InterfaceDescriptor{
-	Name: "wl_data_device",
+	Name:    "wl_data_device",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "data_offer", Opcode: 0, Type: &WlDataDeviceDataOfferEvent{}},
 		{Name: "enter", Opcode: 1, Type: &WlDataDeviceEnterEvent{}},
@@ -675,22 +732,25 @@ var WlDataDeviceDescriptor = InterfaceDescriptor{
 	},
 }
 var WlDataDeviceManagerDescriptor = InterfaceDescriptor{
-	Name:   "wl_data_device_manager",
-	Events: []EventDescriptor{},
+	Name:    "wl_data_device_manager",
+	Version: 3,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "create_data_source", Opcode: 0, Type: &WlDataDeviceManagerCreateDataSourceRequest{}},
 		{Name: "get_data_device", Opcode: 1, Type: &WlDataDeviceManagerGetDataDeviceRequest{}},
 	},
 }
 var WlShellDescriptor = InterfaceDescriptor{
-	Name:   "wl_shell",
-	Events: []EventDescriptor{},
+	Name:    "wl_shell",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "get_shell_surface", Opcode: 0, Type: &WlShellGetShellSurfaceRequest{}},
 	},
 }
 var WlShellSurfaceDescriptor = InterfaceDescriptor{
-	Name: "wl_shell_surface",
+	Name:    "wl_shell_surface",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "ping", Opcode: 0, Type: &WlShellSurfacePingEvent{}},
 		{Name: "configure", Opcode: 1, Type: &WlShellSurfaceConfigureEvent{}},
@@ -710,7 +770,8 @@ var WlShellSurfaceDescriptor = InterfaceDescriptor{
 	},
 }
 var WlSurfaceDescriptor = InterfaceDescriptor{
-	Name: "wl_surface",
+	Name:    "wl_surface",
+	Version: 4,
 	Events: []EventDescriptor{
 		{Name: "enter", Opcode: 0, Type: &WlSurfaceEnterEvent{}},
 		{Name: "leave", Opcode: 1, Type: &WlSurfaceLeaveEvent{}},
@@ -729,7 +790,8 @@ var WlSurfaceDescriptor = InterfaceDescriptor{
 	},
 }
 var WlSeatDescriptor = InterfaceDescriptor{
-	Name: "wl_seat",
+	Name:    "wl_seat",
+	Version: 7,
 	Events: []EventDescriptor{
 		{Name: "capabilities", Opcode: 0, Type: &WlSeatCapabilitiesEvent{}},
 		{Name: "name", Opcode: 1, Type: &WlSeatNameEvent{}},
@@ -742,7 +804,8 @@ var WlSeatDescriptor = InterfaceDescriptor{
 	},
 }
 var WlPointerDescriptor = InterfaceDescriptor{
-	Name: "wl_pointer",
+	Name:    "wl_pointer",
+	Version: 7,
 	Events: []EventDescriptor{
 		{Name: "enter", Opcode: 0, Type: &WlPointerEnterEvent{}},
 		{Name: "leave", Opcode: 1, Type: &WlPointerLeaveEvent{}},
@@ -760,7 +823,8 @@ var WlPointerDescriptor = InterfaceDescriptor{
 	},
 }
 var WlKeyboardDescriptor = InterfaceDescriptor{
-	Name: "wl_keyboard",
+	Name:    "wl_keyboard",
+	Version: 7,
 	Events: []EventDescriptor{
 		{Name: "keymap", Opcode: 0, Type: &WlKeyboardKeymapEvent{}},
 		{Name: "enter", Opcode: 1, Type: &WlKeyboardEnterEvent{}},
@@ -774,7 +838,8 @@ var WlKeyboardDescriptor = InterfaceDescriptor{
 	},
 }
 var WlTouchDescriptor = InterfaceDescriptor{
-	Name: "wl_touch",
+	Name:    "wl_touch",
+	Version: 7,
 	Events: []EventDescriptor{
 		{Name: "down", Opcode: 0, Type: &WlTouchDownEvent{}},
 		{Name: "up", Opcode: 1, Type: &WlTouchUpEvent{}},
@@ -789,7 +854,8 @@ var WlTouchDescriptor = InterfaceDescriptor{
 	},
 }
 var WlOutputDescriptor = InterfaceDescriptor{
-	Name: "wl_output",
+	Name:    "wl_output",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "geometry", Opcode: 0, Type: &WlOutputGeometryEvent{}},
 		{Name: "mode", Opcode: 1, Type: &WlOutputModeEvent{}},
@@ -801,8 +867,9 @@ var WlOutputDescriptor = InterfaceDescriptor{
 	},
 }
 var WlRegionDescriptor = InterfaceDescriptor{
-	Name:   "wl_region",
-	Events: []EventDescriptor{},
+	Name:    "wl_region",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &WlRegionDestroyRequest{}},
 		{Name: "add", Opcode: 1, Type: &WlRegionAddRequest{}},
@@ -810,16 +877,18 @@ var WlRegionDescriptor = InterfaceDescriptor{
 	},
 }
 var WlSubcompositorDescriptor = InterfaceDescriptor{
-	Name:   "wl_subcompositor",
-	Events: []EventDescriptor{},
+	Name:    "wl_subcompositor",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &WlSubcompositorDestroyRequest{}},
 		{Name: "get_subsurface", Opcode: 1, Type: &WlSubcompositorGetSubsurfaceRequest{}},
 	},
 }
 var WlSubsurfaceDescriptor = InterfaceDescriptor{
-	Name:   "wl_subsurface",
-	Events: []EventDescriptor{},
+	Name:    "wl_subsurface",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &WlSubsurfaceDestroyRequest{}},
 		{Name: "set_position", Opcode: 1, Type: &WlSubsurfaceSetPositionRequest{}},
@@ -830,8 +899,9 @@ var WlSubsurfaceDescriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPrimarySelectionDeviceManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_primary_selection_device_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_primary_selection_device_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "create_source", Opcode: 0, Type: &ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{}},
 		{Name: "get_device", Opcode: 1, Type: &ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{}},
@@ -839,7 +909,8 @@ var ZwpPrimarySelectionDeviceManagerV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPrimarySelectionDeviceV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_primary_selection_device_v1",
+	Name:    "zwp_primary_selection_device_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "data_offer", Opcode: 0, Type: &ZwpPrimarySelectionDeviceV1DataOfferEvent{}},
 		{Name: "selection", Opcode: 1, Type: &ZwpPrimarySelectionDeviceV1SelectionEvent{}},
@@ -850,7 +921,8 @@ var ZwpPrimarySelectionDeviceV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPrimarySelectionOfferV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_primary_selection_offer_v1",
+	Name:    "zwp_primary_selection_offer_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "offer", Opcode: 0, Type: &ZwpPrimarySelectionOfferV1OfferEvent{}},
 	},
@@ -860,7 +932,8 @@ var ZwpPrimarySelectionOfferV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpPrimarySelectionSourceV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_primary_selection_source_v1",
+	Name:    "zwp_primary_selection_source_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "send", Opcode: 0, Type: &ZwpPrimarySelectionSourceV1SendEvent{}},
 		{Name: "cancelled", Opcode: 1, Type: &ZwpPrimarySelectionSourceV1CancelledEvent{}},
@@ -871,8 +944,9 @@ var ZwpPrimarySelectionSourceV1Descriptor = InterfaceDescriptor{
 	},
 }
 var XdgActivationV1Descriptor = InterfaceDescriptor{
-	Name:   "xdg_activation_v1",
-	Events: []EventDescriptor{},
+	Name:    "xdg_activation_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &XdgActivationV1DestroyRequest{}},
 		{Name: "get_activation_token", Opcode: 1, Type: &XdgActivationV1GetActivationTokenRequest{}},
@@ -880,7 +954,8 @@ var XdgActivationV1Descriptor = InterfaceDescriptor{
 	},
 }
 var XdgActivationTokenV1Descriptor = InterfaceDescriptor{
-	Name: "xdg_activation_token_v1",
+	Name:    "xdg_activation_token_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "done", Opcode: 0, Type: &XdgActivationTokenV1DoneEvent{}},
 	},
@@ -893,15 +968,17 @@ var XdgActivationTokenV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZxdgDecorationManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zxdg_decoration_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zxdg_decoration_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZxdgDecorationManagerV1DestroyRequest{}},
 		{Name: "get_toplevel_decoration", Opcode: 1, Type: &ZxdgDecorationManagerV1GetToplevelDecorationRequest{}},
 	},
 }
 var ZxdgToplevelDecorationV1Descriptor = InterfaceDescriptor{
-	Name: "zxdg_toplevel_decoration_v1",
+	Name:    "zxdg_toplevel_decoration_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "configure", Opcode: 0, Type: &ZxdgToplevelDecorationV1ConfigureEvent{}},
 	},
@@ -912,23 +989,26 @@ var ZxdgToplevelDecorationV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZxdgExporterV1Descriptor = InterfaceDescriptor{
-	Name:   "zxdg_exporter_v1",
-	Events: []EventDescriptor{},
+	Name:    "zxdg_exporter_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV1DestroyRequest{}},
 		{Name: "export", Opcode: 1, Type: &ZxdgExporterV1ExportRequest{}},
 	},
 }
 var ZxdgImporterV1Descriptor = InterfaceDescriptor{
-	Name:   "zxdg_importer_v1",
-	Events: []EventDescriptor{},
+	Name:    "zxdg_importer_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV1DestroyRequest{}},
 		{Name: "import", Opcode: 1, Type: &ZxdgImporterV1ImportRequest{}},
 	},
 }
 var ZxdgExportedV1Descriptor = InterfaceDescriptor{
-	Name: "zxdg_exported_v1",
+	Name:    "zxdg_exported_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "handle", Opcode: 0, Type: &ZxdgExportedV1HandleEvent{}},
 	},
@@ -937,7 +1017,8 @@ var ZxdgExportedV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZxdgImportedV1Descriptor = InterfaceDescriptor{
-	Name: "zxdg_imported_v1",
+	Name:    "zxdg_imported_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV1DestroyedEvent{}},
 	},
@@ -947,23 +1028,26 @@ var ZxdgImportedV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZxdgExporterV2Descriptor = InterfaceDescriptor{
-	Name:   "zxdg_exporter_v2",
-	Events: []EventDescriptor{},
+	Name:    "zxdg_exporter_v2",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZxdgExporterV2DestroyRequest{}},
 		{Name: "export_toplevel", Opcode: 1, Type: &ZxdgExporterV2ExportToplevelRequest{}},
 	},
 }
 var ZxdgImporterV2Descriptor = InterfaceDescriptor{
-	Name:   "zxdg_importer_v2",
-	Events: []EventDescriptor{},
+	Name:    "zxdg_importer_v2",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZxdgImporterV2DestroyRequest{}},
 		{Name: "import_toplevel", Opcode: 1, Type: &ZxdgImporterV2ImportToplevelRequest{}},
 	},
 }
 var ZxdgExportedV2Descriptor = InterfaceDescriptor{
-	Name: "zxdg_exported_v2",
+	Name:    "zxdg_exported_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "handle", Opcode: 0, Type: &ZxdgExportedV2HandleEvent{}},
 	},
@@ -972,7 +1056,8 @@ var ZxdgExportedV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZxdgImportedV2Descriptor = InterfaceDescriptor{
-	Name: "zxdg_imported_v2",
+	Name:    "zxdg_imported_v2",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "destroyed", Opcode: 0, Type: &ZxdgImportedV2DestroyedEvent{}},
 	},
@@ -982,15 +1067,17 @@ var ZxdgImportedV2Descriptor = InterfaceDescriptor{
 	},
 }
 var ZxdgOutputManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zxdg_output_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zxdg_output_manager_v1",
+	Version: 3,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZxdgOutputManagerV1DestroyRequest{}},
 		{Name: "get_xdg_output", Opcode: 1, Type: &ZxdgOutputManagerV1GetXdgOutputRequest{}},
 	},
 }
 var ZxdgOutputV1Descriptor = InterfaceDescriptor{
-	Name: "zxdg_output_v1",
+	Name:    "zxdg_output_v1",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "logical_position", Opcode: 0, Type: &ZxdgOutputV1LogicalPositionEvent{}},
 		{Name: "logical_size", Opcode: 1, Type: &ZxdgOutputV1LogicalSizeEvent{}},
@@ -1003,7 +1090,8 @@ var ZxdgOutputV1Descriptor = InterfaceDescriptor{
 	},
 }
 var XdgWmBaseDescriptor = InterfaceDescriptor{
-	Name: "xdg_wm_base",
+	Name:    "xdg_wm_base",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "ping", Opcode: 0, Type: &XdgWmBasePingEvent{}},
 	},
@@ -1015,8 +1103,9 @@ var XdgWmBaseDescriptor = InterfaceDescriptor{
 	},
 }
 var XdgPositionerDescriptor = InterfaceDescriptor{
-	Name:   "xdg_positioner",
-	Events: []EventDescriptor{},
+	Name:    "xdg_positioner",
+	Version: 3,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &XdgPositionerDestroyRequest{}},
 		{Name: "set_size", Opcode: 1, Type: &XdgPositionerSetSizeRequest{}},
@@ -1031,7 +1120,8 @@ var XdgPositionerDescriptor = InterfaceDescriptor{
 	},
 }
 var XdgSurfaceDescriptor = InterfaceDescriptor{
-	Name: "xdg_surface",
+	Name:    "xdg_surface",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "configure", Opcode: 0, Type: &XdgSurfaceConfigureEvent{}},
 	},
@@ -1044,7 +1134,8 @@ var XdgSurfaceDescriptor = InterfaceDescriptor{
 	},
 }
 var XdgToplevelDescriptor = InterfaceDescriptor{
-	Name: "xdg_toplevel",
+	Name:    "xdg_toplevel",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "configure", Opcode: 0, Type: &XdgToplevelConfigureEvent{}},
 		{Name: "close", Opcode: 1, Type: &XdgToplevelCloseEvent{}},
@@ -1067,7 +1158,8 @@ var XdgToplevelDescriptor = InterfaceDescriptor{
 	},
 }
 var XdgPopupDescriptor = InterfaceDescriptor{
-	Name: "xdg_popup",
+	Name:    "xdg_popup",
+	Version: 3,
 	Events: []EventDescriptor{
 		{Name: "configure", Opcode: 0, Type: &XdgPopupConfigureEvent{}},
 		{Name: "popup_done", Opcode: 1, Type: &XdgPopupPopupDoneEvent{}},
@@ -1080,31 +1172,35 @@ var XdgPopupDescriptor = InterfaceDescriptor{
 	},
 }
 var ZwpXwaylandKeyboardGrabManagerV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_xwayland_keyboard_grab_manager_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_xwayland_keyboard_grab_manager_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabManagerV1DestroyRequest{}},
 		{Name: "grab_keyboard", Opcode: 1, Type: &ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}},
 	},
 }
 var ZwpXwaylandKeyboardGrabV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_xwayland_keyboard_grab_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_xwayland_keyboard_grab_v1",
+	Version: 1,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpXwaylandKeyboardGrabV1DestroyRequest{}},
 	},
 }
 var ZwpLinuxExplicitSynchronizationV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_linux_explicit_synchronization_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_linux_explicit_synchronization_v1",
+	Version: 2,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpLinuxExplicitSynchronizationV1DestroyRequest{}},
 		{Name: "get_synchronization", Opcode: 1, Type: &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}},
 	},
 }
 var ZwpLinuxSurfaceSynchronizationV1Descriptor = InterfaceDescriptor{
-	Name:   "zwp_linux_surface_synchronization_v1",
-	Events: []EventDescriptor{},
+	Name:    "zwp_linux_surface_synchronization_v1",
+	Version: 2,
+	Events:  []EventDescriptor{},
 	Requests: []RequestDescriptor{
 		{Name: "destroy", Opcode: 0, Type: &ZwpLinuxSurfaceSynchronizationV1DestroyRequest{}},
 		{Name: "set_acquire_fence", Opcode: 1, Type: &ZwpLinuxSurfaceSynchronizationV1SetAcquireFenceRequest{}},
@@ -1112,7 +1208,8 @@ var ZwpLinuxSurfaceSynchronizationV1Descriptor = InterfaceDescriptor{
 	},
 }
 var ZwpLinuxBufferReleaseV1Descriptor = InterfaceDescriptor{
-	Name: "zwp_linux_buffer_release_v1",
+	Name:    "zwp_linux_buffer_release_v1",
+	Version: 1,
 	Events: []EventDescriptor{
 		{Name: "fenced_release", Opcode: 0, Type: &ZwpLinuxBufferReleaseV1FencedReleaseEvent{}},
 		{Name: "immediate_release", Opcode: 1, Type: &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}},
@@ -1580,12 +1677,18 @@ var _ Event = &WpDrmLeaseDeviceV1ReleasedEvent{}
 // corresponding interface version bump. Backward incompatible changes can
 // only be done by creating a new major version of the extension.
 type WpDrmLeaseDeviceV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpDrmLeaseDeviceV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpDrmLeaseDeviceV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -1615,7 +1718,7 @@ func (WpDrmLeaseDeviceV1) Dispatch(opcode uint16) Event {
 //
 // See the documentation for wp_drm_lease_request_v1 for details.
 func (proxy *WpDrmLeaseDeviceV1) CreateLeaseRequest(connection Connection) (aID *WpDrmLeaseRequestV1, err error) {
-	aID = &WpDrmLeaseRequestV1{connection.NewID()}
+	aID = &WpDrmLeaseRequestV1{connection.NewID(), proxy.version}
 	request := WpDrmLeaseDeviceV1CreateLeaseRequestRequest{
 		ID: aID.id,
 	}
@@ -1838,12 +1941,18 @@ var _ Event = &WpDrmLeaseConnectorV1WithdrawnEvent{}
 // event. When the description is updated the compositor will send a
 // description event followed by a done event.
 type WpDrmLeaseConnectorV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpDrmLeaseConnectorV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpDrmLeaseConnectorV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -1979,12 +2088,18 @@ var _ Request = &WpDrmLeaseRequestV1SubmitRequest{}
 // wish to lease, then use wp_drm_lease_request_v1.submit to submit the
 // request.
 type WpDrmLeaseRequestV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpDrmLeaseRequestV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpDrmLeaseRequestV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -2030,7 +2145,7 @@ func (proxy *WpDrmLeaseRequestV1) RequestConnector(connection Connection, aConne
 // Not requesting any connectors before submitting the lease request
 // will raise the empty_lease error.
 func (proxy *WpDrmLeaseRequestV1) Submit(connection Connection) (aID *WpDrmLeaseV1, err error) {
-	aID = &WpDrmLeaseV1{connection.NewID()}
+	aID = &WpDrmLeaseV1{connection.NewID(), proxy.version}
 	request := WpDrmLeaseRequestV1SubmitRequest{
 		ID: aID.id,
 	}
@@ -2154,12 +2269,18 @@ var _ Event = &WpDrmLeaseV1FinishedEvent{}
 // is denied, the compositor will send a finished event without a lease_fd
 // event.
 type WpDrmLeaseV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpDrmLeaseV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpDrmLeaseV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -2514,12 +2635,18 @@ var _ Event = &ZwpFullscreenShellV1CapabilityEvent{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZwpFullscreenShellV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpFullscreenShellV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpFullscreenShellV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -2627,7 +2754,7 @@ func (proxy *ZwpFullscreenShellV1) PresentSurface(connection Connection, aSurfac
 // If the surface already has another role, it raises a role protocol
 // error.
 func (proxy *ZwpFullscreenShellV1) PresentSurfaceForMode(connection Connection, aSurface ObjectID, aOutput ObjectID, aFramerate int32) (aFeedback *ZwpFullscreenShellModeFeedbackV1, err error) {
-	aFeedback = &ZwpFullscreenShellModeFeedbackV1{connection.NewID()}
+	aFeedback = &ZwpFullscreenShellModeFeedbackV1{connection.NewID(), proxy.version}
 	request := ZwpFullscreenShellV1PresentSurfaceForModeRequest{
 		Surface:   aSurface,
 		Output:    aOutput,
@@ -2738,12 +2865,18 @@ func (e *ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent) Scan(s *EventSca
 var _ Event = &ZwpFullscreenShellModeFeedbackV1PresentCancelledEvent{}
 
 type ZwpFullscreenShellModeFeedbackV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpFullscreenShellModeFeedbackV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpFullscreenShellModeFeedbackV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -2850,12 +2983,18 @@ var _ Request = &ZwpIdleInhibitManagerV1CreateInhibitorRequest{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZwpIdleInhibitManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpIdleInhibitManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpIdleInhibitManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -2884,7 +3023,7 @@ func (proxy *ZwpIdleInhibitManagerV1) Destroy(connection Connection) (err error)
 //
 // Create a new inhibitor object associated with the given surface.
 func (proxy *ZwpIdleInhibitManagerV1) CreateInhibitor(connection Connection, aSurface ObjectID) (aID *ZwpIdleInhibitorV1, err error) {
-	aID = &ZwpIdleInhibitorV1{connection.NewID()}
+	aID = &ZwpIdleInhibitorV1{connection.NewID(), proxy.version}
 	request := ZwpIdleInhibitManagerV1CreateInhibitorRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -2942,12 +3081,18 @@ var _ Request = &ZwpIdleInhibitorV1DestroyRequest{}
 // the time the inhibitor was established, although if the system later
 // de-idles and re-idles the inhibitor will take effect.
 type ZwpIdleInhibitorV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpIdleInhibitorV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpIdleInhibitorV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -3728,12 +3873,18 @@ var _ Event = &ZwpInputMethodContextV1PreferredLanguageEvent{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZwpInputMethodContextV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpInputMethodContextV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpInputMethodContextV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -3908,7 +4059,7 @@ func (proxy *ZwpInputMethodContextV1) Keysym(connection Connection, aSerial uint
 // allows input methods which compose multiple key events for inputting
 // text like it is done for CJK languages.
 func (proxy *ZwpInputMethodContextV1) GrabKeyboard(connection Connection) (aKeyboard *WlKeyboard, err error) {
-	aKeyboard = &WlKeyboard{connection.NewID()}
+	aKeyboard = &WlKeyboard{connection.NewID(), proxy.version}
 	request := ZwpInputMethodContextV1GrabKeyboardRequest{
 		Keyboard: aKeyboard.id,
 	}
@@ -4050,12 +4201,18 @@ var _ Event = &ZwpInputMethodV1DeactivateEvent{}
 // object per seat. On activate there is a new input method context object
 // created which allows the input method to communicate with the text input.
 type ZwpInputMethodV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpInputMethodV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpInputMethodV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -4118,12 +4275,18 @@ var _ Request = &ZwpInputPanelV1GetInputPanelSurfaceRequest{}
 //
 // Only one client can bind this interface at a time.
 type ZwpInputPanelV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpInputPanelV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpInputPanelV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -4139,7 +4302,7 @@ func (ZwpInputPanelV1) Dispatch(opcode uint16) Event {
 	}
 }
 func (proxy *ZwpInputPanelV1) GetInputPanelSurface(connection Connection, aSurface ObjectID) (aID *ZwpInputPanelSurfaceV1, err error) {
-	aID = &ZwpInputPanelSurfaceV1{connection.NewID()}
+	aID = &ZwpInputPanelSurfaceV1{connection.NewID(), proxy.version}
 	request := ZwpInputPanelV1GetInputPanelSurfaceRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -4226,12 +4389,18 @@ func (r *ZwpInputPanelSurfaceV1SetOverlayPanelRequest) Emit(e *RequestEmitter) e
 var _ Request = &ZwpInputPanelSurfaceV1SetOverlayPanelRequest{}
 
 type ZwpInputPanelSurfaceV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpInputPanelSurfaceV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpInputPanelSurfaceV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -4443,12 +4612,18 @@ var _ Request = &ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{}
 // A global interface used for requesting high-resolution timestamps
 // for input events.
 type ZwpInputTimestampsManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpInputTimestampsManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpInputTimestampsManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -4486,7 +4661,7 @@ func (proxy *ZwpInputTimestampsManagerV1) Destroy(connection Connection) (err er
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
 func (proxy *ZwpInputTimestampsManagerV1) GetKeyboardTimestamps(connection Connection, aKeyboard ObjectID) (aID *ZwpInputTimestampsV1, err error) {
-	aID = &ZwpInputTimestampsV1{connection.NewID()}
+	aID = &ZwpInputTimestampsV1{connection.NewID(), proxy.version}
 	request := ZwpInputTimestampsManagerV1GetKeyboardTimestampsRequest{
 		ID:       aID.id,
 		Keyboard: aKeyboard,
@@ -4509,7 +4684,7 @@ func (proxy *ZwpInputTimestampsManagerV1) GetKeyboardTimestamps(connection Conne
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
 func (proxy *ZwpInputTimestampsManagerV1) GetPointerTimestamps(connection Connection, aPointer ObjectID) (aID *ZwpInputTimestampsV1, err error) {
-	aID = &ZwpInputTimestampsV1{connection.NewID()}
+	aID = &ZwpInputTimestampsV1{connection.NewID(), proxy.version}
 	request := ZwpInputTimestampsManagerV1GetPointerTimestampsRequest{
 		ID:      aID.id,
 		Pointer: aPointer,
@@ -4532,7 +4707,7 @@ func (proxy *ZwpInputTimestampsManagerV1) GetPointerTimestamps(connection Connec
 // timestamps object becomes inert and the client should destroy it
 // by calling zwp_input_timestamps_v1.destroy.
 func (proxy *ZwpInputTimestampsManagerV1) GetTouchTimestamps(connection Connection, aTouch ObjectID) (aID *ZwpInputTimestampsV1, err error) {
-	aID = &ZwpInputTimestampsV1{connection.NewID()}
+	aID = &ZwpInputTimestampsV1{connection.NewID(), proxy.version}
 	request := ZwpInputTimestampsManagerV1GetTouchTimestampsRequest{
 		ID:    aID.id,
 		Touch: aTouch,
@@ -4642,12 +4817,18 @@ var _ Event = &ZwpInputTimestampsV1TimestampEvent{}
 // events. The set of subscribed input events is determined by the
 // zwp_input_timestamps_manager_v1 request used to create this object.
 type ZwpInputTimestampsV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpInputTimestampsV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpInputTimestampsV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -4769,12 +4950,18 @@ var _ Request = &ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{}
 //
 // A global interface used for inhibiting the compositor keyboard shortcuts.
 type ZwpKeyboardShortcutsInhibitManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpKeyboardShortcutsInhibitManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpKeyboardShortcutsInhibitManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -4807,7 +4994,7 @@ func (proxy *ZwpKeyboardShortcutsInhibitManagerV1) Destroy(connection Connection
 // If shortcuts are already inhibited for the specified seat and surface,
 // a protocol error "already_inhibited" is raised by the compositor.
 func (proxy *ZwpKeyboardShortcutsInhibitManagerV1) InhibitShortcuts(connection Connection, aSurface ObjectID, aSeat ObjectID) (aID *ZwpKeyboardShortcutsInhibitorV1, err error) {
-	aID = &ZwpKeyboardShortcutsInhibitorV1{connection.NewID()}
+	aID = &ZwpKeyboardShortcutsInhibitorV1{connection.NewID(), proxy.version}
 	request := ZwpKeyboardShortcutsInhibitManagerV1InhibitShortcutsRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -4944,12 +5131,18 @@ var _ Event = &ZwpKeyboardShortcutsInhibitorV1InactiveEvent{}
 // compositor will restore its own keyboard shortcuts but no "inactive"
 // event is emitted in this case.
 type ZwpKeyboardShortcutsInhibitorV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpKeyboardShortcutsInhibitorV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpKeyboardShortcutsInhibitorV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -5219,12 +5412,18 @@ var _ Event = &ZwpLinuxDmabufV1ModifierEvent{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZwpLinuxDmabufV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpLinuxDmabufV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpLinuxDmabufV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -5261,7 +5460,7 @@ func (proxy *ZwpLinuxDmabufV1) Destroy(connection Connection) (err error) {
 // should be destroyed after a 'created' or 'failed' event has been
 // received.
 func (proxy *ZwpLinuxDmabufV1) CreateParams(connection Connection) (aParamsID *ZwpLinuxBufferParamsV1, err error) {
-	aParamsID = &ZwpLinuxBufferParamsV1{connection.NewID()}
+	aParamsID = &ZwpLinuxBufferParamsV1{connection.NewID(), proxy.version}
 	request := ZwpLinuxDmabufV1CreateParamsRequest{
 		ParamsID: aParamsID.id,
 	}
@@ -5677,12 +5876,18 @@ var _ Event = &ZwpLinuxBufferParamsV1FailedEvent{}
 // All planes required by the format must be given exactly once, but can
 // be given in any order. Each plane index can be set only once.
 type ZwpLinuxBufferParamsV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpLinuxBufferParamsV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpLinuxBufferParamsV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -5843,7 +6048,7 @@ func (proxy *ZwpLinuxBufferParamsV1) Create(connection Connection, aWidth int32,
 // This takes the same arguments as a 'create' request, and obeys the
 // same restrictions.
 func (proxy *ZwpLinuxBufferParamsV1) CreateImmed(connection Connection, aWidth int32, aHeight int32, aFormat uint32, aFlags uint32) (aBufferID *WlBuffer, err error) {
-	aBufferID = &WlBuffer{connection.NewID()}
+	aBufferID = &WlBuffer{connection.NewID(), proxy.version}
 	request := ZwpLinuxBufferParamsV1CreateImmedRequest{
 		BufferID: aBufferID.id,
 		Width:    aWidth,
@@ -6087,12 +6292,18 @@ var _ Request = &ZwpPointerConstraintsV1ConfinePointerRequest{}
 // and with any of the wl_pointer objects of the same seat, an
 // 'already_constrained' error will be raised.
 type ZwpPointerConstraintsV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPointerConstraintsV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPointerConstraintsV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -6155,7 +6366,7 @@ func (proxy *ZwpPointerConstraintsV1) Destroy(connection Connection) (err error)
 // objects of the same seat. wl_pointer.axis and wl_pointer.button events
 // are unaffected.
 func (proxy *ZwpPointerConstraintsV1) LockPointer(connection Connection, aSurface ObjectID, aPointer ObjectID, aRegion ObjectID, aLifetime uint32) (aID *ZwpLockedPointerV1, err error) {
-	aID = &ZwpLockedPointerV1{connection.NewID()}
+	aID = &ZwpLockedPointerV1{connection.NewID(), proxy.version}
 	request := ZwpPointerConstraintsV1LockPointerRequest{
 		ID:       aID.id,
 		Surface:  aSurface,
@@ -6190,7 +6401,7 @@ func (proxy *ZwpPointerConstraintsV1) LockPointer(connection Connection, aSurfac
 // state. See the the description of wp_confined_pointer for further
 // information.
 func (proxy *ZwpPointerConstraintsV1) ConfinePointer(connection Connection, aSurface ObjectID, aPointer ObjectID, aRegion ObjectID, aLifetime uint32) (aID *ZwpConfinedPointerV1, err error) {
-	aID = &ZwpConfinedPointerV1{connection.NewID()}
+	aID = &ZwpConfinedPointerV1{connection.NewID(), proxy.version}
 	request := ZwpPointerConstraintsV1ConfinePointerRequest{
 		ID:       aID.id,
 		Surface:  aSurface,
@@ -6394,12 +6605,18 @@ var _ Event = &ZwpLockedPointerV1UnlockedEvent{}
 // yet activated, the wp_locked_pointer object is now defunct and must be
 // destroyed.
 type ZwpLockedPointerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpLockedPointerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpLockedPointerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -6614,12 +6831,18 @@ var _ Event = &ZwpConfinedPointerV1UnconfinedEvent{}
 // sent. The wp_confined_pointer object is at this point defunct and should
 // be destroyed.
 type ZwpConfinedPointerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpConfinedPointerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpConfinedPointerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -6831,12 +7054,18 @@ var _ Request = &ZwpPointerGesturesV1GetHoldGestureRequest{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZwpPointerGesturesV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPointerGesturesV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPointerGesturesV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -6857,7 +7086,7 @@ func (ZwpPointerGesturesV1) Dispatch(opcode uint16) Event {
 // Create a swipe gesture object. See the
 // wl_pointer_gesture_swipe interface for details.
 func (proxy *ZwpPointerGesturesV1) GetSwipeGesture(connection Connection, aPointer ObjectID) (aID *ZwpPointerGestureSwipeV1, err error) {
-	aID = &ZwpPointerGestureSwipeV1{connection.NewID()}
+	aID = &ZwpPointerGestureSwipeV1{connection.NewID(), proxy.version}
 	request := ZwpPointerGesturesV1GetSwipeGestureRequest{
 		ID:      aID.id,
 		Pointer: aPointer,
@@ -6874,7 +7103,7 @@ func (proxy *ZwpPointerGesturesV1) GetSwipeGesture(connection Connection, aPoint
 // Create a pinch gesture object. See the
 // wl_pointer_gesture_pinch interface for details.
 func (proxy *ZwpPointerGesturesV1) GetPinchGesture(connection Connection, aPointer ObjectID) (aID *ZwpPointerGesturePinchV1, err error) {
-	aID = &ZwpPointerGesturePinchV1{connection.NewID()}
+	aID = &ZwpPointerGesturePinchV1{connection.NewID(), proxy.version}
 	request := ZwpPointerGesturesV1GetPinchGestureRequest{
 		ID:      aID.id,
 		Pointer: aPointer,
@@ -6901,7 +7130,7 @@ func (proxy *ZwpPointerGesturesV1) Release(connection Connection) (err error) {
 // Create a hold gesture object. See the
 // wl_pointer_gesture_hold interface for details.
 func (proxy *ZwpPointerGesturesV1) GetHoldGesture(connection Connection, aPointer ObjectID) (aID *ZwpPointerGestureHoldV1, err error) {
-	aID = &ZwpPointerGestureHoldV1{connection.NewID()}
+	aID = &ZwpPointerGestureHoldV1{connection.NewID(), proxy.version}
 	request := ZwpPointerGesturesV1GetHoldGestureRequest{
 		ID:      aID.id,
 		Pointer: aPointer,
@@ -7114,12 +7343,18 @@ var _ Event = &ZwpPointerGestureSwipeV1EndEvent{}
 // Clients should not consider performing permanent or irreversible
 // actions until the end of a gesture has been received.
 type ZwpPointerGestureSwipeV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPointerGestureSwipeV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPointerGestureSwipeV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -7372,12 +7607,18 @@ var _ Event = &ZwpPointerGesturePinchV1EndEvent{}
 // Clients should not consider performing permanent or irreversible
 // actions until the end of a gesture has been received.
 type ZwpPointerGesturePinchV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPointerGesturePinchV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPointerGesturePinchV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -7560,12 +7801,18 @@ var _ Event = &ZwpPointerGestureHoldV1EndEvent{}
 // Clients should not consider performing permanent or irreversible
 // actions until the end of a gesture has been received.
 type ZwpPointerGestureHoldV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPointerGestureHoldV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPointerGestureHoldV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -7766,12 +8013,18 @@ var _ Event = &WpPresentationClockIDEvent{}
 // display update time and the update's target time, especially
 // when the compositor misses its target vertical blanking period.
 type WpPresentation struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpPresentation) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpPresentation) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -7811,7 +8064,7 @@ func (proxy *WpPresentation) Destroy(connection Connection) (err error) {
 // For details on what information is returned, see the
 // presentation_feedback interface.
 func (proxy *WpPresentation) Feedback(connection Connection, aSurface ObjectID) (aCallback *WpPresentationFeedback, err error) {
-	aCallback = &WpPresentationFeedback{connection.NewID()}
+	aCallback = &WpPresentationFeedback{connection.NewID(), proxy.version}
 	request := WpPresentationFeedbackRequest{
 		Surface:  aSurface,
 		Callback: aCallback.id,
@@ -8041,12 +8294,18 @@ var _ Event = &WpPresentationFeedbackDiscardedEvent{}
 // Once a presentation_feedback object has delivered a 'presented'
 // or 'discarded' event it is automatically destroyed.
 type WpPresentationFeedback struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpPresentationFeedback) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpPresentationFeedback) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -8146,12 +8405,18 @@ var _ Request = &ZwpRelativePointerManagerV1GetRelativePointerRequest{}
 // A global interface used for getting the relative pointer object for a
 // given pointer.
 type ZwpRelativePointerManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpRelativePointerManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpRelativePointerManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -8182,7 +8447,7 @@ func (proxy *ZwpRelativePointerManagerV1) Destroy(connection Connection) (err er
 // Create a relative pointer interface given a wl_pointer object. See the
 // wp_relative_pointer interface for more details.
 func (proxy *ZwpRelativePointerManagerV1) GetRelativePointer(connection Connection, aPointer ObjectID) (aID *ZwpRelativePointerV1, err error) {
-	aID = &ZwpRelativePointerV1{connection.NewID()}
+	aID = &ZwpRelativePointerV1{connection.NewID(), proxy.version}
 	request := ZwpRelativePointerManagerV1GetRelativePointerRequest{
 		ID:      aID.id,
 		Pointer: aPointer,
@@ -8329,12 +8594,18 @@ var _ Event = &ZwpRelativePointerV1RelativeMotionEvent{}
 // wl_pointer objects of the same seat and will only emit events when it has
 // focus.
 type ZwpRelativePointerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpRelativePointerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpRelativePointerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -8437,12 +8708,18 @@ var _ Request = &ZwpTabletManagerV1DestroyRequest{}
 // system. All tablets are associated with a seat, to get access to the
 // actual tablets, use wp_tablet_manager.get_tablet_seat.
 type ZwpTabletManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -8463,7 +8740,7 @@ func (ZwpTabletManagerV1) Dispatch(opcode uint16) Event {
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
 func (proxy *ZwpTabletManagerV1) GetTabletSeat(connection Connection, aSeat ObjectID) (aTabletSeat *ZwpTabletSeatV1, err error) {
-	aTabletSeat = &ZwpTabletSeatV1{connection.NewID()}
+	aTabletSeat = &ZwpTabletSeatV1{connection.NewID(), proxy.version}
 	request := ZwpTabletManagerV1GetTabletSeatRequest{
 		TabletSeat: aTabletSeat.id,
 		Seat:       aSeat,
@@ -8589,12 +8866,18 @@ var _ Event = &ZwpTabletSeatV1ToolAddedEvent{}
 // seat. After binding to this interface, the compositor sends a set of
 // wp_tablet_seat.tablet_added and wp_tablet_seat.tool_added events.
 type ZwpTabletSeatV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletSeatV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletSeatV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -9581,12 +9864,18 @@ var _ Event = &ZwpTabletToolV1FrameEvent{}
 // Any events received before a wp_tablet_tool.frame event should be
 // considered part of the same hardware state change.
 type ZwpTabletToolV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletToolV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletToolV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -9902,12 +10191,18 @@ var _ Event = &ZwpTabletV1RemovedEvent{}
 // wp_tablet_seat.tablet_added event. This initial event sequence is
 // terminated by a wp_tablet.done event.
 type ZwpTabletV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -10020,12 +10315,18 @@ var _ Request = &ZwpTabletManagerV2DestroyRequest{}
 // system. All tablets are associated with a seat, to get access to the
 // actual tablets, use wp_tablet_manager.get_tablet_seat.
 type ZwpTabletManagerV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletManagerV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletManagerV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -10046,7 +10347,7 @@ func (ZwpTabletManagerV2) Dispatch(opcode uint16) Event {
 // Get the wp_tablet_seat object for the given seat. This object
 // provides access to all graphics tablets in this seat.
 func (proxy *ZwpTabletManagerV2) GetTabletSeat(connection Connection, aSeat ObjectID) (aTabletSeat *ZwpTabletSeatV2, err error) {
-	aTabletSeat = &ZwpTabletSeatV2{connection.NewID()}
+	aTabletSeat = &ZwpTabletSeatV2{connection.NewID(), proxy.version}
 	request := ZwpTabletManagerV2GetTabletSeatRequest{
 		TabletSeat: aTabletSeat.id,
 		Seat:       aSeat,
@@ -10211,12 +10512,18 @@ var _ Event = &ZwpTabletSeatV2PadAddedEvent{}
 // seat. After binding to this interface, the compositor sends a set of
 // wp_tablet_seat.tablet_added and wp_tablet_seat.tool_added events.
 type ZwpTabletSeatV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletSeatV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletSeatV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -11203,12 +11510,18 @@ var _ Event = &ZwpTabletToolV2FrameEvent{}
 // Any events received before a wp_tablet_tool.frame event should be
 // considered part of the same hardware state change.
 type ZwpTabletToolV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletToolV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletToolV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -11522,12 +11835,18 @@ var _ Event = &ZwpTabletV2RemovedEvent{}
 // wp_tablet_seat.tablet_added event. This initial event sequence is
 // terminated by a wp_tablet.done event.
 type ZwpTabletV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -11814,12 +12133,18 @@ var _ Event = &ZwpTabletPadRingV2FrameEvent{}
 // Events on a ring are logically grouped by the wl_tablet_pad_ring.frame
 // event.
 type ZwpTabletPadRingV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletPadRingV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletPadRingV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -12136,12 +12461,18 @@ var _ Event = &ZwpTabletPadStripV2FrameEvent{}
 // Events on a strip are logically grouped by the wl_tablet_pad_strip.frame
 // event.
 type ZwpTabletPadStripV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletPadStripV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletPadStripV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -12505,12 +12836,18 @@ var _ Event = &ZwpTabletPadGroupV2ModeSwitchEvent{}
 // actions, and/or issue the respective .set_feedback requests to notify the
 // compositor. See the wp_tablet_pad_group.mode_switch event for more details.
 type ZwpTabletPadGroupV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletPadGroupV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletPadGroupV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -12972,12 +13309,18 @@ var _ Event = &ZwpTabletPadV2RemovedEvent{}
 // actions to a single pad feature. Only one mode can be active per group,
 // although different groups may have different active modes.
 type ZwpTabletPadV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTabletPadV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTabletPadV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -14096,12 +14439,18 @@ var _ Event = &ZwpTextInputV1TextDirectionEvent{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZwpTextInputV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTextInputV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTextInputV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -14322,12 +14671,18 @@ var _ Request = &ZwpTextInputManagerV1CreateTextInputRequest{}
 //
 // A factory for text_input objects. This object is a global singleton.
 type ZwpTextInputManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTextInputManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTextInputManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -14347,7 +14702,7 @@ func (ZwpTextInputManagerV1) Dispatch(opcode uint16) Event {
 //
 // Creates a new text_input object.
 func (proxy *ZwpTextInputManagerV1) CreateTextInput(connection Connection) (aID *ZwpTextInputV1, err error) {
-	aID = &ZwpTextInputV1{connection.NewID()}
+	aID = &ZwpTextInputV1{connection.NewID(), proxy.version}
 	request := ZwpTextInputManagerV1CreateTextInputRequest{
 		ID: aID.id,
 	}
@@ -15136,12 +15491,18 @@ var _ Event = &ZwpTextInputV3DoneEvent{}
 // enter event or disable request all state information is invalidated and
 // needs to be resent by the client.
 type ZwpTextInputV3 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTextInputV3) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTextInputV3) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -15446,12 +15807,18 @@ var _ Request = &ZwpTextInputManagerV3GetTextInputRequest{}
 //
 // A factory for text-input objects. This object is a global singleton.
 type ZwpTextInputManagerV3 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpTextInputManagerV3) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpTextInputManagerV3) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -15480,7 +15847,7 @@ func (proxy *ZwpTextInputManagerV3) Destroy(connection Connection) (err error) {
 //
 // Creates a new text-input object for a given seat.
 func (proxy *ZwpTextInputManagerV3) GetTextInput(connection Connection, aSeat ObjectID) (aID *ZwpTextInputV3, err error) {
-	aID = &ZwpTextInputV3{connection.NewID()}
+	aID = &ZwpTextInputV3{connection.NewID(), proxy.version}
 	request := ZwpTextInputManagerV3GetTextInputRequest{
 		ID:   aID.id,
 		Seat: aSeat,
@@ -15584,12 +15951,18 @@ var _ Request = &WpViewporterGetViewportRequest{}
 // disconnecting the direct relationship between the buffer and the
 // surface size.
 type WpViewporter struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpViewporter) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpViewporter) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -15623,7 +15996,7 @@ func (proxy *WpViewporter) Destroy(connection Connection) (err error) {
 // a wp_viewport object associated, the viewport_exists
 // protocol error is raised.
 func (proxy *WpViewporter) GetViewport(connection Connection, aSurface ObjectID) (aID *WpViewport, err error) {
-	aID = &WpViewport{connection.NewID()}
+	aID = &WpViewport{connection.NewID(), proxy.version}
 	request := WpViewporterGetViewportRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -15847,12 +16220,18 @@ var _ Request = &WpViewportSetDestinationRequest{}
 // state is removed from the wl_surface. The change will be applied
 // on the next wl_surface.commit.
 type WpViewport struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WpViewport) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WpViewport) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -16123,12 +16502,18 @@ var _ Event = &WlDisplayDeleteIDEvent{}
 // The core global object.  This is a special singleton object.  It
 // is used for internal Wayland protocol features.
 type WlDisplay struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlDisplay) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlDisplay) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -16162,7 +16547,7 @@ func (WlDisplay) Dispatch(opcode uint16) Event {
 //
 // The callback_data passed in the callback is the event serial.
 func (proxy *WlDisplay) Sync(connection Connection) (aCallback *WlCallback, err error) {
-	aCallback = &WlCallback{connection.NewID()}
+	aCallback = &WlCallback{connection.NewID(), proxy.version}
 	request := WlDisplaySyncRequest{
 		Callback: aCallback.id,
 	}
@@ -16185,7 +16570,7 @@ func (proxy *WlDisplay) Sync(connection Connection) (aCallback *WlCallback, err 
 // Therefore, clients should invoke get_registry as infrequently as
 // possible to avoid wasting memory.
 func (proxy *WlDisplay) GetRegistry(connection Connection) (aRegistry *WlRegistry, err error) {
-	aRegistry = &WlRegistry{connection.NewID()}
+	aRegistry = &WlRegistry{connection.NewID(), proxy.version}
 	request := WlDisplayGetRegistryRequest{
 		Registry: aRegistry.id,
 	}
@@ -16213,7 +16598,9 @@ type WlRegistryBindRequest struct {
 	Name uint32
 
 	// ID contains bounded object
-	ID ObjectID
+	ID                 ObjectID
+	IDInterfaceName    string
+	IDInterfaceVersion uint32
 }
 
 // Opcode returns the request opcode for wl_registry.bind in wayland
@@ -16228,6 +16615,12 @@ var _ Message = WlRegistryBindRequest{}
 // Emit emits the message to the emitter.
 func (r *WlRegistryBindRequest) Emit(e *RequestEmitter) error {
 	if err := e.PutUint(r.Name); err != nil {
+		return err
+	}
+	if err := e.PutString(r.IDInterfaceName); err != nil {
+		return err
+	}
+	if err := e.PutUint(r.IDInterfaceVersion); err != nil {
 		return err
 	}
 	if err := e.PutObjectID(r.ID); err != nil {
@@ -16351,12 +16744,18 @@ var _ Event = &WlRegistryGlobalRemoveEvent{}
 // emit events to the client and lets the client invoke requests on
 // the object.
 type WlRegistry struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlRegistry) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlRegistry) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -16380,11 +16779,13 @@ func (WlRegistry) Dispatch(opcode uint16) Event {
 //
 // Binds a new, client-created object to the server using the
 // specified name as the identifier.
-func (proxy *WlRegistry) Bind(connection Connection, aName uint32) (aID ObjectID, err error) {
+func (proxy *WlRegistry) Bind(connection Connection, aName uint32, aIDInterfaceName string, aIDInterfaceVersion uint32) (aID ObjectID, err error) {
 	aID = connection.NewID()
 	request := WlRegistryBindRequest{
-		Name: aName,
-		ID:   aID,
+		Name:               aName,
+		ID:                 aID,
+		IDInterfaceName:    aIDInterfaceName,
+		IDInterfaceVersion: aIDInterfaceVersion,
 	}
 	err = connection.SendRequest(proxy.id, &request)
 	return
@@ -16433,12 +16834,18 @@ var _ Event = &WlCallbackDoneEvent{}
 // Clients can handle the 'done' event to get notified when
 // the related request is done.
 type WlCallback struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlCallback) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlCallback) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -16526,12 +16933,18 @@ var _ Request = &WlCompositorCreateRegionRequest{}
 // compositor is in charge of combining the contents of multiple
 // surfaces into one displayable output.
 type WlCompositor struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlCompositor) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlCompositor) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -16551,7 +16964,7 @@ func (WlCompositor) Dispatch(opcode uint16) Event {
 //
 // Ask the compositor to create a new surface.
 func (proxy *WlCompositor) CreateSurface(connection Connection) (aID *WlSurface, err error) {
-	aID = &WlSurface{connection.NewID()}
+	aID = &WlSurface{connection.NewID(), proxy.version}
 	request := WlCompositorCreateSurfaceRequest{
 		ID: aID.id,
 	}
@@ -16566,7 +16979,7 @@ func (proxy *WlCompositor) CreateSurface(connection Connection) (aID *WlSurface,
 //
 // Ask the compositor to create a new region.
 func (proxy *WlCompositor) CreateRegion(connection Connection) (aID *WlRegion, err error) {
-	aID = &WlRegion{connection.NewID()}
+	aID = &WlRegion{connection.NewID(), proxy.version}
 	request := WlCompositorCreateRegionRequest{
 		ID: aID.id,
 	}
@@ -16721,12 +17134,18 @@ var _ Request = &WlShmPoolResizeRequest{}
 // setup/teardown overhead and is useful when interactively resizing
 // a surface or for many small buffers.
 type WlShmPool struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlShmPool) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlShmPool) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -16756,7 +17175,7 @@ func (WlShmPool) Dispatch(opcode uint16) Event {
 // so it is valid to destroy the pool immediately after creating
 // a buffer from it.
 func (proxy *WlShmPool) CreateBuffer(connection Connection, aOffset int32, aWidth int32, aHeight int32, aStride int32, aFormat uint32) (aID *WlBuffer, err error) {
-	aID = &WlBuffer{connection.NewID()}
+	aID = &WlBuffer{connection.NewID(), proxy.version}
 	request := WlShmPoolCreateBufferRequest{
 		ID:     aID.id,
 		Offset: aOffset,
@@ -17226,12 +17645,18 @@ var _ Event = &WlShmFormatEvent{}
 // format events to inform clients about the valid pixel formats
 // that can be used for buffers.
 type WlShm struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlShm) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlShm) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -17257,7 +17682,7 @@ func (WlShm) Dispatch(opcode uint16) Event {
 // objects.  The server will mmap size bytes of the passed file
 // descriptor, to use as backing memory for the pool.
 func (proxy *WlShm) CreatePool(connection Connection, aFD FD, aSize int32) (aID *WlShmPool, err error) {
-	aID = &WlShmPool{connection.NewID()}
+	aID = &WlShmPool{connection.NewID(), proxy.version}
 	request := WlShmCreatePoolRequest{
 		ID:   aID.id,
 		FD:   aFD,
@@ -17351,12 +17776,18 @@ var _ Event = &WlBufferReleaseEvent{}
 // is assumed to be premultiplied in the color channels unless otherwise
 // specified.
 type WlBuffer struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlBuffer) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlBuffer) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -17764,12 +18195,18 @@ var _ Event = &WlDataOfferActionEvent{}
 // converted to and provides the mechanism for transferring the
 // data directly from the source client.
 type WlDataOffer struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlDataOffer) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlDataOffer) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -18261,12 +18698,18 @@ var _ Event = &WlDataSourceActionEvent{}
 // provides a way to describe the offered data and a way to respond
 // to requests to transfer the data.
 type WlDataSource struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlDataSource) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlDataSource) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -18745,12 +19188,18 @@ var _ Event = &WlDataDeviceSelectionEvent{}
 // A wl_data_device provides access to inter-client data transfer
 // mechanisms such as copy-and-paste and drag-and-drop.
 type WlDataDevice struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlDataDevice) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlDataDevice) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -18967,12 +19416,18 @@ var _ Request = &WlDataDeviceManagerGetDataDeviceRequest{}
 // functioning properly. See wl_data_source.set_actions,
 // wl_data_offer.accept and wl_data_offer.finish for details.
 type WlDataDeviceManager struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlDataDeviceManager) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlDataDeviceManager) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -18992,7 +19447,7 @@ func (WlDataDeviceManager) Dispatch(opcode uint16) Event {
 //
 // Create a new data source.
 func (proxy *WlDataDeviceManager) CreateDataSource(connection Connection) (aID *WlDataSource, err error) {
-	aID = &WlDataSource{connection.NewID()}
+	aID = &WlDataSource{connection.NewID(), proxy.version}
 	request := WlDataDeviceManagerCreateDataSourceRequest{
 		ID: aID.id,
 	}
@@ -19007,7 +19462,7 @@ func (proxy *WlDataDeviceManager) CreateDataSource(connection Connection) (aID *
 //
 // Create a new data device for a given seat.
 func (proxy *WlDataDeviceManager) GetDataDevice(connection Connection, aSeat ObjectID) (aID *WlDataDevice, err error) {
-	aID = &WlDataDevice{connection.NewID()}
+	aID = &WlDataDevice{connection.NewID(), proxy.version}
 	request := WlDataDeviceManagerGetDataDeviceRequest{
 		ID:   aID.id,
 		Seat: aSeat,
@@ -19083,12 +19538,18 @@ var _ Request = &WlShellGetShellSurfaceRequest{}
 // Note! This protocol is deprecated and not intended for production use.
 // For desktop-style user interfaces, use xdg_shell.
 type WlShell struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlShell) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlShell) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -19112,7 +19573,7 @@ func (WlShell) Dispatch(opcode uint16) Event {
 //
 // Only one shell surface can be associated with a given surface.
 func (proxy *WlShell) GetShellSurface(connection Connection, aSurface ObjectID) (aID *WlShellSurface, err error) {
-	aID = &WlShellSurface{connection.NewID()}
+	aID = &WlShellSurface{connection.NewID(), proxy.version}
 	request := WlShellGetShellSurfaceRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -19781,12 +20242,18 @@ var _ Event = &WlShellSurfacePopupDoneEvent{}
 // wl_shell_surface_destroy() must be called before destroying
 // the wl_surface object.
 type WlShellSurface struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlShellSurface) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlShellSurface) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -20722,12 +21189,18 @@ var _ Event = &WlSurfaceLeaveEvent{}
 // a cursor (cursor is a different role than sub-surface, and role
 // switching is not allowed).
 type WlSurface struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlSurface) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlSurface) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -20886,7 +21359,7 @@ func (proxy *WlSurface) Damage(connection Connection, aX int32, aY int32, aWidth
 // The callback_data passed in the callback is the current time, in
 // milliseconds, with an undefined base.
 func (proxy *WlSurface) Frame(connection Connection) (aCallback *WlCallback, err error) {
-	aCallback = &WlCallback{connection.NewID()}
+	aCallback = &WlCallback{connection.NewID(), proxy.version}
 	request := WlSurfaceFrameRequest{
 		Callback: aCallback.id,
 	}
@@ -21374,12 +21847,18 @@ var _ Event = &WlSeatNameEvent{}
 // device is hot plugged.  A seat typically has a pointer and
 // maintains a keyboard focus and a pointer focus.
 type WlSeat struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlSeat) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlSeat) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -21410,7 +21889,7 @@ func (WlSeat) Dispatch(opcode uint16) Event {
 // never had the pointer capability. The missing_capability error will
 // be sent in this case.
 func (proxy *WlSeat) GetPointer(connection Connection) (aID *WlPointer, err error) {
-	aID = &WlPointer{connection.NewID()}
+	aID = &WlPointer{connection.NewID(), proxy.version}
 	request := WlSeatGetPointerRequest{
 		ID: aID.id,
 	}
@@ -21432,7 +21911,7 @@ func (proxy *WlSeat) GetPointer(connection Connection) (aID *WlPointer, err erro
 // never had the keyboard capability. The missing_capability error will
 // be sent in this case.
 func (proxy *WlSeat) GetKeyboard(connection Connection) (aID *WlKeyboard, err error) {
-	aID = &WlKeyboard{connection.NewID()}
+	aID = &WlKeyboard{connection.NewID(), proxy.version}
 	request := WlSeatGetKeyboardRequest{
 		ID: aID.id,
 	}
@@ -21454,7 +21933,7 @@ func (proxy *WlSeat) GetKeyboard(connection Connection) (aID *WlKeyboard, err er
 // never had the touch capability. The missing_capability error will
 // be sent in this case.
 func (proxy *WlSeat) GetTouch(connection Connection) (aID *WlTouch, err error) {
-	aID = &WlTouch{connection.NewID()}
+	aID = &WlTouch{connection.NewID(), proxy.version}
 	request := WlSeatGetTouchRequest{
 		ID: aID.id,
 	}
@@ -22170,12 +22649,18 @@ var _ Event = &WlPointerAxisDiscreteEvent{}
 // and button and axis events for button presses, button releases
 // and scrolling.
 type WlPointer struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlPointer) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlPointer) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -22651,12 +23136,18 @@ var _ Event = &WlKeyboardRepeatInfoEvent{}
 // The wl_keyboard interface represents one or more keyboards
 // associated with a seat.
 type WlKeyboard struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlKeyboard) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlKeyboard) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -23094,12 +23585,18 @@ var _ Event = &WlTouchOrientationEvent{}
 // and ending with an up event. Events relating to the same
 // contact point can be identified by the ID of the sequence.
 type WlTouch struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlTouch) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlTouch) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -23513,12 +24010,18 @@ var _ Event = &WlOutputScaleEvent{}
 // displays part of the compositor space.  This object is published
 // as global during start up, or when a monitor is hotplugged.
 type WlOutput struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlOutput) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlOutput) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -23682,12 +24185,18 @@ var _ Request = &WlRegionSubtractRequest{}
 // Region objects are used to describe the opaque and input
 // regions of a surface.
 type WlRegion struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlRegion) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlRegion) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -23856,12 +24365,18 @@ var _ Request = &WlSubcompositorGetSubsurfaceRequest{}
 // objects. This should allow the compositor to pass YUV video buffer
 // processing to dedicated overlay hardware when possible.
 type WlSubcompositor struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlSubcompositor) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlSubcompositor) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -23906,7 +24421,7 @@ func (proxy *WlSubcompositor) Destroy(connection Connection) (err error) {
 // This request modifies the behaviour of wl_surface.commit request on
 // the sub-surface, see the documentation on wl_subsurface interface.
 func (proxy *WlSubcompositor) GetSubsurface(connection Connection, aSurface ObjectID, aParent ObjectID) (aID *WlSubsurface, err error) {
-	aID = &WlSubsurface{connection.NewID()}
+	aID = &WlSubsurface{connection.NewID(), proxy.version}
 	request := WlSubcompositorGetSubsurfaceRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -24209,12 +24724,18 @@ var _ Request = &WlSubsurfaceSetDesyncRequest{}
 // If the parent wl_surface object is destroyed, the sub-surface is
 // unmapped.
 type WlSubsurface struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *WlSubsurface) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *WlSubsurface) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -24460,12 +24981,18 @@ var _ Request = &ZwpPrimarySelectionDeviceManagerV1DestroyRequest{}
 // wp_primary_selection_source objects, as well as retrieving the per-seat
 // wp_primary_selection_device objects.
 type ZwpPrimarySelectionDeviceManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPrimarySelectionDeviceManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPrimarySelectionDeviceManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -24485,7 +25012,7 @@ func (ZwpPrimarySelectionDeviceManagerV1) Dispatch(opcode uint16) Event {
 //
 // Create a new primary selection source.
 func (proxy *ZwpPrimarySelectionDeviceManagerV1) CreateSource(connection Connection) (aID *ZwpPrimarySelectionSourceV1, err error) {
-	aID = &ZwpPrimarySelectionSourceV1{connection.NewID()}
+	aID = &ZwpPrimarySelectionSourceV1{connection.NewID(), proxy.version}
 	request := ZwpPrimarySelectionDeviceManagerV1CreateSourceRequest{
 		ID: aID.id,
 	}
@@ -24500,7 +25027,7 @@ func (proxy *ZwpPrimarySelectionDeviceManagerV1) CreateSource(connection Connect
 //
 // Create a new data device for a given seat.
 func (proxy *ZwpPrimarySelectionDeviceManagerV1) GetDevice(connection Connection, aSeat ObjectID) (aID *ZwpPrimarySelectionDeviceV1, err error) {
-	aID = &ZwpPrimarySelectionDeviceV1{connection.NewID()}
+	aID = &ZwpPrimarySelectionDeviceV1{connection.NewID(), proxy.version}
 	request := ZwpPrimarySelectionDeviceManagerV1GetDeviceRequest{
 		ID:   aID.id,
 		Seat: aSeat,
@@ -24659,12 +25186,18 @@ func (e *ZwpPrimarySelectionDeviceV1SelectionEvent) Scan(s *EventScanner) error 
 var _ Event = &ZwpPrimarySelectionDeviceV1SelectionEvent{}
 
 type ZwpPrimarySelectionDeviceV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPrimarySelectionDeviceV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPrimarySelectionDeviceV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -24819,12 +25352,18 @@ var _ Event = &ZwpPrimarySelectionOfferV1OfferEvent{}
 // be converted to and provides the mechanisms for transferring the data
 // directly to the client.
 type ZwpPrimarySelectionOfferV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPrimarySelectionOfferV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPrimarySelectionOfferV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -24998,12 +25537,18 @@ var _ Event = &ZwpPrimarySelectionSourceV1CancelledEvent{}
 // describe the offered data and respond to requests to transfer the
 // requested contents of the primary selection clipboard.
 type ZwpPrimarySelectionSourceV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpPrimarySelectionSourceV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpPrimarySelectionSourceV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -25163,12 +25708,18 @@ var _ Request = &XdgActivationV1ActivateRequest{}
 // being activated or started, or for applications to request to be
 // activated.
 type XdgActivationV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *XdgActivationV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *XdgActivationV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -25203,7 +25754,7 @@ func (proxy *XdgActivationV1) Destroy(connection Connection) (err error) {
 // the initiating client with a unique token for this activation. This
 // token should be offered to the clients to be activated.
 func (proxy *XdgActivationV1) GetActivationToken(connection Connection) (aID *XdgActivationTokenV1, err error) {
-	aID = &XdgActivationTokenV1{connection.NewID()}
+	aID = &XdgActivationTokenV1{connection.NewID(), proxy.version}
 	request := XdgActivationV1GetActivationTokenRequest{
 		ID: aID.id,
 	}
@@ -25450,12 +26001,18 @@ var _ Event = &XdgActivationTokenV1DoneEvent{}
 // done event with the token. In case the request's parameters are invalid,
 // the compositor will provide an invalid token.
 type XdgActivationTokenV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *XdgActivationTokenV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *XdgActivationTokenV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -25650,12 +26207,18 @@ var _ Request = &ZxdgDecorationManagerV1GetToplevelDecorationRequest{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZxdgDecorationManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgDecorationManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgDecorationManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -25691,7 +26254,7 @@ func (proxy *ZxdgDecorationManagerV1) Destroy(connection Connection) (err error)
 // xdg_toplevel_decoration.configure event must also be treated as
 // errors.
 func (proxy *ZxdgDecorationManagerV1) GetToplevelDecoration(connection Connection, aToplevel ObjectID) (aID *ZxdgToplevelDecorationV1, err error) {
-	aID = &ZxdgToplevelDecorationV1{connection.NewID()}
+	aID = &ZxdgToplevelDecorationV1{connection.NewID(), proxy.version}
 	request := ZxdgDecorationManagerV1GetToplevelDecorationRequest{
 		ID:       aID.id,
 		Toplevel: aToplevel,
@@ -25877,12 +26440,18 @@ var _ Event = &ZxdgToplevelDecorationV1ConfigureEvent{}
 // The xdg_toplevel_decoration object must be destroyed before its
 // xdg_toplevel.
 type ZxdgToplevelDecorationV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgToplevelDecorationV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgToplevelDecorationV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26034,12 +26603,18 @@ var _ Request = &ZxdgExporterV1ExportRequest{}
 // A global interface used for exporting surfaces that can later be imported
 // using xdg_importer.
 type ZxdgExporterV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgExporterV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgExporterV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26076,7 +26651,7 @@ func (proxy *ZxdgExporterV1) Destroy(connection Connection) (err error) {
 // be used to create an xdg_imported multiple times. Only xdg_surface
 // surfaces may be exported.
 func (proxy *ZxdgExporterV1) Export(connection Connection, aSurface ObjectID) (aID *ZxdgExportedV1, err error) {
-	aID = &ZxdgExportedV1{connection.NewID()}
+	aID = &ZxdgExportedV1{connection.NewID(), proxy.version}
 	request := ZxdgExporterV1ExportRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -26164,12 +26739,18 @@ var _ Request = &ZxdgImporterV1ImportRequest{}
 // With this interface, a client can create a reference to a surface of
 // another client.
 type ZxdgImporterV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgImporterV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgImporterV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26203,7 +26784,7 @@ func (proxy *ZxdgImporterV1) Destroy(connection Connection) (err error) {
 // represents the imported surface, and the importing client can
 // manipulate its relationship using it. See xdg_imported for details.
 func (proxy *ZxdgImporterV1) Import(connection Connection, aHandle string) (aID *ZxdgImportedV1, err error) {
-	aID = &ZxdgImportedV1{connection.NewID()}
+	aID = &ZxdgImportedV1{connection.NewID(), proxy.version}
 	request := ZxdgImporterV1ImportRequest{
 		ID:     aID.id,
 		Handle: aHandle,
@@ -26288,12 +26869,18 @@ var _ Event = &ZxdgExportedV1HandleEvent{}
 // destroyed. Destroying the xdg_exported invalidates any relationship the
 // importer may have established using xdg_imported.
 type ZxdgExportedV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgExportedV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgExportedV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26418,12 +27005,18 @@ var _ Event = &ZxdgImportedV1DestroyedEvent{}
 // by some client. A client can use this interface to manipulate
 // relationships between its own surfaces and the imported surface.
 type ZxdgImportedV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgImportedV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgImportedV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26562,12 +27155,18 @@ var _ Request = &ZxdgExporterV2ExportToplevelRequest{}
 // A global interface used for exporting surfaces that can later be imported
 // using xdg_importer.
 type ZxdgExporterV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgExporterV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgExporterV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26605,7 +27204,7 @@ func (proxy *ZxdgExporterV2) Destroy(connection Connection) (err error) {
 // equivalent surfaces may be exported, otherwise an invalid_surface
 // protocol error is sent.
 func (proxy *ZxdgExporterV2) ExportToplevel(connection Connection, aSurface ObjectID) (aID *ZxdgExportedV2, err error) {
-	aID = &ZxdgExportedV2{connection.NewID()}
+	aID = &ZxdgExportedV2{connection.NewID(), proxy.version}
 	request := ZxdgExporterV2ExportToplevelRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -26693,12 +27292,18 @@ var _ Request = &ZxdgImporterV2ImportToplevelRequest{}
 // With this interface, a client can create a reference to a surface of
 // another client.
 type ZxdgImporterV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgImporterV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgImporterV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26732,7 +27337,7 @@ func (proxy *ZxdgImporterV2) Destroy(connection Connection) (err error) {
 // represents the imported surface, and the importing client can
 // manipulate its relationship using it. See xdg_imported for details.
 func (proxy *ZxdgImporterV2) ImportToplevel(connection Connection, aHandle string) (aID *ZxdgImportedV2, err error) {
-	aID = &ZxdgImportedV2{connection.NewID()}
+	aID = &ZxdgImportedV2{connection.NewID(), proxy.version}
 	request := ZxdgImporterV2ImportToplevelRequest{
 		ID:     aID.id,
 		Handle: aHandle,
@@ -26817,12 +27422,18 @@ var _ Event = &ZxdgExportedV2HandleEvent{}
 // destroyed. Destroying the xdg_exported invalidates any relationship the
 // importer may have established using xdg_imported.
 type ZxdgExportedV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgExportedV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgExportedV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -26959,12 +27570,18 @@ var _ Event = &ZxdgImportedV2DestroyedEvent{}
 // by some client. A client can use this interface to manipulate
 // relationships between its own surfaces and the imported surface.
 type ZxdgImportedV2 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgImportedV2) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgImportedV2) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -27084,12 +27701,18 @@ var _ Request = &ZxdgOutputManagerV1GetXdgOutputRequest{}
 //
 // A global factory interface for xdg_output objects.
 type ZxdgOutputManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgOutputManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgOutputManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -27121,7 +27744,7 @@ func (proxy *ZxdgOutputManagerV1) Destroy(connection Connection) (err error) {
 //
 // This creates a new xdg_output object for the given wl_output.
 func (proxy *ZxdgOutputManagerV1) GetXdgOutput(connection Connection, aOutput ObjectID) (aID *ZxdgOutputV1, err error) {
-	aID = &ZxdgOutputV1{connection.NewID()}
+	aID = &ZxdgOutputV1{connection.NewID(), proxy.version}
 	request := ZxdgOutputManagerV1GetXdgOutputRequest{
 		ID:     aID.id,
 		Output: aOutput,
@@ -27413,12 +28036,18 @@ var _ Event = &ZxdgOutputV1DescriptionEvent{}
 // wl_output.done event is sent. This allows changes to the output
 // properties to be seen as atomic, even if they happen via multiple events.
 type ZxdgOutputV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZxdgOutputV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZxdgOutputV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -27667,12 +28296,18 @@ var _ Event = &XdgWmBasePingEvent{}
 // create windows that can be dragged, resized, maximized, etc, as well as
 // creating transient windows such as popup menus.
 type XdgWmBase struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *XdgWmBase) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *XdgWmBase) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -27709,7 +28344,7 @@ func (proxy *XdgWmBase) Destroy(connection Connection) (err error) {
 // surfaces relative to some parent surface. See the interface description
 // and xdg_surface.get_popup for details.
 func (proxy *XdgWmBase) CreatePositioner(connection Connection) (aID *XdgPositioner, err error) {
-	aID = &XdgPositioner{connection.NewID()}
+	aID = &XdgPositioner{connection.NewID(), proxy.version}
 	request := XdgWmBaseCreatePositionerRequest{
 		ID: aID.id,
 	}
@@ -27736,7 +28371,7 @@ func (proxy *XdgWmBase) CreatePositioner(connection Connection) (aID *XdgPositio
 // See the documentation of xdg_surface for more details about what an
 // xdg_surface is and how it is used.
 func (proxy *XdgWmBase) GetXdgSurface(connection Connection, aSurface ObjectID) (aID *XdgSurface, err error) {
-	aID = &XdgSurface{connection.NewID()}
+	aID = &XdgSurface{connection.NewID(), proxy.version}
 	request := XdgWmBaseGetXdgSurfaceRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -28230,12 +28865,18 @@ var _ Request = &XdgPositionerSetParentConfigureRequest{}
 // set_anchor_rect. Passing an incomplete xdg_positioner object when
 // positioning a surface raises an error.
 type XdgPositioner struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *XdgPositioner) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *XdgPositioner) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -28738,12 +29379,18 @@ var _ Event = &XdgSurfaceConfigureEvent{}
 // of the 3 required conditions for mapping a surface if its role surface
 // has not been destroyed.
 type XdgSurface struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *XdgSurface) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *XdgSurface) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -28779,7 +29426,7 @@ func (proxy *XdgSurface) Destroy(connection Connection) (err error) {
 // See the documentation of xdg_toplevel for more details about what an
 // xdg_toplevel is and how it is used.
 func (proxy *XdgSurface) GetToplevel(connection Connection) (aID *XdgToplevel, err error) {
-	aID = &XdgToplevel{connection.NewID()}
+	aID = &XdgToplevel{connection.NewID(), proxy.version}
 	request := XdgSurfaceGetToplevelRequest{
 		ID: aID.id,
 	}
@@ -28801,7 +29448,7 @@ func (proxy *XdgSurface) GetToplevel(connection Connection) (aID *XdgToplevel, e
 // See the documentation of xdg_popup for more details about what an
 // xdg_popup is and how it is used.
 func (proxy *XdgSurface) GetPopup(connection Connection, aParent ObjectID, aPositioner ObjectID) (aID *XdgPopup, err error) {
-	aID = &XdgPopup{connection.NewID()}
+	aID = &XdgPopup{connection.NewID(), proxy.version}
 	request := XdgSurfaceGetPopupRequest{
 		ID:         aID.id,
 		Parent:     aParent,
@@ -29717,12 +30364,18 @@ var _ Event = &XdgToplevelCloseEvent{}
 //
 // Attaching a null buffer to a toplevel unmaps the surface.
 type XdgToplevel struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *XdgToplevel) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *XdgToplevel) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -30473,12 +31126,18 @@ var _ Event = &XdgPopupRepositionedEvent{}
 // The client must call wl_surface.commit on the corresponding wl_surface
 // for the xdg_popup state to take effect.
 type XdgPopup struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *XdgPopup) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *XdgPopup) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -30699,12 +31358,18 @@ var _ Request = &ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{}
 //
 // A global interface used for grabbing the keyboard.
 type ZwpXwaylandKeyboardGrabManagerV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpXwaylandKeyboardGrabManagerV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpXwaylandKeyboardGrabManagerV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -30751,7 +31416,7 @@ func (proxy *ZwpXwaylandKeyboardGrabManagerV1) Destroy(connection Connection) (e
 // a compositor may change and reroute keyboard events while the grab
 // is nominally active.
 func (proxy *ZwpXwaylandKeyboardGrabManagerV1) GrabKeyboard(connection Connection, aSurface ObjectID, aSeat ObjectID) (aID *ZwpXwaylandKeyboardGrabV1, err error) {
-	aID = &ZwpXwaylandKeyboardGrabV1{connection.NewID()}
+	aID = &ZwpXwaylandKeyboardGrabV1{connection.NewID(), proxy.version}
 	request := ZwpXwaylandKeyboardGrabManagerV1GrabKeyboardRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -30800,12 +31465,18 @@ var _ Request = &ZwpXwaylandKeyboardGrabV1DestroyRequest{}
 //
 // A global interface used for grabbing the keyboard.
 type ZwpXwaylandKeyboardGrabV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpXwaylandKeyboardGrabV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpXwaylandKeyboardGrabV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -30942,12 +31613,18 @@ var _ Request = &ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{}
 // version number in the protocol and interface names are removed and the
 // interface version number is reset.
 type ZwpLinuxExplicitSynchronizationV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpLinuxExplicitSynchronizationV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpLinuxExplicitSynchronizationV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -30988,7 +31665,7 @@ func (proxy *ZwpLinuxExplicitSynchronizationV1) Destroy(connection Connection) (
 // wl_surface, it should not directly use this extension on that surface,
 // to avoid raising a synchronization_exists protocol error.
 func (proxy *ZwpLinuxExplicitSynchronizationV1) GetSynchronization(connection Connection, aSurface ObjectID) (aID *ZwpLinuxSurfaceSynchronizationV1, err error) {
-	aID = &ZwpLinuxSurfaceSynchronizationV1{connection.NewID()}
+	aID = &ZwpLinuxSurfaceSynchronizationV1{connection.NewID(), proxy.version}
 	request := ZwpLinuxExplicitSynchronizationV1GetSynchronizationRequest{
 		ID:      aID.id,
 		Surface: aSurface,
@@ -31189,12 +31866,18 @@ var _ Request = &ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{}
 // extension. Compositors are free to support explicit synchronization for
 // additional buffer types.
 type ZwpLinuxSurfaceSynchronizationV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpLinuxSurfaceSynchronizationV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpLinuxSurfaceSynchronizationV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.
@@ -31279,7 +31962,7 @@ func (proxy *ZwpLinuxSurfaceSynchronizationV1) SetAcquireFence(connection Connec
 // If at surface commit time there is no buffer attached, a NO_BUFFER
 // error is raised.
 func (proxy *ZwpLinuxSurfaceSynchronizationV1) GetRelease(connection Connection) (aRelease *ZwpLinuxBufferReleaseV1, err error) {
-	aRelease = &ZwpLinuxBufferReleaseV1{connection.NewID()}
+	aRelease = &ZwpLinuxBufferReleaseV1{connection.NewID(), proxy.version}
 	request := ZwpLinuxSurfaceSynchronizationV1GetReleaseRequest{
 		Release: aRelease.id,
 	}
@@ -31391,12 +32074,18 @@ var _ Event = &ZwpLinuxBufferReleaseV1ImmediateReleaseEvent{}
 // Once a buffer release object has delivered a 'fenced_release' or an
 // 'immediate_release' event it is automatically destroyed.
 type ZwpLinuxBufferReleaseV1 struct {
-	id ObjectID
+	id      ObjectID
+	version uint32
 }
 
 // ID returns the ID of the object.
 func (proxy *ZwpLinuxBufferReleaseV1) ID() ObjectID {
 	return proxy.id
+}
+
+// ID returns the Version of the interface.
+func (proxy *ZwpLinuxBufferReleaseV1) Version() uint32 {
+	return proxy.version
 }
 
 // Descriptor returns the interface descriptor for the interface of the object.

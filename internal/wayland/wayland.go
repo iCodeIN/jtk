@@ -71,6 +71,7 @@ type ProtocolDescriptor struct {
 // InterfaceDescriptor contains runtime metadata about an interface.
 type InterfaceDescriptor struct {
 	Name     string
+	Version  uint32
 	Events   []EventDescriptor
 	Requests []RequestDescriptor
 	NewProxy NewProxy
